@@ -1,0 +1,28 @@
+# Global ignores
+*.log
+*.swp
+.DS_Store
+
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Exclude target directories within src/main and src/test
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Exclude build directories within src/main and src/test
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Exclude HELP.md from being ignored
+!HELP.md
+
+# test
+test/

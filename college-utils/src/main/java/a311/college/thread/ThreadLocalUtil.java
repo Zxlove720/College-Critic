@@ -3,7 +3,7 @@ package a311.college.thread;
 /**
  * ThreadLocal工具类
  */
-public class ThreadLocalUtils {
+public class ThreadLocalUtil {
 
     public static ThreadLocal<Long> threadLocal = new ThreadLocal<>();
 

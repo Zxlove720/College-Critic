@@ -27,7 +27,7 @@
         <fastjson.version>1.2.83</fastjson.version>
         <aliyun.sdk.oss.version>3.10.2</aliyun.sdk.oss.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
-        <jjwt.version>0.12.2</jjwt.version>
+        <jjwt.version>0.9.1</jjwt.version>
     </properties>
 
     <modules>

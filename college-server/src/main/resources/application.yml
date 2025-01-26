@@ -1,0 +1,47 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: college-server
+  profiles:
+    active: dev
+  main:
+    allow-circular-references: true
+  datasource:
+    driver-class-name: ${college.datasource.driver-class-name}
+    url: jdbc:mysql://${college.datasource.host}:${college.datasource.port}/${college.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${college.datasource.username}
+    password: ${college.datasource.password}
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: a311.college.entity
+  configuration:
+    # 开启驼峰命名
+    map-underscore-to-camel-case: true
+
+# 设置日志级别
+logging:
+  level:
+    a311:
+      college:
+        server: info
+        mapper: debug
+        controller: info
+
+# 设置JWT令牌
+college:
+  jwt:
+    # 设置jwt签名加密使用的密钥
+    user-secret-key: collegeCritic
+    # 设置JWT令牌过期时间
+    user-time: 7200000
+    # 设置前端请求传递的令牌名称
+    user-token-name: token
+
+  alioss:
+    endpoint: ${college.alioss.endpoint}
+    access-key-id: ${college.alioss.access-key-id}
+    access-key-secret: ${college.alioss.access-key-secret}
+    bucket-name: ${college.alioss.bucket-name}

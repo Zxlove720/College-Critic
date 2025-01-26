@@ -29,6 +29,7 @@
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <jjwt.version>0.9.1</jjwt.version>
         <knife4j.version>3.0.2</knife4j.version>
+        <pageHelper.version>1.4.7</pageHelper.version>
     </properties>
 
     <modules>
@@ -95,6 +96,12 @@
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pageHelper.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

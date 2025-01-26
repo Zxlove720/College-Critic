@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-
+/**
+ * 用户登录VO
+ */
 @Data
 @Builder
 @NoArgsConstructor

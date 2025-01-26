@@ -1,12 +1,25 @@
 package a311.college.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
  * 大学类
  */
-public class College {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class College implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     // 学校ID
     private Integer id;
     // 学校名
@@ -17,6 +30,8 @@ public class College {
     private Integer rank;
     // 学校的专业，包含了该专业的历年分数线、招生计划、招生批次
     private List<Major> majors;
+    // 如果等级是985 或 211 那么标记为重点
+    private Boolean important;
 
     private LocalDateTime createTime;
     private LocalDateTime updateTime;

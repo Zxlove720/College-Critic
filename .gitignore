@@ -26,3 +26,5 @@ target/
 
 # test
 test/
+
+application-dev.yml

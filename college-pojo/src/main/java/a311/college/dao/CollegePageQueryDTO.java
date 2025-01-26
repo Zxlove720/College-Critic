@@ -3,13 +3,13 @@ package a311.college.dao;
 import java.io.Serial;
 import java.io.Serializable;
 
-public class UserPageQueryDTO implements Serializable {
+public class CollegePageQueryDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    // 用户名
-    private String username;
+    // 学校名
+    private String collegeName;
 
     // 页码
     private Integer page;

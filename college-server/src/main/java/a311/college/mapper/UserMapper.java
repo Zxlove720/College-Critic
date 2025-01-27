@@ -1,6 +1,8 @@
 package a311.college.mapper;
 
+import a311.college.dao.UserPageQueryDTO;
 import a311.college.entity.User;
+import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -10,6 +12,18 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface UserMapper {
 
-    @Select("select * from college where username = #{username}")
+    /**
+     * 用户登录 传统
+     * @param username 用户名
+     * @return User
+     */
+    @Select("select * from user where username = #{username}")
     User getUserByUsername(String username);
+
+    /**
+     * 用户分页查询
+     * @param userPageQueryDTO 用户分页查询DTO
+     * @return Page<User>
+     */
+    Page<User> pageQuery(UserPageQueryDTO userPageQueryDTO);
 }

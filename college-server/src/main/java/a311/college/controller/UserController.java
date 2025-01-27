@@ -2,6 +2,7 @@ package a311.college.controller;
 
 import a311.college.constant.JWTClaimsConstant;
 import a311.college.dao.UserLoginDTO;
+import a311.college.dao.UserPageQueryDTO;
 import a311.college.entity.User;
 import a311.college.jwt.JWTUtils;
 import a311.college.properties.JWTProperties;
@@ -12,6 +13,7 @@ import a311.college.vo.UserLoginVO;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +44,7 @@ public class UserController {
      * @return 用户登录结果VO
      */
     @PostMapping("/login")
-    @ApiOperation(value = "员工登录")
+    @ApiOperation(value = "用户登录")
     public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO) {
         log.info("用户{}正在登录", userLoginDTO.getUsername());
 
@@ -67,14 +69,27 @@ public class UserController {
     }
 
     /**
-     * 员工推出
-     * @return Result统一返回结果
+     * 用户退出
+     * @return Result<Void>
      */
     @PostMapping("/layout")
     @ApiOperation(value = "用户退出")
     public Result<Void> layout() {
         log.info("用户退出登录");
         return Result.success();
+    }
+
+    /**
+     * 用户分页查询
+     * @param userPageQueryDTO 用户分页查询DTO
+     * @return Result<PageResult<User>>
+     */
+    @GetMapping("/page")
+    @ApiOperation(value = "用户分页查询")
+    public Result<PageResult<User>> UserPage(UserPageQueryDTO userPageQueryDTO) {
+        log.info("用户分页查询，查询参数为：{}", userPageQueryDTO);
+        PageResult<User> pageResult = userService.pageSelect(userPageQueryDTO);
+        return Result.success(pageResult);
     }
 
 

@@ -1,8 +1,11 @@
 package a311.college.dao;
 
+import lombok.Data;
+
 import java.io.Serial;
 import java.io.Serializable;
 
+@Data
 public class UserPageQueryDTO implements Serializable {
 
     @Serial

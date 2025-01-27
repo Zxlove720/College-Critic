@@ -26,4 +26,12 @@ public interface UserMapper {
      * @return Page<User>
      */
     Page<User> pageQuery(UserPageQueryDTO userPageQueryDTO);
+
+    /**
+     * 根据id查询用户
+     * @param id
+     * @return
+     */
+    @Select("select * from user where id = #{id}")
+    User selectById(Long id);
 }

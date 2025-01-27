@@ -13,4 +13,6 @@ public interface UserService {
     User login(UserLoginDTO userLoginDTO);
 
     PageResult<User> pageSelect(UserPageQueryDTO userPageQueryDTO);
+
+    User selectById(Long id);
 }

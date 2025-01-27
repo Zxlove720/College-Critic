@@ -85,4 +85,14 @@ public class UserServiceImpl implements UserService {
         List<User> record = page.getResult();
         return new PageResult<>(total, record);
     }
+
+    /**
+     * 根据id查询用户
+     * @param id 用户id
+     * @return User
+     */
+    @Override
+    public User selectById(Long id) {
+        return userMapper.selectById(id);
+    }
 }

@@ -1,11 +1,13 @@
 package a311.college.entity;
 
+import a311.college.enumeration.Province;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -29,4 +31,7 @@ public class Major implements Serializable {
     private Integer admissionBatch;
     // 招生省份
     private List<Province> provinceList;
+
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
 }

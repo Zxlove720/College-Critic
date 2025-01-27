@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * 分数线
@@ -25,4 +26,7 @@ public class ScoreLine implements Serializable {
     private Integer minScore;
     // 最低位次
     private Integer rank;
+
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
 }

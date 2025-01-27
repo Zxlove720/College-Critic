@@ -30,8 +30,10 @@ public class College implements Serializable {
     private Integer rank;
     // 学校的专业，包含了该专业的历年分数线、招生计划、招生批次
     private List<Major> majors;
-    // 如果等级是985 或 211 那么标记为重点
-    private Boolean important;
+    // 如果等级是985 或 211 则标记为重点， 0：非重点、1：重点
+    private Integer important;
+    // 学校的客观得分
+    private Integer score;
 
     private LocalDateTime createTime;
     private LocalDateTime updateTime;

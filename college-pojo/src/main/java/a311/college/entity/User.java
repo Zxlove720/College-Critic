@@ -1,5 +1,6 @@
 package a311.college.entity;
 
+import a311.college.enumeration.Areas;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -46,11 +47,14 @@ public class User implements Serializable {
     // 成绩
     private Integer grade;
 
-    // 排名（选填）
+    // 位次（选填）
     private Integer rank;
 
-    // 用户状态，通过状态识别其身份 0：不可用 1：可用 2：管理员
+    // 用户状态，通过状态识别其身份 0：不可用 1：可用 7：管理员
     private Integer status;
+
+    // 意向地区
+    private Areas area;
 
     private LocalDateTime createTime;
     private LocalDateTime updateTime;

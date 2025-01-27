@@ -21,8 +21,6 @@ public class ScoreLine implements Serializable {
 
     // 年份
     private Integer year;
-    // 省份
-    private String province;
     // 最低分
     private Integer minScore;
     // 最低位次

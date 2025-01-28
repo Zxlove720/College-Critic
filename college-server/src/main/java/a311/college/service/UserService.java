@@ -15,4 +15,6 @@ public interface UserService {
     PageResult<User> pageSelect(UserPageQueryDTO userPageQueryDTO);
 
     User selectById(Long id);
+
+    void deleteById(Long id);
 }

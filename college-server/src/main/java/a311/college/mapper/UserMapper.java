@@ -3,6 +3,7 @@ package a311.college.mapper;
 import a311.college.dao.UserPageQueryDTO;
 import a311.college.entity.User;
 import com.github.pagehelper.Page;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -34,4 +35,11 @@ public interface UserMapper {
      */
     @Select("select * from user where id = #{id}")
     User selectById(Long id);
+
+    /**
+     * 根据id删除用户
+     * @param id 用户id
+     */
+    @Delete("delete from user where id = #{id}")
+    void deleteById(Long id);
 }

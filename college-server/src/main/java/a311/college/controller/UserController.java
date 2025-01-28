@@ -102,4 +102,15 @@ public class UserController {
         User user = userService.selectById(id);
         return Result.success(user);
     }
+
+    /**
+     * 删除用户（用户注销）
+     * @param id 用户id
+     * @return Result<Void>
+     */
+    public Result<Void> deleteById(@PathVariable Long id) {
+        log.info("删除用户（用户注销），id：{}", id);
+        userService.deleteById(id);
+        return Result.success();
+    }
 }

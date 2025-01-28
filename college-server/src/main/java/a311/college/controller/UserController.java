@@ -102,5 +102,4 @@ public class UserController {
         User user = userService.selectById(id);
         return Result.success(user);
     }
-
 }

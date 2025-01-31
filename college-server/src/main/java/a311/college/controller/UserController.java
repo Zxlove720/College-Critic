@@ -1,6 +1,7 @@
 package a311.college.controller;
 
 import a311.college.constant.JWTClaimsConstant;
+import a311.college.constant.UserStatusConstant;
 import a311.college.dao.UserDTO;
 import a311.college.dao.UserLoginDTO;
 import a311.college.dao.UserPageQueryDTO;
@@ -109,6 +110,8 @@ public class UserController {
      * @param id 用户id
      * @return Result<Void>
      */
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "根据id删除用户")
     public Result<Void> deleteById(@PathVariable Long id) {
         log.info("删除用户（用户注销），id：{}", id);
         userService.deleteById(id);
@@ -120,6 +123,8 @@ public class UserController {
      * @param userDTO 用户DTO
      * @return Result<Void>
      */
+    @PostMapping
+    @ApiOperation(value = "新增用户（用户注册）")
     public Result<Void> saveUser(@RequestBody UserDTO userDTO) {
         log.info("用户：{}，正在注册", userDTO);
         userService.save(userDTO);
@@ -131,9 +136,28 @@ public class UserController {
      * @param userDTO 用户DTO
      * @return Result<Void>
      */
+    @PutMapping
+    @ApiOperation(value = "修改用户信息")
     public Result<Void> updateUser(@RequestBody UserDTO userDTO) {
         log.info("用户：{}，正在修改信息", userDTO.getUsername());
         userService.update(userDTO);
+        return Result.success();
+    }
+
+    /**
+     * 修改用户状态
+     * @param status 用户状态 前端传递的是将用户修改之后的状态
+     * @param id 用户id
+     * @return Result<Void>
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation(value = "修改用户状态")
+    public Result<Void> changeStatus(@PathVariable Integer status, Long id) {
+        if (status.equals(UserStatusConstant.ENABLE)) {
+            log.info("禁用员工账号：{}，员工id为：{}", status , id);
+        }
+
+
         return Result.success();
     }
 }

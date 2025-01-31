@@ -1,6 +1,7 @@
 package a311.college.controller;
 
 import a311.college.constant.JWTClaimsConstant;
+import a311.college.dao.UserDTO;
 import a311.college.dao.UserLoginDTO;
 import a311.college.dao.UserPageQueryDTO;
 import a311.college.entity.User;
@@ -111,6 +112,17 @@ public class UserController {
     public Result<Void> deleteById(@PathVariable Long id) {
         log.info("删除用户（用户注销），id：{}", id);
         userService.deleteById(id);
+        return Result.success();
+    }
+
+    /**
+     * 新增用户（用户注册）
+     * @param userDTO 用户DTO
+     * @return Result<Void>
+     */
+    public Result<Void> saveUser(@RequestBody UserDTO userDTO) {
+        log.info("用户：{}，正在注册", userDTO);
+        userService.save(userDTO);
         return Result.success();
     }
 }

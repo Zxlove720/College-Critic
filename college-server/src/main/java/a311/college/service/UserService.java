@@ -1,5 +1,6 @@
 package a311.college.service;
 
+import a311.college.dao.UserDTO;
 import a311.college.dao.UserLoginDTO;
 import a311.college.dao.UserPageQueryDTO;
 import a311.college.entity.User;
@@ -17,4 +18,6 @@ public interface UserService {
     User selectById(Long id);
 
     void deleteById(Long id);
+
+    void save(UserDTO userDTO);
 }

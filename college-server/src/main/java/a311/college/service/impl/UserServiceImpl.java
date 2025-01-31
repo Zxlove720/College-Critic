@@ -2,6 +2,7 @@ package a311.college.service.impl;
 
 import a311.college.constant.MessageConstant;
 import a311.college.constant.UserStatusConstant;
+import a311.college.dao.UserDTO;
 import a311.college.dao.UserLoginDTO;
 import a311.college.dao.UserPageQueryDTO;
 import a311.college.entity.User;
@@ -14,6 +15,7 @@ import a311.college.service.UserService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -103,5 +105,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteById(Long id) {
         userMapper.deleteById(id);
+    }
+
+    /**
+     * 新增用户（用户注册）
+     * @param userDTO 用户DTO
+     */
+    @Override
+    public void save(UserDTO userDTO) {
+        // DTO是方便接收前端传递的用户信息，但是在数据库中存储的用户信息需要在DTO上进行额外的扩展，需要将DTO封装为实体对象
+        // 因为DTO和实体对象中的属性高度相似，所以说直接使用BeanUtils中的copyProperties方法进行对象属性拷贝即可
+        User user = new User();
+        // 对象属性拷贝
+        BeanUtils.copyProperties(userDTO, user);
+        // 将拷贝后的对象属性补全
+        user.setStatus(UserStatusConstant.ENABLE);
+        // 将用户密码加密后存储
+        user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
+        // 使用AOP将创建、操作时间补全
+
+        userMapper.insert(user);
     }
 }

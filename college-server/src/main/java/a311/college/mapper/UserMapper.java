@@ -4,6 +4,7 @@ import a311.college.dao.UserPageQueryDTO;
 import a311.college.entity.User;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -11,6 +12,7 @@ import org.apache.ibatis.annotations.Select;
  * 用户相关Mapper
  */
 @Mapper
+//TODO建表之后根据subjects列的具体情况可能会有所修改
 public interface UserMapper {
 
     /**
@@ -42,4 +44,13 @@ public interface UserMapper {
      */
     @Delete("delete from user where id = #{id}")
     void deleteById(Long id);
+
+    /**
+     * 新增用户（用户注册）
+     * @param user User实体对象
+     */
+    @Insert("insert into user (username, password, phone, email, head, year, subjects, province, grade, rank, status, " +
+            "area, createTime, updateTime) values (#{username}, #{password}, #{phone}, #{email}, #{head}, #{year}, " +
+            "#{subjects}, #{province}, #{grade}, #{rank}, #{status}, #{area}, #{createTime}, #{updateTime})")
+    void insert(User user);
 }

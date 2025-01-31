@@ -125,4 +125,15 @@ public class UserController {
         userService.save(userDTO);
         return Result.success();
     }
+
+    /**
+     * 修改用户信息
+     * @param userDTO 用户DTO
+     * @return Result<Void>
+     */
+    public Result<Void> updateUser(@RequestBody UserDTO userDTO) {
+        log.info("用户：{}，正在修改信息", userDTO.getUsername());
+        userService.update(userDTO);
+        return Result.success();
+    }
 }

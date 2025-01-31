@@ -53,4 +53,10 @@ public interface UserMapper {
             "area, createTime, updateTime) values (#{username}, #{password}, #{phone}, #{email}, #{head}, #{year}, " +
             "#{subjects}, #{province}, #{grade}, #{rank}, #{status}, #{area}, #{createTime}, #{updateTime})")
     void insert(User user);
+
+    /**
+     * 修改用户信息
+     * @param user User实体对象
+     */
+    void update(User user);
 }

@@ -20,4 +20,6 @@ public interface UserService {
     void deleteById(Long id);
 
     void save(UserDTO userDTO);
+
+    void update(UserDTO userDTO);
 }

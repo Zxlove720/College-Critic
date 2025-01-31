@@ -11,4 +11,47 @@
         </where>
         order by create_time desc
     </select>
+
+    <update id="update">
+        update user
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username}
+            </if>
+            <if test="password != null">
+                password = #{password}
+            </if>
+            <if test="phone != null">
+                phone = #{phone}
+            </if>
+            <if test="email != null">
+                email = #{email}
+            </if>
+            <if test="head != null">
+                head = #{head}
+            </if>
+            <if test="year != null">
+                year = #{year}
+            </if>
+            <if test="subjects != null">
+                subjects = #{subjects}
+            </if>
+            <if test="province != null">
+                province = #{province}
+            </if>
+            <if test="grade != null">
+                grade = #{grade}
+            </if>
+            <if test="rank != null">
+                rank = #{rank}
+            </if>
+            <if test="status != null">
+                status = #{status}
+            </if>
+            <if test="area != null">
+                area = #{area}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

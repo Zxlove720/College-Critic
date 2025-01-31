@@ -1,16 +1,24 @@
 package a311.college.dao;
 
 import a311.college.enumeration.Province;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
+    private Long id;
 
     private String username;
     private String password;

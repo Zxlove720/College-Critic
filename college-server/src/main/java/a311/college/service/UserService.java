@@ -22,4 +22,6 @@ public interface UserService {
     void save(UserDTO userDTO);
 
     void update(UserDTO userDTO);
+
+    void changeStatus(Integer status, Long id);
 }

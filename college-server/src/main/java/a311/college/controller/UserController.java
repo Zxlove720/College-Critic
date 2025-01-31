@@ -146,7 +146,7 @@ public class UserController {
 
     /**
      * 修改用户状态
-     * @param status 用户状态 前端传递的是将用户修改之后的状态
+     * @param status 用户状态 前端传递的是将用户当前的状态
      * @param id 用户id
      * @return Result<Void>
      */
@@ -154,10 +154,11 @@ public class UserController {
     @ApiOperation(value = "修改用户状态")
     public Result<Void> changeStatus(@PathVariable Integer status, Long id) {
         if (status.equals(UserStatusConstant.ENABLE)) {
-            log.info("禁用员工账号：{}，员工id为：{}", status , id);
+            log.info("禁用员工账号：{}，员工id为：{}", status, id);
+        } else {
+            log.info("启用员工账号：{}，员工id为：{}", status, id);
         }
-
-
+        userService.changeStatus(status, id);
         return Result.success();
     }
 }

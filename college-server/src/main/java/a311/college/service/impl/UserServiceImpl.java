@@ -137,4 +137,19 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(userDTO, user);
         userMapper.update(user);
     }
+
+    /**
+     * 修改用户状态
+     * @param status 用户当前状态
+     * @param id 用户id
+     */
+    @Override
+    public void changeStatus(Integer status, Long id) {
+        // 不能给mapper直接传递status和id，需要将其封装为User对象之后再传递
+        User user = User.builder()
+                .status(status)
+                .id(id)
+                .build();
+        userMapper.update(user);
+    }
 }

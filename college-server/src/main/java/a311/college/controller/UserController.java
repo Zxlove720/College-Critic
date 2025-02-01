@@ -168,6 +168,8 @@ public class UserController {
      * @param passwordEditDTO 用户密码修改DTO
      * @return Result<Void>
      */
+    @PutMapping("/editPassword")
+    @ApiOperation(value = "用户修改密码")
     public Result<Void> editPassword(@RequestBody PasswordEditDTO passwordEditDTO) {
         userService.editPassword(passwordEditDTO);
         return Result.success();

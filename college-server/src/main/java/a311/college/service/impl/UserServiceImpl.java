@@ -2,16 +2,19 @@ package a311.college.service.impl;
 
 import a311.college.constant.MessageConstant;
 import a311.college.constant.UserStatusConstant;
+import a311.college.dao.PasswordEditDTO;
 import a311.college.dao.UserDTO;
 import a311.college.dao.UserLoginDTO;
 import a311.college.dao.UserPageQueryDTO;
 import a311.college.entity.User;
 import a311.college.exception.AccountLockedException;
 import a311.college.exception.AccountNotFoundException;
+import a311.college.exception.PasswordEditFailedException;
 import a311.college.exception.PasswordErrorException;
 import a311.college.mapper.UserMapper;
 import a311.college.result.PageResult;
 import a311.college.service.UserService;
+import a311.college.thread.ThreadLocalUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -151,5 +154,27 @@ public class UserServiceImpl implements UserService {
                 .id(id)
                 .build();
         userMapper.update(user);
+    }
+
+    /**
+     * 用户修改密码
+     * @param passwordEditDTO 用户密码修改DTO
+     */
+    @Override
+    public void editPassword(PasswordEditDTO passwordEditDTO) {
+        // 获取当前用户id
+        Long id = ThreadLocalUtil.getCurrentId();
+        log.warn("id为{}的用户正在修改密码", id);
+        User user = userMapper.selectById(id);
+        // 比对用户提供的旧密码是否和数据库中真实的旧密码一致，如果一致，则可以 修改密码
+        if (DigestUtils.md5DigestAsHex(passwordEditDTO.getOldPassword().getBytes()).equals(user.getPassword())) {
+            // 当前用户输入的旧密码和数据库中的旧密码一致，可以修改
+            // 用户输入的新密码是没有加密的，所以说需要先进行加密，再存入数据库
+            user.setPassword(DigestUtils.md5DigestAsHex(passwordEditDTO.getNewPassword().getBytes()));
+            userMapper.update(user);
+        } else {
+            // 比对失败，抛出异常
+            throw new PasswordEditFailedException(MessageConstant.PASSWORD_EDIT_FAILED);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package a311.college.service;
 
+import a311.college.dao.PasswordEditDTO;
 import a311.college.dao.UserDTO;
 import a311.college.dao.UserLoginDTO;
 import a311.college.dao.UserPageQueryDTO;
@@ -24,4 +25,6 @@ public interface UserService {
     void update(UserDTO userDTO);
 
     void changeStatus(Integer status, Long id);
+
+    void editPassword(PasswordEditDTO passwordEditDTO);
 }

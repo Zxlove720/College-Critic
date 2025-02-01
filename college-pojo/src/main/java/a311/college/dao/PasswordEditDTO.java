@@ -1,11 +1,18 @@
 package a311.college.dao;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serial;
 import java.io.Serializable;
 
 /**
  * 用户修改密码（原始）DTO
  */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PasswordEditDTO implements Serializable {
 
     @Serial

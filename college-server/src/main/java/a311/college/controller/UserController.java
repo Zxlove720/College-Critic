@@ -2,6 +2,7 @@ package a311.college.controller;
 
 import a311.college.constant.JWTClaimsConstant;
 import a311.college.constant.UserStatusConstant;
+import a311.college.dao.PasswordEditDTO;
 import a311.college.dao.UserDTO;
 import a311.college.dao.UserLoginDTO;
 import a311.college.dao.UserPageQueryDTO;
@@ -159,6 +160,16 @@ public class UserController {
             log.info("启用员工账号：{}，员工id为：{}", status, id);
         }
         userService.changeStatus(status, id);
+        return Result.success();
+    }
+
+    /**
+     * 用户修改密码
+     * @param passwordEditDTO 用户密码修改DTO
+     * @return Result<Void>
+     */
+    public Result<Void> editPassword(@RequestBody PasswordEditDTO passwordEditDTO) {
+        userService.editPassword(passwordEditDTO);
         return Result.success();
     }
 }

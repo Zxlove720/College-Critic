@@ -13,6 +13,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+/**
+ * 统一拦截器：用户登录拦截器
+ */
 @Slf4j
 @Component
 public class JWTTokenInterceptor implements HandlerInterceptor {
@@ -24,6 +27,14 @@ public class JWTTokenInterceptor implements HandlerInterceptor {
         this.jwtProperties = jwtProperties;
     }
 
+    /**
+     * 用户登录拦截
+     * @param request 请求
+     * @param response 响应
+     * @param handler 处理
+     * @return boolean
+     * @throws Exception 解析JWT令牌可能抛出的异常
+     */
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 判断当前拦截方法是否是Controller中的方法，如果不是，那么直接放行
         if (!(handler instanceof HandlerMethod)) {

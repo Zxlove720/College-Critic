@@ -48,28 +48,24 @@ public class UserServiceImpl implements UserService {
     public User login(UserLoginDTO userLoginDTO) {
         String username = userLoginDTO.getUsername();
         String password = userLoginDTO.getPassword();
-
         // 根据用户名查询数据库中数据
         User user = userMapper.getUserByUsername(username);
-
         // 处理异常情况
         if (user == null) {
             // 账号不存在
             throw new AccountNotFoundException(MessageConstant.ACCOUNT_NOT_FOUND);
         }
-
         // 密码比对
         password = DigestUtils.md5DigestAsHex(password.getBytes());
         if (!password.equals(user.getPassword())) {
             // 密码错误
             throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
         }
-
+        // 判断当前用户是否可用
         if (user.getStatus().equals(UserStatusConstant.DISABLE)) {
             // 账号被锁定
             throw new AccountLockedException(MessageConstant.ACCOUNT_LOCKED);
         }
-
         // 此时登录成功，可以返回
         return user;
     }

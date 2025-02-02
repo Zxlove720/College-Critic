@@ -48,9 +48,7 @@ public class UserController {
     @ApiOperation(value = "用户登录")
     public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO) {
         log.info("用户{}正在登录", userLoginDTO.getUsername());
-
         User user = userService.login(userLoginDTO);
-
         // 登录成功之后，生成JWT令牌
         Map<String, Object> claims = new HashMap<>();
         claims.put(JWTClaimsConstant.USER_ID, user.getId());
@@ -65,7 +63,6 @@ public class UserController {
                 .username(user.getUsername())
                 .token(token)
                 .build();
-
         return Result.success(userLoginVO);
     }
 

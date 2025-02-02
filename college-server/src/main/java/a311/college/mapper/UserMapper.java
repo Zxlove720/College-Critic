@@ -61,5 +61,6 @@ public interface UserMapper {
      * 修改用户信息
      * @param user User实体对象
      */
+    @AutoFill(value = OperationType.UPDATE)
     void update(User user);
 }

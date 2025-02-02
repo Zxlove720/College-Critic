@@ -30,6 +30,7 @@ public class GlobalExceptionHandler {
      * @param exception SQL异常
      * @return Result<Void>
      */
+    @ExceptionHandler
     public Result<Void> exceptionHandler(SQLIntegrityConstraintViolationException exception) {
         // 获得报错信息
         String message = exception.getMessage();

@@ -1,7 +1,9 @@
 package a311.college.mapper;
 
+import a311.college.annotation.AutoFill;
 import a311.college.dao.UserPageQueryDTO;
 import a311.college.entity.User;
+import a311.college.enumeration.OperationType;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -49,6 +51,7 @@ public interface UserMapper {
      * 新增用户（用户注册）
      * @param user User实体对象
      */
+    @AutoFill(value = OperationType.INSERT)
     @Insert("insert into user (username, password, phone, email, head, year, subjects, province, grade, rank, status, " +
             "area, createTime, updateTime) values (#{username}, #{password}, #{phone}, #{email}, #{head}, #{year}, " +
             "#{subjects}, #{province}, #{grade}, #{rank}, #{status}, #{area}, #{createTime}, #{updateTime})")

@@ -1,11 +1,18 @@
 package a311.college.result;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
 /**
  * 统一返回结果Result
  * @param <T>
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Result<T> implements Serializable {
 
     // 编码：1.成功；0和其他数字都是失败

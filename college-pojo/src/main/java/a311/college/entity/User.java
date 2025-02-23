@@ -40,7 +40,7 @@ public class User implements Serializable {
     private LocalDate year;
 
     // 选科
-    private String subjects;
+    private List<Subjects> subjects;
 
     // 所在省份
     private Province province;

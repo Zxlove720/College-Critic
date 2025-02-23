@@ -17,6 +17,7 @@ public interface UserMapper {
 
     /**
      * 用户登录 传统
+     *
      * @param username 用户名
      * @return User
      */
@@ -28,6 +29,7 @@ public interface UserMapper {
 
     /**
      * 用户分页查询
+     *
      * @param userPageQueryDTO 用户分页查询DTO
      * @return Page<User>
      */
@@ -35,6 +37,7 @@ public interface UserMapper {
 
     /**
      * 根据id查询用户
+     *
      * @param id
      * @return
      */
@@ -46,6 +49,7 @@ public interface UserMapper {
 
     /**
      * 根据id删除用户
+     *
      * @param id 用户id
      */
     @Results({
@@ -56,6 +60,7 @@ public interface UserMapper {
 
     /**
      * 新增用户（用户注册）
+     *
      * @param user User实体对象
      */
     @Results({
@@ -69,6 +74,7 @@ public interface UserMapper {
 
     /**
      * 修改用户信息
+     *
      * @param user User实体对象
      */
     @AutoFill(value = OperationType.UPDATE)

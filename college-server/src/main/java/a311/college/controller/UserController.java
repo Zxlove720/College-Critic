@@ -88,7 +88,7 @@ public class UserController {
     @GetMapping("/page")
     @ApiOperation(value = "用户分页查询")
     public Result<PageResult<User>> UserPage(UserPageQueryDTO userPageQueryDTO) {
-        log.info("用户分页查询，查询参数为：第{}页，每页{}条", userPageQueryDTO.getPage(), userPageQueryDTO.getPageSize());
+        log.info("用户分页查询...查询参数为：第{}页，每页{}条", userPageQueryDTO.getPage(), userPageQueryDTO.getPageSize());
         PageResult<User> pageResult = userService.pageSelect(userPageQueryDTO);
         return Result.success(pageResult);
     }
@@ -102,7 +102,7 @@ public class UserController {
     @GetMapping("/{id}")
     @ApiOperation(value = "根据id查询用户")
     public Result<User> selectUserById(@PathVariable Long id) {
-        log.info("根据id查询用户。id{}", id);
+        log.info("根据id查询用户...id为：{}", id);
         User user = userService.selectById(id);
         return Result.success(user);
     }
@@ -116,7 +116,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     @ApiOperation(value = "根据id删除用户")
     public Result<Void> deleteById(@PathVariable Long id) {
-        log.info("删除用户（用户注销），id：{}", id);
+        log.info("删除用户（用户注销）...id为{}", id);
         userService.deleteById(id);
         return Result.success();
     }
@@ -130,7 +130,7 @@ public class UserController {
     @PostMapping
     @ApiOperation(value = "新增用户（用户注册）")
     public Result<Void> saveUser(@RequestBody UserDTO userDTO) {
-        log.info("用户：{}，正在注册", userDTO);
+        log.info("用户：{}，正在注册...", userDTO);
         userService.save(userDTO);
         return Result.success();
     }
@@ -144,7 +144,7 @@ public class UserController {
     @PutMapping
     @ApiOperation(value = "修改用户信息")
     public Result<Void> updateUser(@RequestBody UserDTO userDTO) {
-        log.info("用户：{}，正在修改信息", userDTO.getUsername());
+        log.info("用户：{}，正在修改信息...", userDTO.getUsername());
         userService.update(userDTO);
         return Result.success();
     }
@@ -160,9 +160,9 @@ public class UserController {
     @ApiOperation(value = "修改用户状态")
     public Result<Void> changeStatus(@PathVariable Integer status, Long id) {
         if (status.equals(UserStatusConstant.ENABLE)) {
-            log.info("禁用员工账号：{}，员工id为：{}", status, id);
+            log.info("禁用用户账号：{}，用户id为：{}", status, id);
         } else {
-            log.info("启用员工账号：{}，员工id为：{}", status, id);
+            log.info("启用用户账号：{}，用户id为：{}", status, id);
         }
         userService.changeStatus(status, id);
         return Result.success();

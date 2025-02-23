@@ -34,13 +34,14 @@ public class UserController {
     private final JWTProperties jwtProperties;
 
     @Autowired
-    public UserController (UserService userService, JWTProperties jwtProperties) {
+    public UserController(UserService userService, JWTProperties jwtProperties) {
         this.userService = userService;
         this.jwtProperties = jwtProperties;
     }
 
     /**
      * 用户登录
+     *
      * @param userLoginDTO 封装用户登录数据的DTO
      * @return 用户登录结果VO
      */
@@ -68,6 +69,7 @@ public class UserController {
 
     /**
      * 用户退出
+     *
      * @return Result<Void>
      */
     @PostMapping("/layout")
@@ -79,19 +81,21 @@ public class UserController {
 
     /**
      * 用户分页查询
+     *
      * @param userPageQueryDTO 用户分页查询DTO
-     * @return Result<PageResult<User>>
+     * @return Result<PageResult < User>>
      */
     @GetMapping("/page")
     @ApiOperation(value = "用户分页查询")
     public Result<PageResult<User>> UserPage(UserPageQueryDTO userPageQueryDTO) {
-        log.info("用户分页查询，查询参数为：{}", userPageQueryDTO);
+        log.info("用户分页查询，查询参数为：第{}页，每页{}条", userPageQueryDTO.getPage(), userPageQueryDTO.getPageSize());
         PageResult<User> pageResult = userService.pageSelect(userPageQueryDTO);
         return Result.success(pageResult);
     }
 
     /**
      * 根据id查询用户
+     *
      * @param id 用户id
      * @return Result<User>
      */
@@ -105,6 +109,7 @@ public class UserController {
 
     /**
      * 删除用户（用户注销）
+     *
      * @param id 用户id
      * @return Result<Void>
      */
@@ -118,6 +123,7 @@ public class UserController {
 
     /**
      * 新增用户（用户注册）
+     *
      * @param userDTO 用户DTO
      * @return Result<Void>
      */
@@ -131,6 +137,7 @@ public class UserController {
 
     /**
      * 修改用户信息
+     *
      * @param userDTO 用户DTO
      * @return Result<Void>
      */
@@ -144,8 +151,9 @@ public class UserController {
 
     /**
      * 修改用户状态
+     *
      * @param status 用户状态 前端传递的是将用户当前的状态
-     * @param id 用户id
+     * @param id     用户id
      * @return Result<Void>
      */
     @PostMapping("/status/{status}")
@@ -162,6 +170,7 @@ public class UserController {
 
     /**
      * 用户修改密码
+     *
      * @param passwordEditDTO 用户密码修改DTO
      * @return Result<Void>
      */

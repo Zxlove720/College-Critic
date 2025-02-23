@@ -3,17 +3,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="a311.college.mapper.UserMapper">
     <select id="pageQuery" resultType="a311.college.entity.User">
-        select * from user
+        select * from tb_user
         <where>
-            <if test="name != null and name != ''">
-                and name like concat('%', {name}, '%')
+            <if test="username != null and username != ''">
+                and username like concat('%', {username}, '%')
             </if>
         </where>
         order by create_time desc
     </select>
 
     <update id="update">
-        update user
+        update tb_user
         <set>
             <if test="username != null and username != ''">
                 username = #{username}
@@ -42,14 +42,14 @@
             <if test="grade != null">
                 grade = #{grade}
             </if>
-            <if test="rank != null">
-                rank = #{rank}
+            <if test="ranking != null">
+                ranking = #{ranking}
             </if>
             <if test="status != null">
                 status = #{status}
             </if>
-            <if test="area != null">
-                area = #{area}
+            <if test="city != null">
+                city = #{city}
             </if>
         </set>
         where id = #{id}

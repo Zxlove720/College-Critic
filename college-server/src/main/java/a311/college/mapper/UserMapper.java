@@ -22,7 +22,7 @@ public interface UserMapper {
      * @param username 用户名
      * @return User
      */
-    @Select("select * from user where username = #{username}")
+    @Select("select * from tb_user where username = #{username}")
     User getUserByUsername(String username);
 
     /**
@@ -37,14 +37,14 @@ public interface UserMapper {
      * @param id
      * @return
      */
-    @Select("select * from user where id = #{id}")
+    @Select("select * from tb_user where id = #{id}")
     User selectById(Long id);
 
     /**
      * 根据id删除用户
      * @param id 用户id
      */
-    @Delete("delete from user where id = #{id}")
+    @Delete("delete from tb_user where id = #{id}")
     void deleteById(Long id);
 
     /**
@@ -52,9 +52,9 @@ public interface UserMapper {
      * @param user User实体对象
      */
     @AutoFill(value = OperationType.INSERT)
-    @Insert("insert into user (username, password, phone, email, head, year, subjects, province, grade, rank, status, " +
-            "area, createTime, updateTime) values (#{username}, #{password}, #{phone}, #{email}, #{head}, #{year}, " +
-            "#{subjects}, #{province}, #{grade}, #{rank}, #{status}, #{area}, #{createTime}, #{updateTime})")
+    @Insert("insert into tb_user (username, password, phone, email, head, year, subjects, province, grade, ranking, status, " +
+            "city, create_time, update_time) values (#{username}, #{password}, #{phone}, #{email}, #{head}, #{year}, " +
+            "#{subjects}, #{province}, #{grade}, #{ranking}, #{status}, #{city}, #{createTime}, #{updateTime})")
     void insert(User user);
 
     /**

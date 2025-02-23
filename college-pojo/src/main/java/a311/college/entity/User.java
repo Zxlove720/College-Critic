@@ -1,6 +1,7 @@
 package a311.college.entity;
 
 import a311.college.enumeration.Province;
+import a311.college.enumeration.Subjects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,26 +36,26 @@ public class User implements Serializable {
     // 头像
     private String head;
 
-    // 考试年份
+    // 毕业年份
     private LocalDate year;
 
     // 选科
-    private List<String> subjects;
+    private String subjects;
 
-    // 省份
+    // 所在省份
     private Province province;
 
     // 成绩
     private Integer grade;
 
     // 位次（选填）
-    private Integer rank;
+    private Integer ranking;
 
     // 用户状态，通过状态识别其身份 0：不可用 1：可用 7：管理员
     private Integer status;
 
     // 意向城市（注册之后填）
-    private Province area;
+    private Province city;
 
     private LocalDateTime createTime;
     private LocalDateTime updateTime;

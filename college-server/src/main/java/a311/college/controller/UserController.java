@@ -160,9 +160,9 @@ public class UserController {
     @ApiOperation(value = "修改用户状态")
     public Result<Void> changeStatus(@PathVariable Integer status, Long id) {
         if (status.equals(UserStatusConstant.ENABLE)) {
-            log.info("禁用用户账号：{}，用户id为：{}", status, id);
+            log.info("启用用户账号：用户id为：{}", id);
         } else {
-            log.info("启用用户账号：{}，用户id为：{}", status, id);
+            log.info("禁用用户账号：用户id为：{}", id);
         }
         userService.changeStatus(status, id);
         return Result.success();

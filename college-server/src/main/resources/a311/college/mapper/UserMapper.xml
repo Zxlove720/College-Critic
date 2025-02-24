@@ -20,40 +20,40 @@
         update tb_user
         <set>
             <if test="username != null and username != ''">
-                username = #{username}
+                username = #{username},
             </if>
             <if test="password != null">
-                password = #{password}
+                password = #{password},
             </if>
             <if test="phone != null">
-                phone = #{phone}
+                phone = #{phone},
             </if>
             <if test="email != null">
-                email = #{email}
+                email = #{email},
             </if>
             <if test="head != null">
-                head = #{head}
+                head = #{head},
             </if>
             <if test="year != null">
-                year = #{year}
+                year = #{year},
             </if>
             <if test="subjects != null">
-                subjects = #{subjects,typeHandler=a311.college.TypeHandler.UserHandler}
+                subjects = #{subjects,typeHandler=a311.college.TypeHandler.UserHandler},
             </if>
             <if test="province != null">
-                province = #{province}
+                province = #{province},
             </if>
             <if test="grade != null">
-                grade = #{grade}
+                grade = #{grade},
             </if>
             <if test="ranking != null">
-                ranking = #{ranking}
+                ranking = #{ranking},
             </if>
             <if test="status != null">
-                status = #{status}
+                status = #{status},
             </if>
             <if test="city != null">
-                city = #{city}
+                city = #{city},
             </if>
         </set>
         where id = #{id}

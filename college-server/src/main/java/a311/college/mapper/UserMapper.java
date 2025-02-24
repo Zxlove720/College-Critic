@@ -68,8 +68,8 @@ public interface UserMapper {
     })
     @AutoFill(value = OperationType.INSERT)
     @Insert("insert into tb_user (username, password, phone, email, head, year, subjects, province, grade, ranking, status, " +
-            "city, create_time, update_time) values (#{username}, #{password}, #{phone}, #{email}, #{head}, #{year}, " +
-            "#{subjects}, #{province}, #{grade}, #{ranking}, #{status}, #{city}, #{createTime}, #{updateTime})")
+            "city) values (#{username}, #{password}, #{phone}, #{email}, #{head}, #{year}, " +
+            "#{subjects}, #{province}, #{grade}, #{ranking}, #{status}, #{city})")
     void insert(User user);
 
     /**

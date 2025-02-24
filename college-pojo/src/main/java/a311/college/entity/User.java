@@ -11,6 +11,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.List;
 
 /**
@@ -37,7 +38,7 @@ public class User implements Serializable {
     private String head;
 
     // 毕业年份
-    private LocalDate year;
+    private Year year;
 
     // 选科
     private List<Subjects> subjects;

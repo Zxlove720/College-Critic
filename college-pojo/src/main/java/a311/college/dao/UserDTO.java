@@ -1,6 +1,7 @@
 package a311.college.dao;
 
 import a311.college.enumeration.Province;
+import a311.college.enumeration.Subjects;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.Year;
 import java.util.List;
 
 @Data
@@ -29,10 +31,10 @@ public class UserDTO implements Serializable {
     private String head;
 
     // 考试年份
-    private LocalDate year;
+    private Year year;
 
     // 选科
-    private List<String> subjects;
+    private List<Subjects> subjects;
 
     // 省份
     private Province province;
@@ -41,8 +43,8 @@ public class UserDTO implements Serializable {
     private Integer grade;
 
     // 位次（选填）
-    private Integer rank;
+    private Integer ranking;
 
     // 意向城市（注册之后填）
-    private Province area;
+    private Province city;
 }

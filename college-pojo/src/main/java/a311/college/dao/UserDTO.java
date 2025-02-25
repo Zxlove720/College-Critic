@@ -1,6 +1,6 @@
 package a311.college.dao;
 
-import a311.college.enumeration.Province;
+import a311.college.enumeration.ProvinceEnum;
 import a311.college.enumeration.Subjects;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -43,7 +43,7 @@ public class UserDTO implements Serializable {
     private List<Subjects> subjects;
 
     @Schema(description = "用户所在省份")
-    private Province province;
+    private ProvinceEnum province;
 
     @Schema(description = "用户成绩")
     private Integer grade;
@@ -52,5 +52,5 @@ public class UserDTO implements Serializable {
     private Integer ranking;
 
     @Schema(description = "用户意向城市")
-    private Province city;
+    private ProvinceEnum city;
 }

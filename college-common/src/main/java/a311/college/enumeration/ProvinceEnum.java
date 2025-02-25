@@ -3,7 +3,7 @@ package a311.college.enumeration;
 import lombok.Getter;
 
 @Getter
-public enum Province {
+public enum ProvinceEnum {
     HEILONGJIANG("黑龙江", 68),
     JILIN("吉林", 70),
     LIAONING("辽宁", 73),
@@ -38,7 +38,7 @@ public enum Province {
 
     private final String name;
 
-    Province(String name, int score) {
+    ProvinceEnum(String name, int score) {
         this.name = name;
     }
 

@@ -1,6 +1,6 @@
 package a311.college.entity;
 
-import a311.college.enumeration.Province;
+import a311.college.enumeration.ProvinceEnum;
 import a311.college.enumeration.Subjects;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -48,7 +48,7 @@ public class User implements Serializable {
     private List<Subjects> subjects;
 
     @Schema(description = "用户所在省份")
-    private Province province;
+    private ProvinceEnum province;
 
     @Schema(description = "用户成绩")
     private Integer grade;
@@ -61,7 +61,7 @@ public class User implements Serializable {
     private Integer status;
 
     @Schema(description = "用户意向城市")
-    private Province city;
+    private ProvinceEnum city;
 
     @Schema(description = "创建时间")
     private LocalDateTime createTime;

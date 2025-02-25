@@ -1,4 +1,4 @@
-package a311.college.controller;
+package a311.college.controller.college;
 
 
 import lombok.extern.slf4j.Slf4j;

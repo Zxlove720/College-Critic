@@ -1,4 +1,4 @@
-package a311.college.controller;
+package a311.college.controller.user;
 
 import a311.college.constant.APIConstant;
 import a311.college.constant.JWTClaimsConstant;

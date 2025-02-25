@@ -16,6 +16,6 @@ public class UserPhoneLoginDTO implements Serializable {
 
     private String phone;
 
-    private String captcha;
+    private String code;
 
 }

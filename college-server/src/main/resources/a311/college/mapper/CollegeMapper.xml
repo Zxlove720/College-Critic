@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="a311.college.mapper.CollegeMapper">
+
+    <!-- 多表联查结果映射 -->
+    <resultMap id="collegeScoreMap" type="a311.college.vo.CollegeVO">
+        <result property="schoolName" column="school_name"/>
+        <result property="province" column="province"/>
+        <result property="year" column="year"/>
+        <result property="category" column="category_name"/>
+        <result property="batch" column="batch"/>
+        <result property="major" column="major"/>
+        <result property="minScore" column="min_score"/>
+    </resultMap>
+
+    <!-- 分页联查语句 -->
+    <select id="pageQuery" resultMap="collegeScoreMap">
+        SELECT
+            s.name AS school_name,
+            p.province,
+            y.year,
+            c.category AS category_name,
+            b.batch,
+            sc.major,
+            sc.min_score
+        FROM school s
+        JOIN province p ON s.id = p.school_id
+        JOIN year y ON p.id = y.province_id
+        JOIN category c ON y.id = c.year_id
+        JOIN batch b ON c.id = b.category_id
+        JOIN score sc ON b.id = sc.batch_id
+        <where>
+            <if test="schoolName != null and schoolName != ''">
+                AND s.name LIKE CONCAT('%', #{schoolName}, '%')
+            </if>
+            <if test="province != null and province != ''">
+                AND p.province = #{province}
+            </if>
+            <if test="year != null">
+                AND y.year = #{year}
+            </if>
+        </where>
+        ORDER BY s.name, p.province, y.year DESC
+    </select>
+</mapper>

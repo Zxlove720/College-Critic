@@ -1,6 +1,11 @@
 package a311.college.mapper;
 
 
+import a311.college.dao.CollegePageQueryDTO;
+import a311.college.entity.college.School;
+import a311.college.result.PageResult;
+import a311.college.vo.CollegeVO;
+import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -8,4 +13,8 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface CollegeMapper {
+
+
+    Page<CollegeVO> pageQuery(CollegePageQueryDTO collegePageQueryDTO);
+
 }

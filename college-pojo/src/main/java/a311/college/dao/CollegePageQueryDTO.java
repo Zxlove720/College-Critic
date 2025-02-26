@@ -1,15 +1,25 @@
 package a311.college.dao;
 
+import a311.college.enumeration.ProvinceEnum;
+import lombok.Data;
+
 import java.io.Serial;
 import java.io.Serializable;
 
+@Data
 public class CollegePageQueryDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     // 学校名
-    private String collegeName;
+    private String schoolName;
+
+    // 省份
+    private ProvinceEnum province;
+
+    // 年份
+    private Integer year;
 
     // 页码
     private Integer page;

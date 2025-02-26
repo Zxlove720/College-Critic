@@ -21,8 +21,8 @@ public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "招生类名")
-    private String categoryName;
+    private String category;
 
     @Schema(description = "招生批次")
-    private List<Batch> batchList;
+    private List<Batch> batches;
 }

@@ -1,5 +1,6 @@
 package a311.college.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,24 +15,19 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Score implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @Schema(description = "本科批")
+    private String batch;
+
     @Schema(description = "专业名")
-    private String majorName;
-
-    @Schema(description = "选科要求")
-    private String subjectRequirement;
-
-    @Schema(description = "低分及位次")
-    private String minScore;
-
-    @Schema(description = "最低分")
-    private int scoreValue;
+    private String major;
 
     @Schema(description = "最低位次")
-    private int ranking;
+    private String minScore_weici;
 
 }

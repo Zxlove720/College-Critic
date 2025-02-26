@@ -56,7 +56,7 @@ public class User implements Serializable {
     private List<SubjectsEnum> subjects;
 
     @Schema(description = "用户分科（老高考）")
-    private Integer isScience;   // 1.理科 0.文科
+    private Integer category;   // 1.理科 0.文科
 
     @Schema(description = "用户成绩")
     private Integer grade;

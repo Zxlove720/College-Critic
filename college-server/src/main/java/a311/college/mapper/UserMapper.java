@@ -67,9 +67,9 @@ public interface UserMapper {
             @Result(property = "subjects", column = "subjects", typeHandler = UserHandler.class)
     })
     @AutoFill(value = OperationType.INSERT)
-    @Insert("insert into tb_user (username, password, phone, email, head, year, subjects, province, grade, ranking, status, " +
-            "city) values (#{username}, #{password}, #{phone}, #{email}, #{head}, #{year}, " +
-            "#{subjects}, #{province}, #{grade}, #{ranking}, #{status}, #{city})")
+    @Insert("insert into tb_user (username, password, phone, email, nickname, head, year, province, pattern, subjects, category," +
+            " grade, ranking, status, city) values (#{username}, #{password}, #{phone}, #{email}, #{nickname}, #{head}, #{year}, " +
+            "#{province}, #{pattern}, #{subjects}, #{category}, #{grade}, #{ranking}, #{status}, #{city})")
     void insert(User user);
 
     /**

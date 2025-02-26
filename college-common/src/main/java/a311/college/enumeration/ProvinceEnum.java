@@ -1,8 +1,15 @@
 package a311.college.enumeration;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 
+import java.io.IOException;
+
 @Getter
+@JsonDeserialize(using = ProvinceEnum.ProvinceEnumDeserializer.class)
 public enum ProvinceEnum {
 
     // 枚举中字段有三个属性：省份名，客观得分，状态（1为新高考、0为老高考）
@@ -40,9 +47,27 @@ public enum ProvinceEnum {
     NINGXIA("宁夏", 63, 0);          // 第五批新高考（2025年，暂标记为0）
 
     private final String name;
+    private final Integer score;
+    private final Integer status;
 
     ProvinceEnum(String name, int score, int status) {
         this.name = name;
+        this.score = score;
+        this.status = status;
+    }
+
+    public static class ProvinceEnumDeserializer extends JsonDeserializer<ProvinceEnum> {
+
+        @Override
+        public ProvinceEnum deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            String provinceName = jsonParser.getText();
+            for (ProvinceEnum province : ProvinceEnum.values()) {
+                if (province.getName().equals(provinceName)) {
+                    return province;
+                }
+            }
+            throw new IllegalArgumentException("无法识别的省份名: " + provinceName);
+        }
     }
 
 }

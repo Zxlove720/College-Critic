@@ -7,6 +7,7 @@ import a311.college.dao.UserDTO;
 import a311.college.dao.UserLoginDTO;
 import a311.college.dao.UserPageQueryDTO;
 import a311.college.entity.User;
+import a311.college.enumeration.subjectEnum.SubjectsEnum;
 import a311.college.exception.AccountLockedException;
 import a311.college.exception.AccountNotFoundException;
 import a311.college.exception.PasswordEditFailedException;
@@ -23,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -117,6 +120,22 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         // 对象属性拷贝
         BeanUtils.copyProperties(userDTO, user);
+        // 根据用户所在省份确定高考模式
+        if (user.getProvince().getStatus() == 0) {
+            // 确定用户为老高考
+            user.setPattern(0);
+            List<SubjectsEnum> subjects = new ArrayList<>();
+            // 确定老高考用户文理科
+            if (user.getCategory() == 1) {
+                // 确定用户为理科，为其添加选科
+                Collections.addAll(subjects, SubjectsEnum.PHYSICS, SubjectsEnum.CHEMISTRY, SubjectsEnum.BIOLOGY);
+                user.setSubjects(subjects);
+            } else if(user.getCategory() == 0){
+                // 确定用户为文科，为其添加选科
+                Collections.addAll(subjects, SubjectsEnum.HISTORY, SubjectsEnum.POLITICS, SubjectsEnum.GEOGRAPHY);
+                user.setSubjects(subjects);
+            }
+        }
         // 将拷贝后的对象属性补全
         user.setStatus(UserStatusConstant.ENABLE);
         // 将用户密码加密后存储

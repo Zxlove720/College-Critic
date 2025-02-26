@@ -1,6 +1,7 @@
 package a311.college.entity;
 
 import a311.college.enumeration.ProvinceEnum;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,9 +23,9 @@ public class Province implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "省份名")
-    private ProvinceEnum provinceName;
+    private ProvinceEnum province;
 
     @Schema(description = "历年分数线")
-    private List<Years> yearsList;
+    private List<Years> years;
 
 }

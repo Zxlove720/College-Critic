@@ -21,8 +21,8 @@ public class Batch implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "招生批次名")
-    private String batchName;
+    private String batch;
 
     @Schema(description = "分数列表")
-    private List<Score> scoreList;
+    private List<Score> scores;
 }

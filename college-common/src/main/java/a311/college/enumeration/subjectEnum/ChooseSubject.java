@@ -1,4 +1,4 @@
-package a311.college.enumeration;
+package a311.college.enumeration.subjectEnum;
 
 /**
  * 选择物理还是历史（分文理）

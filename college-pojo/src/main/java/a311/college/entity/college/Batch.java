@@ -1,4 +1,4 @@
-package a311.college.entity;
+package a311.college.entity.college;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -10,19 +10,19 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 招生分类
+ * 招生批次
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category implements Serializable {
+public class Batch implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "招生类名")
-    private String category;
+    @Schema(description = "招生批次名")
+    private String batch;
 
-    @Schema(description = "招生批次")
-    private List<Batch> batches;
+    @Schema(description = "分数列表")
+    private List<Score> scores;
 }

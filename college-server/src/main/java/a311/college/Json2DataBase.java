@@ -1,75 +1,115 @@
 package a311.college;
 
+import a311.college.entity.college.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import a311.college.entity.*;
-
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.*;
 
 public class Json2DataBase {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/college";
+private static final String DB_URL = "jdbc:mysql://localhost:3306/college";
     private static final String USER = "root";
     private static final String PASS = "123456";
 
     public static void main(String[] args) {
-        // 示例JSON字符串
-        String jsonString = readJsonFile("C:\\Users\\wzb\\Desktop\\北京大学_score_data.json"); // 这里应替换为实际的JSON字符串
-
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
         try {
-            College college = objectMapper.readValue(jsonString, College.class);
-            saveToDatabase(college);
-        } catch (IOException e) {
+            School school = mapper.readValue(new File("C:\\Users\\wzb\\Desktop\\北京大学_score_data.json"), School.class);
+            saveToDatabase(school);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static String readJsonFile(String filePath) {
-        try {
-            return new String(Files.readAllBytes(Paths.get(filePath)));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static void saveToDatabase(College college) {
-        // 获取数据库连接
+    private static void saveToDatabase(School school) throws SQLException {
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
-            // 遍历每个省份
-            for (Province province : college.getProvinces()) {
-                // 遍历每一年
-                for (Years years : province.getYears()) {
-                    // 遍历每个类别
-                    for (Category category : years.getCategorys()) {
-                        // 遍历每个批次
+            conn.setAutoCommit(false);
+
+            // 插入学校
+            int schoolId;
+            String insertSchool = "INSERT INTO school (name) VALUES (?)";
+            try (PreparedStatement stmt = conn.prepareStatement(insertSchool, Statement.RETURN_GENERATED_KEYS)) {
+                stmt.setString(1, school.getSchoolName());
+                stmt.executeUpdate();
+                try (ResultSet rs = stmt.getGeneratedKeys()) {
+                    if (rs.next()) schoolId = rs.getInt(1);
+                    else throw new SQLException("Failed to get school ID");
+                }
+            }
+
+            // 遍历省份
+            for (Province province : school.getProvinces()) {
+                int provinceId;
+                String insertProvince = "INSERT INTO province (school_id, province) VALUES (?, ?)";
+                try (PreparedStatement stmt = conn.prepareStatement(insertProvince, Statement.RETURN_GENERATED_KEYS)) {
+                    stmt.setInt(1, schoolId);
+                    stmt.setString(2, province.getProvince().getName());
+                    stmt.executeUpdate();
+                    try (ResultSet rs = stmt.getGeneratedKeys()) {
+                        if (rs.next()) provinceId = rs.getInt(1);
+                        else throw new SQLException("Failed to get province ID");
+                    }
+                }
+
+                // 遍历年份
+                for (Years year : province.getYears()) {
+                    int yearId;
+                    String insertYear = "INSERT INTO year (province_id, year) VALUES (?, ?)";
+                    try (PreparedStatement stmt = conn.prepareStatement(insertYear, Statement.RETURN_GENERATED_KEYS)) {
+                        stmt.setInt(1, provinceId);
+                        stmt.setString(2, year.getYear());
+                        stmt.executeUpdate();
+                        try (ResultSet rs = stmt.getGeneratedKeys()) {
+                            if (rs.next()) yearId = rs.getInt(1);
+                            else throw new SQLException("Failed to get year ID");
+                        }
+                    }
+
+                    // 遍历类别
+                    for (Category category : year.getCategorys()) {
+                        int categoryId;
+                        String insertCategory = "INSERT INTO category (year_id, category) VALUES (?, ?)";
+                        try (PreparedStatement stmt = conn.prepareStatement(insertCategory, Statement.RETURN_GENERATED_KEYS)) {
+                            stmt.setInt(1, yearId);
+                            stmt.setString(2, category.getCategory());
+                            stmt.executeUpdate();
+                            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                                if (rs.next()) categoryId = rs.getInt(1);
+                                else throw new SQLException("Failed to get category ID");
+                            }
+                        }
+
+                        // 遍历批次
                         for (Batch batch : category.getBatches()) {
-                            // 遍历每个分数信息
-                            for (Score score : batch.getScores()) {
-                                // 准备SQL语句
-                                String sql = "INSERT INTO tb_college (school, province, year, category, batch, major, min_score_weici) VALUES (?, ?, ?, ?, ?, ?, ?)";
-                                PreparedStatement pstmt = conn.prepareStatement(sql);
+                            int batchId;
+                            String insertBatch = "INSERT INTO batch (category_id, batch) VALUES (?, ?)";
+                            try (PreparedStatement stmt = conn.prepareStatement(insertBatch, Statement.RETURN_GENERATED_KEYS)) {
+                                stmt.setInt(1, categoryId);
+                                stmt.setString(2, batch.getBatch());
+                                stmt.executeUpdate();
+                                try (ResultSet rs = stmt.getGeneratedKeys()) {
+                                    if (rs.next()) batchId = rs.getInt(1);
+                                    else throw new SQLException("Failed to get batch ID");
+                                }
+                            }
 
-                                // 设置参数
-                                pstmt.setString(1, college.getSchoolName());
-                                pstmt.setString(2, province.getProvince().name());
-                                pstmt.setString(3, years.getYear());
-                                pstmt.setString(4, category.getCategory());
-                                pstmt.setString(5, batch.getBatch());
-                                pstmt.setString(6, score.getMajor());
-                                pstmt.setString(7, score.getMinScore_weici());
-
-                                // 执行插入操作
-                                pstmt.executeUpdate();
+                            // 插入分数
+                            String insertScore = "INSERT INTO score (batch_id, major, min_score) VALUES (?, ?, ?)";
+                            try (PreparedStatement stmt = conn.prepareStatement(insertScore)) {
+                                for (Score score : batch.getScores()) {
+                                    stmt.setInt(1, batchId);
+                                    stmt.setString(2, score.getMajor());
+                                    stmt.setString(3, score.getMinScore_weici());
+                                    stmt.addBatch();
+                                }
+                                stmt.executeBatch();
                             }
                         }
                     }
                 }
             }
+
+            conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }

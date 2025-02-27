@@ -1,7 +1,7 @@
 package a311.college.service.impl;
 
 import a311.college.dto.college.CollegePageQueryDTO;
-import a311.college.mapper.CollegeMapper;
+import a311.college.mapper.college.CollegeMapper;
 import a311.college.result.PageResult;
 import a311.college.service.CollegeService;
 import a311.college.vo.CollegeVO;

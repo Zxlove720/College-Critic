@@ -1,4 +1,4 @@
-package a311.college.mapper;
+package a311.college.mapper.college;
 
 
 import a311.college.dto.college.CollegePageQueryDTO;

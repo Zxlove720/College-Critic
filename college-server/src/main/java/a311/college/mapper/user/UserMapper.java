@@ -1,4 +1,4 @@
-package a311.college.mapper;
+package a311.college.mapper.user;
 
 import a311.college.TypeHandler.UserHandler;
 import a311.college.annotation.AutoFill;

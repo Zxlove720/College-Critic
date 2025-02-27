@@ -1,4 +1,4 @@
-package a311.college;
+package a311.college.database;
 
 import a311.college.constant.DataBaseConnectionConstant;
 import a311.college.constant.resource.ResourceFilePath;

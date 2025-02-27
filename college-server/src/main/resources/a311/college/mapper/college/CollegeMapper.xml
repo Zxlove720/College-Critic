@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="a311.college.mapper.CollegeMapper">
+<mapper namespace="a311.college.mapper.college.CollegeMapper">
 
     <!-- 多表联查结果映射 -->
     <resultMap id="collegeScoreMap" type="a311.college.vo.CollegeVO">

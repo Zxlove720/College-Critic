@@ -12,7 +12,7 @@ import a311.college.exception.AccountLockedException;
 import a311.college.exception.AccountNotFoundException;
 import a311.college.exception.PasswordEditFailedException;
 import a311.college.exception.PasswordErrorException;
-import a311.college.mapper.UserMapper;
+import a311.college.mapper.user.UserMapper;
 import a311.college.result.PageResult;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;

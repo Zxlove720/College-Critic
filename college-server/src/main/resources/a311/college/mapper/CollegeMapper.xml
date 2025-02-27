@@ -24,12 +24,14 @@
             b.batch,
             sc.major,
             sc.min_score
-        FROM school s
+            sr.rank_tag
+        FROM tb_school s
         JOIN province p ON s.id = p.school_id
         JOIN year y ON p.id = y.province_id
         JOIN category c ON y.id = c.year_id
         JOIN batch b ON c.id = b.category_id
         JOIN score sc ON b.id = sc.batch_id
+        JOIN school_rank sr ON s.id = sr.school_id
         <where>
             <if test="schoolName != null and schoolName != ''">
                 AND s.name LIKE CONCAT('%', #{schoolName}, '%')

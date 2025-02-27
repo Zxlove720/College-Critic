@@ -10,4 +10,6 @@ import a311.college.vo.CollegeVO;
 public interface CollegeService {
 
     PageResult<CollegeVO> pageSelect(CollegePageQueryDTO collegePageQueryDTO);
+
+    CollegeVO getSchoolByName(String schoolName);
 }

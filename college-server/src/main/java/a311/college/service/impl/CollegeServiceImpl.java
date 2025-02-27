@@ -42,4 +42,9 @@ public class CollegeServiceImpl implements CollegeService {
         List<CollegeVO> result = pageResult.getResult();
         return new PageResult<>(total, result);
     }
+
+    @Override
+    public CollegeVO getSchoolByName(String schoolName) {
+         return collegeMapper.selectByName(schoolName);
+    }
 }

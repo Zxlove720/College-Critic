@@ -5,9 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.sql.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Json2DataBase {
-private static final String DB_URL = "jdbc:mysql://localhost:3306/college";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/college";
     private static final String USER = "root";
     private static final String PASS = "123456";
 
@@ -94,12 +96,14 @@ private static final String DB_URL = "jdbc:mysql://localhost:3306/college";
                             }
 
                             // 插入分数
-                            String insertScore = "INSERT INTO score (batch_id, major, min_score) VALUES (?, ?, ?)";
+                            String insertScore = "INSERT INTO score (batch_id, major, min_score, min_ranking) VALUES (?, ?, ?, ?)";
                             try (PreparedStatement stmt = conn.prepareStatement(insertScore)) {
                                 for (Score score : batch.getScores()) {
                                     stmt.setInt(1, batchId);
                                     stmt.setString(2, score.getMajor());
-                                    stmt.setString(3, score.getMinScore_weici());
+                                    int[] temp = getScoreAndRanking(score.getMinScore_weici());
+                                    stmt.setInt(3, temp[0]);
+                                    stmt.setInt(4, temp[1]);
                                     stmt.addBatch();
                                 }
                                 stmt.executeBatch();
@@ -114,4 +118,40 @@ private static final String DB_URL = "jdbc:mysql://localhost:3306/college";
             e.printStackTrace();
         }
     }
+
+    private static int[] getScoreAndRanking(String input) {
+        // 使用正则表达式匹配数字或可能表示缺失值的特殊字符
+        Pattern pattern = Pattern.compile("\\d+|-");
+        Matcher matcher = pattern.matcher(input);
+
+        // 存储找到的所有数字或特殊字符
+        int[] numbers = new int[4];
+        int index = 0;
+
+        // 查找所有符合正则表达式的数字或特殊字符
+        while (matcher.find()) {
+            if (index < numbers.length) {
+                String match = matcher.group();
+                // 如果是数字，则解析为整数
+                if (!match.equals("-")) {
+                    numbers[index++] = Integer.parseInt(match);
+                } else {
+                    // 如果是特殊字符“-”，将其视为0
+                    numbers[index++] = 0;
+                }
+            }
+        }
+
+        // 根据索引数量判断输入格式并返回相应的结果
+        if (index == 2) {
+            // 第一种格式：只有两个数字
+            return new int[]{numbers[0], numbers[1]};
+        } else if (index >= 4) {
+            // 第二种格式：返回第一个和最后一个数字
+            return new int[]{numbers[0], numbers[index - 1]};
+        } else {
+            throw new IllegalArgumentException("输入格式不正确");
+        }
+    }
+
 }

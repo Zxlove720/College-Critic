@@ -21,6 +21,9 @@ public class CollegePageQueryDTO implements Serializable {
     // 年份
     private Integer year;
 
+    // 批次
+    private String batch;
+
     // 页码
     private Integer page;
 

@@ -40,6 +40,10 @@
             <if test="year != null">
                 AND y.year = #{year}
             </if>
+            <if test="batch != null">
+                AND b.batch = #{batch}
+            </if>
+
         </where>
         ORDER BY s.name, p.province, y.year DESC
     </select>

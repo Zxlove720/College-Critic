@@ -1,12 +1,12 @@
 package a311.college.controller.user;
 
-import a311.college.constant.APIConstant;
-import a311.college.constant.JWTClaimsConstant;
-import a311.college.constant.UserStatusConstant;
-import a311.college.dao.PasswordEditDTO;
-import a311.college.dao.UserDTO;
-import a311.college.dao.UserLoginDTO;
-import a311.college.dao.UserPageQueryDTO;
+import a311.college.constant.API.APIConstant;
+import a311.college.constant.JWT.JWTClaimsConstant;
+import a311.college.constant.user.UserStatusConstant;
+import a311.college.dto.PasswordEditDTO;
+import a311.college.dto.UserDTO;
+import a311.college.dto.UserLoginDTO;
+import a311.college.dto.UserPageQueryDTO;
 import a311.college.entity.User;
 import a311.college.jwt.JWTUtils;
 import a311.college.properties.JWTProperties;

@@ -1,4 +1,4 @@
-package a311.college.constant;
+package a311.college.constant.message;
 
 /**
  * 信息提示类常量

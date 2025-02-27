@@ -1,7 +1,7 @@
 package a311.college.aspect;
 
 import a311.college.annotation.AutoFill;
-import a311.college.constant.AutoFillConstant;
+import a311.college.constant.AOP.AutoFillConstant;
 import a311.college.enumeration.OperationType;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;

@@ -1,4 +1,4 @@
-package a311.college.dao;
+package a311.college.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

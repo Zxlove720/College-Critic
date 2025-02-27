@@ -1,7 +1,6 @@
 package a311.college.service;
 
-import a311.college.dao.CollegePageQueryDTO;
-import a311.college.entity.college.School;
+import a311.college.dto.CollegePageQueryDTO;
 import a311.college.result.PageResult;
 import a311.college.vo.CollegeVO;
 

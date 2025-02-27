@@ -1,9 +1,9 @@
 package a311.college.service;
 
-import a311.college.dao.PasswordEditDTO;
-import a311.college.dao.UserDTO;
-import a311.college.dao.UserLoginDTO;
-import a311.college.dao.UserPageQueryDTO;
+import a311.college.dto.PasswordEditDTO;
+import a311.college.dto.UserDTO;
+import a311.college.dto.UserLoginDTO;
+import a311.college.dto.UserPageQueryDTO;
 import a311.college.entity.User;
 import a311.college.result.PageResult;
 

@@ -1,7 +1,7 @@
 package a311.college.handler;
 
 
-import a311.college.constant.MessageConstant;
+import a311.college.constant.message.MessageConstant;
 import a311.college.exception.BaseException;
 import a311.college.result.Result;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,4 @@
-package a311.college.constant;
-
-import lombok.Data;
+package a311.college.constant.resource;
 
 /**
  * 资源文件路径常量

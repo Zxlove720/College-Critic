@@ -1,6 +1,6 @@
 package a311.college.interceptor;
 
-import a311.college.constant.JWTClaimsConstant;
+import a311.college.constant.JWT.JWTClaimsConstant;
 import a311.college.jwt.JWTUtils;
 import a311.college.properties.JWTProperties;
 import a311.college.thread.ThreadLocalUtil;

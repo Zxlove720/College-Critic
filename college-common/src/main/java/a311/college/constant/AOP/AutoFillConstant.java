@@ -1,4 +1,4 @@
-package a311.college.constant;
+package a311.college.constant.AOP;
 
 /**
  * 公共字段填充相关常量

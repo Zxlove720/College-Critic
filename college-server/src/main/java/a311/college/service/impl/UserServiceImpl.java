@@ -1,11 +1,11 @@
 package a311.college.service.impl;
 
-import a311.college.constant.MessageConstant;
-import a311.college.constant.UserStatusConstant;
-import a311.college.dao.PasswordEditDTO;
-import a311.college.dao.UserDTO;
-import a311.college.dao.UserLoginDTO;
-import a311.college.dao.UserPageQueryDTO;
+import a311.college.constant.message.MessageConstant;
+import a311.college.constant.user.UserStatusConstant;
+import a311.college.dto.PasswordEditDTO;
+import a311.college.dto.UserDTO;
+import a311.college.dto.UserLoginDTO;
+import a311.college.dto.UserPageQueryDTO;
 import a311.college.entity.User;
 import a311.college.enumeration.subjectEnum.SubjectsEnum;
 import a311.college.exception.AccountLockedException;

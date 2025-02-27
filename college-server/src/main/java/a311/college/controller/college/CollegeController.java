@@ -1,8 +1,7 @@
 package a311.college.controller.college;
 
 
-import a311.college.dao.CollegePageQueryDTO;
-import a311.college.entity.college.School;
+import a311.college.dto.CollegePageQueryDTO;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.CollegeService;

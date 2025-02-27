@@ -1,4 +1,4 @@
-package a311.college.dao;
+package a311.college.dto;
 
 import a311.college.enumeration.ProvinceEnum;
 import lombok.Data;

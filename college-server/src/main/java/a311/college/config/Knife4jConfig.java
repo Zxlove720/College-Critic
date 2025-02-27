@@ -1,8 +1,8 @@
 package a311.college.config;
 
 
-import a311.college.constant.APIConstant;
-import a311.college.constant.APIPathConstant;
+import a311.college.constant.API.APIConstant;
+import a311.college.constant.API.APIPathConstant;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import org.springdoc.core.models.GroupedOpenApi;

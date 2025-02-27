@@ -1,7 +1,7 @@
 package a311.college;
 
 import a311.college.constant.DataBaseConnectionConstant;
-import a311.college.constant.ResourceFilePath;
+import a311.college.constant.resource.ResourceFilePath;
 import a311.college.entity.college.*;
 import a311.college.entity.temp.TempSchoolID;
 import a311.college.entity.temp.TempSchoolInfo;

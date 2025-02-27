@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 大学相关服务
+ * 大学相关服务实现类
  */
 @Slf4j
 @Service
@@ -27,6 +27,11 @@ public class CollegeServiceImpl implements CollegeService {
         this.collegeMapper = collegeMapper;
     }
 
+    /**
+     * 大学数据分页查询
+     * @param collegePageQueryDTO 大学分页查询DTO
+     * @return PageResult<CollegeVO>
+     */
     @Override
     public PageResult<CollegeVO> pageSelect(CollegePageQueryDTO collegePageQueryDTO) {
         PageHelper.startPage(collegePageQueryDTO.getPage(), collegePageQueryDTO.getPageSize());

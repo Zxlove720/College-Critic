@@ -15,8 +15,8 @@ public class CollegePageQueryDTO implements Serializable {
     // 学校名
     private String schoolName;
 
-    // 省份
-    private ProvinceEnum province;
+    // 省份名
+    private String province;
 
     // 年份
     private Integer year;

@@ -31,7 +31,7 @@ public class School implements Serializable {
     @JsonProperty("SchoolAddr")
     private String schoolAddr;
 
-    @Schema(description = "等级标签列表")
+    @Schema(description = "大学等级标签列表")
     @JsonProperty("RankList")
     private List<String> rankList;
 

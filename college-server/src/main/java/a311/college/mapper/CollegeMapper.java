@@ -1,7 +1,7 @@
 package a311.college.mapper;
 
 
-import a311.college.dto.CollegePageQueryDTO;
+import a311.college.dto.college.CollegePageQueryDTO;
 import a311.college.vo.CollegeVO;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;

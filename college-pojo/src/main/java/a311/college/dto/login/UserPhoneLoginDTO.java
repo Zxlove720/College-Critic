@@ -1,4 +1,4 @@
-package a311.college.dto;
+package a311.college.dto.login;
 
 import lombok.Data;
 

@@ -2,7 +2,7 @@ package a311.college.mapper;
 
 import a311.college.TypeHandler.UserHandler;
 import a311.college.annotation.AutoFill;
-import a311.college.dto.UserPageQueryDTO;
+import a311.college.dto.user.UserPageQueryDTO;
 import a311.college.entity.User;
 import a311.college.enumeration.OperationType;
 import com.github.pagehelper.Page;

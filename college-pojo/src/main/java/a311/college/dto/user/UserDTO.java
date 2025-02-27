@@ -1,4 +1,4 @@
-package a311.college.dto;
+package a311.college.dto.user;
 
 import a311.college.enumeration.ProvinceEnum;
 import a311.college.enumeration.subjectEnum.SubjectsEnum;

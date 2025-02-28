@@ -2,6 +2,7 @@ package a311.college.database;
 
 import a311.college.address.AddressToEnumUtil;
 import a311.college.constant.DataBaseConnectionConstant;
+import a311.college.constant.resource.LogoConstant;
 import a311.college.constant.resource.ResourceFilePath;
 import a311.college.entity.college.*;
 import a311.college.entity.temp.TempSchoolID;
@@ -54,7 +55,7 @@ public class Json2DataBase {
                         if (school.getSchoolName().equals(rankDatum.getSchoolName())) {
                             school.setSchoolAddr(rankDatum.getSchoolAddr());
                             school.setProvinceAddress(AddressToEnumUtil.
-                                    toProvinceEnum(AddressToEnumUtil.extractProvince(school.getSchoolAddr())));
+                                    toProvinceEnum(AddressToEnumUtil.extractProvince(school.getSchoolAddr())).getName());
                             school.setRankList(rankDatum.getRankList());
                             break;
                         }
@@ -63,6 +64,7 @@ public class Json2DataBase {
                     for (TempSchoolID value : values) {
                         if (school.getSchoolName().equals(value.getName())) {
                             school.setSchoolId(value.getSchoolId());
+                            school.setSchoolHead(LogoConstant.LOGO_PREFIX + school.getSchoolId() + ".jpg");
                         }
                     }
 
@@ -85,22 +87,23 @@ public class Json2DataBase {
     private static void saveToDatabase(School school, Connection conn) throws SQLException {
         // 插入学校
         String schoolId = school.getSchoolId();
-        String insertSchool = "INSERT INTO tb_school (school_id, school_head,school_name, province, address, rank_list)" +
+        String insertSchool = "INSERT INTO tb_school " +
+                "(school_id, school_head,school_name, school_province, school_address, rank_list)" +
                 " VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = conn.prepareStatement(insertSchool, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, school.getSchoolId());
             statement.setString(2, school.getSchoolHead());
             statement.setString(3, school.getSchoolName());
-            statement.setString(4, school.getProvinceAddress().getName());
-            statement.setString(4, school.getSchoolAddr());
-            statement.setString(5, school.getRankList().toString());
+            statement.setString(4, school.getProvinceAddress());
+            statement.setString(5, school.getSchoolAddr());
+            statement.setString(6, school.getRankList().toString());
             statement.executeUpdate();
         }
 
         // 遍历省份
         for (Province province : school.getProvinces()) {
             int provinceId;
-            String insertProvince = "INSERT INTO tb_province (school_id, province) VALUES (?, ?)";
+            String insertProvince = "INSERT INTO tb_province (school_id, province_name) VALUES (?, ?)";
             try (PreparedStatement statement = conn.prepareStatement(insertProvince, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, schoolId);
                 statement.setString(2, province.getProvince().getName());
@@ -128,7 +131,7 @@ public class Json2DataBase {
                 // 遍历类别
                 for (Category category : year.getCategorys()) {
                     int categoryId;
-                    String insertCategory = "INSERT INTO tb_category (year_id, category) VALUES (?, ?)";
+                    String insertCategory = "INSERT INTO tb_category (year_id, category_name) VALUES (?, ?)";
                     try (PreparedStatement statement = conn.prepareStatement(insertCategory, Statement.RETURN_GENERATED_KEYS)) {
                         statement.setInt(1, yearId);
                         statement.setString(2, category.getCategory());
@@ -142,7 +145,7 @@ public class Json2DataBase {
                     // 遍历批次
                     for (Batch batch : category.getBatches()) {
                         int batchId;
-                        String insertBatch = "INSERT INTO tb_batch (category_id, batch) VALUES (?, ?)";
+                        String insertBatch = "INSERT INTO tb_batch (category_id, batch_name) VALUES (?, ?)";
                         try (PreparedStatement statement = conn.prepareStatement(insertBatch, Statement.RETURN_GENERATED_KEYS)) {
                             statement.setInt(1, categoryId);
                             statement.setString(2, batch.getBatch());
@@ -154,7 +157,7 @@ public class Json2DataBase {
                         }
 
                         // 插入分数
-                        String insertScore = "INSERT INTO tb_score (batch_id, major, min_score, min_ranking) VALUES (?, ?, ?, ?)";
+                        String insertScore = "INSERT INTO tb_score (batch_id, major_name, min_score, min_ranking) VALUES (?, ?, ?, ?)";
                         try (PreparedStatement statement = conn.prepareStatement(insertScore)) {
                             for (Score score : batch.getScores()) {
                                 statement.setInt(1, batchId);

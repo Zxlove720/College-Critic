@@ -29,7 +29,7 @@ public class School implements Serializable {
     private String schoolName;
 
     @Schema(description = "学校省份")
-    private ProvinceEnum provinceAddress;
+    private String provinceAddress;
 
     @Schema(description = "具体地址")
     @JsonProperty("SchoolAddr")

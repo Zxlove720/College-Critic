@@ -1,5 +1,6 @@
 package a311.college.entity.college;
 
+import a311.college.enumeration.ProvinceEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,10 @@ public class School implements Serializable {
     @JsonProperty("SchoolName")
     private String schoolName;
 
-    @Schema(description = "学校地址")
+    @Schema(description = "学校省份")
+    private ProvinceEnum provinceAddress;
+
+    @Schema(description = "具体地址")
     @JsonProperty("SchoolAddr")
     private String schoolAddr;
 

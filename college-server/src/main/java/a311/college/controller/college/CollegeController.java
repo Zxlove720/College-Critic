@@ -68,4 +68,15 @@ public class CollegeController {
         return Result.success(collegeList);
     }
 
+    /**
+     * 根据省份查询大学
+     * @param province 省份名
+     * @return Result<List<CollegeVO>>
+     */
+    @GetMapping("address")
+    public Result<List<CollegeVO>> getByAddress(String province) {
+        log.info("查询省份为:{}", province);
+        return Result.success(collegeService.getByAddress(province));
+    }
+
 }

@@ -14,16 +14,8 @@ public class AddressToEnumUtil {
             .map(ProvinceEnum::getName)
             .toList();
 
-    private static final Map<String, String> ALIAS = new HashMap<>();
 
     public static String extractProvince(String address) {
-        // 1. 检查别名
-        for (String alias : ALIAS.keySet()) {
-            if (address.startsWith(alias)) {
-                return ALIAS.get(alias);
-            }
-        }
-        // 2. 检查完整省份名
         for (String province : PROVINCES) {
             if (address.startsWith(province) ||
                     address.startsWith(province + "自治区") ||

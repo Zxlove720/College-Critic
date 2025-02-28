@@ -1,5 +1,6 @@
 package a311.college.database;
 
+import a311.college.address.AddressToEnumUtil;
 import a311.college.constant.DataBaseConnectionConstant;
 import a311.college.constant.resource.ResourceFilePath;
 import a311.college.entity.college.*;
@@ -52,6 +53,8 @@ public class Json2DataBase {
                     for (SchoolRankInfo rankDatum : rankData) {
                         if (school.getSchoolName().equals(rankDatum.getSchoolName())) {
                             school.setSchoolAddr(rankDatum.getSchoolAddr());
+                            school.setProvinceAddress(AddressToEnumUtil.
+                                    toProvinceEnum(AddressToEnumUtil.extractProvince(school.getSchoolAddr())));
                             school.setRankList(rankDatum.getRankList());
                             break;
                         }
@@ -82,12 +85,13 @@ public class Json2DataBase {
     private static void saveToDatabase(School school, Connection conn) throws SQLException {
         // 插入学校
         String schoolId = school.getSchoolId();
-        String insertSchool = "INSERT INTO tb_school (school_id, school_head,school_name, address, rank_list)" +
-                " VALUES (?, ?, ?, ?, ?)";
+        String insertSchool = "INSERT INTO tb_school (school_id, school_head,school_name, province, address, rank_list)" +
+                " VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = conn.prepareStatement(insertSchool, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, school.getSchoolId());
             statement.setString(2, school.getSchoolHead());
             statement.setString(3, school.getSchoolName());
+            statement.setString(4, school.getProvinceAddress().getName());
             statement.setString(4, school.getSchoolAddr());
             statement.setString(5, school.getRankList().toString());
             statement.executeUpdate();

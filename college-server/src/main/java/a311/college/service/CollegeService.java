@@ -17,4 +17,5 @@ public interface CollegeService {
 
     List<CollegeVO> getByGrade(int grade, String province);
 
+    List<CollegeVO> getByAddress(String province);
 }

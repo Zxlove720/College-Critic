@@ -52,4 +52,9 @@ public class CollegeServiceImpl implements CollegeService {
     public List<CollegeVO> getByGrade(int grade, String province) {
         return collegeMapper.selectByGrade(grade, province);
     }
+
+    @Override
+    public List<CollegeVO> getByAddress(String province) {
+        return collegeMapper.selectByAddress(province);
+    }
 }

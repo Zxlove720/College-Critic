@@ -51,6 +51,9 @@
             <if test="batch != null">
                 AND b.batch = #{batch}
             </if>
+            <if test="grade != null">
+                AND sc.min_score &lt; #{grade}
+            </if>
         </where>
         ORDER BY min_score desc
     </select>

@@ -7,13 +7,13 @@
     <resultMap id="collegeScoreMap" type="a311.college.vo.CollegeVO">
         <result property="schoolHead" column="school_head"/>
         <result property="schoolName" column="school_name"/>
-        <result property="province" column="province"/>
-        <result property="address" column="address"/>
+        <result property="province" column="province_name"/>
+        <result property="address" column="school_address"/>
         <result property="rankList" column="rank_list"/>
         <result property="year" column="year"/>
         <result property="category" column="category_name"/>
-        <result property="batch" column="batch"/>
-        <result property="major" column="major"/>
+        <result property="batch" column="batch_name"/>
+        <result property="major" column="major_name"/>
         <result property="minScore" column="min_score"/>
         <result property="minRanking" column="min_ranking"/>
     </resultMap>
@@ -23,60 +23,61 @@
         SELECT
         s.school_head,
         s.school_name,
-        p.province,
-        s.address,
+        s.school_province,
+        s.school_address,
         s.rank_list,
+        p.province_name,
         y.year,
-        c.category AS category_name,
-        b.batch,
-        sc.major,
+        c.category_name,
+        b.batch_name,
+        sc.major_name,
         sc.min_score,
         sc.min_ranking
         FROM tb_school as s
         JOIN tb_province as p ON s.school_id = p.school_id
-        JOIN tb_year as y ON p.id = y.province_id
-        JOIN tb_category as c ON y.id = c.year_id
-        JOIN tb_batch as b ON c.id = b.category_id
-        JOIN tb_score as sc ON b.id = sc.batch_id
+        JOIN tb_year as y ON p.province_id = y.province_id
+        JOIN tb_category as c ON y.year_id = c.year_id
+        JOIN tb_batch as b ON c.category_id = b.category_id
+        JOIN tb_score as sc ON b.batch_id = sc.batch_id
         <where>
             <if test="schoolName != null and schoolName != ''">
                 AND s.school_name LIKE CONCAT('%', #{schoolName}, '%')
             </if>
             <if test="province != null and province != ''">
-                AND p.province = #{province}
+                AND p.province_name = #{province}
             </if>
             <if test="year != null">
                 AND y.year = #{year}
             </if>
             <if test="batch != null">
-                AND b.batch = #{batch}
+                AND b.batch_name = #{batch}
             </if>
             <if test="grade != null">
                 AND sc.min_score &lt; #{grade}
             </if>
         </where>
-        ORDER BY min_score desc
+        ORDER BY min_score desc, min_ranking desc
     </select>
 
     <select id="selectByGrade" resultMap="collegeScoreMap">
         SELECT
         s.school_head,
         s.school_name,
-        p.province,
-        s.address,
+        p.province_name,
+        s.school_address,
         s.rank_list,
         y.year,
-        c.category AS category_name,
-        b.batch,
-        sc.major,
+        c.category_name,
+        b.batch_name,
+        sc.major_name,
         sc.min_score,
         sc.min_ranking
         FROM tb_school as s
         JOIN tb_province as p ON s.school_id = p.school_id
-        JOIN tb_year as y ON p.id = y.province_id
-        JOIN tb_category as c ON y.id = c.year_id
-        JOIN tb_batch as b ON c.id = b.category_id
-        JOIN tb_score as sc ON b.id = sc.batch_id
-        WHERE sc.min_score &lt; #{grade} and p.province = #{province} ORDER BY sc.min_score DESC
+        JOIN tb_year as y ON p.province_id = y.province_id
+        JOIN tb_category as c ON y.year_id = c.year_id
+        JOIN tb_batch as b ON c.category_id = b.category_id
+        JOIN tb_score as sc ON b.batch_id = sc.batch_id
+        WHERE sc.min_score &lt; #{grade} and p.province_name = #{province} ORDER BY sc.min_score DESC
     </select>
 </mapper>

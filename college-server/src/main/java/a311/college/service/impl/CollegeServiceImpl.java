@@ -45,7 +45,9 @@ public class CollegeServiceImpl implements CollegeService {
 
     @Override
     public CollegeVO getSchoolByName(String schoolName) {
-         return collegeMapper.selectByName(schoolName);
+        CollegeVO collegeVO = collegeMapper.selectByName(schoolName);
+        System.out.println(collegeVO);
+        return collegeVO;
     }
 
     @Override

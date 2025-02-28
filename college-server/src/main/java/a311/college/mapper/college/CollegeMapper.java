@@ -25,7 +25,7 @@ public interface CollegeMapper {
     /**
      * 根据学校名查询大学
      * @param schoolName 学校名
-     * @return School
+     * @return CollegeVO
      */
     @Select("select * from tb_school where school_name = #{schoolName}")
     CollegeVO selectByName(String schoolName);

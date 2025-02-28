@@ -7,8 +7,8 @@
     <resultMap id="collegeScoreMap" type="a311.college.vo.CollegeVO">
         <result property="schoolHead" column="school_head"/>
         <result property="schoolName" column="school_name"/>
-        <result property="province" column="province_name"/>
-        <result property="address" column="school_address"/>
+        <result property="schoolProvince" column="province_name"/>
+        <result property="schoolAddress" column="school_address"/>
         <result property="rankList" column="rank_list"/>
         <result property="year" column="year"/>
         <result property="category" column="category_name"/>

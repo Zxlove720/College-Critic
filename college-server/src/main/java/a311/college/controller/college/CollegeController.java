@@ -54,7 +54,7 @@ public class CollegeController {
     public Result<Integer> getCollegeScore(String schoolName) {
         CollegeVO school = collegeService.getSchoolByName(schoolName);
         return Result.success(AddressToEnumUtil.toProvinceEnum
-                (AddressToEnumUtil.extractProvince(school.getAddress())).getScore());
+                (AddressToEnumUtil.extractProvince(school.getSchoolAddress())).getScore());
     }
 
     /**

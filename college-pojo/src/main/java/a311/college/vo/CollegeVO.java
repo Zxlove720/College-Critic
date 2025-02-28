@@ -22,10 +22,10 @@ public class CollegeVO implements Serializable {
     private String schoolName;
 
     @Schema(description = "省份")
-    private String province;
+    private String schoolProvince;
 
     @Schema(description = "学校地址")
-    private String address;
+    private String schoolAddress;
 
     @Schema(description = "大学等级标签列表")
     private String rankList;

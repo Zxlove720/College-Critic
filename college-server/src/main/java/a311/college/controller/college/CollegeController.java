@@ -78,5 +78,4 @@ public class CollegeController {
         log.info("查询省份为:{}", province);
         return Result.success(collegeService.getByAddress(province));
     }
-
 }

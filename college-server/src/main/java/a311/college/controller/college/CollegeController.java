@@ -3,7 +3,6 @@ package a311.college.controller.college;
 
 import a311.college.address.AddressToEnumUtil;
 import a311.college.dto.college.CollegePageQueryDTO;
-import a311.college.entity.college.School;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.CollegeService;
@@ -13,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 
 /**
@@ -54,6 +55,17 @@ public class CollegeController {
         CollegeVO school = collegeService.getSchoolByName(schoolName);
         return Result.success(AddressToEnumUtil.toProvinceEnum
                 (AddressToEnumUtil.extractProvince(school.getAddress())).getScore());
+    }
+
+    /**
+     * 根据用户成绩查询大学
+     * @return Result<CollegeVO>
+     */
+    @GetMapping("grade")
+    public Result<List<CollegeVO>> getByUserScore(int grade, String province) {
+        log.info("用户成绩为：{}", grade);
+        List<CollegeVO> collegeList = collegeService.getByGrade(grade, province);
+        return Result.success(collegeList);
     }
 
 }

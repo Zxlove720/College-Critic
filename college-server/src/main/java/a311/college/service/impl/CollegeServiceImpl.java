@@ -47,4 +47,9 @@ public class CollegeServiceImpl implements CollegeService {
     public CollegeVO getSchoolByName(String schoolName) {
          return collegeMapper.selectByName(schoolName);
     }
+
+    @Override
+    public List<CollegeVO> getByGrade(int grade, String province) {
+        return collegeMapper.selectByGrade(grade, province);
+    }
 }

@@ -21,17 +21,17 @@
     <!-- 分页联查语句 -->
     <select id="pageQuery" resultMap="collegeScoreMap">
         SELECT
-            s.school_head,
-            s.school_name,
-            p.province,
-            s.address,
-            s.rank_list,
-            y.year,
-            c.category AS category_name,
-            b.batch,
-            sc.major,
-            sc.min_score,
-            sc.min_ranking
+        s.school_head,
+        s.school_name,
+        p.province,
+        s.address,
+        s.rank_list,
+        y.year,
+        c.category AS category_name,
+        b.batch,
+        sc.major,
+        sc.min_score,
+        sc.min_ranking
         FROM tb_school as s
         JOIN tb_province as p ON s.school_id = p.school_id
         JOIN tb_year as y ON p.id = y.province_id
@@ -51,8 +51,29 @@
             <if test="batch != null">
                 AND b.batch = #{batch}
             </if>
-
         </where>
         ORDER BY min_score desc
+    </select>
+
+    <select id="selectByGrade" resultMap="collegeScoreMap">
+        SELECT
+        s.school_head,
+        s.school_name,
+        p.province,
+        s.address,
+        s.rank_list,
+        y.year,
+        c.category AS category_name,
+        b.batch,
+        sc.major,
+        sc.min_score,
+        sc.min_ranking
+        FROM tb_school as s
+        JOIN tb_province as p ON s.school_id = p.school_id
+        JOIN tb_year as y ON p.id = y.province_id
+        JOIN tb_category as c ON y.id = c.year_id
+        JOIN tb_batch as b ON c.id = b.category_id
+        JOIN tb_score as sc ON b.id = sc.batch_id
+        WHERE sc.min_score &lt; #{grade} and p.province = #{province} ORDER BY sc.min_score DESC
     </select>
 </mapper>

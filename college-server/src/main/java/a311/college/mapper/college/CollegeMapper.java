@@ -7,6 +7,8 @@ import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 /**
  * 大学相关Mapper
  */
@@ -27,4 +29,10 @@ public interface CollegeMapper {
      */
     @Select("select * from tb_school where school_name = #{schoolName}")
     CollegeVO selectByName(String schoolName);
+
+    /**
+     * 根据成绩查询大学
+     * @param grade 用户成绩
+     */
+    List<CollegeVO> selectByGrade(int grade, String province);
 }

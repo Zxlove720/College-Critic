@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 public class CollegePageQueryDTO implements Serializable {
@@ -21,11 +22,8 @@ public class CollegePageQueryDTO implements Serializable {
     // 成绩
     private Integer grade;
 
-    // 年份
-    private Integer year;
-
-    // 批次
-    private String batch;
+    // 大学类型
+    private List<String> rankList;
 
     // 页码
     private Integer page;

@@ -18,66 +18,91 @@
         <result property="minRanking" column="min_ranking"/>
     </resultMap>
 
-    <!-- 分页联查语句 -->
-    <select id="pageQuery" resultMap="collegeScoreMap">
-        SELECT
-        s.school_head,
-        s.school_name,
-        s.school_province,
-        s.school_address,
-        s.rank_list,
-        p.province_name,
-        y.year,
-        c.category_name,
-        b.batch_name,
-        sc.major_name,
-        sc.min_score,
-        sc.min_ranking
-        FROM tb_school as s
-        JOIN tb_province as p ON s.school_id = p.school_id
-        JOIN tb_year as y ON p.province_id = y.province_id
-        JOIN tb_category as c ON y.year_id = c.year_id
-        JOIN tb_batch as b ON c.category_id = b.category_id
-        JOIN tb_score as sc ON b.batch_id = sc.batch_id
+    <select id="pageQuery" resultType="a311.college.vo.CollegeSimpleVO">
+        select
+        school_head,
+        school_name,
+        school_address,
+        rank_list
+        from tb_school
         <where>
             <if test="schoolName != null and schoolName != ''">
-                AND s.school_name LIKE CONCAT('%', #{schoolName}, '%')
+                AND school_name LIKE CONCAT('%', #{schoolName}, '%')
             </if>
             <if test="province != null and province != ''">
-                AND p.province_name = #{province}
+                AND school_province = #{province}
             </if>
-            <if test="year != null">
-                AND y.year = #{year}
+            <if test="rankList != null">
+                <foreach collection="rankList" item="item" separator="AND">
+                    rank_list LIKE CONCAT('%', #{item}, '%')
+                </foreach>
             </if>
-            <if test="batch != null">
-                AND b.batch_name = #{batch}
-            </if>
-            <if test="grade != null">
-                AND sc.min_score &lt; #{grade}
-            </if>
+
         </where>
-        ORDER BY min_score desc, min_ranking desc
+        order by length(rank_list) desc
     </select>
 
+    <!-- 分页联查语句 -->
+    <!--    <select id="pageQuery" resultMap="collegeScoreMap">-->
+    <!--        SELECT-->
+    <!--        s.school_head,-->
+    <!--        s.school_name,-->
+    <!--        s.school_province,-->
+    <!--        s.school_address,-->
+    <!--        s.rank_list,-->
+    <!--        p.province_name,-->
+    <!--        y.year,-->
+    <!--        c.category_name,-->
+    <!--        b.batch_name,-->
+    <!--        sc.major_name,-->
+    <!--        sc.min_score,-->
+    <!--        sc.min_ranking-->
+    <!--        FROM tb_school as s-->
+    <!--        JOIN tb_province as p ON s.school_id = p.school_id-->
+    <!--        JOIN tb_year as y ON p.province_id = y.province_id-->
+    <!--        JOIN tb_category as c ON y.year_id = c.year_id-->
+    <!--        JOIN tb_batch as b ON c.category_id = b.category_id-->
+    <!--        JOIN tb_score as sc ON b.batch_id = sc.batch_id-->
+    <!--        <where>-->
+    <!--            <if test="schoolName != null and schoolName != ''">-->
+    <!--                AND s.school_name LIKE CONCAT('%', #{schoolName}, '%')-->
+    <!--            </if>-->
+    <!--            <if test="province != null and province != ''">-->
+    <!--                AND p.province_name = #{province}-->
+    <!--            </if>-->
+    <!--            <if test="year != null">-->
+    <!--                AND y.year = #{year}-->
+    <!--            </if>-->
+    <!--            <if test="batch != null">-->
+    <!--                AND b.batch_name = #{batch}-->
+    <!--            </if>-->
+    <!--            <if test="grade != null">-->
+    <!--                AND sc.min_score &lt; #{grade}-->
+    <!--            </if>-->
+    <!--        </where>-->
+    <!--        ORDER BY min_score desc, min_ranking desc-->
+    <!--    </select>-->
+
     <select id="selectByGrade" resultMap="collegeScoreMap">
-        SELECT
-        s.school_head,
-        s.school_name,
-        p.province_name,
-        s.school_address,
-        s.rank_list,
-        y.year,
-        c.category_name,
-        b.batch_name,
-        sc.major_name,
-        sc.min_score,
-        sc.min_ranking
+        SELECT s.school_head,
+               s.school_name,
+               p.province_name,
+               s.school_address,
+               s.rank_list,
+               y.year,
+               c.category_name,
+               b.batch_name,
+               sc.major_name,
+               sc.min_score,
+               sc.min_ranking
         FROM tb_school as s
-        JOIN tb_province as p ON s.school_id = p.school_id
-        JOIN tb_year as y ON p.province_id = y.province_id
-        JOIN tb_category as c ON y.year_id = c.year_id
-        JOIN tb_batch as b ON c.category_id = b.category_id
-        JOIN tb_score as sc ON b.batch_id = sc.batch_id
-        WHERE sc.min_score &lt; #{grade} and p.province_name = #{province} ORDER BY sc.min_score DESC
+                 JOIN tb_province as p ON s.school_id = p.school_id
+                 JOIN tb_year as y ON p.province_id = y.province_id
+                 JOIN tb_category as c ON y.year_id = c.year_id
+                 JOIN tb_batch as b ON c.category_id = b.category_id
+                 JOIN tb_score as sc ON b.batch_id = sc.batch_id
+        WHERE sc.min_score &lt; #{grade}
+          and p.province_name = #{province}
+        ORDER BY sc.min_score DESC
     </select>
 </mapper>

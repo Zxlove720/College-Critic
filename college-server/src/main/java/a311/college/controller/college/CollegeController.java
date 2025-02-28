@@ -6,6 +6,7 @@ import a311.college.dto.college.CollegePageQueryDTO;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.CollegeService;
+import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.CollegeVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +40,9 @@ public class CollegeController {
      * @return Result<PageResult<School>>
      */
     @GetMapping("/page")
-    public Result<PageResult<CollegeVO>> collegeList(CollegePageQueryDTO collegePageQueryDTO) {
+    public Result<PageResult<CollegeSimpleVO>> collegeList(CollegePageQueryDTO collegePageQueryDTO) {
         log.info("大学分页查询...查询参数为：第{}页，每页{}条", collegePageQueryDTO.getPage(), collegePageQueryDTO.getPageSize());
-        PageResult<CollegeVO> pageResult = collegeService.pageSelect(collegePageQueryDTO);
+        PageResult<CollegeSimpleVO> pageResult = collegeService.pageSelect(collegePageQueryDTO);
         return Result.success(pageResult);
     }
 

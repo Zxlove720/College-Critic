@@ -2,6 +2,7 @@ package a311.college.mapper.college;
 
 
 import a311.college.dto.college.CollegePageQueryDTO;
+import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.CollegeVO;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
@@ -20,7 +21,7 @@ public interface CollegeMapper {
      * @param collegePageQueryDTO 大学分页查询DTO
      * @return Page<CollegeVO>
      */
-    Page<CollegeVO> pageQuery(CollegePageQueryDTO collegePageQueryDTO);
+    Page<CollegeSimpleVO> pageQuery(CollegePageQueryDTO collegePageQueryDTO);
 
     /**
      * 根据学校名查询大学

@@ -4,6 +4,7 @@ import a311.college.dto.college.CollegePageQueryDTO;
 import a311.college.mapper.college.CollegeMapper;
 import a311.college.result.PageResult;
 import a311.college.service.CollegeService;
+import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.CollegeVO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -33,13 +34,13 @@ public class CollegeServiceImpl implements CollegeService {
      * @return PageResult<CollegeVO>
      */
     @Override
-    public PageResult<CollegeVO> pageSelect(CollegePageQueryDTO collegePageQueryDTO) {
+    public PageResult<CollegeSimpleVO> pageSelect(CollegePageQueryDTO collegePageQueryDTO) {
         PageHelper.startPage(collegePageQueryDTO.getPage(), collegePageQueryDTO.getPageSize());
-        Page<CollegeVO> pageResult = collegeMapper.pageQuery(collegePageQueryDTO);
+        Page<CollegeSimpleVO> pageResult = collegeMapper.pageQuery(collegePageQueryDTO);
         // 获取总记录数
         long total = pageResult.getTotal();
         // 获取总记录
-        List<CollegeVO> result = pageResult.getResult();
+        List<CollegeSimpleVO> result = pageResult.getResult();
         return new PageResult<>(total, result);
     }
 

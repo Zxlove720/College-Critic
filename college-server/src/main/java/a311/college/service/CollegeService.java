@@ -2,6 +2,7 @@ package a311.college.service;
 
 import a311.college.dto.college.CollegePageQueryDTO;
 import a311.college.result.PageResult;
+import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.CollegeVO;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public interface CollegeService {
 
-    PageResult<CollegeVO> pageSelect(CollegePageQueryDTO collegePageQueryDTO);
+    PageResult<CollegeSimpleVO> pageSelect(CollegePageQueryDTO collegePageQueryDTO);
 
     CollegeVO getSchoolByName(String schoolName);
 

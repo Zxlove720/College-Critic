@@ -3,9 +3,11 @@ package a311.college.service.impl;
 import a311.college.dto.college.CollegePageQueryDTO;
 import a311.college.mapper.college.CollegeMapper;
 import a311.college.result.PageResult;
+import a311.college.result.Result;
 import a311.college.service.CollegeService;
 import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.CollegeVO;
+import a311.college.vo.YearScoreVO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -59,5 +61,15 @@ public class CollegeServiceImpl implements CollegeService {
     @Override
     public List<CollegeVO> getByAddress(String province) {
         return collegeMapper.selectByAddress(province);
+    }
+
+    @Override
+    public Result<List<YearScoreVO>> getScoreByYear(int id, String province, String year) {
+        List<YearScoreVO> yearScoreVOList = collegeMapper.selectScoreByYear(id, province, year);
+        for (YearScoreVO yearScoreVO : yearScoreVOList) {
+            yearScoreVO.setMajorName(yearScoreVO.getMajorName()
+                .substring(yearScoreVO.getMajorName().indexOf("选科要求")));
+        }
+        return Result.success(yearScoreVOList);
     }
 }

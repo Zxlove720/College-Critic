@@ -8,6 +8,7 @@ import a311.college.result.Result;
 import a311.college.service.CollegeService;
 import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.CollegeVO;
+import a311.college.vo.YearScoreVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +45,18 @@ public class CollegeController {
         log.info("大学分页查询...查询参数为：第{}页，每页{}条", collegePageQueryDTO.getPage(), collegePageQueryDTO.getPageSize());
         PageResult<CollegeSimpleVO> pageResult = collegeService.pageSelect(collegePageQueryDTO);
         return Result.success(pageResult);
+    }
+
+    /**
+     * 获取某一院校的历年分数线
+     * @param id 学校id
+     * @param province 招生省份
+     * @param year 招生年份
+     * @return Result<YearScoreVO>
+     */
+    @GetMapping("/years")
+    public Result<List<YearScoreVO>> collegeScoreByYear(int id, String province, String year) {
+        return collegeService.getScoreByYear(id, province, year);
     }
 
     /**

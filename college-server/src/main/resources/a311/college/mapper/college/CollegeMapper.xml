@@ -42,6 +42,24 @@
         order by length(rank_list) desc
     </select>
 
+
+    <select id="selectScoreByYear" resultType="a311.college.vo.YearScoreVO">
+        select
+            y.year,
+            b.batch_name,
+            sc.min_score,
+            sc.min_ranking,
+            sc.major_name
+        from tb_school as s
+                 JOIN tb_province as p ON s.school_id = p.school_id
+                 JOIN tb_year as y ON p.province_id = y.province_id
+                 JOIN tb_category as c ON y.year_id = c.year_id
+                 JOIN tb_batch as b ON c.category_id = b.category_id
+                 JOIN tb_score as sc ON b.batch_id = sc.batch_id
+        where s.school_id = #{id} and p.province_name = #{province} and y.year = #{year}
+        order by sc.min_score LIMIT 5
+    </select>
+
     <!-- 分页联查语句 -->
     <!--    <select id="pageQuery" resultMap="collegeScoreMap">-->
     <!--        SELECT-->
@@ -58,11 +76,11 @@
     <!--        sc.min_score,-->
     <!--        sc.min_ranking-->
     <!--        FROM tb_school as s-->
-    <!--        JOIN tb_province as p ON s.school_id = p.school_id-->
-    <!--        JOIN tb_year as y ON p.province_id = y.province_id-->
-    <!--        JOIN tb_category as c ON y.year_id = c.year_id-->
-    <!--        JOIN tb_batch as b ON c.category_id = b.category_id-->
-    <!--        JOIN tb_score as sc ON b.batch_id = sc.batch_id-->
+    <!--            JOIN tb_province as p ON s.school_id = p.school_id-->
+    <!--            JOIN tb_year as y ON p.province_id = y.province_id-->
+    <!--            JOIN tb_category as c ON y.year_id = c.year_id-->
+    <!--            JOIN tb_batch as b ON c.category_id = b.category_id-->
+    <!--            JOIN tb_score as sc ON b.batch_id = sc.batch_id-->
     <!--        <where>-->
     <!--            <if test="schoolName != null and schoolName != ''">-->
     <!--                AND s.school_name LIKE CONCAT('%', #{schoolName}, '%')-->

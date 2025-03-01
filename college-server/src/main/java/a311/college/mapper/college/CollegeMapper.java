@@ -2,8 +2,10 @@ package a311.college.mapper.college;
 
 
 import a311.college.dto.college.CollegePageQueryDTO;
+import a311.college.result.Result;
 import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.CollegeVO;
+import a311.college.vo.YearScoreVO;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -45,4 +47,13 @@ public interface CollegeMapper {
      */
     @Select("select school_head, school_name,school_address, rank_list from tb_school where school_province = #{province}")
     List<CollegeVO> selectByAddress(String province);
+
+    /**
+     * 获取某一院校的历年分数线
+     * @param id 学校id
+     * @param province 招生省份
+     * @param year 招生年份
+     * @return Result<YearScoreVO>
+     */
+    List<YearScoreVO> selectScoreByYear(int id, String province, String year);
 }

@@ -6,23 +6,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
- * 专业响应VO类
+ * 专业VO类
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class MajorVO implements Serializable {
 
-    @Schema(description = "平均薪资")
+    @Schema(description = "专业名称")
     private String name;
 
     @Schema(description = "专业代码")
     private String code;
 
-    @Schema(description = "修业年限")
+    @Schema(description = "专业年限")
     private String year;
 
     @Schema(description = "授予学位")

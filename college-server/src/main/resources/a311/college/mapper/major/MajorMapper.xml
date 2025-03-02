@@ -2,16 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="a311.college.mapper.major.MajorMapper">
-
-    <select id="selectByLevelId" resultType="a311.college.vo.MajorVO">
-        select m.name, m.code, m.year, m.degrees, m.gender, m.avg_salary
-            from academic_level as al
-                join subject_category as sc on al.id = sc.academic_level_id
-                join professional_class as pc on sc.id = pc.subject_category_id
-                join major as m on pc.id = m.class_id
-        where al.id = #{id} and (sc.id = 1 or sc.id = 13) and (pc.id = 1 or pc.id = 94)
+    <select id="selectMajors" resultType="a311.college.vo.MajorVO">
+        select m.name, m.code, m.year, m.degrees, m.gender, m.avg_salary from academic_level as al
+        join subject_category as sc on al.id = sc.academic_level_id
+        join professional_class as pc on sc.id = pc.subject_category_id
+        join major as m on pc.id = m.class_id
+        where al.id = #{levelId} and sc.id = #{categoryId} and pc.id = #{professionalId}
     </select>
-
-
-
 </mapper>

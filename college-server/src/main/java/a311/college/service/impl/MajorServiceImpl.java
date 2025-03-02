@@ -6,6 +6,8 @@ import a311.college.vo.MajorVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MajorServiceImpl implements MajorService {
 
@@ -21,7 +23,7 @@ public class MajorServiceImpl implements MajorService {
      * @param id 层次id
      */
     @Override
-    public MajorVO getByLevel(int id) {
+    public List<MajorVO> getByLevel(int id) {
         return majorMapper.selectByLevelId(id);
     }
 }

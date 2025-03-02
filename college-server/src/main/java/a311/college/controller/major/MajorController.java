@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * 专业Controller
  */
@@ -29,9 +31,8 @@ public class MajorController {
      * @return Result<Void>
      */
     @GetMapping("/{id}")
-    public Result<MajorVO> getByLevel(@PathVariable int id) {
-        MajorVO majorVO = majorService.getByLevel(id);
-        return Result.success(majorVO);
+    public Result<List<MajorVO>> getByLevel(@PathVariable int id) {
+        return Result.success(majorService.getByLevel(id));
     }
 
 }

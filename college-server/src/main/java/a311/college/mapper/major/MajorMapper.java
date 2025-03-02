@@ -3,6 +3,8 @@ package a311.college.mapper.major;
 import a311.college.vo.MajorVO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface MajorMapper {
 
@@ -11,5 +13,5 @@ public interface MajorMapper {
      * @param id 层次id
      * @return MajorVO
      */
-    MajorVO selectByLevelId(int id);
+    List<MajorVO> selectByLevelId(int id);
 }

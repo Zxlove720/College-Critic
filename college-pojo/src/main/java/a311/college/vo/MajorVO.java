@@ -26,7 +26,7 @@ public class MajorVO implements Serializable {
     private String year;
 
     @Schema(description = "授予学位")
-    private List<String> degrees;
+    private String degrees;
 
     @Schema(description = "男女比例")
     private String gender;

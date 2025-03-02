@@ -10,8 +10,8 @@
                 join professional_class as pc on sc.id = pc.subject_category_id
                 join major as m on pc.id = m.class_id
         where al.id = #{id} and (sc.id = 1 or sc.id = 13) and (pc.id = 1 or pc.id = 94)
-
     </select>
+
 
 
 </mapper>

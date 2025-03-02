@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 /**
  * 大学json数据保存数据库
  */
-public class Json2DataBase {
+public class College2DataBase {
 
     public static void main(String[] args) {
         saveSchoolData2DB();
@@ -41,7 +41,7 @@ public class Json2DataBase {
             List<SchoolRankInfo> rankData = mapper.readValue(new File(ResourceFilePath.RANKING_DATA_PATH),
                     mapper.getTypeFactory().constructCollectionType(List.class, SchoolRankInfo.class));
             // 序列化school.json
-            File dir = new File(ResourceFilePath.DATA_PATH);
+            File dir = new File(ResourceFilePath.COLLEGE_DATA_PATH);
             File[] files = dir.listFiles();
             for (File file : files) {
                 try {

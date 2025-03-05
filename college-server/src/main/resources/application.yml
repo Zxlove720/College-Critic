@@ -14,6 +14,18 @@ spring:
     username: ${college.datasource.username}
     password: ${college.datasource.password}
 
+  data:
+    redis:
+      host: ${college.data.redis.host}
+      port: ${college.data.redis.port}
+      password: ${college.data.redis.password}
+      lettuce:
+        pool:
+          max-active: ${college.data.redis.lettuce.pool.max-active}
+          max-idle: ${college.data.redis.lettuce.pool.max-idle}
+          min-idle: ${college.data.redis.lettuce.pool.min-idle}
+          time-between-eviction-runs: ${college.data.redis.lettuce.pool.time-between-eviction-runs}
+
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: a311.college.entity

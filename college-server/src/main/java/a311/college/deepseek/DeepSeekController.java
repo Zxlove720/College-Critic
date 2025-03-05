@@ -1,9 +1,9 @@
 package a311.college.deepseek;
 
 import a311.college.entity.ai.Message;
+import a311.college.entity.ai.UserRequest;
 import a311.college.result.Result;
 import a311.college.service.DeepSeekService;
-import lombok.extern.log4j.Log4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/ai")
-@Log4j
 public class DeepSeekController {
 
     private final DeepSeekService deepSeekService;
@@ -26,11 +25,11 @@ public class DeepSeekController {
     /**
      * 回答用户问题
      *
-     * @param message
+     * @param request 用户请求
      * @return Result<Void>
      */
-    @PostMapping
-    public Result<Message> responseQuestion(@RequestBody Message message) {
-        return Result.success(deepSeekService.response(message));
+    @PostMapping("/answer")
+    public Result<Message> responseQuestion(@RequestBody UserRequest request) {
+        return Result.success(deepSeekService.response(request));
     }
 }

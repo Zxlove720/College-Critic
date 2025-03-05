@@ -1,4 +1,4 @@
-package a311.college.AI;
+package a311.college.deepseek;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;

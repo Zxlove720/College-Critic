@@ -52,11 +52,7 @@ college:
     # 设置前端请求传递的令牌名称
     user-token-name: token
 
-  alioss:
-    endpoint: ${college.alioss.endpoint}
-    access-key-id: ${college.alioss.access-key-id}
-    access-key-secret: ${college.alioss.access-key-secret}
-    bucket-name: ${college.alioss.bucket-name}
+
 
 knife4j:
   enable: true

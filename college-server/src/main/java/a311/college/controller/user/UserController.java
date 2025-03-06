@@ -89,6 +89,7 @@ public class UserController {
      * @param schoolId 学校ID
      * @return Result<Void>
      */
+    @PostMapping("/add")
     public Result<Void> addFavorite(int schoolId) {
         long userId = ThreadLocalUtil.getCurrentId();
         log.info("用户：{}，将{}学校添加到喜欢", userId, schoolId);

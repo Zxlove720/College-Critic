@@ -4,7 +4,6 @@ import a311.college.dto.college.CollegePageQueryDTO;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.vo.CollegeSimpleVO;
-import a311.college.vo.CollegeVO;
 import a311.college.vo.YearScoreVO;
 
 import java.util.List;
@@ -18,11 +17,11 @@ public interface CollegeService {
 
     void cacheCollege();
 
-    CollegeVO getSchoolByName(String schoolName);
-
     List<CollegeSimpleVO> getByGrade(int grade, String province);
 
     List<CollegeSimpleVO> getByAddress(String province);
 
     Result<List<YearScoreVO>> getScoreByYear(int id, String province, String year);
+
+    Result<List<CollegeSimpleVO>> getCollegeByName(String schoolName);
 }

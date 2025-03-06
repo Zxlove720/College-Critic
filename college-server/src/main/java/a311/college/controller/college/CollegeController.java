@@ -1,13 +1,11 @@
 package a311.college.controller.college;
 
 
-import a311.college.address.AddressToEnumUtil;
 import a311.college.dto.college.CollegePageQueryDTO;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.CollegeService;
 import a311.college.vo.CollegeSimpleVO;
-import a311.college.vo.CollegeVO;
 import a311.college.vo.YearScoreVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +23,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/colleges")
 public class CollegeController {
-
 
     private final CollegeService collegeService;
 
@@ -61,16 +58,14 @@ public class CollegeController {
     }
 
     /**
-     * 大学得分
+     * 根据学校名搜索
      *
-     * @param schoolName 大学名
-     * @return Result<Void>
+     * @param schoolName 学校名
+     * @return Result<List<CollegeSimpleVO>>
      */
-    @GetMapping("/score")
-    public Result<Integer> getCollegeScore(String schoolName) {
-        CollegeVO school = collegeService.getSchoolByName(schoolName);
-        return Result.success(AddressToEnumUtil.toProvinceEnum
-                (AddressToEnumUtil.extractProvince(school.getSchoolAddress())).getScore());
+    @GetMapping("/name")
+    public Result<List<CollegeSimpleVO>> getCollegeByName(String schoolName) {
+        return collegeService.getCollegeByName(schoolName);
     }
 
     /**

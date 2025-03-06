@@ -7,7 +7,6 @@ import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.CollegeService;
 import a311.college.vo.CollegeSimpleVO;
-import a311.college.vo.CollegeVO;
 import a311.college.vo.YearScoreVO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -78,10 +77,8 @@ public class CollegeServiceImpl implements CollegeService {
             try {
                 // 1. 查询数据库
                 List<CollegeSimpleVO> collegeVOS = collegeMapper.selectByAddress(area);
-
                 // 2. 删除旧缓存（避免残留旧数据）
                 redisTemplate.delete(key);
-
                 // 3. 批量插入新数据（使用rightPushAll）
                 if (!collegeVOS.isEmpty()) {
                     redisTemplate.opsForList().rightPushAll(key, collegeVOS);
@@ -93,13 +90,6 @@ public class CollegeServiceImpl implements CollegeService {
                 log.error("地区 {} 缓存预热失败: {}", area, e.getMessage(), e);
             }
         }
-    }
-
-    @Override
-    public CollegeVO getSchoolByName(String schoolName) {
-        CollegeVO collegeVO = collegeMapper.selectByName(schoolName);
-        System.out.println(collegeVO);
-        return collegeVO;
     }
 
     @Override
@@ -122,5 +112,10 @@ public class CollegeServiceImpl implements CollegeService {
                     .substring(yearScoreVO.getMajorName().indexOf("选科要求")));
         }
         return Result.success(yearScoreVOList);
+    }
+
+    @Override
+    public Result<List<CollegeSimpleVO>> getCollegeByName(String schoolName) {
+        return Result.success(collegeMapper.selectByName(schoolName));
     }
 }

@@ -4,7 +4,6 @@ package a311.college.mapper.college;
 import a311.college.dto.college.CollegePageQueryDTO;
 import a311.college.result.Result;
 import a311.college.vo.CollegeSimpleVO;
-import a311.college.vo.CollegeVO;
 import a311.college.vo.YearScoreVO;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
@@ -24,14 +23,6 @@ public interface CollegeMapper {
      * @return Page<CollegeVO>
      */
     Page<CollegeSimpleVO> pageQuery(CollegePageQueryDTO collegePageQueryDTO);
-
-    /**
-     * 根据学校名查询大学
-     * @param schoolName 学校名
-     * @return CollegeVO
-     */
-    @Select("select * from tb_school where school_name = #{schoolName}")
-    CollegeVO selectByName(String schoolName);
 
     /**
      * 根据成绩查询大学
@@ -57,4 +48,11 @@ public interface CollegeMapper {
      * @return Result<YearScoreVO>
      */
     List<YearScoreVO> selectScoreByYear(int id, String province, String year);
+
+    /**
+     * 根据学校名搜索
+     * @param schoolName 学校名
+     * @return Result<List<CollegeSimpleVO>>
+     */
+    List<CollegeSimpleVO> selectByName(String schoolName);
 }

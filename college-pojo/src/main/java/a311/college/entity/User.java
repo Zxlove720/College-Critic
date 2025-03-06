@@ -67,6 +67,9 @@ public class User implements Serializable {
     @Schema(description = "用户意向城市")
     private ProvinceEnum city;
 
+    @Schema(description = "收藏表")
+    private List<String> favoriteTable;
+
     @Schema(description = "志愿表")
     private List<String> collegeTable;
 

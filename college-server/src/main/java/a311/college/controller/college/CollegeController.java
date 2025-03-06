@@ -6,7 +6,6 @@ import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.CollegeService;
 import a311.college.vo.CollegeSimpleVO;
-import a311.college.vo.MajorVO;
 import a311.college.vo.YearScoreVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

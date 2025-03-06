@@ -13,6 +13,7 @@ import a311.college.properties.JWTProperties;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.UserService;
+import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.UserLoginVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -79,6 +80,19 @@ public class UserController {
     @Operation(summary = "用户登出")
     public Result<Void> layout() {
         log.info("用户退出登录");
+        return Result.success();
+    }
+
+    /**
+     * 添加喜爱学校
+     *
+     * @param schoolId 学校ID
+     * @return Result<Void>
+     */
+    public Result<Void> addFavorite(int schoolId) {
+        long userId = ThreadLocalUtil.getCurrentId();
+        log.info("用户：{}，将{}学校添加到喜欢", userId, schoolId);
+        userService.addFavorite(userId, schoolId);
         return Result.success();
     }
 

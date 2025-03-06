@@ -192,4 +192,11 @@ public class UserServiceImpl implements UserService {
             throw new PasswordEditFailedException(MessageConstant.PASSWORD_EDIT_FAILED);
         }
     }
+
+    @Override
+    public void addFavorite(long userId, int schoolId) {
+        List<Integer> favoriteTable = userMapper.selectFavoriteById(userId);
+        favoriteTable.add(schoolId);
+        userMapper.addFavorite(favoriteTable);
+    }
 }

@@ -8,10 +8,11 @@ import a311.college.enumeration.OperationType;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 /**
  * 用户相关Mapper
  */
-//TODO建表之后根据subjects列的具体情况可能会有所修改
 @Mapper
 public interface UserMapper {
 
@@ -79,4 +80,10 @@ public interface UserMapper {
      */
     @AutoFill(value = OperationType.UPDATE)
     void update(User user);
+
+
+    List<Integer> selectFavoriteById(long userId);
+
+
+    void addFavorite(List<Integer> favoriteTable);
 }

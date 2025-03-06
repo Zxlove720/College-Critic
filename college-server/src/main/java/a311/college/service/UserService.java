@@ -27,4 +27,6 @@ public interface UserService {
     void changeStatus(Integer status, Long id);
 
     void editPassword(PasswordEditDTO passwordEditDTO);
+
+    void addFavorite(long userId, int schoolId);
 }

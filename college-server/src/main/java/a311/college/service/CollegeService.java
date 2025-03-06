@@ -20,7 +20,7 @@ public interface CollegeService {
 
     List<CollegeVO> getByGrade(int grade, String province);
 
-    List<CollegeVO> getByAddress(String province);
+    List<CollegeSimpleVO> getByAddress(String province);
 
     Result<List<YearScoreVO>> getScoreByYear(int id, String province, String year);
 }

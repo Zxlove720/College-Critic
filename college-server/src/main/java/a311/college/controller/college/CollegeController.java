@@ -88,7 +88,7 @@ public class CollegeController {
      * @return Result<List<CollegeVO>>
      */
     @GetMapping("address")
-    public Result<List<CollegeVO>> getByAddress(String province) {
+    public Result<List<CollegeSimpleVO>> getByAddress(String province) {
         log.info("查询省份为:{}", province);
         return Result.success(collegeService.getByAddress(province));
     }

@@ -46,7 +46,7 @@ public interface CollegeMapper {
      * @return List<CollegeVO>
      */
     @Select("select school_head, school_name,school_address, rank_list from tb_school where school_province = #{province}")
-    List<CollegeVO> selectByAddress(String province);
+    List<CollegeSimpleVO> selectByAddress(String province);
 
     /**
      * 获取某一院校的历年分数线

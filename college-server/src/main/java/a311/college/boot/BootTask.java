@@ -16,6 +16,11 @@ public class BootTask implements ApplicationRunner {
         this.collegeService = collegeService;
     }
 
+    /**
+     * 缓存预热
+     *
+     * @param arguments
+     */
     @Override
     public void run(ApplicationArguments arguments) {
         try {

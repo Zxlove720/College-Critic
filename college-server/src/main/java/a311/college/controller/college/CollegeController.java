@@ -38,7 +38,7 @@ public class CollegeController {
      * 大学信息分页查询
      *
      * @param collegePageQueryDTO 大学分页查询DTO
-     * @return Result<PageResult<School>>
+     * @return Result<PageResult < School>>
      */
     @GetMapping("/page")
     public Result<PageResult<CollegeSimpleVO>> collegeList(CollegePageQueryDTO collegePageQueryDTO) {
@@ -49,9 +49,10 @@ public class CollegeController {
 
     /**
      * 获取某一院校的历年分数线
-     * @param id 学校id
+     *
+     * @param id       学校id
      * @param province 招生省份
-     * @param year 招生年份
+     * @param year     招生年份
      * @return Result<YearScoreVO>
      */
     @GetMapping("/years")
@@ -61,6 +62,7 @@ public class CollegeController {
 
     /**
      * 大学得分
+     *
      * @param schoolName 大学名
      * @return Result<Void>
      */
@@ -73,6 +75,7 @@ public class CollegeController {
 
     /**
      * 根据用户成绩查询大学
+     *
      * @return Result<CollegeVO>
      */
     @GetMapping("grade")
@@ -84,8 +87,9 @@ public class CollegeController {
 
     /**
      * 根据省份查询大学
+     *
      * @param province 省份名
-     * @return Result<List<CollegeVO>>
+     * @return Result<List < CollegeVO>>
      */
     @GetMapping("address")
     public Result<List<CollegeSimpleVO>> getByAddress(String province) {

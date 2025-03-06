@@ -197,6 +197,6 @@ public class UserServiceImpl implements UserService {
     public void addFavorite(long userId, int schoolId) {
         List<Integer> favoriteTable = userMapper.selectFavoriteById(userId);
         favoriteTable.add(schoolId);
-        userMapper.addFavorite(favoriteTable);
+        userMapper.addFavorite(favoriteTable, userId);
     }
 }

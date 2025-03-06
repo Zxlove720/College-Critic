@@ -22,9 +22,7 @@ public interface UserMapper {
      * @param username 用户名
      * @return User
      */
-    @Results({
-            @Result(property = "subjects", column = "subjects", typeHandler = UserHandler.class)
-    })
+    @Results({@Result(property = "subjects", column = "subjects", typeHandler = UserHandler.class)})
     @Select("select * from tb_user where username = #{username}")
     User getUserByUsername(String username);
 
@@ -39,12 +37,10 @@ public interface UserMapper {
     /**
      * 根据id查询用户
      *
-     * @param id
-     * @return
+     * @param id 用户id
+     * @return User
      */
-    @Results({
-            @Result(property = "subjects", column = "subjects", typeHandler = UserHandler.class)
-    })
+    @Results({@Result(property = "subjects", column = "subjects", typeHandler = UserHandler.class)})
     @Select("select * from tb_user where id = #{id}")
     User selectById(Long id);
 
@@ -81,9 +77,21 @@ public interface UserMapper {
     @AutoFill(value = OperationType.UPDATE)
     void update(User user);
 
-
+    /**
+     * 获取用户的收藏列表
+     *
+     * @param userId 用户id
+     * @return List<Integer>
+     */
+    @Select("select favorite_table from tb_user where id = #{userId}")
     List<Integer> selectFavoriteById(long userId);
 
-
-    void addFavorite(List<Integer> favoriteTable);
+    /**
+     * 添加喜爱学校
+     *
+     * @param favoriteTable 收藏表
+     * @param userId 用户id
+     */
+    @Update("update tb_user set favorite_table = #{favoriteTbale} where id = #{userId}")
+    void addFavorite(List<Integer> favoriteTable, long userId);
 }

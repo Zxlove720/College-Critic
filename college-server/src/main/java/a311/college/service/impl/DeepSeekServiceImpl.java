@@ -1,6 +1,6 @@
 package a311.college.service.impl;
 
-import a311.college.constant.deepseek.APIConstant;
+import a311.college.constant.deepseek.DeepSeekConstant;
 import a311.college.entity.ai.Message;
 import a311.college.entity.ai.UserRequest;
 import a311.college.service.DeepSeekService;
@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * DeepSeek多轮对话
+ */
 @Slf4j
 @Service
 public class DeepSeekServiceImpl implements DeepSeekService {
@@ -30,38 +33,38 @@ public class DeepSeekServiceImpl implements DeepSeekService {
                 .readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .build();
-        addSystemMessage("你是一个服务于高考志愿填报系统的AI");
+        addSystemMessage();
         // 将用户消息添加到历史
         addUserMessage(request.getMessage().getContent());
         // 构建请求体
         JSONObject requestBody = new JSONObject();
-        requestBody.put("model", "deepseek-chat");
+        requestBody.put("model", DeepSeekConstant.MODEL_NAME);
         requestBody.put("messages", buildMessageArray());
-        requestBody.put("stream", false);
+        requestBody.put("stream", request.getStream());
 
         Request seekRequest = new Request.Builder()
-                .url(APIConstant.API_URL)
-                .addHeader("Authorization", "Bearer " + APIConstant.API_KEY)
-                .addHeader("Content-Type", "application/json")
+                .url(DeepSeekConstant.API_URL)
+                .addHeader("Authorization", "Bearer " + DeepSeekConstant.API_KEY)
+                .addHeader("Content-Type", DeepSeekConstant.PARSE_SET)
                 .post(RequestBody.create(
                         requestBody.toJSONString(),
-                        MediaType.parse("application/json")))
+                        MediaType.parse(DeepSeekConstant.PARSE_SET)))
                 .build();
         try (Response response = client.newCall(seekRequest).execute()) {
             if (!response.isSuccessful()) {
-                log.info("用户请求失败");
-                return new Message("assistant", "error");
+                log.info(DeepSeekConstant.ERROR_CONSTANT);
+                return new Message(DeepSeekConstant.ROLE_ASSISTANT, "error");
             }
             JSONObject responseJson = JSON.parseObject(response.body().string());
             String answer = extractAnswer(responseJson);
             // 添加助手回复到历史
             addAssistantMessage(answer);
-            log.info("assistant：{}", answer);
-            return new Message("assistant", answer);
+            log.info(DeepSeekConstant.ROLE_ASSISTANT + "{}", answer);
+            return new Message(DeepSeekConstant.ROLE_ASSISTANT, answer);
         } catch (IOException e) {
-            log.info("请求异常");
+            log.info(DeepSeekConstant.REQUEST_CONSTANT);
         }
-        return new Message("assistant", "error");
+        return new Message(DeepSeekConstant.ROLE_ASSISTANT, "error");
     }
 
     private JSONArray buildMessageArray() {
@@ -70,21 +73,21 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         return messages;
     }
 
-    private void addSystemMessage(String content) {
+    private void addSystemMessage() {
         messageHistory.add(new JSONObject()
-                .fluentPut("role", "system")
-                .fluentPut("content", content));
+                .fluentPut("role", DeepSeekConstant.ROLE_SYSTEM)
+                .fluentPut("content", DeepSeekConstant.INIT_CONSTANT));
     }
 
     private void addUserMessage(String content) {
         messageHistory.add(new JSONObject()
-                .fluentPut("role", "user")
+                .fluentPut("role", DeepSeekConstant.ROLE_USER)
                 .fluentPut("content", content));
     }
 
     private void addAssistantMessage(String content) {
         messageHistory.add(new JSONObject()
-                .fluentPut("role", "assistant")
+                .fluentPut("role", DeepSeekConstant.ROLE_ASSISTANT)
                 .fluentPut("content", content));
     }
 

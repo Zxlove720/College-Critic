@@ -20,6 +20,7 @@
 
     <select id="pageQuery" resultType="a311.college.vo.CollegeSimpleVO">
         select
+        school_id,
         school_head,
         school_name,
         school_address,
@@ -37,7 +38,6 @@
                     rank_list LIKE CONCAT('%', #{item}, '%')
                 </foreach>
             </if>
-
         </where>
         order by length(rank_list) desc
     </select>
@@ -101,18 +101,11 @@
     <!--        ORDER BY min_score desc, min_ranking desc-->
     <!--    </select>-->
 
-    <select id="selectByGrade" resultMap="collegeScoreMap">
+    <select id="selectByGrade" resultType="a311.college.vo.CollegeSimpleVO">
         SELECT s.school_head,
                s.school_name,
-               p.province_name,
                s.school_address,
-               s.rank_list,
-               y.year,
-               c.category_name,
-               b.batch_name,
-               sc.major_name,
-               sc.min_score,
-               sc.min_ranking
+               s.rank_list
         FROM tb_school as s
                  JOIN tb_province as p ON s.school_id = p.school_id
                  JOIN tb_year as y ON p.province_id = y.province_id

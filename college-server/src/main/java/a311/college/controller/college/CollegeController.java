@@ -79,9 +79,9 @@ public class CollegeController {
      * @return Result<CollegeVO>
      */
     @GetMapping("grade")
-    public Result<List<CollegeVO>> getByUserScore(int grade, String province) {
+    public Result<List<CollegeSimpleVO>> getByUserScore(int grade, String province) {
         log.info("用户成绩为：{}", grade);
-        List<CollegeVO> collegeList = collegeService.getByGrade(grade, province);
+        List<CollegeSimpleVO> collegeList = collegeService.getByGrade(grade, province);
         return Result.success(collegeList);
     }
 

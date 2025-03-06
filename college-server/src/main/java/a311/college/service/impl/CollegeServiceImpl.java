@@ -17,8 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -40,6 +39,7 @@ public class CollegeServiceImpl implements CollegeService {
 
     /**
      * 大学数据分页查询
+     *
      * @param collegePageQueryDTO 大学分页查询DTO
      * @return PageResult<CollegeVO>
      */
@@ -49,7 +49,7 @@ public class CollegeServiceImpl implements CollegeService {
         List<CollegeSimpleVO> range = redisTemplate.opsForList().range(key, 0, -1);
         if (range != null && !range.isEmpty()) {
             log.info("缓存命中");
-            return new PageResult<>((long)range.size(), range);
+            return new PageResult<>((long) range.size(), range);
         }
         log.info("缓存未命中，开启分页查询");
         PageHelper.startPage(collegePageQueryDTO.getPage(), collegePageQueryDTO.getPageSize());
@@ -69,31 +69,31 @@ public class CollegeServiceImpl implements CollegeService {
      * 添加热点地区的大学到缓存
      */
     public void cacheCollege() {
-    // 定义热点地区列表
-    List<String> hotAreas = Arrays.asList("北京", "上海", "广东", "湖北", "重庆");
+        // 定义热点地区列表
+        List<String> hotAreas = Arrays.asList("北京", "上海", "广东", "湖北", "重庆");
 
-    for (String area : hotAreas) {
-        // 统一键名格式
-        String key = RedisKeyConstant.COLLEGE_CACHE_KEY + area + ":";
-        try {
-            // 1. 查询数据库
-            List<CollegeSimpleVO> collegeVOS = collegeMapper.selectByAddress(area);
+        for (String area : hotAreas) {
+            // 统一键名格式
+            String key = RedisKeyConstant.COLLEGE_CACHE_KEY + area + ":";
+            try {
+                // 1. 查询数据库
+                List<CollegeSimpleVO> collegeVOS = collegeMapper.selectByAddress(area);
 
-            // 2. 删除旧缓存（避免残留旧数据）
-            redisTemplate.delete(key);
+                // 2. 删除旧缓存（避免残留旧数据）
+                redisTemplate.delete(key);
 
-            // 3. 批量插入新数据（使用rightPushAll）
-            if (!collegeVOS.isEmpty()) {
-                redisTemplate.opsForList().rightPushAll(key, collegeVOS);
-                log.info("地区 {} 缓存预热成功，共 {} 条数据", area, collegeVOS.size());
-            } else {
-                log.warn("地区 {} 无数据，跳过缓存预热", area);
+                // 3. 批量插入新数据（使用rightPushAll）
+                if (!collegeVOS.isEmpty()) {
+                    redisTemplate.opsForList().rightPushAll(key, collegeVOS);
+                    log.info("地区 {} 缓存预热成功，共 {} 条数据", area, collegeVOS.size());
+                } else {
+                    log.warn("地区 {} 无数据，跳过缓存预热", area);
+                }
+            } catch (Exception e) {
+                log.error("地区 {} 缓存预热失败: {}", area, e.getMessage(), e);
             }
-        } catch (Exception e) {
-            log.error("地区 {} 缓存预热失败: {}", area, e.getMessage(), e);
         }
     }
-}
 
     @Override
     public CollegeVO getSchoolByName(String schoolName) {
@@ -103,8 +103,10 @@ public class CollegeServiceImpl implements CollegeService {
     }
 
     @Override
-    public List<CollegeVO> getByGrade(int grade, String province) {
-        return collegeMapper.selectByGrade(grade, province);
+    public List<CollegeSimpleVO> getByGrade(int grade, String province) {
+        List<CollegeSimpleVO> collegeSimpleVOS = collegeMapper.selectByGrade(grade, province);
+        Set<CollegeSimpleVO> tempSet = new HashSet<>(collegeSimpleVOS);
+        return new ArrayList<>(tempSet);
     }
 
     @Override
@@ -117,7 +119,7 @@ public class CollegeServiceImpl implements CollegeService {
         List<YearScoreVO> yearScoreVOList = collegeMapper.selectScoreByYear(id, province, year);
         for (YearScoreVO yearScoreVO : yearScoreVOList) {
             yearScoreVO.setMajorName(yearScoreVO.getMajorName()
-                .substring(yearScoreVO.getMajorName().indexOf("选科要求")));
+                    .substring(yearScoreVO.getMajorName().indexOf("选科要求")));
         }
         return Result.success(yearScoreVOList);
     }

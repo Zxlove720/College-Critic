@@ -38,7 +38,7 @@ public interface CollegeMapper {
      * @param grade 用户成绩
      * @return List<CollegeVO>
      */
-    List<CollegeVO> selectByGrade(int grade, String province);
+    List<CollegeSimpleVO> selectByGrade(int grade, String province);
 
     /**
      * 根据省份查询大学

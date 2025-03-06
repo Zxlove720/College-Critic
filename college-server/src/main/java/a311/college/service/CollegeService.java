@@ -20,7 +20,7 @@ public interface CollegeService {
 
     CollegeVO getSchoolByName(String schoolName);
 
-    List<CollegeVO> getByGrade(int grade, String province);
+    List<CollegeSimpleVO> getByGrade(int grade, String province);
 
     List<CollegeSimpleVO> getByAddress(String province);
 

@@ -16,6 +16,8 @@ public interface CollegeService {
 
     PageResult<CollegeSimpleVO> pageSelect(CollegePageQueryDTO collegePageQueryDTO);
 
+    void cacheCollege();
+
     CollegeVO getSchoolByName(String schoolName);
 
     List<CollegeVO> getByGrade(int grade, String province);

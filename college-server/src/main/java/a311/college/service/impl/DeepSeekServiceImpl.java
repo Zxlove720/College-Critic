@@ -55,8 +55,14 @@ public class DeepSeekServiceImpl implements DeepSeekService {
                 log.info(DeepSeekConstant.ERROR_CONSTANT);
                 return new Message(DeepSeekConstant.ROLE_ASSISTANT, "error");
             }
-            JSONObject responseJson = JSON.parseObject(response.body().string());
-            String answer = extractAnswer(responseJson);
+            JSONObject responseJson = null;
+            if (response.body() != null) {
+                responseJson = JSON.parseObject(response.body().string());
+            }
+            String answer = null;
+            if (responseJson != null) {
+                answer = extractAnswer(responseJson);
+            }
             // 添加助手回复到历史
             addAssistantMessage(answer);
             log.info(DeepSeekConstant.ROLE_ASSISTANT + "{}", answer);

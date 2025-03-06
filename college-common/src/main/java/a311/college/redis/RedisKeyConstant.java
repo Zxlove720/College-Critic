@@ -5,6 +5,8 @@ package a311.college.redis;
  */
 public class RedisKeyConstant {
 
-    public static final String COLLEGE_CACHE_CONSTANT = "college:area:";
+    public static final String COLLEGE_CACHE_KEY = "college:area:";
+
+    public static final Long COLLEGE_CACHE_TTL = 1800L;
 
 }

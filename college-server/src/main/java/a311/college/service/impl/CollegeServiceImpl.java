@@ -9,19 +9,17 @@ import a311.college.service.CollegeService;
 import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.CollegeVO;
 import a311.college.vo.YearScoreVO;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 大学相关服务实现类
@@ -47,18 +45,22 @@ public class CollegeServiceImpl implements CollegeService {
      */
     @Override
     public PageResult<CollegeSimpleVO> pageSelect(CollegePageQueryDTO collegePageQueryDTO) {
-        List<CollegeSimpleVO> range = redisTemplate.opsForList().
-                range(RedisKeyConstant.COLLEGE_CACHE_CONSTANT + collegePageQueryDTO.getProvince() + ":", 0, -1);
+        String key = RedisKeyConstant.COLLEGE_CACHE_KEY + collegePageQueryDTO.getProvince() + ":";
+        List<CollegeSimpleVO> range = redisTemplate.opsForList().range(key, 0, -1);
         if (range != null && !range.isEmpty()) {
-            return new PageResult<>(50L, range);
+            log.info("缓存命中");
+            return new PageResult<>((long)range.size(), range);
         }
-
+        log.info("缓存未命中，开启分页查询");
         PageHelper.startPage(collegePageQueryDTO.getPage(), collegePageQueryDTO.getPageSize());
         Page<CollegeSimpleVO> pageResult = collegeMapper.pageQuery(collegePageQueryDTO);
         // 获取总记录数
         long total = pageResult.getTotal();
         // 获取总记录
         List<CollegeSimpleVO> result = pageResult.getResult();
+        // 将其添加到缓存
+        redisTemplate.opsForList().rightPushAll(key, result);
+        redisTemplate.expire(key, RedisKeyConstant.COLLEGE_CACHE_TTL, TimeUnit.SECONDS);
         return new PageResult<>(total, result);
     }
 
@@ -71,8 +73,8 @@ public class CollegeServiceImpl implements CollegeService {
     List<String> hotAreas = Arrays.asList("北京", "上海", "广东", "湖北", "重庆");
 
     for (String area : hotAreas) {
-        // 统一键名格式（无冒号）
-        String key = RedisKeyConstant.COLLEGE_CACHE_CONSTANT + area + ":";
+        // 统一键名格式
+        String key = RedisKeyConstant.COLLEGE_CACHE_KEY + area + ":";
         try {
             // 1. 查询数据库
             List<CollegeSimpleVO> collegeVOS = collegeMapper.selectByAddress(area);

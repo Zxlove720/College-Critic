@@ -2,6 +2,7 @@ package a311.college.service.impl;
 
 import a311.college.dto.major.MajorDTO;
 import a311.college.mapper.major.MajorMapper;
+import a311.college.result.Result;
 import a311.college.service.MajorService;
 import a311.college.vo.MajorVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,10 @@ public class MajorServiceImpl implements MajorService {
     @Override
     public List<MajorVO> getMajors(MajorDTO majorDTO) {
         return majorMapper.selectMajors(majorDTO);
+    }
+
+    @Override
+    public Result<List<MajorVO>> getMajorByName(String majorName) {
+        return majorMapper.selectByName(majorName);
     }
 }

@@ -7,6 +7,7 @@ import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.CollegeService;
 import a311.college.vo.CollegeSimpleVO;
+import a311.college.vo.MajorVO;
 import a311.college.vo.YearScoreVO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -118,4 +119,5 @@ public class CollegeServiceImpl implements CollegeService {
     public Result<List<CollegeSimpleVO>> getCollegeByName(String schoolName) {
         return Result.success(collegeMapper.selectByName(schoolName));
     }
+
 }

@@ -6,6 +6,7 @@ import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.CollegeService;
 import a311.college.vo.CollegeSimpleVO;
+import a311.college.vo.MajorVO;
 import a311.college.vo.YearScoreVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,17 @@ public class CollegeController {
     }
 
     /**
+     * 根据学校名搜索
+     *
+     * @param schoolName 学校名
+     * @return Result<List<CollegeSimpleVO>>
+     */
+    @GetMapping("/name")
+    public Result<List<CollegeSimpleVO>> getCollegeByName(String schoolName) {
+        return collegeService.getCollegeByName(schoolName);
+    }
+
+    /**
      * 获取某一院校的历年分数线
      *
      * @param id       学校id
@@ -55,17 +67,6 @@ public class CollegeController {
     @GetMapping("/years")
     public Result<List<YearScoreVO>> collegeScoreByYear(int id, String province, String year) {
         return collegeService.getScoreByYear(id, province, year);
-    }
-
-    /**
-     * 根据学校名搜索
-     *
-     * @param schoolName 学校名
-     * @return Result<List<CollegeSimpleVO>>
-     */
-    @GetMapping("/name")
-    public Result<List<CollegeSimpleVO>> getCollegeByName(String schoolName) {
-        return collegeService.getCollegeByName(schoolName);
     }
 
     /**

@@ -35,4 +35,15 @@ public class MajorController {
         return Result.success(majorService.getMajors(majorDTO));
     }
 
+    /**
+     * 根据专业名搜索
+     *
+     * @param majorName 专业名
+     * @return Result<List<MajorVO>>
+     */
+    @GetMapping("/major")
+    public Result<List<MajorVO>> getMajorByName(String majorName) {
+        return majorService.getMajorByName(majorName);
+    }
+
 }

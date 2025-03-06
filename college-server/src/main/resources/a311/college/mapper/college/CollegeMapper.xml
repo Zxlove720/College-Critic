@@ -51,7 +51,6 @@
         from tb_school as s where school_name like concat('%', #{schoolName}, '%')
     </select>
 
-
     <select id="selectScoreByYear" resultType="a311.college.vo.YearScoreVO">
         select y.year,
                b.batch_name,

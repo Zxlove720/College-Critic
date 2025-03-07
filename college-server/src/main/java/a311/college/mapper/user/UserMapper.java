@@ -22,7 +22,6 @@ public interface UserMapper {
      * @param username 用户名
      * @return User
      */
-    @Results({@Result(property = "subjects", column = "subjects", typeHandler = UserHandler.class)})
     @Select("select * from tb_user where username = #{username}")
     User getUserByUsername(String username);
 

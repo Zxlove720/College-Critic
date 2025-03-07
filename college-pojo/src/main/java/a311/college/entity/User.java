@@ -53,7 +53,7 @@ public class User implements Serializable {
     private Integer pattern;   // 1.新高考 0.老高考
 
     @Schema(description = "用户选科（新高考）")
-    private List<SubjectsEnum> subjects;
+    private List<String> subjects;
 
     @Schema(description = "用户分科（老高考）")
     private Integer category;   // 1.理科 0.文科

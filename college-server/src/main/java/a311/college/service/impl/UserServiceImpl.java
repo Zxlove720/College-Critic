@@ -124,15 +124,15 @@ public class UserServiceImpl implements UserService {
         if (user.getProvince().getStatus() == 0) {
             // 确定用户为老高考
             user.setPattern(0);
-            List<SubjectsEnum> subjects = new ArrayList<>();
+            List<String> subjects = new ArrayList<>();
             // 确定老高考用户文理科
             if (user.getCategory() == 1) {
                 // 确定用户为理科，为其添加选科
-                Collections.addAll(subjects, SubjectsEnum.PHYSICS, SubjectsEnum.CHEMISTRY, SubjectsEnum.BIOLOGY);
+                Collections.addAll(subjects, "物理", "化学", "生物");
                 user.setSubjects(subjects);
             } else if(user.getCategory() == 0){
                 // 确定用户为文科，为其添加选科
-                Collections.addAll(subjects, SubjectsEnum.HISTORY, SubjectsEnum.POLITICS, SubjectsEnum.GEOGRAPHY);
+                Collections.addAll(subjects, "历史", "政治", "地理");
                 user.setSubjects(subjects);
             }
         }

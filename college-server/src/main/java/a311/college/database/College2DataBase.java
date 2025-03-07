@@ -1,6 +1,5 @@
 package a311.college.database;
 
-import a311.college.address.AddressToEnumUtil;
 import a311.college.constant.DataBaseConnectionConstant;
 import a311.college.constant.resource.LogoConstant;
 import a311.college.constant.resource.ResourceFilePath;
@@ -54,8 +53,7 @@ public class College2DataBase {
                     for (SchoolRankInfo rankDatum : rankData) {
                         if (school.getSchoolName().equals(rankDatum.getSchoolName())) {
                             school.setSchoolAddr(rankDatum.getSchoolAddr());
-                            school.setProvinceAddress(AddressToEnumUtil.
-                                    toProvinceEnum(AddressToEnumUtil.extractProvince(school.getSchoolAddr())).getName());
+                            school.setProvinceAddress(school.getProvinceAddress());
                             school.setRankList(rankDatum.getRankList());
                             break;
                         }

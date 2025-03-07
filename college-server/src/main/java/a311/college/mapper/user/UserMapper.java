@@ -17,6 +17,16 @@ import java.util.List;
 public interface UserMapper {
 
     /**
+     * 用户传统登录
+     *
+     * @param username 用户名
+     * @return User
+     */
+    @Select("select id, password, status from tb_user where username = #{username}")
+    User userLogin(String username);
+
+
+    /**
      * 用户登录 传统
      *
      * @param username 用户名
@@ -93,4 +103,5 @@ public interface UserMapper {
      */
     @Update("update tb_user set favorite_table = #{favoriteTbale} where id = #{userId}")
     void addFavorite(List<Integer> favoriteTable, long userId);
+
 }

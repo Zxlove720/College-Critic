@@ -2,7 +2,7 @@ package a311.college.service;
 
 import a311.college.dto.user.PasswordEditDTO;
 import a311.college.dto.user.UserDTO;
-import a311.college.dto.login.UserLoginDTO;
+import a311.college.dto.login.UserSimpleLoginDTO;
 import a311.college.dto.user.UserPageQueryDTO;
 import a311.college.entity.User;
 import a311.college.result.PageResult;
@@ -12,7 +12,7 @@ import a311.college.result.PageResult;
  */
 public interface UserService {
 
-    User login(UserLoginDTO userLoginDTO);
+    User login(UserSimpleLoginDTO userSimpleLoginDTO);
 
     PageResult<User> pageSelect(UserPageQueryDTO userPageQueryDTO);
 

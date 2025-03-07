@@ -5,7 +5,7 @@ import a311.college.constant.JWT.JWTClaimsConstant;
 import a311.college.constant.user.UserStatusConstant;
 import a311.college.dto.user.PasswordEditDTO;
 import a311.college.dto.user.UserDTO;
-import a311.college.dto.login.UserLoginDTO;
+import a311.college.dto.login.UserSimpleLoginDTO;
 import a311.college.dto.user.UserPageQueryDTO;
 import a311.college.entity.User;
 import a311.college.jwt.JWTUtils;
@@ -46,26 +46,28 @@ public class UserController {
     /**
      * 用户登录
      *
-     * @param userLoginDTO 封装用户登录数据的DTO
+     * @param userSimpleLoginDTO 封装用户登录数据的DTO
      * @return 用户登录结果VO
      */
     @PostMapping("/login")
     @Operation(summary = "用户登录")
-    public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO) {
-        log.info("用户{}正在登录", userLoginDTO.getUsername());
-        User user = userService.login(userLoginDTO);
+    public Result<UserLoginVO> login(@RequestBody UserSimpleLoginDTO userSimpleLoginDTO) {
+        String username = userSimpleLoginDTO.getUsername();
+        log.info("用户{}正在登录", username);
+        User user = userService.login(userSimpleLoginDTO);
         // 登录成功之后，生成JWT令牌
         Map<String, Object> claims = new HashMap<>();
-        claims.put(JWTClaimsConstant.USER_ID, user.getId());
-        claims.put(JWTClaimsConstant.USERNAME, user.getUsername());
+        long userId = user.getId();
+        claims.put(JWTClaimsConstant.USER_ID, userId);
+        claims.put(JWTClaimsConstant.USERNAME, username);
         String token = JWTUtils.createJWT(
                 jwtProperties.getUserSecretKey(),
                 jwtProperties.getUserTime(),
                 claims);
         // 封装VO对象
         UserLoginVO userLoginVO = UserLoginVO.builder()
-                .id(user.getId())
-                .username(user.getUsername())
+                .id(userId)
+                .username(username)
                 .token(token)
                 .build();
         return Result.success(userLoginVO);

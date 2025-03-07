@@ -4,10 +4,9 @@ import a311.college.constant.message.MessageConstant;
 import a311.college.constant.user.UserStatusConstant;
 import a311.college.dto.user.PasswordEditDTO;
 import a311.college.dto.user.UserDTO;
-import a311.college.dto.login.UserLoginDTO;
+import a311.college.dto.login.UserSimpleLoginDTO;
 import a311.college.dto.user.UserPageQueryDTO;
 import a311.college.entity.User;
-import a311.college.enumeration.subjectEnum.SubjectsEnum;
 import a311.college.exception.AccountLockedException;
 import a311.college.exception.AccountNotFoundException;
 import a311.college.exception.PasswordEditFailedException;
@@ -44,15 +43,15 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 用户登录
-     * @param userLoginDTO 封装用户登录数据的DTO
+     * @param userSimpleLoginDTO 封装用户登录数据的DTO
      * @return User用户对象
      */
     @Override
-    public User login(UserLoginDTO userLoginDTO) {
-        String username = userLoginDTO.getUsername();
-        String password = userLoginDTO.getPassword();
+    public User login(UserSimpleLoginDTO userSimpleLoginDTO) {
+        String username = userSimpleLoginDTO.getUsername();
+        String password = userSimpleLoginDTO.getPassword();
         // 根据用户名查询数据库中数据
-        User user = userMapper.getUserByUsername(username);
+        User user = userMapper.userLogin(username);
         // 处理异常情况
         if (user == null) {
             // 账号不存在

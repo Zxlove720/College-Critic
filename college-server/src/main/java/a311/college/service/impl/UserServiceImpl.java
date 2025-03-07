@@ -1,5 +1,6 @@
 package a311.college.service.impl;
 
+import a311.college.constant.JWT.JWTClaimsConstant;
 import a311.college.constant.message.MessageConstant;
 import a311.college.constant.user.UserStatusConstant;
 import a311.college.dto.user.PasswordEditDTO;
@@ -11,21 +12,24 @@ import a311.college.exception.AccountLockedException;
 import a311.college.exception.AccountNotFoundException;
 import a311.college.exception.PasswordEditFailedException;
 import a311.college.exception.PasswordErrorException;
+import a311.college.jwt.JWTUtils;
 import a311.college.mapper.user.UserMapper;
+import a311.college.properties.JWTProperties;
 import a311.college.result.PageResult;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
+import a311.college.vo.UserLoginVO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * 用户相关服务
@@ -36,18 +40,25 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
+    private final JWTProperties jwtProperties;
+
     @Autowired
-    public UserServiceImpl (UserMapper userMapper) {
+    public UserServiceImpl(UserMapper userMapper, JWTProperties jwtProperties) {
         this.userMapper = userMapper;
+        this.jwtProperties =jwtProperties;
     }
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 用户登录
+     *
      * @param userSimpleLoginDTO 封装用户登录数据的DTO
      * @return User用户对象
      */
     @Override
-    public User login(UserSimpleLoginDTO userSimpleLoginDTO) {
+    public UserLoginVO login(UserSimpleLoginDTO userSimpleLoginDTO) {
         String username = userSimpleLoginDTO.getUsername();
         String password = userSimpleLoginDTO.getPassword();
         // 根据用户名查询数据库中数据
@@ -68,12 +79,27 @@ public class UserServiceImpl implements UserService {
             // 账号被锁定
             throw new AccountLockedException(MessageConstant.ACCOUNT_LOCKED);
         }
+        // 登录成功之后，生成JWT令牌
+        Map<String, Object> claims = new HashMap<>();
+        long userId = user.getId();
+        claims.put(JWTClaimsConstant.USER_ID, userId);
+        claims.put(JWTClaimsConstant.USERNAME, username);
+        String token = JWTUtils.createJWT(
+                jwtProperties.getUserSecretKey(),
+                jwtProperties.getUserTime(),
+                claims);
+        // 封装VO对象
         // 此时登录成功，可以返回
-        return user;
+        return UserLoginVO.builder()
+                .id(ThreadLocalUtil.getCurrentId())
+                .username(username)
+                .token(token)
+                .build();
     }
 
     /**
      * 用户分页查询
+     *
      * @param userPageQueryDTO 用户分页查询DTO
      * @return PageResult<User>
      */
@@ -91,6 +117,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 根据id查询用户
+     *
      * @param id 用户id
      * @return User
      */
@@ -101,6 +128,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 删除用户（用户注销）
+     *
      * @param id 用户id
      */
     @Override
@@ -110,6 +138,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 新增用户（用户注册）
+     *
      * @param userDTO 用户DTO
      */
     @Override
@@ -129,7 +158,7 @@ public class UserServiceImpl implements UserService {
                 // 确定用户为理科，为其添加选科
                 Collections.addAll(subjects, "物理", "化学", "生物");
                 user.setSubjects(subjects);
-            } else if(user.getCategory() == 0){
+            } else if (user.getCategory() == 0) {
                 // 确定用户为文科，为其添加选科
                 Collections.addAll(subjects, "历史", "政治", "地理");
                 user.setSubjects(subjects);
@@ -146,6 +175,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 修改用户信息
+     *
      * @param userDTO 用户DTO
      */
     @Override
@@ -157,8 +187,9 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 修改用户状态
+     *
      * @param status 用户当前状态
-     * @param id 用户id
+     * @param id     用户id
      */
     @Override
     public void changeStatus(Integer status, Long id) {
@@ -172,6 +203,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 用户修改密码
+     *
      * @param passwordEditDTO 用户密码修改DTO
      */
     @Override

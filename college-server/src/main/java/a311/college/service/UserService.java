@@ -6,13 +6,14 @@ import a311.college.dto.login.UserSimpleLoginDTO;
 import a311.college.dto.user.UserPageQueryDTO;
 import a311.college.entity.User;
 import a311.college.result.PageResult;
+import a311.college.vo.UserLoginVO;
 
 /**
  * 用户相关服务
  */
 public interface UserService {
 
-    User login(UserSimpleLoginDTO userSimpleLoginDTO);
+    UserLoginVO login(UserSimpleLoginDTO userSimpleLoginDTO);
 
     PageResult<User> pageSelect(UserPageQueryDTO userPageQueryDTO);
 

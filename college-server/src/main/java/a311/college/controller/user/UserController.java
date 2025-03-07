@@ -35,16 +35,13 @@ public class UserController {
 
     private final UserService userService;
 
-    private final JWTProperties jwtProperties;
-
     @Autowired
     public UserController(UserService userService, JWTProperties jwtProperties) {
         this.userService = userService;
-        this.jwtProperties = jwtProperties;
     }
 
     /**
-     * 用户登录
+     * 用户普通登录
      *
      * @param userSimpleLoginDTO 封装用户登录数据的DTO
      * @return 用户登录结果VO
@@ -54,24 +51,10 @@ public class UserController {
     public Result<UserLoginVO> login(@RequestBody UserSimpleLoginDTO userSimpleLoginDTO) {
         String username = userSimpleLoginDTO.getUsername();
         log.info("用户{}正在登录", username);
-        User user = userService.login(userSimpleLoginDTO);
-        // 登录成功之后，生成JWT令牌
-        Map<String, Object> claims = new HashMap<>();
-        long userId = user.getId();
-        claims.put(JWTClaimsConstant.USER_ID, userId);
-        claims.put(JWTClaimsConstant.USERNAME, username);
-        String token = JWTUtils.createJWT(
-                jwtProperties.getUserSecretKey(),
-                jwtProperties.getUserTime(),
-                claims);
-        // 封装VO对象
-        UserLoginVO userLoginVO = UserLoginVO.builder()
-                .id(userId)
-                .username(username)
-                .token(token)
-                .build();
-        return Result.success(userLoginVO);
+        return Result.success(userService.login(userSimpleLoginDTO));
     }
+
+
 
     /**
      * 用户退出

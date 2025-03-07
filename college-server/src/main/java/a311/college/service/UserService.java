@@ -1,6 +1,7 @@
 package a311.college.service;
 
 import a311.college.dto.user.PasswordEditDTO;
+import a311.college.dto.user.PhoneLoginDTO;
 import a311.college.dto.user.UserDTO;
 import a311.college.dto.login.UserSimpleLoginDTO;
 import a311.college.dto.user.UserPageQueryDTO;
@@ -32,5 +33,7 @@ public interface UserService {
 
     void addFavorite(long userId, int schoolId);
 
-    Result<String> sendCode(String phone);
+    String sendCode(String phone);
+
+    String phoneLogin(PhoneLoginDTO phoneLoginDTO);
 }

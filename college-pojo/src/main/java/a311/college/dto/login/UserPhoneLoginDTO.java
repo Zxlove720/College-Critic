@@ -15,10 +15,13 @@ public class UserPhoneLoginDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "手机号")
-    private String phone;
+    @Schema(description = "用户id")
+    private Long id;
 
-    @Schema(description = "验证码")
-    private String code;
+    @Schema(description = "用户昵称")
+    private String nickName;
+
+    @Schema(description = "用户头像")
+    private String head;
 
 }

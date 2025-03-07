@@ -5,7 +5,9 @@ import a311.college.constant.message.MessageConstant;
 import a311.college.constant.user.LoginErrorConstant;
 import a311.college.constant.user.UserRedisConstant;
 import a311.college.constant.user.UserStatusConstant;
+import a311.college.dto.login.UserPhoneLoginDTO;
 import a311.college.dto.user.PasswordEditDTO;
+import a311.college.dto.user.PhoneLoginDTO;
 import a311.college.dto.user.UserDTO;
 import a311.college.dto.login.UserSimpleLoginDTO;
 import a311.college.dto.user.UserPageQueryDTO;
@@ -23,6 +25,9 @@ import a311.college.result.Result;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.UserLoginVO;
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
+import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.RandomUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -244,11 +249,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     //TODO 后期如果有机会可以将其改为真实的发送手机验证码
-    public Result<String> sendCode(String phone) {
+    public String sendCode(String phone) {
         // 1.校验手机号是否合法
         if (RegexUtils.isPhoneInvalid(phone)) {
             // 2.如果手机号不合法，返回错误信息
-            return Result.error(LoginErrorConstant.PHONE_NUMBER_ERROR);
+            return LoginErrorConstant.PHONE_NUMBER_ERROR;
         }
         // 3.手机号合法，生成验证码
         String code = RandomUtil.randomNumbers(6);
@@ -260,6 +265,45 @@ public class UserServiceImpl implements UserService {
         log.info("发送短信验证码成功，验证码为：{}", code);
         log.info(UserRedisConstant.CODE_TIME_MESSAGE);
         // 响应结果
-        return Result.success(code);
+        return code;
+    }
+
+    @Override
+    public String phoneLogin(PhoneLoginDTO phoneLoginDTO) {
+        // 校验手机号是否合法
+        String phone = phoneLoginDTO.getPhone();
+        if (RegexUtils.isPhoneInvalid(phone)) {
+            // 手机号不合法直接返回错误
+            return LoginErrorConstant.PHONE_NUMBER_ERROR;
+        }
+        // 校验验证码
+            // 获取redis中存储的验证码
+        String cacheCode = stringRedisTemplate.opsForValue().get(UserRedisConstant.USER_CODE_KEY + phone);
+            // 获取请求中的验证码
+        String code = phoneLoginDTO.getCode();
+        if (cacheCode == null || !cacheCode.equals(code)) {
+            // 验证码比对失败，返回错误
+            return LoginErrorConstant.CODE_ERROR;
+        }
+        // 验证码校验成，通过手机号查询用户
+        User user = userMapper.selectByPhone(phone);
+        // 判断用户是否存在
+        if (user == null) {
+            // 用户不存在，进行注册
+        }
+        // 用户存在，那么将用户的登录信息存储在redis
+        // 随机生成token，作为登录令牌
+        String token = UUID.randomUUID().toString(true);
+        UserPhoneLoginDTO userPhoneLoginDTO = new UserPhoneLoginDTO();
+        BeanUtil.copyProperties(user, userPhoneLoginDTO);
+        Map<String, Object> userMap = BeanUtil.beanToMap(userPhoneLoginDTO, new HashMap<>(),
+                CopyOptions.create()
+                        .setIgnoreNullValue(true)
+                        .setFieldValueEditor((fieldName, fieldValue) -> fieldValue.toString()));
+        // 存储到redis
+        String tokenKey = UserRedisConstant.USER_KEY + token;
+        stringRedisTemplate.opsForHash().putAll(tokenKey, userMap);
+        stringRedisTemplate.expire(tokenKey, UserRedisConstant.USER_TTL, TimeUnit.SECONDS);
+        return token;
     }
 }

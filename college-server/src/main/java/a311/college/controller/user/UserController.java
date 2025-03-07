@@ -4,6 +4,7 @@ import a311.college.constant.API.APIConstant;
 import a311.college.constant.JWT.JWTClaimsConstant;
 import a311.college.constant.user.UserStatusConstant;
 import a311.college.dto.user.PasswordEditDTO;
+import a311.college.dto.user.PhoneLoginDTO;
 import a311.college.dto.user.UserDTO;
 import a311.college.dto.login.UserSimpleLoginDTO;
 import a311.college.dto.user.UserPageQueryDTO;
@@ -59,8 +60,19 @@ public class UserController {
      * @param phone 手机号
      * @return Result<String>
      */
+    @PostMapping("/code")
+    @Operation(summary = "发送验证码")
     public Result<String> sendCode(String phone) {
-        return userService.sendCode(phone);
+        String code = userService.sendCode(phone);
+        return Result.success(code);
+    }
+
+
+    @PostMapping("phone")
+    @Operation(summary = "手机登录")
+    public Result<String> phoneLogin(PhoneLoginDTO phoneLoginDTO) {
+        String token = userService.phoneLogin(phoneLoginDTO);
+        return Result.success(token);
     }
 
     /**

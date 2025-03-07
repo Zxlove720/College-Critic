@@ -104,4 +104,6 @@ public interface UserMapper {
     @Update("update tb_user set favorite_table = #{favoriteTbale} where id = #{userId}")
     void addFavorite(List<Integer> favoriteTable, long userId);
 
+    @Select("select * from tb_user where phone = #{phone}")
+    User selectByPhone(String phone);
 }

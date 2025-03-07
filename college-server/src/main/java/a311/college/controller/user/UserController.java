@@ -54,7 +54,14 @@ public class UserController {
         return Result.success(userService.login(userSimpleLoginDTO));
     }
 
-
+    /**
+     * 发送手机验证码
+     * @param phone 手机号
+     * @return Result<String>
+     */
+    public Result<String> sendCode(String phone) {
+        return userService.sendCode(phone);
+    }
 
     /**
      * 用户退出

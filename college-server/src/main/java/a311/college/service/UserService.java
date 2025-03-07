@@ -6,6 +6,7 @@ import a311.college.dto.login.UserSimpleLoginDTO;
 import a311.college.dto.user.UserPageQueryDTO;
 import a311.college.entity.User;
 import a311.college.result.PageResult;
+import a311.college.result.Result;
 import a311.college.vo.UserLoginVO;
 
 /**
@@ -30,4 +31,6 @@ public interface UserService {
     void editPassword(PasswordEditDTO passwordEditDTO);
 
     void addFavorite(long userId, int schoolId);
+
+    Result<String> sendCode(String phone);
 }

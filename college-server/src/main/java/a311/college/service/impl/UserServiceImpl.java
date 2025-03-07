@@ -2,6 +2,8 @@ package a311.college.service.impl;
 
 import a311.college.constant.JWT.JWTClaimsConstant;
 import a311.college.constant.message.MessageConstant;
+import a311.college.constant.user.LoginErrorConstant;
+import a311.college.constant.user.UserRedisConstant;
 import a311.college.constant.user.UserStatusConstant;
 import a311.college.dto.user.PasswordEditDTO;
 import a311.college.dto.user.UserDTO;
@@ -15,10 +17,13 @@ import a311.college.exception.PasswordErrorException;
 import a311.college.jwt.JWTUtils;
 import a311.college.mapper.user.UserMapper;
 import a311.college.properties.JWTProperties;
+import a311.college.regex.RegexUtils;
 import a311.college.result.PageResult;
+import a311.college.result.Result;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.UserLoginVO;
+import cn.hutool.core.util.RandomUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import jakarta.annotation.Resource;
@@ -30,6 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 用户相关服务
@@ -229,5 +235,31 @@ public class UserServiceImpl implements UserService {
         List<Integer> favoriteTable = userMapper.selectFavoriteById(userId);
         favoriteTable.add(schoolId);
         userMapper.addFavorite(favoriteTable, userId);
+    }
+
+    /**
+     * 发送验证码
+     * @param phone 用户手机号
+     * @return Result<String>
+     */
+    @Override
+    //TODO 后期如果有机会可以将其改为真实的发送手机验证码
+    public Result<String> sendCode(String phone) {
+        // 1.校验手机号是否合法
+        if (RegexUtils.isPhoneInvalid(phone)) {
+            // 2.如果手机号不合法，返回错误信息
+            return Result.error(LoginErrorConstant.PHONE_NUMBER_ERROR);
+        }
+        // 3.手机号合法，生成验证码
+        String code = RandomUtil.randomNumbers(6);
+        // 4.将验证码保存至redis
+        stringRedisTemplate.opsForValue().set(UserRedisConstant.USER_CODE_KEY + phone, code);
+        stringRedisTemplate.expire(UserRedisConstant.USER_CODE_KEY + phone,
+                UserRedisConstant.USER_CODE_TTL, TimeUnit.MINUTES);
+        // 5.发送验证码（短信功能待完成）
+        log.info("发送短信验证码成功，验证码为：{}", code);
+        log.info(UserRedisConstant.CODE_TIME_MESSAGE);
+        // 响应结果
+        return Result.success(code);
     }
 }

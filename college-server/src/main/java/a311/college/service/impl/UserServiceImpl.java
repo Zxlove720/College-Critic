@@ -89,22 +89,13 @@ public class UserServiceImpl implements UserService {
             // 账号被锁定
             throw new AccountLockedException(MessageConstant.ACCOUNT_LOCKED);
         }
-        // 登录成功之后，生成JWT令牌
-        Map<String, Object> claims = new HashMap<>();
-        long userId = user.getId();
-        claims.put(JWTClaimsConstant.USER_ID, userId);
-        claims.put(JWTClaimsConstant.USERNAME, username);
-        String token = JWTUtils.createJWT(
-                jwtProperties.getUserSecretKey(),
-                jwtProperties.getUserTime(),
-                claims);
-        // 封装VO对象
-        // 此时登录成功，可以返回
-        return UserLoginVO.builder()
-                .id(ThreadLocalUtil.getCurrentId())
-                .username(username)
-                .token(token)
-                .build();
+        String token = UUID.randomUUID().toString(true);
+        // 登录成功之后，将用户登录信息缓存到redis
+        stringRedisTemplate.opsForValue().set(RedisKeyConstant.USER_KEY + token,
+                DigestUtils.md5DigestAsHex(password.getBytes()), RedisKeyConstant.USER_TTL, TimeUnit.SECONDS);
+
+
+
     }
 
     /**
@@ -176,7 +167,7 @@ public class UserServiceImpl implements UserService {
                         .setIgnoreNullValue(true)
                         .setFieldValueEditor((fieldName, fieldValue) -> fieldValue.toString()));
         // 5.将用户登录信息存储到redis
-        String tokenKey = RedisKeyConstant.USER_KEY + token;
+        String tokenKey = RedisKeyConstant.USER_PHONE_KEY + token;
         stringRedisTemplate.opsForHash().putAll(tokenKey, userMap);
         stringRedisTemplate.expire(tokenKey, RedisKeyConstant.USER_TTL, TimeUnit.SECONDS);
         // 6.返回token

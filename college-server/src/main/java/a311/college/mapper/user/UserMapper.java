@@ -106,4 +106,7 @@ public interface UserMapper {
 
     @Select("select * from tb_user where phone = #{phone}")
     User selectByPhone(String phone);
+
+    @Insert("insert into tb_user (phone, nickname) values (#{phone}, #{nickName})")
+    void register(User user);
 }

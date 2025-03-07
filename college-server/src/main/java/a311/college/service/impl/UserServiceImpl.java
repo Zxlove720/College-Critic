@@ -161,7 +161,8 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.selectByPhone(phone);
         // 3.1判断用户是否存在
         if (user == null) {
-            // 3.2用户不存在，进行注册
+            // 3.2用户不存在，直接返回
+            return LoginErrorConstant.NO_REGISTER_PHONE;
         }
         // 4.用户存在，那么将用户的登录信息存储在redis
         // 4.1随机生成token，作为登录令牌

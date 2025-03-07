@@ -17,6 +17,10 @@ public interface UserService {
 
     UserLoginVO login(UserSimpleLoginDTO userSimpleLoginDTO);
 
+    String sendCode(String phone);
+
+    String phoneLogin(PhoneLoginDTO phoneLoginDTO);
+
     PageResult<User> pageSelect(UserPageQueryDTO userPageQueryDTO);
 
     User selectById(Long id);
@@ -32,8 +36,4 @@ public interface UserService {
     void editPassword(PasswordEditDTO passwordEditDTO);
 
     void addFavorite(long userId, int schoolId);
-
-    String sendCode(String phone);
-
-    String phoneLogin(PhoneLoginDTO phoneLoginDTO);
 }

@@ -57,18 +57,25 @@ public class UserController {
 
     /**
      * 发送手机验证码
+     *
      * @param phone 手机号
      * @return Result<String>
      */
     @PostMapping("/code")
     @Operation(summary = "发送验证码")
     public Result<String> sendCode(String phone) {
+        log.info("向手机号为{}的用户发送验证码", phone);
         String code = userService.sendCode(phone);
         return Result.success(code);
     }
 
-
-    @PostMapping("phone")
+    /**
+     * 手机登录
+     *
+     * @param phoneLoginDTO 手机登录DTO
+     * @return Result<String>
+     */
+    @PostMapping("/login/phone")
     @Operation(summary = "手机登录")
     public Result<String> phoneLogin(PhoneLoginDTO phoneLoginDTO) {
         String token = userService.phoneLogin(phoneLoginDTO);

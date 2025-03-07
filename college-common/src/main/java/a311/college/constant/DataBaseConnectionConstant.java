@@ -1,9 +1,8 @@
 package a311.college.constant;
 
-import lombok.Data;
 
 /**
- * JDBC操作数据库连接常量
+ * 数据库连接常量
  */
 public class DataBaseConnectionConstant {
 

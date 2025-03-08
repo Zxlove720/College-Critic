@@ -14,7 +14,6 @@ import a311.college.exception.AccountNotFoundException;
 import a311.college.exception.PasswordEditFailedException;
 import a311.college.exception.PasswordErrorException;
 import a311.college.mapper.user.UserMapper;
-import a311.college.properties.JWTProperties;
 import a311.college.redis.RedisKeyConstant;
 import a311.college.regex.RegexUtils;
 import a311.college.result.PageResult;
@@ -145,7 +144,7 @@ public class UserServiceImpl implements UserService {
         // 4.将验证码保存至redis
         stringRedisTemplate.opsForValue().set(RedisKeyConstant.USER_CODE_KEY + phone, code);
         stringRedisTemplate.expire(RedisKeyConstant.USER_CODE_KEY + phone,
-                RedisKeyConstant.USER_CODE_TTL, TimeUnit.MINUTES);
+                RedisKeyConstant.USER_CODE_TTL, TimeUnit.SECONDS);
         // 5.发送验证码（短信功能待完成）
         //TODO 后期如果有机会可以将其改为真实的发送手机验证码
         log.info("发送短信验证码成功，验证码为：{}", code);

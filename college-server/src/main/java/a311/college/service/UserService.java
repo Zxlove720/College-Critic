@@ -3,19 +3,17 @@ package a311.college.service;
 import a311.college.dto.user.PasswordEditDTO;
 import a311.college.dto.user.PhoneLoginDTO;
 import a311.college.dto.user.UserDTO;
-import a311.college.dto.login.UserSimpleLoginDTO;
+import a311.college.dto.login.LoginDTO;
 import a311.college.dto.user.UserPageQueryDTO;
 import a311.college.entity.User;
 import a311.college.result.PageResult;
-import a311.college.result.Result;
-import a311.college.vo.UserLoginVO;
 
 /**
  * 用户相关服务
  */
 public interface UserService {
 
-    UserLoginVO login(UserSimpleLoginDTO userSimpleLoginDTO);
+    String login(LoginDTO loginDTO);
 
     String sendCode(String phone);
 

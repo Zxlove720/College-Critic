@@ -13,7 +13,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-
+/**
+ * 刷新用户登录凭据拦截器
+ */
 public class RefreshTokenInterceptor implements HandlerInterceptor {
 
     private final StringRedisTemplate stringRedisTemplate;
@@ -22,6 +24,9 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
         this.stringRedisTemplate = stringRedisTemplate;
     }
 
+    /**
+     * 刷新登录凭证拦截器
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object hanlder) throws Exception {
         // 1.获取请求头的token
@@ -30,31 +35,31 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
             // 1.1没有携带该请求头，放行至下一个拦截器
             return true;
         }
-        // 2.根据不同的请求路径和token获取redis中的用户登录状态
-        String url = request.getRequestURL().toString();
-        String[] split = url.split("/");
-        int length = split.length;
-        if (split[length - 1].equals("login")) {
-            // 此时为普通的账号密码登录
-            String key = RedisKeyConstant.USER_KEY + token;
-            String s = stringRedisTemplate.opsForValue().get(key);
-        } else if ((split[length - 2] + "/" + split[length - 1]).equals("login/phone")) {
-            // 此时为手机号 + 验证码登录
-            String key = RedisKeyConstant.USER_PHONE_KEY + token;
-            Map<Object, Object> userMap = stringRedisTemplate.opsForHash().entries(key);
-            // 3.判断用户是否存在
-            if (userMap.isEmpty()) {
-                // 3.1用户不存在，放行到下一个拦截器
-                return true;
-            }
-            UserPhoneLoginDTO userPhoneLoginDTO = BeanUtil.fillBeanWithMap(userMap,
-                    new UserPhoneLoginDTO(), false);
-            // 4.将用户信息保存到ThreadLocal
-            ThreadLocalUtil.setCurrentId(userPhoneLoginDTO.getId());
-            // 5.刷新用户登录有效期
-            stringRedisTemplate.expire(key, RedisKeyConstant.USER_TTL, TimeUnit.SECONDS);
+        // 2.根据token获取redis中缓存的用户
+        String key = RedisKeyConstant.USER_KEY + token;
+        Map<Object, Object> userMap = stringRedisTemplate.opsForHash().entries(key);
+        // 3.判断用户是否存在
+        if (userMap.isEmpty()) {
+            // 3.1用户不存在，放行到下一个拦截器
             return true;
         }
+        UserPhoneLoginDTO userPhoneLoginDTO = BeanUtil.fillBeanWithMap(userMap,
+                new UserPhoneLoginDTO(), false);
+        // 4.将用户信息保存到ThreadLocal
+        ThreadLocalUtil.setCurrentId(userPhoneLoginDTO.getId());
+        // 5.刷新用户登录有效期
+        stringRedisTemplate.expire(key, RedisKeyConstant.USER_TTL, TimeUnit.SECONDS);
+        // 6.放行至下一个拦截器
         return true;
     }
+
+    /**
+     * 响应时从ThreadLocal中移除用户，释放资源
+     */
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception exception) throws Exception {
+        // 移除用户
+        ThreadLocalUtil.removeCurrentId();
+    }
+
 }

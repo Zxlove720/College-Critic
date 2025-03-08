@@ -9,11 +9,8 @@ public class RedisKeyConstant {
     // 用户验证码
     public static final String USER_CODE_KEY = "college:user:code:";
 
-    // 用户账号
-    public static final String USER_KEY = "college:user:username:";
-
-    // 用户手机号
-    public static final String USER_PHONE_KEY = "college:user:phone:";
+    // 用户登录凭证
+    public static final String USER_KEY = "college:user:";
 
     // 验证码过期时间
     public static final Long USER_CODE_TTL = 300L;

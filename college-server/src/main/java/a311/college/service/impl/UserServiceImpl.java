@@ -1,6 +1,5 @@
 package a311.college.service.impl;
 
-import a311.college.constant.JWT.JWTClaimsConstant;
 import a311.college.constant.message.MessageConstant;
 import a311.college.constant.user.LoginErrorConstant;
 import a311.college.constant.user.UserStatusConstant;
@@ -8,14 +7,13 @@ import a311.college.dto.login.UserPhoneLoginDTO;
 import a311.college.dto.user.PasswordEditDTO;
 import a311.college.dto.user.PhoneLoginDTO;
 import a311.college.dto.user.UserDTO;
-import a311.college.dto.login.UserSimpleLoginDTO;
+import a311.college.dto.login.LoginDTO;
 import a311.college.dto.user.UserPageQueryDTO;
 import a311.college.entity.User;
 import a311.college.exception.AccountLockedException;
 import a311.college.exception.AccountNotFoundException;
 import a311.college.exception.PasswordEditFailedException;
 import a311.college.exception.PasswordErrorException;
-import a311.college.jwt.JWTUtils;
 import a311.college.mapper.user.UserMapper;
 import a311.college.properties.JWTProperties;
 import a311.college.redis.RedisKeyConstant;
@@ -23,7 +21,6 @@ import a311.college.regex.RegexUtils;
 import a311.college.result.PageResult;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
-import a311.college.vo.UserLoginVO;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.lang.UUID;
@@ -50,12 +47,9 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
-    private final JWTProperties jwtProperties;
-
     @Autowired
     public UserServiceImpl(UserMapper userMapper, JWTProperties jwtProperties) {
         this.userMapper = userMapper;
-        this.jwtProperties = jwtProperties;
     }
 
     @Resource
@@ -64,13 +58,13 @@ public class UserServiceImpl implements UserService {
     /**
      * 用户登录：用户名 + 密码
      *
-     * @param userSimpleLoginDTO 封装用户登录数据的DTO
+     * @param loginDTO 封装用户登录数据的DTO
      * @return User用户对象
      */
     @Override
-    public UserLoginVO login(UserSimpleLoginDTO userSimpleLoginDTO) {
-        String username = userSimpleLoginDTO.getUsername();
-        String password = userSimpleLoginDTO.getPassword();
+    public String login(LoginDTO loginDTO) {
+        String username = loginDTO.getUsername();
+        String password = loginDTO.getPassword();
         // 根据用户名查询数据库中数据
         User user = userMapper.userLogin(username);
         // 处理异常情况
@@ -89,13 +83,29 @@ public class UserServiceImpl implements UserService {
             // 账号被锁定
             throw new AccountLockedException(MessageConstant.ACCOUNT_LOCKED);
         }
+        return saveUserInRedis(user);
+    }
+
+    /**
+     * 将用户的登录凭据保存到redis
+     *
+     * @param user 用户
+     * @return token 登录凭据
+     */
+    private String saveUserInRedis(User user) {
         String token = UUID.randomUUID().toString(true);
         // 登录成功之后，将用户登录信息缓存到redis
-        stringRedisTemplate.opsForValue().set(RedisKeyConstant.USER_KEY + token,
-                DigestUtils.md5DigestAsHex(password.getBytes()), RedisKeyConstant.USER_TTL, TimeUnit.SECONDS);
-
-
-
+        UserPhoneLoginDTO userPhoneLoginDTO = new UserPhoneLoginDTO();
+        BeanUtil.copyProperties(user, userPhoneLoginDTO);
+        // 4.3将DTO类中的属性转换为String
+        Map<String, Object> userMap = BeanUtil.beanToMap(userPhoneLoginDTO, new HashMap<>(),
+                CopyOptions.create()
+                        .setIgnoreNullValue(true)
+                        .setFieldValueEditor((fieldName, fieldValue) -> fieldValue.toString()));
+        String tokenKey = RedisKeyConstant.USER_KEY + token;
+        stringRedisTemplate.opsForHash().putAll(tokenKey, userMap);
+        stringRedisTemplate.expire(tokenKey, RedisKeyConstant.USER_TTL, TimeUnit.SECONDS);
+        return token;
     }
 
     /**
@@ -157,21 +167,7 @@ public class UserServiceImpl implements UserService {
         }
         // 4.用户存在，那么将用户的登录信息存储在redis
         // 4.1随机生成token，作为登录令牌
-        String token = UUID.randomUUID().toString(true);
-        // 4.2将专门的UserPhoneLoginDTO存入redis作为登录下信息缓存，节省空间
-        UserPhoneLoginDTO userPhoneLoginDTO = new UserPhoneLoginDTO();
-        BeanUtil.copyProperties(user, userPhoneLoginDTO);
-        // 4.3将DTO类中的属性转换为String
-        Map<String, Object> userMap = BeanUtil.beanToMap(userPhoneLoginDTO, new HashMap<>(),
-                CopyOptions.create()
-                        .setIgnoreNullValue(true)
-                        .setFieldValueEditor((fieldName, fieldValue) -> fieldValue.toString()));
-        // 5.将用户登录信息存储到redis
-        String tokenKey = RedisKeyConstant.USER_PHONE_KEY + token;
-        stringRedisTemplate.opsForHash().putAll(tokenKey, userMap);
-        stringRedisTemplate.expire(tokenKey, RedisKeyConstant.USER_TTL, TimeUnit.SECONDS);
-        // 6.返回token
-        return token;
+        return saveUserInRedis(user);
     }
 
     /**

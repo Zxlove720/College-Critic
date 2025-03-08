@@ -1,29 +1,23 @@
 package a311.college.controller.user;
 
 import a311.college.constant.API.APIConstant;
-import a311.college.constant.JWT.JWTClaimsConstant;
 import a311.college.constant.user.UserStatusConstant;
 import a311.college.dto.user.PasswordEditDTO;
 import a311.college.dto.user.PhoneLoginDTO;
 import a311.college.dto.user.UserDTO;
-import a311.college.dto.login.UserSimpleLoginDTO;
+import a311.college.dto.login.LoginDTO;
 import a311.college.dto.user.UserPageQueryDTO;
 import a311.college.entity.User;
-import a311.college.jwt.JWTUtils;
 import a311.college.properties.JWTProperties;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
-import a311.college.vo.UserLoginVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 用户请求控制器
@@ -44,15 +38,15 @@ public class UserController {
     /**
      * 用户普通登录
      *
-     * @param userSimpleLoginDTO 封装用户登录数据的DTO
-     * @return 用户登录结果VO
+     * @param loginDTO 封装用户登录数据的DTO
+     * @return Result<String>
      */
     @PostMapping("/login")
     @Operation(summary = "用户登录")
-    public Result<UserLoginVO> login(@RequestBody UserSimpleLoginDTO userSimpleLoginDTO) {
-        String username = userSimpleLoginDTO.getUsername();
+    public Result<String> login(@RequestBody LoginDTO loginDTO) {
+        String username = loginDTO.getUsername();
         log.info("用户{}正在登录", username);
-        return Result.success(userService.login(userSimpleLoginDTO));
+        return Result.success(userService.login(loginDTO));
     }
 
     /**
@@ -78,6 +72,7 @@ public class UserController {
     @PostMapping("/login/phone")
     @Operation(summary = "手机登录")
     public Result<String> phoneLogin(PhoneLoginDTO phoneLoginDTO) {
+        log.info("手机号为{}的用户正在登录", phoneLoginDTO.getPhone());
         String token = userService.phoneLogin(phoneLoginDTO);
         return Result.success(token);
     }

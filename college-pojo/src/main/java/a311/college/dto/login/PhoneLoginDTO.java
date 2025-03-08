@@ -10,7 +10,7 @@ import java.io.Serializable;
  * 用户登录（手机号）DTO
  */
 @Data
-public class UserPhoneLoginDTO implements Serializable {
+public class PhoneLoginDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

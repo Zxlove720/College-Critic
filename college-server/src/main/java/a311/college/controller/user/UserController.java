@@ -12,7 +12,6 @@ import a311.college.properties.JWTProperties;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.UserService;
-import a311.college.thread.ThreadLocalUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;

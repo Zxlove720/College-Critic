@@ -14,6 +14,8 @@ import a311.college.result.Result;
 import a311.college.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +32,7 @@ public class UserController {
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService, JWTProperties jwtProperties) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -42,7 +44,7 @@ public class UserController {
      */
     @PostMapping("/login")
     @Operation(summary = "用户登录")
-    public Result<String> login(@RequestBody LoginDTO loginDTO) {
+    public Result<String> login(@RequestBody LoginDTO loginDTO, HttpServletResponse httpServletResponse) {
         String username = loginDTO.getUsername();
         log.info("用户{}正在登录", username);
         return Result.success(userService.login(loginDTO));

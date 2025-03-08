@@ -10,6 +10,7 @@ import a311.college.vo.YearScoreVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,7 +39,8 @@ public class CollegeController {
      * @return Result<PageResult < School>>
      */
     @GetMapping("/page")
-    public Result<PageResult<CollegeSimpleVO>> collegeList(CollegePageQueryDTO collegePageQueryDTO) {
+    public Result<PageResult<CollegeSimpleVO>> collegeList(CollegePageQueryDTO collegePageQueryDTO,
+                                                           @RequestHeader("Authorization") String uuid) {
         log.info("大学分页查询...查询参数为：第{}页，每页{}条", collegePageQueryDTO.getPage(), collegePageQueryDTO.getPageSize());
         PageResult<CollegeSimpleVO> pageResult = collegeService.pageSelect(collegePageQueryDTO);
         return Result.success(pageResult);

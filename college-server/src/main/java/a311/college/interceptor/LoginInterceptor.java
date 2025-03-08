@@ -18,6 +18,9 @@ public class LoginInterceptor implements HandlerInterceptor {
      * 用户登录拦截
      */
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            return true;
+        }
         // 1.判断是否需要进行拦截（ThreadLocal中是否存在用户）
         if (ThreadLocalUtil.getCurrentId() == null) {
             // 1.1没有用户（表示用户未登录），那么进行拦截并设置返回状态码

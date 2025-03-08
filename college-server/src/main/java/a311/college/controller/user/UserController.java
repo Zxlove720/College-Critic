@@ -90,20 +90,6 @@ public class UserController {
     }
 
     /**
-     * 添加喜爱学校
-     *
-     * @param schoolId 学校ID
-     * @return Result<Void>
-     */
-    @PostMapping("/add")
-    public Result<Void> addFavorite(int schoolId) {
-        long userId = ThreadLocalUtil.getCurrentId();
-        log.info("用户：{}，将{}学校添加到喜欢", userId, schoolId);
-        userService.addFavorite(userId, schoolId);
-        return Result.success();
-    }
-
-    /**
      * 用户分页查询
      *
      * @param userPageQueryDTO 用户分页查询DTO

@@ -1,14 +1,10 @@
 package a311.college.mapper.user;
 
-import a311.college.TypeHandler.UserHandler;
-import a311.college.annotation.AutoFill;
 import a311.college.dto.user.UserPageQueryDTO;
 import a311.college.entity.User;
-import a311.college.enumeration.OperationType;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.*;
 
-import java.util.List;
 
 /**
  * 用户相关Mapper
@@ -22,91 +18,28 @@ public interface UserMapper {
      * @param username 用户名
      * @return User
      */
-    @Select("select id, password, status from tb_user where username = #{username}")
-    User userLogin(String username);
-
-
-    /**
-     * 用户登录 传统
-     *
-     * @param username 用户名
-     * @return User
-     */
     @Select("select * from tb_user where username = #{username}")
-    User getUserByUsername(String username);
-
-    /**
-     * 用户分页查询
-     *
-     * @param userPageQueryDTO 用户分页查询DTO
-     * @return Page<User>
-     */
-    Page<User> pageQuery(UserPageQueryDTO userPageQueryDTO);
-
-    /**
-     * 根据id查询用户
-     *
-     * @param id 用户id
-     * @return User
-     */
-    @Results({@Result(property = "subjects", column = "subjects", typeHandler = UserHandler.class)})
-    @Select("select * from tb_user where id = #{id}")
-    User selectById(Long id);
-
-    /**
-     * 根据id删除用户
-     *
-     * @param id 用户id
-     */
-    @Results({
-            @Result(property = "subjects", column = "subjects", typeHandler = UserHandler.class)
-    })
-    @Delete("delete from tb_user where id = #{id}")
-    void deleteById(Long id);
-
-    /**
-     * 新增用户（用户注册）
-     *
-     * @param user User实体对象
-     */
-    @Results({
-            @Result(property = "subjects", column = "subjects", typeHandler = UserHandler.class)
-    })
-    @AutoFill(value = OperationType.INSERT)
-    @Insert("insert into tb_user (username, password, phone, email, nickname, head, year, province, pattern, subjects, category," +
-            " grade, ranking, status, city) values (#{username}, #{password}, #{phone}, #{email}, #{nickname}, #{head}, #{year}, " +
-            "#{province}, #{pattern}, #{subjects}, #{category}, #{grade}, #{ranking}, #{status}, #{city})")
-    void insert(User user);
-
-    /**
-     * 修改用户信息
-     *
-     * @param user User实体对象
-     */
-    @AutoFill(value = OperationType.UPDATE)
-    void update(User user);
-
-    /**
-     * 获取用户的收藏列表
-     *
-     * @param userId 用户id
-     * @return List<Integer>
-     */
-    @Select("select favorite_table from tb_user where id = #{userId}")
-    List<Integer> selectFavoriteById(long userId);
-
-    /**
-     * 添加喜爱学校
-     *
-     * @param favoriteTable 收藏表
-     * @param userId 用户id
-     */
-    @Update("update tb_user set favorite_table = #{favoriteTbale} where id = #{userId}")
-    void addFavorite(List<Integer> favoriteTable, long userId);
+    User userLogin(String username);
 
     @Select("select * from tb_user where phone = #{phone}")
     User selectByPhone(String phone);
 
-    @Insert("insert into tb_user (phone, nickname) values (#{phone}, #{nickName})")
-    void register(User user);
+    Page<User> pageQuery(UserPageQueryDTO userPageQueryDTO);
+
+    @Select("select * from tb_user where id = #{id}")
+    User selectById(Long id);
+
+    @Delete("delete from tb_user where id = #{id}")
+    void deleteById(Long id);
+
+    @Insert("insert into tb_user(username, password, phone, email, nickname, head, year, province, pattern, subjects," +
+            " category, grade, ranking, status, city, favorite_table, college_table, create_time, update_time) values " +
+            "(#{username}, #{password}, #{phone}, #{email}, #{nickName}, #{head}, #{year}, #{province}, #{pattern}, #{subjects}," +
+            "#{category}, #{grade}, #{ranking}, #{status}, #{city}, #{favoriteTable}, #{collegeTable}, #{createTime}, #{updateTime})")
+    void insert(User user);
+
+    @Update("update tb_user set id = #{id} where phone = #{phone}")
+    void update(User user);
+
+
 }

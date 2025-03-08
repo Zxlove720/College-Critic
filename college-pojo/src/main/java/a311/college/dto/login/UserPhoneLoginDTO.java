@@ -19,7 +19,7 @@ public class UserPhoneLoginDTO implements Serializable {
     private Long id;
 
     @Schema(description = "用户昵称")
-    private String nickName;
+    private String nickname;
 
     @Schema(description = "用户头像")
     private String head;

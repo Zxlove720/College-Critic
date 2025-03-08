@@ -230,11 +230,11 @@ public class UserServiceImpl implements UserService {
             if (user.getCategory() == 1) {
                 // 确定用户为理科，为其添加选科
                 Collections.addAll(subjects, "物理", "化学", "生物");
-                user.setSubjects(subjects);
+                user.setSubjects(subjects.toString());
             } else if (user.getCategory() == 0) {
                 // 确定用户为文科，为其添加选科
                 Collections.addAll(subjects, "历史", "政治", "地理");
-                user.setSubjects(subjects);
+                user.setSubjects(subjects.toString());
             }
         }
         // 将拷贝后的对象属性补全
@@ -242,7 +242,6 @@ public class UserServiceImpl implements UserService {
         // 将用户密码加密后存储
         user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
         // 使用AOP将创建、操作时间补全
-
         userMapper.insert(user);
     }
 
@@ -295,12 +294,5 @@ public class UserServiceImpl implements UserService {
             // 比对失败，抛出异常
             throw new PasswordEditFailedException(MessageConstant.PASSWORD_EDIT_FAILED);
         }
-    }
-
-    @Override
-    public void addFavorite(long userId, int schoolId) {
-        List<Integer> favoriteTable = userMapper.selectFavoriteById(userId);
-        favoriteTable.add(schoolId);
-        userMapper.addFavorite(favoriteTable, userId);
     }
 }

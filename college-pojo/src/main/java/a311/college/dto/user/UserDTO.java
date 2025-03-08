@@ -1,7 +1,6 @@
 package a311.college.dto.user;
 
 import a311.college.enumeration.ProvinceEnum;
-import a311.college.enumeration.subjectEnum.SubjectsEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -48,7 +47,7 @@ public class UserDTO implements Serializable {
     private Integer pattern;   // 1.新高考 0.老高考
 
     @Schema(description = "用户选科（新高考）")
-    private List<SubjectsEnum> subjects;
+    private String subjects;
 
     @Schema(description = "用户分类（物理类/历史类）")
     private Integer category;   // 1.物理类 0.历史类

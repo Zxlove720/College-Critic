@@ -1,7 +1,6 @@
 package a311.college.entity;
 
 import a311.college.enumeration.ProvinceEnum;
-import a311.college.enumeration.subjectEnum.SubjectsEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +11,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.Year;
-import java.util.List;
 
 /**
  * 用户类
@@ -53,7 +51,7 @@ public class User implements Serializable {
     private Integer pattern;   // 1.新高考 0.老高考
 
     @Schema(description = "用户选科（新高考）")
-    private List<String> subjects;
+    private String subjects;
 
     @Schema(description = "用户分科（老高考）")
     private Integer category;   // 1.理科 0.文科
@@ -68,10 +66,10 @@ public class User implements Serializable {
     private ProvinceEnum city;
 
     @Schema(description = "收藏表")
-    private List<String> favoriteTable;
+    private String favoriteTable;
 
     @Schema(description = "志愿表")
-    private List<String> collegeTable;
+    private String collegeTable;
 
     @Schema(description = "用户状态")
     private Integer status;   // 1 可用（默认） 0 不可用

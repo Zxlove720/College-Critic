@@ -33,5 +33,4 @@ public interface UserService {
 
     void editPassword(PasswordEditDTO passwordEditDTO);
 
-    void addFavorite(long userId, int schoolId);
 }

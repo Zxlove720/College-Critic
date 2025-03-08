@@ -2,60 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="a311.college.mapper.user.UserMapper">
-    <resultMap id="UserResultMap" type="a311.college.entity.User">
-        <result property="subjects" column="subjects" typeHandler="a311.college.TypeHandler.UserHandler"/>
-    </resultMap>
-
-    <select id="pageQuery" resultMap="UserResultMap">
+    <select id="pageQuery" resultType="a311.college.entity.User">
         select * from tb_user
         <where>
             <if test="username != null and username != ''">
-                and username like concat('%', #{username}, '%')
+                username like concat ('%', #{username}, '%')
             </if>
         </where>
-        order by create_time desc
     </select>
-
-    <update id="update">
-        update tb_user
-        <set>
-            <if test="username != null and username != ''">
-                username = #{username},
-            </if>
-            <if test="password != null">
-                password = #{password},
-            </if>
-            <if test="phone != null">
-                phone = #{phone},
-            </if>
-            <if test="email != null">
-                email = #{email},
-            </if>
-            <if test="head != null">
-                head = #{head},
-            </if>
-            <if test="year != null">
-                year = #{year},
-            </if>
-            <if test="subjects != null">
-                subjects = #{subjects,typeHandler=a311.college.TypeHandler.UserHandler},
-            </if>
-            <if test="province != null">
-                province = #{province},
-            </if>
-            <if test="grade != null">
-                grade = #{grade},
-            </if>
-            <if test="ranking != null">
-                ranking = #{ranking},
-            </if>
-            <if test="status != null">
-                status = #{status},
-            </if>
-            <if test="city != null">
-                city = #{city},
-            </if>
-        </set>
-        where id = #{id}
-    </update>
 </mapper>

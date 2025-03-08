@@ -1,7 +1,7 @@
 package a311.college.mapper.user;
 
 import a311.college.dto.user.UserPageQueryDTO;
-import a311.college.entity.User;
+import a311.college.entity.user.User;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.*;
 

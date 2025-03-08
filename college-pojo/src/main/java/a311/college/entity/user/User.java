@@ -1,4 +1,4 @@
-package a311.college.entity;
+package a311.college.entity.user;
 
 import a311.college.enumeration.ProvinceEnum;
 import io.swagger.v3.oas.annotations.media.Schema;

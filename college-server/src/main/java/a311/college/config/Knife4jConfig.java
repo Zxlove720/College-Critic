@@ -25,6 +25,10 @@ public class Knife4jConfig {
         return createRestApi(APIConstant.COLLEGE_SERVICE, APIPathConstant.COLLEGE_PATH);
     }
 
+    public GroupedOpenApi majorApi() {
+        return createRestApi(APIConstant.MAJOR_SERVICE, APIPathConstant.MAJOR_PATH);
+    }
+
     /**
      * 创建API
      *

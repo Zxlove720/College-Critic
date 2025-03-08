@@ -3,12 +3,13 @@ package a311.college.service.impl;
 import a311.college.constant.message.MessageConstant;
 import a311.college.constant.user.LoginErrorConstant;
 import a311.college.constant.user.UserStatusConstant;
+import a311.college.dto.login.LoginSymbol;
 import a311.college.dto.login.PhoneLoginDTO;
 import a311.college.dto.user.PasswordEditDTO;
 import a311.college.dto.user.UserDTO;
 import a311.college.dto.login.LoginDTO;
 import a311.college.dto.user.UserPageQueryDTO;
-import a311.college.entity.User;
+import a311.college.entity.user.User;
 import a311.college.exception.AccountLockedException;
 import a311.college.exception.AccountNotFoundException;
 import a311.college.exception.PasswordEditFailedException;
@@ -107,7 +108,7 @@ public class UserServiceImpl implements UserService {
         String token = UUID.randomUUID().toString(true);
         String tokenKey = RedisKeyConstant.USER_KEY + token;
         // 3.2将用户登录信息缓存到redis
-        PhoneLoginDTO userPhoneLoginDTO = new PhoneLoginDTO();
+        LoginSymbol userPhoneLoginDTO = new LoginSymbol();
         BeanUtil.copyProperties(user, userPhoneLoginDTO);
         // 3.3将DTO类中的属性转换为String
         Map<String, Object> userMap = BeanUtil.beanToMap(userPhoneLoginDTO, new HashMap<>(),
@@ -160,7 +161,7 @@ public class UserServiceImpl implements UserService {
      * @return String token
      */
     @Override
-    public String phoneLogin(a311.college.dto.user.PhoneLoginDTO phoneLoginDTO) {
+    public String phoneLogin(PhoneLoginDTO phoneLoginDTO) {
         // 1.校验手机号是否合法
         String phone = phoneLoginDTO.getPhone();
         if (RegexUtils.isPhoneInvalid(phone)) {

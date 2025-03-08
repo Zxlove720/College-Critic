@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Year;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -49,11 +48,8 @@ public class UserDTO implements Serializable {
     @Schema(description = "用户选科（新高考）")
     private String subjects;
 
-    @Schema(description = "用户分类（物理类/历史类）")
-    private Integer category;   // 1.物理类 0.历史类
-
     @Schema(description = "用户分科（老高考）")
-    private Integer isScience;   // 1.理科 0.文科
+    private Integer category;   // 1.理科 0.文科
 
     @Schema(description = "用户成绩")
     private Integer grade;
@@ -63,4 +59,10 @@ public class UserDTO implements Serializable {
 
     @Schema(description = "用户意向城市")
     private ProvinceEnum city;
+
+    @Schema(description = "收藏表")
+    private String favoriteTable;
+
+    @Schema(description = "志愿表")
+    private String collegeTable;
 }

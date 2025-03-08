@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Autowired
-    public UserServiceImpl(UserMapper userMapper, JWTProperties jwtProperties) {
+    public UserServiceImpl(UserMapper userMapper) {
         this.userMapper = userMapper;
     }
 
@@ -92,18 +92,38 @@ public class UserServiceImpl implements UserService {
      * @return token 登录凭据
      */
     private String saveUserInRedis(User user) {
+        // 1.获取用户的唯一标识符作为其登录凭证的映射
+        Long id = user.getId();
+        // 2检查用户是否重复登录
+        String oldToken = stringRedisTemplate.opsForValue().get(RedisKeyConstant.USER_LOGIN_KEY + id);
+        if (oldToken != null) {
+            // 2.1此时用户重复登录了，删除原登录凭据
+            stringRedisTemplate.delete(oldToken);
+            // 2.2删除用户id和token的映射关系
+            stringRedisTemplate.delete(RedisKeyConstant.USER_LOGIN_KEY + id);
+            // 此时相当于用户原有的登录已经退出
+        }
+        // 3重新登录
+        // 3.1生成新的登录凭据
         String token = UUID.randomUUID().toString(true);
-        // 登录成功之后，将用户登录信息缓存到redis
+        String tokenKey = RedisKeyConstant.USER_KEY + token;
+        // 3.2将用户登录信息缓存到redis
         PhoneLoginDTO userPhoneLoginDTO = new PhoneLoginDTO();
         BeanUtil.copyProperties(user, userPhoneLoginDTO);
-        // 4.3将DTO类中的属性转换为String
+        // 3.3将DTO类中的属性转换为String
         Map<String, Object> userMap = BeanUtil.beanToMap(userPhoneLoginDTO, new HashMap<>(),
                 CopyOptions.create()
                         .setIgnoreNullValue(true)
                         .setFieldValueEditor((fieldName, fieldValue) -> fieldValue.toString()));
-        String tokenKey = RedisKeyConstant.USER_KEY + token;
         stringRedisTemplate.opsForHash().putAll(tokenKey, userMap);
         stringRedisTemplate.expire(tokenKey, RedisKeyConstant.USER_TTL, TimeUnit.SECONDS);
+        // 4.新增用户和其登录凭据的映射关系
+        stringRedisTemplate.opsForValue().set(
+                RedisKeyConstant.USER_LOGIN_KEY + id,
+                tokenKey,
+                RedisKeyConstant.USER_TTL,
+                TimeUnit.SECONDS
+        );
         return token;
     }
 
@@ -114,7 +134,6 @@ public class UserServiceImpl implements UserService {
      * @return Result<String>
      */
     @Override
-    //TODO 后期如果有机会可以将其改为真实的发送手机验证码
     public String sendCode(String phone) {
         // 1.校验手机号是否合法
         if (RegexUtils.isPhoneInvalid(phone)) {
@@ -128,6 +147,7 @@ public class UserServiceImpl implements UserService {
         stringRedisTemplate.expire(RedisKeyConstant.USER_CODE_KEY + phone,
                 RedisKeyConstant.USER_CODE_TTL, TimeUnit.MINUTES);
         // 5.发送验证码（短信功能待完成）
+        //TODO 后期如果有机会可以将其改为真实的发送手机验证码
         log.info("发送短信验证码成功，验证码为：{}", code);
         log.info(RedisKeyConstant.CODE_TIME_MESSAGE);
         // 6.响应结果

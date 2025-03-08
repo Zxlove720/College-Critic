@@ -10,7 +10,10 @@ public class RedisKeyConstant {
     public static final String USER_CODE_KEY = "college:user:code:";
 
     // 用户登录凭证
-    public static final String USER_KEY = "college:user:";
+    public static final String USER_KEY = "college:user:token:";
+
+    // 用户登录凭证
+    public static final String USER_LOGIN_KEY = "college:user:login";
 
     // 验证码过期时间
     public static final Long USER_CODE_TTL = 300L;

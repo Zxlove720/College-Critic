@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class CollegeSimpleVO implements Serializable {
 
     @Schema(description = "大学id")
-    private Integer id;
+    private Integer schoolId;
 
     @Schema(description = "大学校徽")
     private String schoolHead;

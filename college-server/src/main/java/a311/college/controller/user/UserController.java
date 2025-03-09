@@ -8,14 +8,11 @@ import a311.college.dto.user.UserDTO;
 import a311.college.dto.login.LoginDTO;
 import a311.college.dto.user.UserPageQueryDTO;
 import a311.college.entity.user.User;
-import a311.college.properties.JWTProperties;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +41,7 @@ public class UserController {
      */
     @PostMapping("/login")
     @Operation(summary = "用户登录")
-    public Result<String> login(@RequestBody LoginDTO loginDTO, HttpServletResponse httpServletResponse) {
+    public Result<String> login(@RequestBody LoginDTO loginDTO) {
         String username = loginDTO.getUsername();
         log.info("用户{}正在登录", username);
         return Result.success(userService.login(loginDTO));
@@ -96,7 +93,7 @@ public class UserController {
      * @param userPageQueryDTO 用户分页查询DTO
      * @return Result<PageResult < User>>
      */
-    @GetMapping("/page")
+    @PostMapping("/page")
     @Operation(summary = "用户分页查询")
     public Result<PageResult<User>> UserPage(UserPageQueryDTO userPageQueryDTO) {
         log.info("用户分页查询...查询参数为：第{}页，每页{}条", userPageQueryDTO.getPage(), userPageQueryDTO.getPageSize());

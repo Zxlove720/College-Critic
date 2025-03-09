@@ -1,13 +1,12 @@
 package a311.college.controller.major;
 
 import a311.college.dto.major.MajorDTO;
+import a311.college.dto.query.major.MajorNameDTO;
 import a311.college.result.Result;
 import a311.college.service.MajorService;
 import a311.college.vo.MajorVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,20 +29,19 @@ public class MajorController {
      * @param majorDTO 专业查询DTO
      * @return Result<List<MajorVO>>
      */
-    @GetMapping
-    public Result<List<MajorVO>> getMajors(MajorDTO majorDTO) {
+    @PostMapping
+    public Result<List<MajorVO>> getMajors(@RequestBody MajorDTO majorDTO) {
         return Result.success(majorService.getMajors(majorDTO));
     }
 
     /**
      * 根据专业名搜索
      *
-     * @param majorName 专业名
      * @return Result<List<MajorVO>>
      */
-    @GetMapping("/major")
-    public Result<List<MajorVO>> getMajorByName(String majorName) {
-        return majorService.getMajorByName(majorName);
+    @PostMapping("/major")
+    public Result<List<MajorVO>> getMajorByName(@RequestBody MajorNameDTO majorNameDTO) {
+        return majorService.getMajorByName(majorNameDTO.getMajorName());
     }
 
 }

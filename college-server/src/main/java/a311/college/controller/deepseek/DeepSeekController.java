@@ -1,4 +1,4 @@
-package a311.college.deepseek;
+package a311.college.controller.deepseek;
 
 import a311.college.entity.ai.Message;
 import a311.college.entity.ai.UserRequest;

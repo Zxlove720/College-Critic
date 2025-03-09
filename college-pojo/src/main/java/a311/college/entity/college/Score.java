@@ -9,13 +9,12 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
 
-/**
- * 分数信息
- */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Schema(description = "分数信息")
 public class Score implements Serializable {
 
     @Serial

@@ -9,12 +9,11 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * 招生分类
- */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "招生类型")
 public class Category implements Serializable {
 
     @Serial

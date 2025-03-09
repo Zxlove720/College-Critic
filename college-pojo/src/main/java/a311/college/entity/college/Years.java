@@ -9,12 +9,11 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * 招生年份
- */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "招生年份")
 public class Years implements Serializable {
 
     @Serial

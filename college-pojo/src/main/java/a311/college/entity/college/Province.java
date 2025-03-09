@@ -10,12 +10,11 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * 招生省份类
- */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "招生省份")
 public class Province implements Serializable {
 
     @Serial

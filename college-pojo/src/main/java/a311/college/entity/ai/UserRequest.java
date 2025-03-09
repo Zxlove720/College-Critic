@@ -7,12 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-/**
- * 用户AI请求
- */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "用户请求AI")
 public class UserRequest implements Serializable {
 
     @Schema(description = "请求消息")

@@ -10,12 +10,11 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * 大学类
- */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "大学类")
 public class School implements Serializable {
 
     @Schema(description = "大学id")

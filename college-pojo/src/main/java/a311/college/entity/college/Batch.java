@@ -9,12 +9,11 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * 招生批次
- */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "招生批次")
 public class Batch implements Serializable {
 
     @Serial

@@ -11,4 +11,6 @@ public class APIConstant {
     public static final String COLLEGE_SERVICE = "大学相关服务";
     // 专业服务接口
     public static final String MAJOR_SERVICE = "专业相关服务";
+    // deepSeek服务接口
+    public static final String DEEP_SEEK_SERVICE = "DeepSeek相关服务";
 }

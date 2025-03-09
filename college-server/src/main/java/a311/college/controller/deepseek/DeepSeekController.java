@@ -1,9 +1,13 @@
 package a311.college.controller.deepseek;
 
+import a311.college.constant.API.APIConstant;
 import a311.college.entity.ai.Message;
 import a311.college.entity.ai.UserRequest;
 import a311.college.result.Result;
 import a311.college.service.DeepSeekService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/ai")
+@Tag(name = APIConstant.DEEP_SEEK_SERVICE)
 public class DeepSeekController {
 
     private final DeepSeekService deepSeekService;
@@ -29,6 +34,7 @@ public class DeepSeekController {
      * @return Result<Void>
      */
     @PostMapping("/answer")
+    @Operation(summary = "DeepSeekApi回答问题")
     public Result<Message> responseQuestion(@RequestBody UserRequest request) {
         return Result.success(deepSeekService.response(request));
     }

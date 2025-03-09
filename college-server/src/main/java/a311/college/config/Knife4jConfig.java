@@ -25,8 +25,14 @@ public class Knife4jConfig {
         return createRestApi(APIConstant.COLLEGE_SERVICE, APIPathConstant.COLLEGE_PATH);
     }
 
+    @Bean
     public GroupedOpenApi majorApi() {
         return createRestApi(APIConstant.MAJOR_SERVICE, APIPathConstant.MAJOR_PATH);
+    }
+
+    @Bean
+    public GroupedOpenApi AIApi() {
+        return createRestApi(APIConstant.DEEP_SEEK_SERVICE, APIPathConstant.DEEP_SEEK_PATH);
     }
 
     /**
@@ -56,8 +62,10 @@ public class Knife4jConfig {
                 .description("跃鲤志选服务接口文档") // 描述
                 .version("1.0.0") // 版本号
                 .termsOfService("https://doc.xiaominfo.com") // 服务条款
-                .contact(new Contact().name("A311")
-                        .url("https://github.com/Zxlove720").email("wuzhenbo4813@qq.com")); // 联系方式
+                .contact(new Contact()
+                        .name("A311")
+                        .url("https://github.com/Zxlove720")
+                        .email("wuzhenbo4813@qq.com")); // 联系方式
     }
 
 

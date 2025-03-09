@@ -1,13 +1,14 @@
 package a311.college.service.impl;
 
 import a311.college.dto.college.CollegePageQueryDTO;
+import a311.college.dto.query.school.GradeDTO;
+import a311.college.dto.query.school.YearScoreDTO;
 import a311.college.mapper.college.CollegeMapper;
 import a311.college.redis.RedisKeyConstant;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.CollegeService;
 import a311.college.vo.CollegeSimpleVO;
-import a311.college.vo.MajorVO;
 import a311.college.vo.YearScoreVO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -94,20 +95,15 @@ public class CollegeServiceImpl implements CollegeService {
     }
 
     @Override
-    public List<CollegeSimpleVO> getByGrade(int grade, String province) {
-        List<CollegeSimpleVO> collegeSimpleVOS = collegeMapper.selectByGrade(grade, province);
+    public List<CollegeSimpleVO> getByGrade(GradeDTO gradeDTO) {
+        List<CollegeSimpleVO> collegeSimpleVOS = collegeMapper.selectByGrade(gradeDTO);
         Set<CollegeSimpleVO> tempSet = new HashSet<>(collegeSimpleVOS);
         return new ArrayList<>(tempSet);
     }
 
     @Override
-    public List<CollegeSimpleVO> getByAddress(String province) {
-        return collegeMapper.selectByAddress(province);
-    }
-
-    @Override
-    public Result<List<YearScoreVO>> getScoreByYear(int id, String province, String year) {
-        List<YearScoreVO> yearScoreVOList = collegeMapper.selectScoreByYear(id, province, year);
+    public Result<List<YearScoreVO>> getScoreByYear(YearScoreDTO yearScoreDTO) {
+        List<YearScoreVO> yearScoreVOList = collegeMapper.selectScoreByYear(yearScoreDTO);
         for (YearScoreVO yearScoreVO : yearScoreVOList) {
             yearScoreVO.setMajorName(yearScoreVO.getMajorName()
                     .substring(yearScoreVO.getMajorName().indexOf("选科要求")));

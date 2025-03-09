@@ -1,6 +1,8 @@
 package a311.college.service;
 
 import a311.college.dto.college.CollegePageQueryDTO;
+import a311.college.dto.query.school.GradeDTO;
+import a311.college.dto.query.school.YearScoreDTO;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.vo.CollegeSimpleVO;
@@ -18,11 +20,9 @@ public interface CollegeService {
 
     void cacheCollege();
 
-    List<CollegeSimpleVO> getByGrade(int grade, String province);
+    List<CollegeSimpleVO> getByGrade(GradeDTO gradeDTO);
 
-    List<CollegeSimpleVO> getByAddress(String province);
-
-    Result<List<YearScoreVO>> getScoreByYear(int id, String province, String year);
+    Result<List<YearScoreVO>> getScoreByYear(YearScoreDTO yearScoreDTO);
 
     Result<List<CollegeSimpleVO>> getCollegeByName(String schoolName);
 

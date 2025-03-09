@@ -2,6 +2,8 @@ package a311.college.mapper.college;
 
 
 import a311.college.dto.college.CollegePageQueryDTO;
+import a311.college.dto.query.school.GradeDTO;
+import a311.college.dto.query.school.YearScoreDTO;
 import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.YearScoreVO;
 import com.github.pagehelper.Page;
@@ -27,10 +29,9 @@ public interface CollegeMapper {
     /**
      * 根据成绩查询大学
      *
-     * @param grade 用户成绩
      * @return List<CollegeVO>
      */
-    List<CollegeSimpleVO> selectByGrade(int grade, String province);
+    List<CollegeSimpleVO> selectByGrade(GradeDTO gradeDTO);
 
     /**
      * 根据省份查询大学
@@ -45,12 +46,9 @@ public interface CollegeMapper {
     /**
      * 获取某一院校的历年分数线
      *
-     * @param id       学校id
-     * @param province 招生省份
-     * @param year     招生年份
      * @return Result<YearScoreVO>
      */
-    List<YearScoreVO> selectScoreByYear(int id, String province, String year);
+    List<YearScoreVO> selectScoreByYear(YearScoreDTO yearScoreDTO);
 
     /**
      * 根据学校名搜索

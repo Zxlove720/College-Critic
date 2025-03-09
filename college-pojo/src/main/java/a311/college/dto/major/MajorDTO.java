@@ -7,12 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-/**
- * Major查询DTO
- */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Major查询DTO")
 public class MajorDTO implements Serializable {
 
     @Schema(description = "所属层次id")

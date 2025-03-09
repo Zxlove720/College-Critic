@@ -6,10 +6,9 @@ import lombok.Data;
 import java.io.Serial;
 import java.io.Serializable;
 
-/**
- * 用户登录（手机号）DTO
- */
+
 @Data
+@Schema(description = "用户登录（手机号）DTO")
 public class LoginSymbol implements Serializable {
 
     @Serial

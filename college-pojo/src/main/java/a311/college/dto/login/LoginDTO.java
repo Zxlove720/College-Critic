@@ -6,10 +6,8 @@ import lombok.Data;
 import java.io.Serial;
 import java.io.Serializable;
 
-/**
- * 用户登录（账号密码）DTO
- */
 @Data
+@Schema(description = "用户登录（账号密码）DTO")
 public class LoginDTO implements Serializable {
 
     @Serial

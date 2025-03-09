@@ -5,10 +5,8 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-/**
- * 用户手机登录DTO
- */
 @Data
+@Schema(description = "用户手机登录DTO")
 public class PhoneLoginDTO implements Serializable {
 
     @Schema(description = "手机号")

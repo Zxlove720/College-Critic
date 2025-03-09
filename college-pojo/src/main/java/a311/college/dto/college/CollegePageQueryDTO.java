@@ -1,6 +1,6 @@
 package a311.college.dto.college;
 
-import a311.college.enumeration.ProvinceEnum;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serial;
@@ -8,26 +8,27 @@ import java.io.Serializable;
 import java.util.List;
 
 @Data
+@Schema(description = "大学分页查询DTO")
 public class CollegePageQueryDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    // 学校名
+    @Schema(description = "学校名")
     private String schoolName;
 
-    // 省份名
+    @Schema(description = "省份名")
     private String province;
 
-    // 成绩
+    @Schema(description = "成绩")
     private Integer grade;
 
-    // 大学类型
+    @Schema(description = "大学等级（类型）")
     private List<String> rankList;
 
-    // 页码
+    @Schema(description = "页码")
     private Integer page;
 
-    // 每页记录数
+    @Schema(description = "每页大小")
     private Integer pageSize;
 }

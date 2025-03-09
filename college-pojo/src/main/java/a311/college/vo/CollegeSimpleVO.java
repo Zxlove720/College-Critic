@@ -7,12 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-/**
- * 大学简单数据VO
- */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "大学简单信息VO")
 public class CollegeSimpleVO implements Serializable {
 
     @Schema(description = "大学id")

@@ -7,12 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-/**
- * 院校某年分数线
- */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "历年分数线VO")
 public class YearScoreVO implements Serializable {
 
     @Schema(description = "招生年份")

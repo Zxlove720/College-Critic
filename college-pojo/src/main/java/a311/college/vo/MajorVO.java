@@ -7,12 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-/**
- * 专业VO类
- */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "专业信息VO")
 public class MajorVO implements Serializable {
 
     @Schema(description = "专业名称")

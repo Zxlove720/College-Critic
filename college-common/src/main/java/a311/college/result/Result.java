@@ -20,7 +20,7 @@ public class Result<T> implements Serializable {
     // 错误信息
     private String msg;
     // 可能会返回的数据
-    private T data;
+    private T responseData;
 
     /**
      * 统一的不带数据的成功响应
@@ -40,7 +40,7 @@ public class Result<T> implements Serializable {
     public static <T> Result<T> success(T data) {
         Result<T> result = new Result<>();
         result.code = 1;
-        result.data = data;
+        result.responseData = data;
         return result;
     }
 
@@ -66,7 +66,7 @@ public class Result<T> implements Serializable {
         Result<T> result = new Result<>();
         result.code = 0;
         result.msg = msg;
-        result.data = data;
+        result.responseData = data;
         return result;
     }
 }

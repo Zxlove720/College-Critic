@@ -69,7 +69,7 @@ public class UserController {
      */
     @PostMapping("/login/phone")
     @Operation(summary = "手机登录")
-    public Result<String> phoneLogin(PhoneLoginDTO phoneLoginDTO) {
+    public Result<String> phoneLogin(@RequestBody PhoneLoginDTO phoneLoginDTO) {
         log.info("手机号为{}的用户正在登录", phoneLoginDTO.getPhone());
         String token = userService.phoneLogin(phoneLoginDTO);
         return Result.success(token);

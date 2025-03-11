@@ -41,5 +41,6 @@ public interface UserMapper {
     @Update("update tb_user set id = #{id} where phone = #{phone}")
     void update(User user);
 
-
+    @Insert("insert into tb_user(phone, nickname) values (#{phone}, #{nickName})")
+    void register(User registerUser);
 }

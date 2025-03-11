@@ -182,7 +182,12 @@ public class UserServiceImpl implements UserService {
         // 3.1判断用户是否存在
         if (user == null) {
             // 3.2用户不存在，直接返回
-            return LoginErrorConstant.NO_REGISTER_PHONE;
+            log.info(LoginErrorConstant.NO_REGISTER_PHONE + "自动注册");
+            User registerUser = new User();
+            registerUser.setPhone(phone);
+            registerUser.setNickname("用户" + RandomUtil.randomString(10));
+            userMapper.register(registerUser);
+            return UUID.randomUUID().toString(true);
         }
         // 4.用户存在，那么将用户的登录信息存储在redis
         // 4.1随机生成token，作为登录令牌

@@ -32,7 +32,7 @@ public interface UserMapper {
 
     @Insert("insert into tb_user(username, password, phone, email, nickname, head, year, province, pattern, subjects," +
             " category, grade, ranking, status, city, favorite_table, college_table, create_time, update_time) values " +
-            "(#{username}, #{password}, #{phone}, #{email}, #{nickName}, #{head}, #{year}, #{province}, #{pattern}, #{subjects}," +
+            "(#{username}, #{password}, #{phone}, #{email}, #{nickname}, #{head}, #{year}, #{province}, #{pattern}, #{subjects}," +
             "#{category}, #{grade}, #{ranking}, #{status}, #{city}, #{favoriteTable}, #{collegeTable}, #{createTime}, #{updateTime})")
     void insert(User user);
 

@@ -22,7 +22,8 @@ public class LoginInterceptorConfig implements WebMvcConfigurer {
                 .excludePathPatterns(
                         "/users/code",
                         "/users/login",
-                        "/users/login/phone"
+                        "/users/login/phone",
+                        "/users/register"
                 ).order(1);
         // 注册登录状态刷新拦截器
         registry.addInterceptor(new RefreshTokenInterceptor(stringRedisTemplate))

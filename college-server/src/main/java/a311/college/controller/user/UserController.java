@@ -36,7 +36,7 @@ public class UserController {
     }
 
     /**
-     * 用户普通登录
+     * 普通登录
      *
      * @param loginDTO 封装用户登录数据的DTO
      * @return Result<String>
@@ -121,7 +121,7 @@ public class UserController {
      * @param userDTO 用户DTO
      * @return Result<Void>
      */
-    @PostMapping
+    @PostMapping("/register")
     @Operation(summary = "新增用户")
     public Result<Void> saveUser(@RequestBody UserDTO userDTO) {
         log.info("用户：{}，正在注册...", userDTO);

@@ -3,6 +3,7 @@ package a311.college.service.impl;
 import a311.college.constant.message.MessageConstant;
 import a311.college.constant.user.LoginErrorConstant;
 import a311.college.constant.user.UserStatusConstant;
+import a311.college.constant.user.UserSubjectConstant;
 import a311.college.dto.login.LoginSymbol;
 import a311.college.dto.login.PhoneLoginDTO;
 import a311.college.dto.user.UserDTO;
@@ -43,6 +44,7 @@ import java.util.concurrent.TimeUnit;
 public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
+
 
     @Autowired
     public UserServiceImpl(UserMapper userMapper) {
@@ -248,16 +250,13 @@ public class UserServiceImpl implements UserService {
         if (user.getProvince().getStatus() == 0) {
             // 确定用户为老高考
             user.setPattern(0);
-            List<String> subjects = new ArrayList<>();
             // 确定老高考用户文理科
             if (user.getCategory() == 1) {
                 // 确定用户为理科，为其添加选科
-                Collections.addAll(subjects, "物理", "化学", "生物");
-                user.setSubjects(subjects.toString());
+                user.setSubjects(UserSubjectConstant.SCIENCE);
             } else if (user.getCategory() == 0) {
                 // 确定用户为文科，为其添加选科
-                Collections.addAll(subjects, "历史", "政治", "地理");
-                user.setSubjects(subjects.toString());
+                user.setSubjects(UserSubjectConstant.ART);
             }
         }
         // 将拷贝后的对象属性补全

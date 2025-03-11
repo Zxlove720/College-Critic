@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.sql.*;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +54,7 @@ public class College2DataBase {
                     for (SchoolRankInfo rankDatum : rankData) {
                         if (school.getSchoolName().equals(rankDatum.getSchoolName())) {
                             school.setSchoolAddr(rankDatum.getSchoolAddr());
-                            school.setProvinceAddress(school.getProvinceAddress());
+                            school.setProvinceAddress(extractProvince(rankDatum.getSchoolAddr()));
                             school.setRankList(rankDatum.getRankList());
                             break;
                         }
@@ -193,7 +194,6 @@ public class College2DataBase {
                 }
             }
         }
-
         // 根据索引数量判断输入格式并返回相应的结果
         if (index == 2) {
             // 第一种格式：只有两个数字
@@ -204,5 +204,26 @@ public class College2DataBase {
         } else {
             throw new IllegalArgumentException("输入格式不正确");
         }
+    }
+
+    private static final List<String> PROVINCES = Arrays.asList(
+            "内蒙古", "黑龙江",
+            "北京", "天津", "上海", "重庆",
+            "广西", "西藏", "宁夏", "新疆",
+            "香港", "澳门",
+            "河北", "山西", "辽宁", "吉林", "江苏",
+            "浙江", "安徽", "福建", "江西", "山东",
+            "河南", "湖北", "湖南", "广东", "海南",
+            "四川", "贵州", "云南", "陕西", "甘肃",
+            "青海", "台湾"
+    );
+
+    public static String extractProvince(String input) {
+        for (String province : PROVINCES) {
+            if (input.startsWith(province)) {
+                return province;
+            }
+        }
+        return "";
     }
 }

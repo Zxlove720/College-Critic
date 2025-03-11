@@ -41,11 +41,11 @@ public class UserController {
      * @param loginDTO 封装用户登录数据的DTO
      * @return Result<String>
      */
-    @PostMapping("/login")
+    @PostMapping("/login/simple")
     @Operation(summary = "用户登录")
     public Result<String> login(@RequestBody LoginDTO loginDTO) {
-        String username = loginDTO.getUsername();
-        log.info("用户{}正在登录", username);
+        String phone = loginDTO.getPhone();
+        log.info("用户{}正在登录", phone);
         return Result.success(userService.login(loginDTO));
     }
 
@@ -69,7 +69,7 @@ public class UserController {
      * @param phoneLoginDTO 手机登录DTO
      * @return Result<String>
      */
-    @PostMapping("/login/phone")
+    @PostMapping("/login/code")
     @Operation(summary = "手机登录")
     public Result<String> phoneLogin(@RequestBody PhoneLoginDTO phoneLoginDTO) {
         log.info("手机号为{}的用户正在登录", phoneLoginDTO.getPhone());
@@ -99,20 +99,6 @@ public class UserController {
         // 获取当前登录用户id
         Long userId = ThreadLocalUtil.getCurrentId();
         return Result.success(userService.selectById(userId));
-    }
-
-    /**
-     * 用户分页查询
-     *
-     * @param userPageQueryDTO 用户分页查询DTO
-     * @return Result<PageResult < User>>
-     */
-    @PostMapping("/page")
-    @Operation(summary = "用户分页查询")
-    public Result<PageResult<User>> UserPage(UserPageQueryDTO userPageQueryDTO) {
-        log.info("用户分页查询...查询参数为：第{}页，每页{}条", userPageQueryDTO.getPage(), userPageQueryDTO.getPageSize());
-        PageResult<User> pageResult = userService.pageSelect(userPageQueryDTO);
-        return Result.success(pageResult);
     }
 
     /**

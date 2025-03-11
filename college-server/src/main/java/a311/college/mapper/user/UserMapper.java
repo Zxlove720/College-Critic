@@ -16,12 +16,9 @@ public interface UserMapper {
     /**
      * 用户传统登录
      *
-     * @param username 用户名
+     * @param phone 手机号
      * @return User
      */
-    @Select("select * from tb_user where username = #{username}")
-    User userLogin(String username);
-
     @Select("select * from tb_user where phone = #{phone}")
     User selectByPhone(String phone);
 

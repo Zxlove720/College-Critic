@@ -53,17 +53,17 @@ public class UserServiceImpl implements UserService {
     private StringRedisTemplate stringRedisTemplate;
 
     /**
-     * 用户登录：用户名 + 密码
+     * 用户登录：手机号 + 密码
      *
      * @param loginDTO 封装用户登录数据的DTO
      * @return User用户对象
      */
     @Override
     public String login(LoginDTO loginDTO) {
-        String username = loginDTO.getUsername();
+        String phone = loginDTO.getPhone();
         String password = loginDTO.getPassword();
-        // 根据用户名查询数据库中数据
-        User user = userMapper.userLogin(username);
+        // 根据手机号查询数据库中数据
+        User user = userMapper.selectByPhone(phone);
         // 处理异常情况
         if (user == null) {
             // 账号不存在

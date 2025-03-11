@@ -7,6 +7,7 @@ import a311.college.dto.login.LoginDTO;
 import a311.college.dto.user.UserPageQueryDTO;
 import a311.college.entity.user.User;
 import a311.college.result.PageResult;
+import a311.college.vo.UserVO;
 
 /**
  * 用户相关服务
@@ -21,7 +22,7 @@ public interface UserService {
 
     PageResult<User> pageSelect(UserPageQueryDTO userPageQueryDTO);
 
-    User selectById(Long id);
+    UserVO selectById(Long id);
 
     void deleteById(Long id);
 
@@ -31,6 +32,5 @@ public interface UserService {
 
     void changeStatus(Integer status, Long id);
 
-    void editPassword(PasswordEditDTO passwordEditDTO);
 
 }

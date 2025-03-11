@@ -2,6 +2,7 @@ package a311.college.mapper.user;
 
 import a311.college.dto.user.UserPageQueryDTO;
 import a311.college.entity.user.User;
+import a311.college.vo.UserVO;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.*;
 
@@ -27,7 +28,7 @@ public interface UserMapper {
     Page<User> pageQuery(UserPageQueryDTO userPageQueryDTO);
 
     @Select("select * from tb_user where id = #{id}")
-    User selectById(Long id);
+    UserVO selectById(Long id);
 
     @Delete("delete from tb_user where id = #{id}")
     void deleteById(Long id);
@@ -41,6 +42,6 @@ public interface UserMapper {
     @Update("update tb_user set id = #{id} where phone = #{phone}")
     void update(User user);
 
-    @Insert("insert into tb_user(phone, nickname) values (#{phone}, #{nickName})")
+    @Insert("insert into tb_user(phone, nickname) values (#{phone}, #{nickname})")
     void register(User registerUser);
 }

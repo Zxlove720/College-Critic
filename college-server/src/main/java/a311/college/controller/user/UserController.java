@@ -11,6 +11,8 @@ import a311.college.entity.user.User;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.UserService;
+import a311.college.thread.ThreadLocalUtil;
+import a311.college.vo.UserVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -88,6 +90,18 @@ public class UserController {
     }
 
     /**
+     * 用户个人主页
+     * @return Result
+     */
+    @PostMapping("/me")
+    @Operation(summary = "用户个人页面")
+    public Result<UserVO> me() {
+        // 获取当前登录用户id
+        Long userId = ThreadLocalUtil.getCurrentId();
+        return Result.success(userService.selectById(userId));
+    }
+
+    /**
      * 用户分页查询
      *
      * @param userPageQueryDTO 用户分页查询DTO
@@ -99,20 +113,6 @@ public class UserController {
         log.info("用户分页查询...查询参数为：第{}页，每页{}条", userPageQueryDTO.getPage(), userPageQueryDTO.getPageSize());
         PageResult<User> pageResult = userService.pageSelect(userPageQueryDTO);
         return Result.success(pageResult);
-    }
-
-    /**
-     * 根据id查询用户
-     *
-     * @param id 用户id
-     * @return Result<User>
-     */
-    @GetMapping("/{id}")
-    @Operation(summary = "根据id查询用户")
-    public Result<User> selectUserById(@PathVariable Long id) {
-        log.info("根据id查询用户...id为：{}", id);
-        User user = userService.selectById(id);
-        return Result.success(user);
     }
 
     /**
@@ -176,16 +176,5 @@ public class UserController {
         return Result.success();
     }
 
-    /**
-     * 用户修改密码
-     *
-     * @param passwordEditDTO 用户密码修改DTO
-     * @return Result<Void>
-     */
-    @PutMapping("/editPassword")
-    @Operation(summary = "用户修改密码")
-    public Result<Void> editPassword(@RequestBody PasswordEditDTO passwordEditDTO) {
-        userService.editPassword(passwordEditDTO);
-        return Result.success();
-    }
+
 }

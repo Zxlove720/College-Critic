@@ -1,11 +1,11 @@
 package a311.college.service;
 
-import a311.college.dto.user.PasswordEditDTO;
 import a311.college.dto.login.PhoneLoginDTO;
 import a311.college.dto.user.UserDTO;
 import a311.college.dto.login.LoginDTO;
 import a311.college.dto.user.UserPageQueryDTO;
 import a311.college.entity.user.User;
+import a311.college.result.LoginResult;
 import a311.college.result.PageResult;
 import a311.college.vo.UserVO;
 
@@ -14,7 +14,7 @@ import a311.college.vo.UserVO;
  */
 public interface UserService {
 
-    String login(LoginDTO loginDTO);
+    LoginResult login(LoginDTO loginDTO);
 
     String sendCode(String phone);
 

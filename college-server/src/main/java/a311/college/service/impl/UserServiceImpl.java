@@ -16,6 +16,7 @@ import a311.college.exception.PasswordErrorException;
 import a311.college.mapper.user.UserMapper;
 import a311.college.redis.RedisKeyConstant;
 import a311.college.regex.RegexUtils;
+import a311.college.result.LoginResult;
 import a311.college.result.PageResult;
 import a311.college.service.UserService;
 import a311.college.vo.UserVO;
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserService {
      * @return User用户对象
      */
     @Override
-    public String login(LoginDTO loginDTO) {
+    public LoginResult login(LoginDTO loginDTO) {
         String phone = loginDTO.getPhone();
         String password = loginDTO.getPassword();
         // 根据手机号查询数据库中数据
@@ -82,7 +83,15 @@ public class UserServiceImpl implements UserService {
             // 账号被锁定
             throw new AccountLockedException(MessageConstant.ACCOUNT_LOCKED);
         }
-        return saveUserInRedis(user);
+        // 用户正常，封装登录结果
+        LoginResult result = new LoginResult();
+        result.setUuid(saveUserInRedis(user));
+        result.setHead(user.getHead());
+        result.setNickname(user.getNickname());
+        result.setProvince(user.getProvince());
+        result.setSubjects(user.getSubjects());
+        result.setGrade(user.getGrade());
+        return result;
     }
 
     /**

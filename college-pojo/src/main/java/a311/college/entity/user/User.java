@@ -16,9 +16,10 @@ import java.time.Year;
  * 用户类
  */
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Schema(description = "用户类")
 public class User implements Serializable {
 
     @Serial

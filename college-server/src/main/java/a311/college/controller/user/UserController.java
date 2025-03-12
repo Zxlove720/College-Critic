@@ -2,13 +2,10 @@ package a311.college.controller.user;
 
 import a311.college.constant.API.APIConstant;
 import a311.college.constant.user.UserStatusConstant;
-import a311.college.dto.user.PasswordEditDTO;
 import a311.college.dto.login.PhoneLoginDTO;
 import a311.college.dto.user.UserDTO;
 import a311.college.dto.login.LoginDTO;
-import a311.college.dto.user.UserPageQueryDTO;
-import a311.college.entity.user.User;
-import a311.college.result.PageResult;
+import a311.college.result.LoginResult;
 import a311.college.result.Result;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
@@ -43,7 +40,7 @@ public class UserController {
      */
     @PostMapping("/login/simple")
     @Operation(summary = "用户登录")
-    public Result<String> login(@RequestBody LoginDTO loginDTO) {
+    public Result<LoginResult> login(@RequestBody LoginDTO loginDTO) {
         String phone = loginDTO.getPhone();
         log.info("用户{}正在登录", phone);
         return Result.success(userService.login(loginDTO));

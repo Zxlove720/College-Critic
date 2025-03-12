@@ -6,7 +6,6 @@ import a311.college.dto.query.school.YearScoreDTO;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.vo.CollegeSimpleVO;
-import a311.college.vo.MajorVO;
 import a311.college.vo.YearScoreVO;
 
 import java.util.List;

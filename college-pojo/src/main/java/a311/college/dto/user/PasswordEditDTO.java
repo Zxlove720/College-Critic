@@ -12,17 +12,17 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "用户修改密码（原始）DTO")
+@Schema(description = "用户修改密码DTO")
 public class PasswordEditDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "用户id")
-    private Long userId;
+    @Schema(description = "手机号")
+    private String phone;
 
-    @Schema(description = "旧密码")
-    private String oldPassword;
+    @Schema(description = "验证码")
+    private String code;
 
     @Schema(description = "新密码")
     private String newPassword;

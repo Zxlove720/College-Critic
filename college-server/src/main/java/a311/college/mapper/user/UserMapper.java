@@ -43,4 +43,7 @@ public interface UserMapper {
             " values (#{username}, #{password}, #{phone}, #{head}, #{year}, #{province}, #{pattern}, #{subjects}, #{grade}, " +
             "#{ranking})")
     void register(User registerUser);
+
+    @Update("update tb_user set password = #{newPassword} where id = #{id}")
+    void editPassword(String newPassword, Long id);
 }

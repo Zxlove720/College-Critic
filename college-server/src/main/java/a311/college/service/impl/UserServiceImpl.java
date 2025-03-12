@@ -7,6 +7,8 @@ import a311.college.constant.user.UserSubjectConstant;
 import a311.college.dto.login.LoginSymbol;
 import a311.college.dto.login.PhoneLoginDTO;
 import a311.college.dto.user.AddFavoriteDTO;
+import a311.college.dto.user.CodeDTO;
+import a311.college.dto.user.PasswordEditDTO;
 import a311.college.dto.user.UserDTO;
 import a311.college.dto.login.LoginDTO;
 import a311.college.entity.user.User;
@@ -16,7 +18,9 @@ import a311.college.mapper.user.UserMapper;
 import a311.college.redis.RedisKeyConstant;
 import a311.college.regex.RegexUtils;
 import a311.college.result.LoginResult;
+import a311.college.result.Result;
 import a311.college.service.UserService;
+import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.UserVO;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
@@ -24,6 +28,7 @@ import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import jakarta.annotation.Resource;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +48,8 @@ import java.util.concurrent.TimeUnit;
 public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
+    @Autowired
+    private UserService userService;
 
 
     @Autowired
@@ -148,14 +155,35 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 发送验证码
+     * 发送验证码登录
      *
-     * @param phone 用户手机号
-     * @return Result<String>
+     * @param codeDTO 验证码DTO
+     * @return code 验证码
      */
     @Override
-    public String sendCode(String phone) {
-        // 1.校验手机号是否合法
+    public String sendCode(CodeDTO codeDTO) {
+        return code(codeDTO.getPhone(), RedisKeyConstant.USER_CODE_KEY);
+    }
+
+    /**
+     * 发送验证码修改密码
+     *
+     * @param codeDTO 验证码DTO
+     * @return code 验证码
+     */
+    @Override
+    public String sendEditCode(CodeDTO codeDTO) {
+        return code(codeDTO.getPhone(), RedisKeyConstant.USER_EDIT_CODE_KEY);
+    }
+
+    /**
+     * 发送验证码
+     *
+     * @param phone 手机号
+     * @param preKey 键前缀
+     * @return code 验证码
+     */
+    private String code(String phone, String preKey) {
         if (RegexUtils.isPhoneInvalid(phone)) {
             // 2.如果手机号不合法，返回错误信息
             return LoginErrorConstant.PHONE_NUMBER_ERROR;
@@ -163,8 +191,8 @@ public class UserServiceImpl implements UserService {
         // 3.手机号合法，生成验证码
         String code = RandomUtil.randomNumbers(6);
         // 4.将验证码保存至redis
-        stringRedisTemplate.opsForValue().set(RedisKeyConstant.USER_CODE_KEY + phone, code);
-        stringRedisTemplate.expire(RedisKeyConstant.USER_CODE_KEY + phone,
+        stringRedisTemplate.opsForValue().set(preKey + phone, code);
+        stringRedisTemplate.expire(preKey + phone,
                 RedisKeyConstant.USER_CODE_TTL, TimeUnit.SECONDS);
         // 5.发送验证码（短信功能待完成）
         //TODO 后期如果有机会可以将其改为真实的发送手机验证码
@@ -300,6 +328,31 @@ public class UserServiceImpl implements UserService {
     public void addFavorite(AddFavoriteDTO addFavoriteDTO) {
 
     }
-    
+
+    /**
+     * 用户修改密码
+     *
+     * @param passwordEditDTO 修改密码DTO
+     * @return LoginResult
+     */
+    @Override
+    public LoginResult editPassword(PasswordEditDTO passwordEditDTO) {
+        String phone = passwordEditDTO.getPhone();
+        String code = passwordEditDTO.getCode();
+        // 1.判断手机号是否合法
+        if (RegexUtils.isPhoneInvalid(phone)) {
+            // 1.1.如果手机号不合法，返回错误信息
+            throw new PasswordEditFailedException(LoginErrorConstant.PHONE_NUMBER_ERROR);
+        }
+        // 2.获取redis中验证码
+        String cacheCode = stringRedisTemplate.opsForValue().get(RedisKeyConstant.USER_EDIT_CODE_KEY + phone);
+        if (code.equals(cacheCode)) {
+            // 2.1验证码不匹配，修改密码失败，抛出异常
+            throw new PasswordEditFailedException(LoginErrorConstant.CODE_ERROR);
+        }
+        // 3.手机号和验证码比对成功，可以修改密码
+        userMapper.editPassword(passwordEditDTO.getNewPassword(), ThreadLocalUtil.getCurrentId());
+        return loginSuccessful(userMapper.selectByPhone(phone));
+    }
 
 }

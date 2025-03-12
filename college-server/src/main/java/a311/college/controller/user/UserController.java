@@ -3,6 +3,8 @@ package a311.college.controller.user;
 import a311.college.constant.API.APIConstant;
 import a311.college.dto.login.PhoneLoginDTO;
 import a311.college.dto.user.AddFavoriteDTO;
+import a311.college.dto.user.CodeDTO;
+import a311.college.dto.user.PasswordEditDTO;
 import a311.college.dto.user.UserDTO;
 import a311.college.dto.login.LoginDTO;
 import a311.college.result.LoginResult;
@@ -49,15 +51,14 @@ public class UserController {
     /**
      * 发送手机验证码
      *
-     * @param phone 手机号
+     * @param codeDTO 验证码DTO
      * @return Result<String>
      */
     @PostMapping("/code")
     @Operation(summary = "发送验证码")
-    public Result<String> sendCode(String phone) {
-        log.info("向手机号为{}的用户发送验证码", phone);
-        String code = userService.sendCode(phone);
-        return Result.success(code);
+    public Result<String> sendCode(@RequestBody CodeDTO codeDTO) {
+        log.info("向手机号为{}的用户发送验证码", codeDTO.getPhone());
+        return Result.success(userService.sendCode(codeDTO));
     }
 
     /**
@@ -71,6 +72,32 @@ public class UserController {
     public Result<LoginResult> phoneLogin(@RequestBody PhoneLoginDTO phoneLoginDTO) {
         log.info("手机号为{}的用户正在使用验证码登录", phoneLoginDTO.getPhone());
         return Result.success(userService.phoneLogin(phoneLoginDTO));
+    }
+
+    /**
+     * 修改密码发送验证码
+     *
+     * @param codeDTO 验证码DTO
+     * @return Result<String>
+     */
+    @PostMapping("/editCode")
+    public Result<String> sendEditCode(@RequestBody CodeDTO codeDTO) {
+        log.info("向手机号为{}的用户发送验证码，其正在修改密码", codeDTO.getPhone());
+        return Result.success(userService.sendEditCode(codeDTO));
+    }
+
+
+    /**
+     * 用户修改密码
+     *
+     * @param passwordEditDTO 密码修改DTO
+     * @return Result<LoginResult>
+     */
+    @PostMapping("/edit")
+    @Operation(summary = "用户修改密码")
+    public LoginResult editPassword(@RequestBody PasswordEditDTO passwordEditDTO) {
+        log.info("用户{}正在修改密码", ThreadLocalUtil.getCurrentId());
+        return userService.editPassword(passwordEditDTO);
     }
 
     /**

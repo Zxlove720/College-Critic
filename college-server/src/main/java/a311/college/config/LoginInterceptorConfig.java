@@ -21,8 +21,8 @@ public class LoginInterceptorConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor())
                 .excludePathPatterns(
                         "/users/code",
-                        "/users/login/simple",
-                        "/users/login/phone",
+                        "/users/login",
+                        "/users/phone",
                         "/users/register"
                 ).order(1);
         // 注册登录状态刷新拦截器

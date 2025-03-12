@@ -14,11 +14,11 @@ public class LoginSymbol implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @Schema(description = "用户名")
+    private String username;
+
     @Schema(description = "用户id")
     private Long id;
-
-    @Schema(description = "用户昵称")
-    private String nickname;
 
     @Schema(description = "用户头像")
     private String head;

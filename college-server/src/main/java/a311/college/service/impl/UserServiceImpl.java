@@ -364,12 +364,12 @@ public class UserServiceImpl implements UserService {
         }
         // 2.获取redis中验证码
         String cacheCode = stringRedisTemplate.opsForValue().get(RedisKeyConstant.USER_EDIT_CODE_KEY + phone);
-        if (code.equals(cacheCode)) {
+        if (!code.equals(cacheCode)) {
             // 2.1验证码不匹配，修改密码失败，抛出异常
             throw new PasswordEditFailedException(LoginErrorConstant.CODE_ERROR);
         }
         // 3.手机号和验证码比对成功，可以修改密码
-        userMapper.editPassword(passwordEditDTO.getNewPassword(), ThreadLocalUtil.getCurrentId());
+        userMapper.editPassword(DigestUtil.md5Hex(passwordEditDTO.getNewPassword().getBytes()), ThreadLocalUtil.getCurrentId());
         return loginSuccessful(userMapper.selectByPhone(phone));
     }
 

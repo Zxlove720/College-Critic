@@ -8,8 +8,8 @@ import a311.college.dto.login.LoginSymbol;
 import a311.college.dto.login.PhoneLoginDTO;
 import a311.college.dto.user.UserDTO;
 import a311.college.dto.login.LoginDTO;
-import a311.college.dto.user.UserPageQueryDTO;
 import a311.college.entity.user.User;
+import a311.college.enumeration.ProvinceEnum;
 import a311.college.exception.AccountLockedException;
 import a311.college.exception.AccountNotFoundException;
 import a311.college.exception.PasswordErrorException;
@@ -17,15 +17,13 @@ import a311.college.mapper.user.UserMapper;
 import a311.college.redis.RedisKeyConstant;
 import a311.college.regex.RegexUtils;
 import a311.college.result.LoginResult;
-import a311.college.result.PageResult;
 import a311.college.service.UserService;
 import a311.college.vo.UserVO;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.RandomUtil;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
+import cn.hutool.crypto.digest.DigestUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -34,6 +32,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import java.time.Year;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -63,31 +62,32 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public LoginResult login(LoginDTO loginDTO) {
+        // 1.获取用户的手机号和密码
         String phone = loginDTO.getPhone();
         String password = loginDTO.getPassword();
-        // 根据手机号查询数据库中数据
+        // 2.根据手机号查询用户
         User user = userMapper.selectByPhone(phone);
-        // 处理异常情况
+        // 3.处理异常情况
         if (user == null) {
-            // 账号不存在
+            // 3.1账号不存在
             throw new AccountNotFoundException(MessageConstant.ACCOUNT_NOT_FOUND);
         }
-        // 密码比对
+        // 3.2密码比对
         password = DigestUtils.md5DigestAsHex(password.getBytes());
         if (!password.equals(user.getPassword())) {
-            // 密码错误
+            // 3.3密码错误
             throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
         }
-        // 判断当前用户是否可用
+        // 3.4判断当前用户是否可用
         if (user.getStatus().equals(UserStatusConstant.DISABLE)) {
-            // 账号被锁定
+            // 3.5账号被锁定
             throw new AccountLockedException(MessageConstant.ACCOUNT_LOCKED);
         }
-        // 用户正常，封装登录结果
+        // 4.用户正常，封装登录结果
         LoginResult result = new LoginResult();
         result.setUuid(saveUserInRedis(user));
         result.setHead(user.getHead());
-        result.setNickname(user.getNickname());
+        result.setUsername(user.getUsername());
         result.setProvince(user.getProvince());
         result.setSubjects(user.getSubjects());
         result.setGrade(user.getGrade());
@@ -191,11 +191,8 @@ public class UserServiceImpl implements UserService {
         // 3.1判断用户是否存在
         if (user == null) {
             // 3.2用户不存在，直接先临时注册
-            log.info(LoginErrorConstant.NO_REGISTER_PHONE + "自动注册");
-            User registerUser = new User();
-            registerUser.setPhone(phone);
-            registerUser.setNickname("用户" + RandomUtil.randomString(10));
-            userMapper.register(registerUser);
+            log.info(LoginErrorConstant.NO_REGISTER_PHONE);
+            registerTempUser(phone);
             User tempUser = userMapper.selectByPhone(phone);
             return saveUserInRedis(tempUser);
         }
@@ -205,21 +202,21 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 用户分页查询
-     *
-     * @param userPageQueryDTO 用户分页查询DTO
-     * @return PageResult<User>
+     * 用户手机号未注册，自动注册
      */
-    @Override
-    public PageResult<User> pageSelect(UserPageQueryDTO userPageQueryDTO) {
-        PageHelper.startPage(userPageQueryDTO.getPage(), userPageQueryDTO.getPageSize());
-        // PageHelper默认返回Page对象，Page是继承了ArrayList的，其中存储的是查询到的对象
-        Page<User> page = userMapper.pageQuery(userPageQueryDTO);
-        // 获取总页数
-        long total = page.getTotal();
-        // 获取每一页的记录
-        List<User> record = page.getResult();
-        return new PageResult<>(total, record);
+    private void registerTempUser(String phone) {
+        User user = new User();
+        user.setUsername("用户" + RandomUtil.randomString(10));
+        user.setPassword(DigestUtil.md5Hex("123456".getBytes()));
+        user.setPhone(phone);
+        user.setHead("https://123456.com");
+        user.setYear(Year.now());
+        user.setProvince(ProvinceEnum.重庆);
+        user.setPattern(1);
+        user.setSubjects(UserSubjectConstant.SCIENCE);
+        user.setGrade(520);
+        user.setRanking(50000);
+        userMapper.register(user);
     }
 
     /**

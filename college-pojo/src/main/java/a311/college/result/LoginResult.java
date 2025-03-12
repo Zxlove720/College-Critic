@@ -22,7 +22,7 @@ public class LoginResult implements Serializable {
     private String head;
 
     @Schema(description = "用户昵称")
-    private String nickname;
+    private String username;
 
     @Schema(description = "用户省份")
     private ProvinceEnum province;

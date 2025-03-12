@@ -20,8 +20,6 @@ public interface UserService {
 
     String phoneLogin(PhoneLoginDTO phoneLoginDTO);
 
-    PageResult<User> pageSelect(UserPageQueryDTO userPageQueryDTO);
-
     UserVO selectById(Long id);
 
     void deleteById(Long id);

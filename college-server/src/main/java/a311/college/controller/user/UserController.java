@@ -11,12 +11,15 @@ import a311.college.result.LoginResult;
 import a311.college.result.Result;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
+import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.UserVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 用户请求控制器
@@ -131,10 +134,22 @@ public class UserController {
      * @param addFavoriteDTO 学校收藏DTO
      * @return Void
      */
+    @PostMapping("/addFavorite")
     public Result<Void> addFavorite(@RequestBody AddFavoriteDTO addFavoriteDTO) {
         log.info("用户{}收藏了{}学校", ThreadLocalUtil.getCurrentId(), addFavoriteDTO.getSchoolId());
         userService.addFavorite(addFavoriteDTO);
         return Result.success();
+    }
+
+    /**
+     * 展示用户收藏
+     *
+     * @return Result<Void>
+     */
+    @PostMapping("/favorite")
+    public Result<List<CollegeSimpleVO>> showFavorite() {
+        log.info("展示用户{}收藏", ThreadLocalUtil.getCurrentId());
+        return Result.success(userService.showFavorite());
     }
 
     /**

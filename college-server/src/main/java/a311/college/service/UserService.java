@@ -8,7 +8,10 @@ import a311.college.dto.user.UserDTO;
 import a311.college.dto.login.LoginDTO;
 import a311.college.result.LoginResult;
 import a311.college.result.Result;
+import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.UserVO;
+
+import java.util.List;
 
 /**
  * 用户相关服务
@@ -34,5 +37,7 @@ public interface UserService {
     void save(UserDTO userDTO);
 
     void update(UserDTO userDTO);
+
+    List<CollegeSimpleVO> showFavorite();
 
 }

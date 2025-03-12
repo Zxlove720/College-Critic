@@ -57,4 +57,7 @@ public interface CollegeMapper {
      * @return Result<List < CollegeSimpleVO>>
      */
     List<CollegeSimpleVO> selectByName(String schoolName);
+
+    @Select("select * from tb_school where school_id = #{schoolId}")
+    CollegeSimpleVO selectBySchoolId(String schoolId);
 }

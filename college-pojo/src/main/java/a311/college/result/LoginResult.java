@@ -21,8 +21,14 @@ public class LoginResult implements Serializable {
     @Schema(description = "用户头像")
     private String head;
 
-    @Schema(description = "用户昵称")
+    @Schema(description = "用户名")
     private String username;
+
+    @Schema(description = "用户手机")
+    private String phone;
+
+    @Schema(description = "用户密码")
+    private String password;
 
     @Schema(description = "用户省份")
     private ProvinceEnum province;

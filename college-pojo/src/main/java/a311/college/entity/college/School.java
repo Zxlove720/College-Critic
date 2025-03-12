@@ -1,6 +1,5 @@
 package a311.college.entity.college;
 
-import a311.college.enumeration.ProvinceEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -18,7 +17,7 @@ import java.util.List;
 public class School implements Serializable {
 
     @Schema(description = "大学id")
-    private String schoolId;
+    private Integer schoolId;
 
     @Schema(description = "大学校徽")
     private String schoolHead;

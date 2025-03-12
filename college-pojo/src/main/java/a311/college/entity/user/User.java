@@ -11,6 +11,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.Year;
+import java.util.List;
 
 /**
  * 用户类
@@ -65,7 +66,7 @@ public class User implements Serializable {
     private ProvinceEnum city;
 
     @Schema(description = "收藏表")
-    private String favoriteTable;
+    private List<Integer> favoriteTable;
 
     @Schema(description = "志愿表")
     private String collegeTable;

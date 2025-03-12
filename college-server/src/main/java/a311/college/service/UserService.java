@@ -1,12 +1,10 @@
 package a311.college.service;
 
 import a311.college.dto.login.PhoneLoginDTO;
+import a311.college.dto.user.AddFavoriteDTO;
 import a311.college.dto.user.UserDTO;
 import a311.college.dto.login.LoginDTO;
-import a311.college.dto.user.UserPageQueryDTO;
-import a311.college.entity.user.User;
 import a311.college.result.LoginResult;
-import a311.college.result.PageResult;
 import a311.college.vo.UserVO;
 
 /**
@@ -18,7 +16,7 @@ public interface UserService {
 
     String sendCode(String phone);
 
-    String phoneLogin(PhoneLoginDTO phoneLoginDTO);
+    LoginResult phoneLogin(PhoneLoginDTO phoneLoginDTO);
 
     UserVO selectById(Long id);
 
@@ -28,7 +26,5 @@ public interface UserService {
 
     void update(UserDTO userDTO);
 
-    void changeStatus(Integer status, Long id);
-
-
+    void addFavorite(AddFavoriteDTO addFavoriteDTO);
 }

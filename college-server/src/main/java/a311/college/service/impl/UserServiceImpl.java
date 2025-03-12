@@ -6,13 +6,12 @@ import a311.college.constant.user.UserStatusConstant;
 import a311.college.constant.user.UserSubjectConstant;
 import a311.college.dto.login.LoginSymbol;
 import a311.college.dto.login.PhoneLoginDTO;
+import a311.college.dto.user.AddFavoriteDTO;
 import a311.college.dto.user.UserDTO;
 import a311.college.dto.login.LoginDTO;
 import a311.college.entity.user.User;
 import a311.college.enumeration.ProvinceEnum;
-import a311.college.exception.AccountLockedException;
-import a311.college.exception.AccountNotFoundException;
-import a311.college.exception.PasswordErrorException;
+import a311.college.exception.*;
 import a311.college.mapper.user.UserMapper;
 import a311.college.redis.RedisKeyConstant;
 import a311.college.regex.RegexUtils;
@@ -83,11 +82,23 @@ public class UserServiceImpl implements UserService {
             // 3.5账号被锁定
             throw new AccountLockedException(MessageConstant.ACCOUNT_LOCKED);
         }
-        // 4.用户正常，封装登录结果
+        // 4.用户正常，返回登录成功结果
+        return loginSuccessful(user);
+    }
+
+    /**
+     * 用户登录成功，返回成功结果
+     *
+     * @param user 用户
+     * @return LoginResult
+     */
+    private LoginResult loginSuccessful(User user) {
         LoginResult result = new LoginResult();
         result.setUuid(saveUserInRedis(user));
         result.setHead(user.getHead());
         result.setUsername(user.getUsername());
+        result.setPhone(user.getPhone());
+        result.setPassword(user.getPassword());
         result.setProvince(user.getProvince());
         result.setSubjects(user.getSubjects());
         result.setGrade(user.getGrade());
@@ -170,12 +181,12 @@ public class UserServiceImpl implements UserService {
      * @return String token
      */
     @Override
-    public String phoneLogin(PhoneLoginDTO phoneLoginDTO) {
+    public LoginResult phoneLogin(PhoneLoginDTO phoneLoginDTO) {
         // 1.校验手机号是否合法
         String phone = phoneLoginDTO.getPhone();
         if (RegexUtils.isPhoneInvalid(phone)) {
-            // 1.1手机号不合法直接返回错误
-            return LoginErrorConstant.PHONE_NUMBER_ERROR;
+            // 1.1手机号不合法直接抛出异常
+            throw new LoginFailedException(LoginErrorConstant.PHONE_NUMBER_ERROR);
         }
         // 2.校验验证码
         // 2.1获取redis中存储的验证码
@@ -183,8 +194,8 @@ public class UserServiceImpl implements UserService {
         // 2.2获取请求中的验证码
         String code = phoneLoginDTO.getCode();
         if (cacheCode == null || !cacheCode.equals(code)) {
-            // 2.3验证码比对失败，返回错误
-            return LoginErrorConstant.CODE_ERROR;
+            // 2.3验证码比对失败直接抛出异常
+            throw new LoginFailedException(LoginErrorConstant.CODE_ERROR);
         }
         // 3.验证码校验成功，通过手机号查询用户
         User user = userMapper.selectByPhone(phone);
@@ -194,11 +205,11 @@ public class UserServiceImpl implements UserService {
             log.info(LoginErrorConstant.NO_REGISTER_PHONE);
             registerTempUser(phone);
             User tempUser = userMapper.selectByPhone(phone);
-            return saveUserInRedis(tempUser);
+            // 3.3用户自动登录，将其登录信息存入redis
+            String token = saveUserInRedis(tempUser);
         }
-        // 4.用户存在，那么将用户的登录信息存储在redis
-        // 4.1随机生成token，作为登录令牌
-        return saveUserInRedis(user);
+        // 4.用户存在，返回用户登录成功结果
+        return loginSuccessful(user);
     }
 
     /**
@@ -285,21 +296,10 @@ public class UserServiceImpl implements UserService {
         userMapper.update(user);
     }
 
-    /**
-     * 修改用户状态
-     *
-     * @param status 用户当前状态
-     * @param id     用户id
-     */
     @Override
-    public void changeStatus(Integer status, Long id) {
-        // 不能给mapper直接传递status和id，需要将其封装为User对象之后再传递
-        User user = User.builder()
-                .status(status)
-                .id(id)
-                .build();
-        userMapper.update(user);
-    }
+    public void addFavorite(AddFavoriteDTO addFavoriteDTO) {
 
+    }
+    
 
 }

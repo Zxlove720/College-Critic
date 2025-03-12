@@ -1,8 +1,8 @@
 package a311.college.controller.user;
 
 import a311.college.constant.API.APIConstant;
-import a311.college.constant.user.UserStatusConstant;
 import a311.college.dto.login.PhoneLoginDTO;
+import a311.college.dto.user.AddFavoriteDTO;
 import a311.college.dto.user.UserDTO;
 import a311.college.dto.login.LoginDTO;
 import a311.college.result.LoginResult;
@@ -38,7 +38,7 @@ public class UserController {
      * @param loginDTO 封装用户登录数据的DTO
      * @return Result<String>
      */
-    @PostMapping("/login/simple")
+    @PostMapping("/login")
     @Operation(summary = "用户登录")
     public Result<LoginResult> login(@RequestBody LoginDTO loginDTO) {
         String phone = loginDTO.getPhone();
@@ -66,12 +66,11 @@ public class UserController {
      * @param phoneLoginDTO 手机登录DTO
      * @return Result<String>
      */
-    @PostMapping("/login/code")
+    @PostMapping("/phone")
     @Operation(summary = "手机登录")
-    public Result<String> phoneLogin(@RequestBody PhoneLoginDTO phoneLoginDTO) {
-        log.info("手机号为{}的用户正在登录", phoneLoginDTO.getPhone());
-        String token = userService.phoneLogin(phoneLoginDTO);
-        return Result.success(token);
+    public Result<LoginResult> phoneLogin(@RequestBody PhoneLoginDTO phoneLoginDTO) {
+        log.info("手机号为{}的用户正在使用验证码登录", phoneLoginDTO.getPhone());
+        return Result.success(userService.phoneLogin(phoneLoginDTO));
     }
 
     /**
@@ -88,6 +87,7 @@ public class UserController {
 
     /**
      * 用户个人主页
+     *
      * @return Result
      */
     @PostMapping("/me")
@@ -96,6 +96,18 @@ public class UserController {
         // 获取当前登录用户id
         Long userId = ThreadLocalUtil.getCurrentId();
         return Result.success(userService.selectById(userId));
+    }
+
+    /**
+     * 用户收藏学校
+     *
+     * @param addFavoriteDTO 学校收藏DTO
+     * @return Void
+     */
+    public Result<Void> addFavorite(@RequestBody AddFavoriteDTO addFavoriteDTO) {
+        log.info("用户{}收藏了{}学校", addFavoriteDTO.getUserId(), addFavoriteDTO.getSchoolId());
+        userService.addFavorite(addFavoriteDTO);
+        return Result.success();
     }
 
     /**
@@ -137,25 +149,6 @@ public class UserController {
     public Result<Void> updateUser(@RequestBody UserDTO userDTO) {
         log.info("用户：{}，正在修改信息...", userDTO.getUsername());
         userService.update(userDTO);
-        return Result.success();
-    }
-
-    /**
-     * 修改用户状态
-     *
-     * @param status 用户状态 前端传递的是将用户当前的状态
-     * @param id     用户id
-     * @return Result<Void>
-     */
-    @PostMapping("/status/{status}")
-    @Operation(summary = "修改用户状态")
-    public Result<Void> changeStatus(@PathVariable Integer status, Long id) {
-        if (status.equals(UserStatusConstant.ENABLE)) {
-            log.info("启用用户账号：用户id为：{}", id);
-        } else {
-            log.info("禁用用户账号：用户id为：{}", id);
-        }
-        userService.changeStatus(status, id);
         return Result.success();
     }
 

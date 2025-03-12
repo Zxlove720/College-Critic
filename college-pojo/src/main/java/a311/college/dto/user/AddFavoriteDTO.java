@@ -5,7 +5,8 @@ import lombok.Data;
 @Data
 public class AddFavoriteDTO {
 
+    private Long id;
+
     private String schoolId;
 
-    private Long userId;
 }

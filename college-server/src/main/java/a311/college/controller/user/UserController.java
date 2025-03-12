@@ -132,7 +132,7 @@ public class UserController {
      * @return Void
      */
     public Result<Void> addFavorite(@RequestBody AddFavoriteDTO addFavoriteDTO) {
-        log.info("用户{}收藏了{}学校", addFavoriteDTO.getUserId(), addFavoriteDTO.getSchoolId());
+        log.info("用户{}收藏了{}学校", ThreadLocalUtil.getCurrentId(), addFavoriteDTO.getSchoolId());
         userService.addFavorite(addFavoriteDTO);
         return Result.success();
     }

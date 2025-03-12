@@ -326,8 +326,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addFavorite(AddFavoriteDTO addFavoriteDTO) {
+        String table = userMapper.selectFavoriteById(addFavoriteDTO.getId());
+        table = table + "," + addFavoriteDTO.getSchoolId();
+        userMapper.addFavoriteTable(table, addFavoriteDTO.getId());
 
     }
+
 
     /**
      * 用户修改密码

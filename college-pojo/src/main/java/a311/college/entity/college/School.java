@@ -17,7 +17,7 @@ import java.util.List;
 public class School implements Serializable {
 
     @Schema(description = "大学id")
-    private Integer schoolId;
+    private String schoolId;
 
     @Schema(description = "大学校徽")
     private String schoolHead;

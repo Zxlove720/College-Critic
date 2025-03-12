@@ -21,6 +21,12 @@ public interface UserService {
 
     LoginResult phoneLogin(PhoneLoginDTO phoneLoginDTO);
 
+    String sendEditCode(CodeDTO codeDTO);
+
+    LoginResult editPassword(PasswordEditDTO passwordEditDTO);
+
+    void addFavorite(AddFavoriteDTO addFavoriteDTO);
+
     UserVO selectById(Long id);
 
     void deleteById(Long id);
@@ -29,9 +35,4 @@ public interface UserService {
 
     void update(UserDTO userDTO);
 
-    void addFavorite(AddFavoriteDTO addFavoriteDTO);
-
-    LoginResult editPassword(PasswordEditDTO passwordEditDTO);
-
-    String sendEditCode(CodeDTO codeDTO);
 }

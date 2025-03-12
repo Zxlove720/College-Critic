@@ -46,4 +46,10 @@ public interface UserMapper {
 
     @Update("update tb_user set password = #{newPassword} where id = #{id}")
     void editPassword(String newPassword, Long id);
+
+    @Select("select favorite_table from tb_user where id = #{id}")
+    String selectFavoriteById(Long id);
+
+    @Select("update tb_user set favorite_table = #{table} where id = #{id}")
+    void addFavoriteTable(String table, long id);
 }

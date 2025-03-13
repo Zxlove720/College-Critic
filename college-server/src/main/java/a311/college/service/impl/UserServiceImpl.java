@@ -326,27 +326,6 @@ public class UserServiceImpl implements UserService {
         userMapper.update(user);
     }
 
-    @Override
-    public List<CollegeSimpleVO> showFavorite() {
-        Long id = ThreadLocalUtil.getCurrentId();
-        String favoriteTable = userMapper.selectFavoriteById(id);
-        String[] favorite = favoriteTable.split(",");
-        List<CollegeSimpleVO> collegeList = new ArrayList<>();
-        for (String school : favorite) {
-            collegeList.add(collegeMapper.selectBySchoolId(school));
-        }
-        return collegeList;
-    }
-
-    @Override
-    public void addFavorite(AddFavoriteDTO addFavoriteDTO) {
-        String table = userMapper.selectFavoriteById(addFavoriteDTO.getId());
-        table = table + "," + addFavoriteDTO.getSchoolId();
-        userMapper.addFavoriteTable(table, addFavoriteDTO.getId());
-
-    }
-
-
     /**
      * 用户修改密码
      *
@@ -369,8 +348,27 @@ public class UserServiceImpl implements UserService {
             throw new PasswordEditFailedException(LoginErrorConstant.CODE_ERROR);
         }
         // 3.手机号和验证码比对成功，可以修改密码
-        userMapper.editPassword(DigestUtil.md5Hex(passwordEditDTO.getNewPassword().getBytes()), ThreadLocalUtil.getCurrentId());
+        userMapper.editPassword(DigestUtil.md5Hex(passwordEditDTO.getNewPassword().getBytes()), phone);
         return loginSuccessful(userMapper.selectByPhone(phone));
     }
 
+
+    @Override
+    public void addFavorite(AddFavoriteDTO addFavoriteDTO) {
+        String table = userMapper.selectFavoriteById(addFavoriteDTO.getId());
+        table = table + "," + addFavoriteDTO.getSchoolId();
+        userMapper.addFavoriteTable(table, addFavoriteDTO.getId());
+    }
+
+    @Override
+    public List<CollegeSimpleVO> showFavorite() {
+        Long id = ThreadLocalUtil.getCurrentId();
+        String favoriteTable = userMapper.selectFavoriteById(id);
+        String[] favorite = favoriteTable.split(",");
+        List<CollegeSimpleVO> collegeList = new ArrayList<>();
+        for (String school : favorite) {
+            collegeList.add(collegeMapper.selectBySchoolId(school));
+        }
+        return collegeList;
+    }
 }

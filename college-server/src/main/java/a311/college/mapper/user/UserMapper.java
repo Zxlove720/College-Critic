@@ -44,8 +44,8 @@ public interface UserMapper {
             "#{ranking})")
     void register(User registerUser);
 
-    @Update("update tb_user set password = #{newPassword} where id = #{id}")
-    void editPassword(String newPassword, Long id);
+    @Update("update tb_user set password = #{newPassword} where phone = #{phone}")
+    void editPassword(String newPassword, String phone);
 
     @Select("select favorite_table from tb_user where id = #{id}")
     String selectFavoriteById(Long id);

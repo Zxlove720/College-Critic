@@ -1,5 +1,6 @@
 package a311.college.result;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Result<T> implements Serializable {
 
-    // 编码：1.成功；0和其他数字都是失败
+
+    private String status;
+    @Schema(description = "编码：1.成功；0和其他数字都是失败")
     private Integer code;
     // 错误信息
     private String msg;
@@ -51,6 +54,7 @@ public class Result<T> implements Serializable {
      */
     public static <T> Result<T> error(String msg) {
         Result<T> result = new Result<>();
+        result.status = msg.split("-")[1];
         result.code = 0;
         result.msg = msg;
         return result;
@@ -64,6 +68,7 @@ public class Result<T> implements Serializable {
      */
     public static <T> Result<T> error(String msg, T data) {
         Result<T> result = new Result<>();
+        result.status = msg.split("-")[1];
         result.code = 0;
         result.msg = msg;
         result.responseData = data;

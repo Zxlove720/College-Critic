@@ -84,6 +84,7 @@ public class UserController {
      * @return Result<String>
      */
     @PostMapping("/editCode")
+    @Operation(summary = "用户发送修改密码验证码")
     public Result<String> sendEditCode(@RequestBody CodeDTO codeDTO) {
         log.info("向手机号为{}的用户发送验证码，其正在修改密码", codeDTO.getPhone());
         return Result.success(userService.sendEditCode(codeDTO));
@@ -135,6 +136,7 @@ public class UserController {
      * @return Void
      */
     @PostMapping("/addFavorite")
+    @Operation(summary = "用户收藏学校")
     public Result<Void> addFavorite(@RequestBody AddFavoriteDTO addFavoriteDTO) {
         log.info("用户{}收藏了{}学校", ThreadLocalUtil.getCurrentId(), addFavoriteDTO.getSchoolId());
         userService.addFavorite(addFavoriteDTO);
@@ -147,6 +149,7 @@ public class UserController {
      * @return Result<Void>
      */
     @PostMapping("/favorite")
+    @Operation(summary = "展示用户收藏")
     public Result<List<CollegeSimpleVO>> showFavorite() {
         log.info("展示用户{}收藏", ThreadLocalUtil.getCurrentId());
         return Result.success(userService.showFavorite());
@@ -158,7 +161,7 @@ public class UserController {
      * @return Result<Void>
      */
     @PostMapping("/delete")
-    @Operation(summary = "根据id删除用户")
+    @Operation(summary = "用户注销")
     public Result<Void> deleteById() {
         Long userId = ThreadLocalUtil.getCurrentId();
         log.info("用户{}正在注销", userId);

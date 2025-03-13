@@ -49,5 +49,5 @@ knife4j:
     swagger-model-name: 实体列表
   basic:
     enable: true
-    username: admin
+    username: root
     password: 123456

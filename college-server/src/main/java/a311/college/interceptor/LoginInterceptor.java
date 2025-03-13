@@ -17,6 +17,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     /**
      * 用户登录拦截
      */
+    @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             return true;

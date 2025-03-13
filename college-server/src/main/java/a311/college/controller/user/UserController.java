@@ -187,7 +187,7 @@ public class UserController {
      * @param userDTO 用户DTO
      * @return Result<Void>
      */
-    @PutMapping
+    @PostMapping("/update")
     @Operation(summary = "修改用户信息")
     public Result<Void> updateUser(@RequestBody UserDTO userDTO) {
         log.info("用户：{}，正在修改信息...", userDTO.getUsername());

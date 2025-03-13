@@ -25,9 +25,9 @@ public class AutoFillAspect {
 
     /**
      * 切入点
-     * 切入点表达式为：在a311.college.mapper中所有有@AutoFill的方法
+     * 切入点表达式为：在a311.college.mapper.user中所有有@AutoFill的方法
      */
-    @Pointcut("execution(* a311.college.mapper.user.*.*(..)) && @within(a311.college.annotation.AutoFill)")
+    @Pointcut("execution(* a311.college.mapper.user.*.*(..)) && @annotation(a311.college.annotation.AutoFill)")
     public void autoFillPointCut() {}
 
     /**

@@ -2,12 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="a311.college.mapper.user.UserMapper">
-    <select id="pageQuery" resultType="a311.college.entity.user.User">
-        select * from tb_user
-        <where>
-            <if test="username != null and username != ''">
-                username like concat ('%', #{username}, '%')
+    <update id="update">
+        update tb_user
+        <set>
+            <if test="username != null and username !=''">
+                username = #{username},
             </if>
-        </where>
-    </select>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="head != null">
+                head = #{head},
+            </if>
+            <if test="year != null">
+                year = #{year},
+            </if>
+            <if test="province != null">
+                province = #{province},
+            </if>
+            <if test="pattern != null">
+                pattern = #{pattern},
+            </if>
+            <if test="subjects != null">
+                subjects = #{subjects},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="grade != null">
+                grade = #{grade},
+            </if>
+            <if test="ranking != null">
+                ranking = #{ranking},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

@@ -24,8 +24,6 @@ public interface UserMapper {
     @Select("select * from tb_user where phone = #{phone}")
     User selectByPhone(String phone);
 
-    Page<User> pageQuery(UserPageQueryDTO userPageQueryDTO);
-
     @Select("select * from tb_user where id = #{id}")
     UserVO selectById(Long id);
 
@@ -39,8 +37,6 @@ public interface UserMapper {
             "#{category}, #{grade}, #{ranking}, #{status}, #{city}, #{favoriteTable}, #{collegeTable}, #{createTime}, #{updateTime})")
     void insert(User user);
 
-
-    @Update("update tb_user set id = #{id} where phone = #{phone}")
     void update(User user);
 
     @Insert("insert into tb_user(username, password, phone, head, year, province, pattern, subjects, grade, ranking)" +

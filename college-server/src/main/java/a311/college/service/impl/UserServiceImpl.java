@@ -323,6 +323,7 @@ public class UserServiceImpl implements UserService {
     public void update(UserDTO userDTO) {
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
+        user.setId(ThreadLocalUtil.getCurrentId());
         userMapper.update(user);
     }
 

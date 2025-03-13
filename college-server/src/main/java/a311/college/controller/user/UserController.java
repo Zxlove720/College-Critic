@@ -137,6 +137,12 @@ public class UserController {
         return Result.success(userService.showFavorite());
     }
 
+    /**
+     * 注销用户发送验证码
+     *
+     * @param codeDTO 验证码DTO
+     * @return code 验证码
+     */
     @PostMapping("/deleteCode")
     public Result<String> sendDeleteCode(@RequestBody CodeDTO codeDTO) {
         log.info("用户{}正在进行注销操作", ThreadLocalUtil.getCurrentId());
@@ -146,14 +152,13 @@ public class UserController {
     /**
      * 用户注销
      *
-     * @return Result<Void>
+     * @param deleteDTO 用户注销DTO
      */
     @PostMapping("/delete")
     @Operation(summary = "用户注销")
-    public Result<Void> deleteById() {
-        Long userId = ThreadLocalUtil.getCurrentId();
-        log.info("用户{}正在注销", userId);
-        userService.deleteById(userId);
+    public Result<Void> deleteUser(@RequestBody DeleteDTO deleteDTO) {
+        log.info("用户{}正在注销", deleteDTO.getPhone());
+        userService.deleteUser(deleteDTO);
         return Result.success();
     }
 

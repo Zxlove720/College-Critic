@@ -31,7 +31,7 @@ public interface UserService {
 
     List<CollegeSimpleVO> showFavorite();
 
-    void deleteById(Long id);
+    void deleteUser(DeleteDTO deleteDTO);
 
     void update(UserDTO userDTO);
 

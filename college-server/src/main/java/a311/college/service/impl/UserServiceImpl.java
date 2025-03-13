@@ -208,13 +208,29 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 删除用户（用户注销）
+     * 用户注销
      *
-     * @param id 用户id
+     * @param deleteDTO 用户注销DTO
      */
     @Override
-    public void deleteById(Long id) {
+    public void deleteUser(DeleteDTO deleteDTO) {
+        // 1.获取redis中缓存的验证码
+        // 1.1获取用户手机号和验证码
+        String phone = deleteDTO.getPhone();
+        String code = deleteDTO.getCode();
+        // 1.2获取当前用户id
+        long id = ThreadLocalUtil.getCurrentId();
+        String cacheCode = stringRedisTemplate.opsForValue().get(RedisKeyConstant.USER_DELETE_CODE_KEY + phone);
+        // 2.进行验证码比对
+        if (!code.equals(cacheCode)) {
+            // 2.1验证码比对失败，注销失败
+            throw new CodeErrorException(LoginErrorConstant.CODE_ERROR);
+        }
+        // 3.验证码比对成功，注销用户
         userMapper.deleteById(id);
+        // 4.在redis中删除用户的登录信息
+        stringRedisTemplate.delete(RedisKeyConstant.USER_KEY + phone);
+        stringRedisTemplate.delete(RedisKeyConstant.USER_LOGIN_KEY + id);
     }
 
     /**
@@ -294,10 +310,10 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void layout(LayoutDTO layoutDTO) {
-        // 将用户的登录过期
-        stringRedisTemplate.expire(RedisKeyConstant.USER_KEY, -1, TimeUnit.SECONDS);
-        // 将用户的登录凭证也过期
-        stringRedisTemplate.expire(RedisKeyConstant.USER_LOGIN_KEY, -1, TimeUnit.SECONDS);
+        // 删除redis中的用户登录信息
+        stringRedisTemplate.delete(RedisKeyConstant.USER_KEY + layoutDTO.getPhone());
+        // 删除redis中的用户登录凭证
+        stringRedisTemplate.delete(RedisKeyConstant.USER_LOGIN_KEY + ThreadLocalUtil.getCurrentId());
     }
 
 

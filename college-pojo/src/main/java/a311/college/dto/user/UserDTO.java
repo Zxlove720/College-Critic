@@ -32,8 +32,6 @@ public class UserDTO implements Serializable {
     @Schema(description = "用户电子邮箱")
     private String email;
 
-    @Schema(description = "用户昵称")
-    private String nickname;
     @Schema(description = "用户头像")
     private String head;
 

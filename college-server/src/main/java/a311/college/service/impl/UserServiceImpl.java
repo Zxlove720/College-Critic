@@ -287,13 +287,13 @@ public class UserServiceImpl implements UserService {
      * @param userDTO 用户DTO
      */
     @Override
-    public void save(UserDTO userDTO) {
+    public void register(UserDTO userDTO) {
         // DTO是方便接收前端传递的用户信息，但是在数据库中存储的用户信息需要在DTO上进行额外的扩展，需要将DTO封装为实体对象
         // 因为DTO和实体对象中的属性高度相似，所以说直接使用BeanUtils中的copyProperties方法进行对象属性拷贝即可
         User user = new User();
         // 对象属性拷贝
         BeanUtils.copyProperties(userDTO, user);
-        // 根据用户所在省份确定高考模式
+        // 根据用户所在省份确定高考模式（老高考和新高考）
         if (user.getProvince().getStatus() == 0) {
             // 确定用户为老高考
             user.setPattern(0);

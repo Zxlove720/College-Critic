@@ -7,7 +7,6 @@ import a311.college.dto.user.PasswordEditDTO;
 import a311.college.dto.user.UserDTO;
 import a311.college.dto.login.LoginDTO;
 import a311.college.result.LoginResult;
-import a311.college.result.Result;
 import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.UserVO;
 
@@ -34,7 +33,7 @@ public interface UserService {
 
     void deleteById(Long id);
 
-    void save(UserDTO userDTO);
+    void register(UserDTO userDTO);
 
     void update(UserDTO userDTO);
 

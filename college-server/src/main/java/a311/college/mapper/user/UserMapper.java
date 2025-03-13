@@ -1,7 +1,9 @@
 package a311.college.mapper.user;
 
+import a311.college.annotation.AutoFill;
 import a311.college.dto.user.UserPageQueryDTO;
 import a311.college.entity.user.User;
+import a311.college.enumeration.OperationType;
 import a311.college.vo.UserVO;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.*;
@@ -30,11 +32,13 @@ public interface UserMapper {
     @Delete("delete from tb_user where id = #{id}")
     void deleteById(Long id);
 
-    @Insert("insert into tb_user(username, password, phone, email, nickname, head, year, province, pattern, subjects," +
+    @AutoFill(OperationType.INSERT)
+    @Insert("insert into tb_user(username, password, phone, email, head, year, province, pattern, subjects," +
             " category, grade, ranking, status, city, favorite_table, college_table, create_time, update_time) values " +
-            "(#{username}, #{password}, #{phone}, #{email}, #{nickname}, #{head}, #{year}, #{province}, #{pattern}, #{subjects}," +
+            "(#{username}, #{password}, #{phone}, #{email}, #{head}, #{year}, #{province}, #{pattern}, #{subjects}," +
             "#{category}, #{grade}, #{ranking}, #{status}, #{city}, #{favoriteTable}, #{collegeTable}, #{createTime}, #{updateTime})")
     void insert(User user);
+
 
     @Update("update tb_user set id = #{id} where phone = #{phone}")
     void update(User user);
@@ -42,9 +46,11 @@ public interface UserMapper {
     @Insert("insert into tb_user(username, password, phone, head, year, province, pattern, subjects, grade, ranking)" +
             " values (#{username}, #{password}, #{phone}, #{head}, #{year}, #{province}, #{pattern}, #{subjects}, #{grade}, " +
             "#{ranking})")
+    @AutoFill(OperationType.INSERT)
     void register(User registerUser);
 
     @Update("update tb_user set password = #{newPassword} where phone = #{phone}")
+    @AutoFill(OperationType.UPDATE)
     void editPassword(String newPassword, String phone);
 
     @Select("select favorite_table from tb_user where id = #{id}")

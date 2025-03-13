@@ -153,16 +153,17 @@ public class UserController {
     }
 
     /**
-     * 删除用户（用户注销）
+     * 用户注销
      *
-     * @param id 用户id
      * @return Result<Void>
      */
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete")
     @Operation(summary = "根据id删除用户")
-    public Result<Void> deleteById(@PathVariable Long id) {
-        log.info("删除用户（用户注销）...id为{}", id);
-        userService.deleteById(id);
+    public Result<Void> deleteById() {
+        // 获取用户id
+        Long userId = ThreadLocalUtil.getCurrentId();
+        log.info("用户{}正在注销", userId);
+        userService.deleteById(userId);
         return Result.success();
     }
 
@@ -176,7 +177,7 @@ public class UserController {
     @Operation(summary = "新增用户")
     public Result<Void> saveUser(@RequestBody UserDTO userDTO) {
         log.info("用户：{}，正在注册...", userDTO);
-        userService.save(userDTO);
+        userService.register(userDTO);
         return Result.success();
     }
 

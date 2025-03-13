@@ -1,7 +1,6 @@
 package a311.college.handler;
 
 
-import a311.college.constant.message.MessageConstant;
 import a311.college.constant.user.LoginErrorConstant;
 import a311.college.exception.BaseException;
 import a311.college.result.Result;
@@ -47,7 +46,7 @@ public class GlobalExceptionHandler {
         } else {
             // 并非重复添加报错
             // TODO日后可以根据需求添加更多的SQL异常处理
-            return Result.error(MessageConstant.UNKNOWN_ERROR);
+            return Result.error("未知错误");
         }
     }
 

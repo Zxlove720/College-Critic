@@ -99,7 +99,9 @@ public class UserServiceImpl implements UserService {
      */
     private LoginResult loginSuccessful(User user) {
         LoginResult result = new LoginResult();
+        // 将用户的登录凭证保存至redis
         result.setUuid(saveUserInRedis(user));
+        // 封装登录成功结果
         result.setHead(user.getHead());
         result.setUsername(user.getUsername());
         result.setPhone(user.getPhone());

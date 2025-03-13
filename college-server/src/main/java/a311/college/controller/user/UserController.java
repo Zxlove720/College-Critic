@@ -139,7 +139,7 @@ public class UserController {
     }
 
     /**
-     * 注销用户发送验证码
+     * 用户注销发送验证码
      *
      * @param codeDTO 验证码DTO
      * @return code 验证码
@@ -164,7 +164,7 @@ public class UserController {
     }
 
     /**
-     * 修改用户信息
+     * 用户修改信息
      *
      * @param userDTO 用户DTO
      * @return Result<Void>

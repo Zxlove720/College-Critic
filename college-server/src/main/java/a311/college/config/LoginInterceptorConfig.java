@@ -21,6 +21,7 @@ public class LoginInterceptorConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor())
                 .excludePathPatterns(
                         "/users/login",
+                        "/users/register",
                         "/users/editCode",
                         "/users/edit",
                         "/colleges/initPage",

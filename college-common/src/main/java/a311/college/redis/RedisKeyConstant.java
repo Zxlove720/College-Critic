@@ -7,7 +7,7 @@ public class RedisKeyConstant {
 
     // 用户相关
     // 用户验证码
-    public static final String USER_CODE_KEY = "college:user:code:";
+    public static final String USER_DELETE_CODE_KEY = "college:user:code:delete:";
     public static final String USER_EDIT_CODE_KEY = "college:user:code:edit:";
 
     // 用户登录凭证

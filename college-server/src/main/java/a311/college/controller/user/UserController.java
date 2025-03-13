@@ -1,7 +1,6 @@
 package a311.college.controller.user;
 
 import a311.college.constant.API.APIConstant;
-import a311.college.dto.login.PhoneLoginDTO;
 import a311.college.dto.user.AddFavoriteDTO;
 import a311.college.dto.user.CodeDTO;
 import a311.college.dto.user.PasswordEditDTO;
@@ -52,32 +51,6 @@ public class UserController {
     }
 
     /**
-     * 发送手机验证码
-     *
-     * @param codeDTO 验证码DTO
-     * @return Result<String>
-     */
-    @PostMapping("/code")
-    @Operation(summary = "发送验证码")
-    public Result<String> sendCode(@RequestBody CodeDTO codeDTO) {
-        log.info("向手机号为{}的用户发送验证码", codeDTO.getPhone());
-        return Result.success(userService.sendCode(codeDTO));
-    }
-
-    /**
-     * 手机登录
-     *
-     * @param phoneLoginDTO 手机登录DTO
-     * @return Result<String>
-     */
-    @PostMapping("/phone")
-    @Operation(summary = "手机登录")
-    public Result<LoginResult> phoneLogin(@RequestBody PhoneLoginDTO phoneLoginDTO) {
-        log.info("手机号为{}的用户正在使用验证码登录", phoneLoginDTO.getPhone());
-        return Result.success(userService.phoneLogin(phoneLoginDTO));
-    }
-
-    /**
      * 修改密码发送验证码
      *
      * @param codeDTO 验证码DTO
@@ -90,7 +63,6 @@ public class UserController {
         return Result.success(userService.sendEditCode(codeDTO));
     }
 
-
     /**
      * 用户修改密码
      *
@@ -102,6 +74,18 @@ public class UserController {
     public LoginResult editPassword(@RequestBody PasswordEditDTO passwordEditDTO) {
         log.info("用户{}正在修改密码", ThreadLocalUtil.getCurrentId());
         return userService.editPassword(passwordEditDTO);
+    }
+
+    /**
+     * 用户注册
+     *
+     * @param userDTO UserDTO
+     */
+    @PostMapping("/register")
+    public Result<Void> register(@RequestBody UserDTO userDTO) {
+        log.info("新用户注册...");
+        userService.register(userDTO);
+        return Result.success();
     }
 
     /**
@@ -153,6 +137,12 @@ public class UserController {
     public Result<List<CollegeSimpleVO>> showFavorite() {
         log.info("展示用户{}收藏", ThreadLocalUtil.getCurrentId());
         return Result.success(userService.showFavorite());
+    }
+
+    @PostMapping("/deleteCode")
+    public Result<String> sendDeleteCode(@RequestBody CodeDTO codeDTO) {
+        log.info("用户{}正在进行注销操作", ThreadLocalUtil.getCurrentId());
+        return Result.success(userService.sendDeleteCode(codeDTO));
     }
 
     /**

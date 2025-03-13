@@ -32,18 +32,12 @@ public interface UserMapper {
 
     @AutoFill(OperationType.INSERT)
     @Insert("insert into tb_user(username, password, phone, email, head, year, province, pattern, subjects," +
-            " category, grade, ranking, status, city, favorite_table, college_table, create_time, update_time) values " +
+            " category, grade, ranking, city, favorite_table, college_table) values " +
             "(#{username}, #{password}, #{phone}, #{email}, #{head}, #{year}, #{province}, #{pattern}, #{subjects}," +
-            "#{category}, #{grade}, #{ranking}, #{status}, #{city}, #{favoriteTable}, #{collegeTable}, #{createTime}, #{updateTime})")
-    void insert(User user);
+            "#{category}, #{grade}, #{ranking}, #{city}, #{favoriteTable}, #{collegeTable})")
+    void register(User user);
 
     void update(User user);
-
-    @Insert("insert into tb_user(username, password, phone, head, year, province, pattern, subjects, grade, ranking)" +
-            " values (#{username}, #{password}, #{phone}, #{head}, #{year}, #{province}, #{pattern}, #{subjects}, #{grade}, " +
-            "#{ranking})")
-    @AutoFill(OperationType.INSERT)
-    void register(User registerUser);
 
     @Update("update tb_user set password = #{newPassword} where phone = #{phone}")
     @AutoFill(OperationType.UPDATE)

@@ -3,14 +3,12 @@ package a311.college.service.impl;
 import a311.college.constant.user.LoginErrorConstant;
 import a311.college.constant.user.UserSubjectConstant;
 import a311.college.dto.login.LoginSymbol;
-import a311.college.dto.login.PhoneLoginDTO;
 import a311.college.dto.user.AddFavoriteDTO;
 import a311.college.dto.user.CodeDTO;
 import a311.college.dto.user.PasswordEditDTO;
 import a311.college.dto.user.UserDTO;
 import a311.college.dto.login.LoginDTO;
 import a311.college.entity.user.User;
-import a311.college.enumeration.ProvinceEnum;
 import a311.college.exception.*;
 import a311.college.mapper.college.CollegeMapper;
 import a311.college.mapper.user.UserMapper;
@@ -34,7 +32,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import java.time.Year;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -155,14 +152,14 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 发送验证码登录
+     * 发送验证码进行注销
      *
      * @param codeDTO 验证码DTO
      * @return code 验证码
      */
     @Override
-    public String sendCode(CodeDTO codeDTO) {
-        return code(codeDTO.getPhone(), RedisKeyConstant.USER_CODE_KEY);
+    public String sendDeleteCode(CodeDTO codeDTO) {
+        return code(codeDTO.getPhone(), RedisKeyConstant.USER_DELETE_CODE_KEY);
     }
 
     /**
@@ -203,61 +200,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 手机登录
-     *
-     * @param phoneLoginDTO 手机登录DTO
-     * @return String token
-     */
-    @Override
-    public LoginResult phoneLogin(PhoneLoginDTO phoneLoginDTO) {
-        // 1.校验手机号是否合法
-        String phone = phoneLoginDTO.getPhone();
-        if (RegexUtils.isPhoneInvalid(phone)) {
-            // 1.1手机号不合法直接抛出异常
-            throw new LoginFailedException(LoginErrorConstant.PHONE_NUMBER_ERROR);
-        }
-        // 2.校验验证码
-        // 2.1获取redis中存储的验证码
-        String cacheCode = stringRedisTemplate.opsForValue().get(RedisKeyConstant.USER_CODE_KEY + phone);
-        // 2.2获取请求中的验证码
-        String code = phoneLoginDTO.getCode();
-        if (cacheCode == null || !cacheCode.equals(code)) {
-            // 2.3验证码比对失败直接抛出异常
-            throw new LoginFailedException(LoginErrorConstant.CODE_ERROR);
-        }
-        // 3.验证码校验成功，通过手机号查询用户
-        User user = userMapper.selectByPhone(phone);
-        // 3.1判断用户是否存在
-        if (user == null) {
-            // 3.2用户不存在，直接先临时注册
-            log.info(LoginErrorConstant.NO_REGISTER_PHONE);
-            registerTempUser(phone);
-            User tempUser = userMapper.selectByPhone(phone);
-            return loginSuccessful(tempUser);
-        }
-        // 4.用户存在，返回用户登录成功结果
-        return loginSuccessful(user);
-    }
-
-    /**
-     * 用户手机号未注册，自动注册
-     */
-    private void registerTempUser(String phone) {
-        User user = new User();
-        user.setUsername("用户" + RandomUtil.randomString(10));
-        user.setPassword(DigestUtil.md5Hex("123456".getBytes()));
-        user.setPhone(phone);
-        user.setHead("https://123456.com");
-        user.setYear(Year.now());
-        user.setProvince(ProvinceEnum.重庆);
-        user.setPattern(1);
-        user.setSubjects(UserSubjectConstant.SCIENCE);
-        user.setGrade(520);
-        user.setRanking(50000);
-        userMapper.register(user);
-    }
-
-    /**
      * 根据id查询用户
      *
      * @param id 用户id
@@ -289,6 +231,37 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(userDTO, user);
         user.setId(ThreadLocalUtil.getCurrentId());
         userMapper.update(user);
+    }
+
+    /**
+     * 用户注册
+     *
+     * @param userDTO userDTO
+     */
+    @Override
+    public void register(UserDTO userDTO) {
+        // 1.将用户DTO封装为用户实体对象
+        User user = new User();
+        // 1.1进行属性拷贝
+        BeanUtil.copyProperties(userDTO, user);
+        // 1.2将用户密码进行MD5加密
+        user.setPassword(DigestUtil.md5Hex(user.getPassword().getBytes()));
+        // 2.判断用户的高考模式
+        Integer pattern = user.getPattern();
+        if (pattern.equals(0)) {
+            // 2.1用户为老高考，需要确定用户的文理分科
+            if (user.getCategory().equals(1)) {
+                // 2.2用户为理科，为其添加选科
+                user.setSubjects(UserSubjectConstant.SCIENCE);
+            } else {
+                // 2.3用户为文科，为其添加选科
+                user.setSubjects(UserSubjectConstant.ART);
+            }
+        }
+        // 3.为新用户初始化收藏表和志愿表
+        user.setFavoriteTable("");
+        user.setCollegeTable("");
+        userMapper.register(user);
     }
 
     /**

@@ -1,10 +1,7 @@
 package a311.college.controller.user;
 
 import a311.college.constant.API.APIConstant;
-import a311.college.dto.user.AddFavoriteDTO;
-import a311.college.dto.user.CodeDTO;
-import a311.college.dto.user.PasswordEditDTO;
-import a311.college.dto.user.UserDTO;
+import a311.college.dto.user.*;
 import a311.college.dto.login.LoginDTO;
 import a311.college.result.LoginResult;
 import a311.college.result.Result;
@@ -37,7 +34,7 @@ public class UserController {
     }
 
     /**
-     * 普通登录
+     * 用户登录
      *
      * @param loginDTO 封装用户登录数据的DTO
      * @return Result<String>
@@ -48,6 +45,18 @@ public class UserController {
         String phone = loginDTO.getPhone();
         log.info("用户{}正在登录", phone);
         return Result.success(userService.login(loginDTO));
+    }
+
+     /**
+     * 用户注册
+     *
+     * @param userDTO UserDTO
+     */
+    @PostMapping("/register")
+    public Result<Void> register(@RequestBody UserDTO userDTO) {
+        log.info("新用户注册...");
+        userService.register(userDTO);
+        return Result.success();
     }
 
     /**
@@ -77,26 +86,15 @@ public class UserController {
     }
 
     /**
-     * 用户注册
-     *
-     * @param userDTO UserDTO
-     */
-    @PostMapping("/register")
-    public Result<Void> register(@RequestBody UserDTO userDTO) {
-        log.info("新用户注册...");
-        userService.register(userDTO);
-        return Result.success();
-    }
-
-    /**
      * 用户退出
      *
      * @return Result<Void>
      */
     @PostMapping("/layout")
     @Operation(summary = "用户登出")
-    public Result<Void> layout() {
-        log.info("用户退出登录");
+    public Result<Void> layout(@RequestBody LayoutDTO layoutDTO) {
+        log.info("用户{}退出登录", layoutDTO.getPhone());
+        userService.layout(layoutDTO);
         return Result.success();
     }
 

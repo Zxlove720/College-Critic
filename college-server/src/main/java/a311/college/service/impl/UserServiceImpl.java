@@ -3,10 +3,7 @@ package a311.college.service.impl;
 import a311.college.constant.user.LoginErrorConstant;
 import a311.college.constant.user.UserSubjectConstant;
 import a311.college.dto.login.LoginSymbol;
-import a311.college.dto.user.AddFavoriteDTO;
-import a311.college.dto.user.CodeDTO;
-import a311.college.dto.user.PasswordEditDTO;
-import a311.college.dto.user.UserDTO;
+import a311.college.dto.user.*;
 import a311.college.dto.login.LoginDTO;
 import a311.college.entity.user.User;
 import a311.college.exception.*;
@@ -288,6 +285,19 @@ public class UserServiceImpl implements UserService {
         // 3.手机号和验证码比对成功，可以修改密码
         userMapper.editPassword(DigestUtil.md5Hex(passwordEditDTO.getNewPassword().getBytes()), phone);
         return loginSuccessful(userMapper.selectByPhone(phone));
+    }
+
+    /**
+     * 用户登出
+     *
+     * @param layoutDTO 登出DTO
+     */
+    @Override
+    public void layout(LayoutDTO layoutDTO) {
+        // 将用户的登录过期
+        stringRedisTemplate.expire(RedisKeyConstant.USER_KEY, -1, TimeUnit.SECONDS);
+        // 将用户的登录凭证也过期
+        stringRedisTemplate.expire(RedisKeyConstant.USER_LOGIN_KEY, -1, TimeUnit.SECONDS);
     }
 
 

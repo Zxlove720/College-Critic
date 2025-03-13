@@ -1,9 +1,6 @@
 package a311.college.service;
 
-import a311.college.dto.user.AddFavoriteDTO;
-import a311.college.dto.user.CodeDTO;
-import a311.college.dto.user.PasswordEditDTO;
-import a311.college.dto.user.UserDTO;
+import a311.college.dto.user.*;
 import a311.college.dto.login.LoginDTO;
 import a311.college.result.LoginResult;
 import a311.college.vo.CollegeSimpleVO;
@@ -18,11 +15,15 @@ public interface UserService {
 
     LoginResult login(LoginDTO loginDTO);
 
-    String sendDeleteCode(CodeDTO codeDTO);
+    void register(UserDTO userDTO);
 
     String sendEditCode(CodeDTO codeDTO);
 
     LoginResult editPassword(PasswordEditDTO passwordEditDTO);
+
+    void layout(LayoutDTO layoutDTO);
+
+    String sendDeleteCode(CodeDTO codeDTO);
 
     UserVO selectById(Long id);
 
@@ -34,5 +35,4 @@ public interface UserService {
 
     void update(UserDTO userDTO);
 
-    void register(UserDTO userDTO);
 }

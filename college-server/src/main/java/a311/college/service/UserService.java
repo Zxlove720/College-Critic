@@ -23,16 +23,16 @@ public interface UserService {
 
     void layout(LayoutDTO layoutDTO);
 
-    String sendDeleteCode(CodeDTO codeDTO);
-
     UserVO selectById(Long id);
 
     void addFavorite(AddFavoriteDTO addFavoriteDTO);
 
     List<CollegeSimpleVO> showFavorite();
 
-    void deleteUser(DeleteDTO deleteDTO);
-
     void update(UserDTO userDTO);
+
+    String sendDeleteCode(CodeDTO codeDTO);
+
+    void deleteUser(DeleteDTO deleteDTO);
 
 }

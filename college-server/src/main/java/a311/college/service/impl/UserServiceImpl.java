@@ -149,104 +149,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 发送验证码进行注销
-     *
-     * @param codeDTO 验证码DTO
-     * @return code 验证码
-     */
-    @Override
-    public String sendDeleteCode(CodeDTO codeDTO) {
-        return code(codeDTO.getPhone(), RedisKeyConstant.USER_DELETE_CODE_KEY);
-    }
-
-    /**
-     * 发送验证码修改密码
-     *
-     * @param codeDTO 验证码DTO
-     * @return code 验证码
-     */
-    @Override
-    public String sendEditCode(CodeDTO codeDTO) {
-        return code(codeDTO.getPhone(), RedisKeyConstant.USER_EDIT_CODE_KEY);
-    }
-
-    /**
-     * 发送验证码
-     *
-     * @param phone 手机号
-     * @param preKey 键前缀
-     * @return code 验证码
-     */
-    private String code(String phone, String preKey) {
-        if (RegexUtils.isPhoneInvalid(phone)) {
-            // 2.如果手机号不合法，返回错误信息
-            return LoginErrorConstant.PHONE_NUMBER_ERROR;
-        }
-        // 3.手机号合法，生成验证码
-        String code = RandomUtil.randomNumbers(6);
-        // 4.将验证码保存至redis
-        stringRedisTemplate.opsForValue().set(preKey + phone, code);
-        stringRedisTemplate.expire(preKey + phone,
-                RedisKeyConstant.USER_CODE_TTL, TimeUnit.SECONDS);
-        // 5.发送验证码（短信功能待完成）
-        //TODO 后期如果有机会可以将其改为真实的发送手机验证码
-        log.info("发送短信验证码成功，验证码为：{}", code);
-        log.info(RedisKeyConstant.CODE_TIME_MESSAGE);
-        // 6.响应结果
-        return code;
-    }
-
-    /**
-     * 根据id查询用户
-     *
-     * @param id 用户id
-     * @return User
-     */
-    @Override
-    public UserVO selectById(Long id) {
-        return userMapper.selectById(id);
-    }
-
-    /**
-     * 用户注销
-     *
-     * @param deleteDTO 用户注销DTO
-     */
-    @Override
-    public void deleteUser(DeleteDTO deleteDTO) {
-        // 1.获取redis中缓存的验证码
-        // 1.1获取用户手机号和验证码
-        String phone = deleteDTO.getPhone();
-        String code = deleteDTO.getCode();
-        // 1.2获取当前用户id
-        long id = ThreadLocalUtil.getCurrentId();
-        String cacheCode = stringRedisTemplate.opsForValue().get(RedisKeyConstant.USER_DELETE_CODE_KEY + phone);
-        // 2.进行验证码比对
-        if (!code.equals(cacheCode)) {
-            // 2.1验证码比对失败，注销失败
-            throw new CodeErrorException(LoginErrorConstant.CODE_ERROR);
-        }
-        // 3.验证码比对成功，注销用户
-        userMapper.deleteById(id);
-        // 4.在redis中删除用户的登录信息
-        stringRedisTemplate.delete(RedisKeyConstant.USER_KEY + phone);
-        stringRedisTemplate.delete(RedisKeyConstant.USER_LOGIN_KEY + id);
-    }
-
-    /**
-     * 修改用户信息
-     *
-     * @param userDTO 用户DTO
-     */
-    @Override
-    public void update(UserDTO userDTO) {
-        User user = new User();
-        BeanUtils.copyProperties(userDTO, user);
-        user.setId(ThreadLocalUtil.getCurrentId());
-        userMapper.update(user);
-    }
-
-    /**
      * 用户注册
      *
      * @param userDTO userDTO
@@ -275,6 +177,54 @@ public class UserServiceImpl implements UserService {
         user.setFavoriteTable("");
         user.setCollegeTable("");
         userMapper.register(user);
+    }
+
+    /**
+     * 发送验证码修改密码
+     *
+     * @param codeDTO 验证码DTO
+     * @return code 验证码
+     */
+    @Override
+    public String sendEditCode(CodeDTO codeDTO) {
+        return code(codeDTO.getPhone(), RedisKeyConstant.USER_EDIT_CODE_KEY);
+    }
+
+    /**
+     * 发送验证码进行注销
+     *
+     * @param codeDTO 验证码DTO
+     * @return code 验证码
+     */
+    @Override
+    public String sendDeleteCode(CodeDTO codeDTO) {
+        return code(codeDTO.getPhone(), RedisKeyConstant.USER_DELETE_CODE_KEY);
+    }
+
+    /**
+     * 发送验证码
+     *
+     * @param phone  手机号
+     * @param preKey 键前缀
+     * @return code 验证码
+     */
+    private String code(String phone, String preKey) {
+        if (RegexUtils.isPhoneInvalid(phone)) {
+            // 2.如果手机号不合法，返回错误信息
+            return LoginErrorConstant.PHONE_NUMBER_ERROR;
+        }
+        // 3.手机号合法，生成验证码
+        String code = RandomUtil.randomNumbers(6);
+        // 4.将验证码保存至redis
+        stringRedisTemplate.opsForValue().set(preKey + phone, code);
+        stringRedisTemplate.expire(preKey + phone,
+                RedisKeyConstant.USER_CODE_TTL, TimeUnit.SECONDS);
+        // 5.发送验证码（短信功能待完成）
+        //TODO 后期如果有机会可以将其改为真实的发送手机验证码
+        log.info("发送短信验证码成功，验证码为：{}", code);
+        log.info(RedisKeyConstant.CODE_TIME_MESSAGE);
+        // 6.响应结果
+        return code;
     }
 
     /**
@@ -316,7 +266,22 @@ public class UserServiceImpl implements UserService {
         stringRedisTemplate.delete(RedisKeyConstant.USER_LOGIN_KEY + ThreadLocalUtil.getCurrentId());
     }
 
+    /**
+     * 根据id查询用户
+     *
+     * @param id 用户id
+     * @return User
+     */
+    @Override
+    public UserVO selectById(Long id) {
+        return userMapper.selectById(id);
+    }
 
+    /**
+     * 用户收藏学校
+     *
+     * @param addFavoriteDTO 学校收藏DTO
+     */
     @Override
     public void addFavorite(AddFavoriteDTO addFavoriteDTO) {
         String table = userMapper.selectFavoriteById(ThreadLocalUtil.getCurrentId());
@@ -324,6 +289,11 @@ public class UserServiceImpl implements UserService {
         userMapper.addFavoriteTable(table, ThreadLocalUtil.getCurrentId());
     }
 
+    /**
+     * 展示用户收藏
+     *
+     * @return List<CollegeSimpleVO>
+     */
     @Override
     public List<CollegeSimpleVO> showFavorite() {
         Long id = ThreadLocalUtil.getCurrentId();
@@ -335,4 +305,44 @@ public class UserServiceImpl implements UserService {
         }
         return collegeList;
     }
+
+    /**
+     * 修改用户信息
+     *
+     * @param userDTO 用户DTO
+     */
+    @Override
+    public void update(UserDTO userDTO) {
+        User user = new User();
+        BeanUtils.copyProperties(userDTO, user);
+        user.setId(ThreadLocalUtil.getCurrentId());
+        userMapper.update(user);
+    }
+
+    /**
+     * 用户注销
+     *
+     * @param deleteDTO 用户注销DTO
+     */
+    @Override
+    public void deleteUser(DeleteDTO deleteDTO) {
+        // 1.获取redis中缓存的验证码
+        // 1.1获取用户手机号和验证码
+        String phone = deleteDTO.getPhone();
+        String code = deleteDTO.getCode();
+        // 1.2获取当前用户id
+        long id = ThreadLocalUtil.getCurrentId();
+        String cacheCode = stringRedisTemplate.opsForValue().get(RedisKeyConstant.USER_DELETE_CODE_KEY + phone);
+        // 2.进行验证码比对
+        if (!code.equals(cacheCode)) {
+            // 2.1验证码比对失败，注销失败
+            throw new CodeErrorException(LoginErrorConstant.CODE_ERROR);
+        }
+        // 3.验证码比对成功，注销用户
+        userMapper.deleteById(id);
+        // 4.在redis中删除用户的登录信息
+        stringRedisTemplate.delete(RedisKeyConstant.USER_KEY + phone);
+        stringRedisTemplate.delete(RedisKeyConstant.USER_LOGIN_KEY + id);
+    }
+
 }

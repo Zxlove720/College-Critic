@@ -139,6 +139,20 @@ public class UserController {
     }
 
     /**
+     * 用户修改信息
+     *
+     * @param userDTO 用户DTO
+     * @return Result<Void>
+     */
+    @PostMapping("/update")
+    @Operation(summary = "修改用户信息")
+    public Result<Void> updateUser(@RequestBody UserDTO userDTO) {
+        log.info("用户'{}'正在修改信息...", userDTO.getId());
+        userService.update(userDTO);
+        return Result.success();
+    }
+
+    /**
      * 用户注销发送验证码
      *
      * @param codeDTO 验证码DTO
@@ -163,17 +177,4 @@ public class UserController {
         return Result.success();
     }
 
-    /**
-     * 用户修改信息
-     *
-     * @param userDTO 用户DTO
-     * @return Result<Void>
-     */
-    @PostMapping("/update")
-    @Operation(summary = "修改用户信息")
-    public Result<Void> updateUser(@RequestBody UserDTO userDTO) {
-        log.info("用户'{}'正在修改信息...", userDTO.getId());
-        userService.update(userDTO);
-        return Result.success();
-    }
 }

@@ -27,16 +27,13 @@ public interface UserService {
 
     LoginResult editPassword(PasswordEditDTO passwordEditDTO);
 
-    void addFavorite(AddFavoriteDTO addFavoriteDTO);
-
     UserVO selectById(Long id);
 
-    void deleteById(Long id);
-
-    void register(UserDTO userDTO);
-
-    void update(UserDTO userDTO);
+    void addFavorite(AddFavoriteDTO addFavoriteDTO);
 
     List<CollegeSimpleVO> showFavorite();
 
+    void deleteById(Long id);
+
+    void update(UserDTO userDTO);
 }

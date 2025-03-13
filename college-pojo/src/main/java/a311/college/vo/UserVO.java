@@ -50,10 +50,4 @@ public class UserVO {
 
     @Schema(description = "用户意向城市")
     private ProvinceEnum city;
-
-    @Schema(description = "收藏表")
-    private String favoriteTable;
-
-    @Schema(description = "志愿表")
-    private String collegeTable;
 }

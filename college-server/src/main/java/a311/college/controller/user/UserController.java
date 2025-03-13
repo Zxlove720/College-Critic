@@ -160,24 +160,9 @@ public class UserController {
     @PostMapping("/delete")
     @Operation(summary = "根据id删除用户")
     public Result<Void> deleteById() {
-        // 获取用户id
         Long userId = ThreadLocalUtil.getCurrentId();
         log.info("用户{}正在注销", userId);
         userService.deleteById(userId);
-        return Result.success();
-    }
-
-    /**
-     * 新增用户（用户注册）
-     *
-     * @param userDTO 用户DTO
-     * @return Result<Void>
-     */
-    @PostMapping("/register")
-    @Operation(summary = "新增用户")
-    public Result<Void> saveUser(@RequestBody UserDTO userDTO) {
-        log.info("用户：{}，正在注册...", userDTO);
-        userService.register(userDTO);
         return Result.success();
     }
 

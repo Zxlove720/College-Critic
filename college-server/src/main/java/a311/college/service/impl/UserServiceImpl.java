@@ -19,7 +19,6 @@ import a311.college.mapper.user.UserMapper;
 import a311.college.redis.RedisKeyConstant;
 import a311.college.regex.RegexUtils;
 import a311.college.result.LoginResult;
-import a311.college.result.Result;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.CollegeSimpleVO;
@@ -30,7 +29,6 @@ import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import jakarta.annotation.Resource;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -235,8 +233,7 @@ public class UserServiceImpl implements UserService {
             log.info(LoginErrorConstant.NO_REGISTER_PHONE);
             registerTempUser(phone);
             User tempUser = userMapper.selectByPhone(phone);
-            // 3.3用户自动登录，将其登录信息存入redis
-            String token = saveUserInRedis(tempUser);
+            return loginSuccessful(tempUser);
         }
         // 4.用户存在，返回用户登录成功结果
         return loginSuccessful(user);
@@ -282,39 +279,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 新增用户（用户注册）
-     *
-     * @param userDTO 用户DTO
-     */
-    @Override
-    public void register(UserDTO userDTO) {
-        // DTO是方便接收前端传递的用户信息，但是在数据库中存储的用户信息需要在DTO上进行额外的扩展，需要将DTO封装为实体对象
-        // 因为DTO和实体对象中的属性高度相似，所以说直接使用BeanUtils中的copyProperties方法进行对象属性拷贝即可
-        User user = new User();
-        // 对象属性拷贝
-        BeanUtils.copyProperties(userDTO, user);
-        // 根据用户所在省份确定高考模式（老高考和新高考）
-        if (user.getProvince().getStatus() == 0) {
-            // 确定用户为老高考
-            user.setPattern(0);
-            // 确定老高考用户文理科
-            if (user.getCategory() == 1) {
-                // 确定用户为理科，为其添加选科
-                user.setSubjects(UserSubjectConstant.SCIENCE);
-            } else if (user.getCategory() == 0) {
-                // 确定用户为文科，为其添加选科
-                user.setSubjects(UserSubjectConstant.ART);
-            }
-        }
-        // 将拷贝后的对象属性补全
-        user.setStatus(UserStatusConstant.ENABLE);
-        // 将用户密码加密后存储
-        user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
-        // 使用AOP将创建、操作时间补全
-        userMapper.insert(user);
-    }
-
-    /**
      * 修改用户信息
      *
      * @param userDTO 用户DTO
@@ -356,9 +320,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addFavorite(AddFavoriteDTO addFavoriteDTO) {
-        String table = userMapper.selectFavoriteById(addFavoriteDTO.getId());
+        String table = userMapper.selectFavoriteById(ThreadLocalUtil.getCurrentId());
         table = table + "," + addFavoriteDTO.getSchoolId();
-        userMapper.addFavoriteTable(table, addFavoriteDTO.getId());
+        userMapper.addFavoriteTable(table, ThreadLocalUtil.getCurrentId());
     }
 
     @Override

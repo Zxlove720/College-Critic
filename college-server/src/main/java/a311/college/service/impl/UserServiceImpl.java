@@ -1,8 +1,6 @@
 package a311.college.service.impl;
 
-import a311.college.constant.message.MessageConstant;
 import a311.college.constant.user.LoginErrorConstant;
-import a311.college.constant.user.UserStatusConstant;
 import a311.college.constant.user.UserSubjectConstant;
 import a311.college.dto.login.LoginSymbol;
 import a311.college.dto.login.PhoneLoginDTO;
@@ -76,18 +74,18 @@ public class UserServiceImpl implements UserService {
         // 3.处理异常情况
         if (user == null) {
             // 3.1账号不存在
-            throw new AccountNotFoundException(MessageConstant.ACCOUNT_NOT_FOUND);
+            throw new AccountNotFoundException(LoginErrorConstant.ACCOUNT_NOT_FOUND);
         }
         // 3.2密码比对
         password = DigestUtils.md5DigestAsHex(password.getBytes());
         if (!password.equals(user.getPassword())) {
             // 3.3密码错误
-            throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
+            throw new PasswordErrorException(LoginErrorConstant.PASSWORD_ERROR);
         }
         // 3.4判断当前用户是否可用
-        if (user.getStatus().equals(UserStatusConstant.DISABLE)) {
+        if (user.getStatus().equals(LoginErrorConstant.DISABLE)) {
             // 3.5账号被锁定
-            throw new AccountLockedException(MessageConstant.ACCOUNT_LOCKED);
+            throw new AccountLockedException(LoginErrorConstant.ACCOUNT_LOCKED);
         }
         // 4.用户正常，返回登录成功结果
         return loginSuccessful(user);

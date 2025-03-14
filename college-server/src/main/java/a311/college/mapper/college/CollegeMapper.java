@@ -1,12 +1,14 @@
 package a311.college.mapper.college;
 
 
+import a311.college.dto.college.AddCommentDTO;
 import a311.college.dto.college.CollegePageQueryDTO;
 import a311.college.dto.query.school.GradeDTO;
 import a311.college.dto.query.school.YearScoreDTO;
 import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.YearScoreVO;
 import com.github.pagehelper.Page;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -60,4 +62,7 @@ public interface CollegeMapper {
 
     @Select("select * from tb_school where school_id = #{schoolId}")
     CollegeSimpleVO selectBySchoolId(String schoolId);
+
+    @Insert("insert tb_comment set user_id = #{userId}, school_id = #{schoolId}, comment = #{comment}")
+    void addComment(AddCommentDTO addCommentDTO, Long userId);
 }

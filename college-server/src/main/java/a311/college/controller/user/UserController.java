@@ -185,7 +185,7 @@ public class UserController {
      */
     @PostMapping("/comment")
     @Operation(summary = "用户评论")
-    public Result<List<String>> addComment() {
+    public Result<List<String>> showComment() {
         log.info("用户'{}'正在查看评论", ThreadLocalUtil.getCurrentId());
         return Result.success(userService.showComment());
     }

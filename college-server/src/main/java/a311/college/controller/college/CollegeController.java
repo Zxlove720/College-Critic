@@ -2,6 +2,7 @@ package a311.college.controller.college;
 
 
 import a311.college.constant.API.APIConstant;
+import a311.college.dto.college.AddCommentDTO;
 import a311.college.dto.college.CollegePageQueryDTO;
 import a311.college.dto.query.school.GradeDTO;
 import a311.college.dto.query.school.SchoolNameDTO;
@@ -9,6 +10,7 @@ import a311.college.dto.query.school.YearScoreDTO;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.CollegeService;
+import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.YearScoreVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -84,5 +86,18 @@ public class CollegeController {
         log.info("用户成绩为：{}", gradeDTO.getGrade());
         List<CollegeSimpleVO> collegeList = collegeService.getByGrade(gradeDTO);
         return Result.success(collegeList);
+    }
+
+    /**
+     * 用户评价大学
+     *
+     * @param comment 用户评论
+     */
+    @PostMapping("/comment")
+    @Operation(summary = "用户评价大学")
+    public Result<Void> addCollegeComment(@RequestBody AddCommentDTO addCommentDTO) {
+        log.info("用户'{}'发表对于'{}'大学的评论", ThreadLocalUtil.getCurrentId(), addCommentDTO.getSchoolId());
+        collegeService.addComment(addCommentDTO);
+        return Result.success();
     }
 }

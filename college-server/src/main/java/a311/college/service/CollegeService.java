@@ -1,5 +1,6 @@
 package a311.college.service;
 
+import a311.college.dto.college.AddCommentDTO;
 import a311.college.dto.college.CollegePageQueryDTO;
 import a311.college.dto.query.school.GradeDTO;
 import a311.college.dto.query.school.YearScoreDTO;
@@ -25,4 +26,5 @@ public interface CollegeService {
 
     Result<List<CollegeSimpleVO>> getCollegeByName(String schoolName);
 
+    void addComment(AddCommentDTO addCommentDTO);
 }

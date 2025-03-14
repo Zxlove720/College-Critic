@@ -64,5 +64,5 @@ public interface CollegeMapper {
     CollegeSimpleVO selectBySchoolId(String schoolId);
 
     @Insert("insert tb_comment set user_id = #{userId}, school_id = #{schoolId}, comment = #{comment}")
-    void addComment(AddCommentDTO addCommentDTO, Long userId);
+    void addComment(AddCommentDTO addCommentDTO);
 }

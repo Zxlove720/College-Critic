@@ -120,7 +120,7 @@ public class CollegeServiceImpl implements CollegeService {
 
     @Override
     public void addComment(AddCommentDTO addCommentDTO) {
-        collegeMapper.addComment(addCommentDTO, ThreadLocalUtil.getCurrentId());
+        collegeMapper.addComment(addCommentDTO);
     }
 
 }

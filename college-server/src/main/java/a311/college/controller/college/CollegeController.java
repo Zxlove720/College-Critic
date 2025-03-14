@@ -91,7 +91,6 @@ public class CollegeController {
     /**
      * 用户评价大学
      *
-     * @param comment 用户评论
      */
     @PostMapping("/comment")
     @Operation(summary = "用户评价大学")

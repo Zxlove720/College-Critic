@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class AddCommentDTO {
+    private Long userId;
 
     private Integer schoolId;
 

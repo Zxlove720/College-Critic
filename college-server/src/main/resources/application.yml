@@ -8,12 +8,15 @@ spring:
     active: dev
   main:
     allow-circular-references: true
+
+  # 设置mysql
   datasource:
     driver-class-name: ${college.datasource.driver-class-name}
     url: jdbc:mysql://${college.datasource.host}:${college.datasource.port}/${college.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
     username: ${college.datasource.username}
     password: ${college.datasource.password}
 
+  # 设置redis
   data:
     redis:
       host: ${college.data.redis.host}
@@ -26,6 +29,7 @@ spring:
           min-idle: ${college.data.redis.lettuce.pool.min-idle}
           time-between-eviction-runs: ${college.data.redis.lettuce.pool.time-between-eviction-runs}
 
+# 设置mybatis
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: a311.college.entity
@@ -33,6 +37,12 @@ mybatis:
     # 开启驼峰命名
     map-underscore-to-camel-case: true
 
+# 设置阿里云OSS
+college:
+  aliyun:
+    oss:
+      endpoint: ${college.aliyun.oss.endpoint}
+      bucket-name: ${college.aliyun.oss.bucket-name}
 
 # 设置日志级别
 logging:
@@ -43,6 +53,7 @@ logging:
         mapper: debug
         controller: info
 
+# 设置knife4j
 knife4j:
   enable: true
   setting:
@@ -53,10 +64,6 @@ knife4j:
     username: root
     password: 123456
 
-college:
-  aliyun:
-    oss:
-      endpoint: ${college.aliyun.oss.endpoint}
-      bucket-name: ${college.aliyun.oss.bucket-name}
+
 
 

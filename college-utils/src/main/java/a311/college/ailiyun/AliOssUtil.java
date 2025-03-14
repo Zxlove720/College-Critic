@@ -44,6 +44,7 @@ public class AliOssUtil {
             System.out.println("Error Message:" + ce.getMessage());
         } finally {
             if (ossClient != null) {
+                // 释放资源
                 ossClient.shutdown();
             }
         }
@@ -55,7 +56,7 @@ public class AliOssUtil {
                 .append(endpoint)
                 .append("/")
                 .append(fileName);
-        log.info("文件{}成功上传到{}", fileName, stringBuilder.toString());
+        log.info("文件{}成功上传到{}", fileName, stringBuilder);
         return stringBuilder.toString();
     }
 

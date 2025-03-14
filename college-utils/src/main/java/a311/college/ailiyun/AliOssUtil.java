@@ -22,6 +22,7 @@ public class AliOssUtil {
     private String bucketName;
 
     public String upload(byte[] bytes, String fileName) {
+        String ossAccessKeyId = System.getenv("OSS_ACCESS_KEY_ID");
         // 创建OSSClient实例
         OSS ossClient = new OSSClientBuilder().build(endpoint,
                     System.getenv("OSS_ACCESS_KEY_ID"),

@@ -43,9 +43,12 @@ public class UploadController {
             // 获取原始文件名
             String originalFileName = file.getOriginalFilename();
             // 获取原始文件名后缀
-            String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            String extension = null;
+            if (originalFileName != null) {
+                extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            }
             // 构建新文件名
-            String objectName = UUID.randomUUID().toString() + extension;
+            String objectName = UUID.randomUUID() + extension;
             // 创建文件请求路径
             String filePath = aliOssUtil.upload(file.getBytes(), objectName);
             return Result.success(filePath);

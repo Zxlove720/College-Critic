@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 阿里云OSS配置类
+ *
  */
 @Data
 @Component

@@ -35,4 +35,6 @@ public interface UserService {
 
     void deleteUser(DeleteDTO deleteDTO);
 
+    List<String> showComment();
+
 }

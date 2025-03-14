@@ -8,6 +8,8 @@ import a311.college.vo.UserVO;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 
 /**
  * 用户相关Mapper
@@ -48,4 +50,8 @@ public interface UserMapper {
 
     @Select("update tb_user set favorite_table = #{table} where id = #{id}")
     void addFavoriteTable(String table, long id);
+
+    @Select(("select comment from tb_comment where user_id = #{id}"))
+    List<String> selectComment(Long id);
+
 }

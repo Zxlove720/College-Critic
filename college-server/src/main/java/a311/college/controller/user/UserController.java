@@ -159,6 +159,7 @@ public class UserController {
      * @return code 验证码
      */
     @PostMapping("/deleteCode")
+    @Operation(summary = "用户注销发送验证码")
     public Result<String> sendDeleteCode(@RequestBody CodeDTO codeDTO) {
         log.info("用户'{}'正在进行注销操作", ThreadLocalUtil.getCurrentId());
         return Result.success(userService.sendDeleteCode(codeDTO));
@@ -175,6 +176,18 @@ public class UserController {
         log.info("手机号为'{}'的用户正在注销", deleteDTO.getPhone());
         userService.deleteUser(deleteDTO);
         return Result.success();
+    }
+
+    /**
+     * 查看用户评论
+     *
+     * @return Result<List<String>> 评论列表
+     */
+    @PostMapping("/comment")
+    @Operation(summary = "用户评论")
+    public Result<List<String>> addComment() {
+        log.info("用户'{}'正在查看评论", ThreadLocalUtil.getCurrentId());
+        return Result.success(userService.showComment());
     }
 
 }

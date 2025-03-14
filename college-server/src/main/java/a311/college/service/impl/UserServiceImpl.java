@@ -211,7 +211,7 @@ public class UserServiceImpl implements UserService {
     private String code(String phone, String preKey) {
         if (RegexUtils.isPhoneInvalid(phone)) {
             // 2.如果手机号不合法，返回错误信息
-            return LoginErrorConstant.PHONE_NUMBER_ERROR;
+            throw new LoginFailedException(LoginErrorConstant.PHONE_NUMBER_ERROR);
         }
         // 3.手机号合法，生成验证码
         String code = RandomUtil.randomNumbers(6);
@@ -343,6 +343,16 @@ public class UserServiceImpl implements UserService {
         // 4.在redis中删除用户的登录信息
         stringRedisTemplate.delete(RedisKeyConstant.USER_KEY + phone);
         stringRedisTemplate.delete(RedisKeyConstant.USER_LOGIN_KEY + id);
+    }
+
+    /**
+     * 查看用户评论
+     *
+     * @return List<String> 用户评论列表
+     */
+    @Override
+    public List<String> showComment() {
+        return userMapper.selectComment(ThreadLocalUtil.getCurrentId());
     }
 
 }

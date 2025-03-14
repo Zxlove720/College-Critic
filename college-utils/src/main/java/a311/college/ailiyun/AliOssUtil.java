@@ -14,19 +14,18 @@ import java.io.ByteArrayInputStream;
  * 阿里云OSS工具类
  */
 @Data
-@AllArgsConstructor
 @Slf4j
+@AllArgsConstructor
 public class AliOssUtil {
 
     private String endpoint;
-    private String accessKeyId;
-    private String accessKeySecret;
     private String bucketName;
 
     public String upload(byte[] bytes, String fileName) {
-
         // 创建OSSClient实例
-        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+        OSS ossClient = new OSSClientBuilder().build(endpoint,
+                    System.getenv("OSS_ACCESS_KEY_ID"),
+                    System.getenv("OSS_ACCESS_KEY_SECRET"));
 
         try {
             // 创建Oss的PutObject请求
@@ -48,7 +47,6 @@ public class AliOssUtil {
                 ossClient.shutdown();
             }
         }
-
         // 文件的访问路径规则：https://bucketName.endpoint.fileName
         StringBuilder stringBuilder = new StringBuilder("https://");
         stringBuilder

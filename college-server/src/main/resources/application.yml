@@ -33,6 +33,7 @@ mybatis:
     # 开启驼峰命名
     map-underscore-to-camel-case: true
 
+
 # 设置日志级别
 logging:
   level:
@@ -51,3 +52,11 @@ knife4j:
     enable: true
     username: root
     password: 123456
+
+college:
+  aliyun:
+    oss:
+      endpoint: ${college.aliyun.oss.endpoint}
+      bucket-name: ${college.aliyun.oss.bucket-name}
+
+

@@ -63,25 +63,29 @@ public class UserServiceImpl implements UserService {
         // 1.获取用户的手机号和密码
         String phone = loginDTO.getPhone();
         String password = loginDTO.getPassword();
+        if (RegexUtils.isPhoneInvalid(phone)) {
+            // 1.1手机号格式不合法，登录失败
+            throw new LoginFailedException(LoginErrorConstant.PHONE_NUMBER_ERROR);
+        }
         // 2.根据手机号查询用户
         User user = userMapper.selectByPhone(phone);
         // 3.处理异常情况
         if (user == null) {
-            // 3.1账号不存在
-            throw new AccountNotFoundException(LoginErrorConstant.ACCOUNT_NOT_FOUND);
+            // 3.1手机号不存在，登录失败
+            throw new LoginFailedException(LoginErrorConstant.ACCOUNT_NOT_FOUND);
         }
         // 3.2密码比对
         password = DigestUtils.md5DigestAsHex(password.getBytes());
         if (!password.equals(user.getPassword())) {
-            // 3.3密码错误
-            throw new PasswordErrorException(LoginErrorConstant.PASSWORD_ERROR);
+            // 3.3密码错误，登录失败
+            throw new LoginFailedException(LoginErrorConstant.PASSWORD_ERROR);
         }
         // 3.4判断当前用户是否可用
         if (user.getStatus().equals(LoginErrorConstant.DISABLE)) {
-            // 3.5账号被锁定
-            throw new AccountLockedException(LoginErrorConstant.ACCOUNT_LOCKED);
+            // 3.5账号被锁定，登录失败
+            throw new LoginFailedException(LoginErrorConstant.ACCOUNT_LOCKED);
         }
-        // 4.用户正常，返回登录成功结果
+        // 4.用户正常，成功登录，返回登录成功结果
         return loginSuccessful(user);
     }
 
@@ -116,18 +120,19 @@ public class UserServiceImpl implements UserService {
         // 1.获取用户的唯一标识符作为其登录凭证的映射
         Long id = user.getId();
         // 2检查用户是否重复登录
+        // 2.1判断用户是否在缓存中已经存在登录凭证
         String oldToken = stringRedisTemplate.opsForValue().get(RedisKeyConstant.USER_LOGIN_KEY + id);
         if (oldToken != null) {
-            // 2.1此时用户重复登录了，删除原登录凭据
+            // 2.2存在登录凭证，此时用户已经登录，删除原登录凭证
             stringRedisTemplate.delete(oldToken);
-            // 2.2删除用户id和token的映射关系
+            // 2.3删除用户id和token的映射关系
             stringRedisTemplate.delete(RedisKeyConstant.USER_LOGIN_KEY + id);
-            // 此时相当于用户原有的登录已经退出
+            // 2.4此时相当于用户原有的登录已经退出
         }
         // 3重新登录
         // 3.1生成新的登录凭据
         String token = UUID.randomUUID().toString(true);
-        String tokenKey = RedisKeyConstant.USER_KEY + token;
+        String loginKey = RedisKeyConstant.USER_KEY + token;
         // 3.2将用户登录信息缓存到redis
         LoginSymbol userPhoneLoginDTO = new LoginSymbol();
         BeanUtil.copyProperties(user, userPhoneLoginDTO);
@@ -136,12 +141,12 @@ public class UserServiceImpl implements UserService {
                 CopyOptions.create()
                         .setIgnoreNullValue(true)
                         .setFieldValueEditor((fieldName, fieldValue) -> fieldValue.toString()));
-        stringRedisTemplate.opsForHash().putAll(tokenKey, userMap);
-        stringRedisTemplate.expire(tokenKey, RedisKeyConstant.USER_TTL, TimeUnit.SECONDS);
+        stringRedisTemplate.opsForHash().putAll(loginKey, userMap);
+        stringRedisTemplate.expire(loginKey, RedisKeyConstant.USER_TTL, TimeUnit.SECONDS);
         // 4.新增用户和其登录凭据的映射关系
         stringRedisTemplate.opsForValue().set(
                 RedisKeyConstant.USER_LOGIN_KEY + id,
-                tokenKey,
+                loginKey,
                 RedisKeyConstant.USER_TTL,
                 TimeUnit.SECONDS
         );
@@ -166,15 +171,20 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void register(UserDTO userDTO) {
-        // 1.将用户DTO封装为用户实体对象
+        // 0.获取验证码比对
+        String cacheCode = stringRedisTemplate.opsForValue().get(RedisKeyConstant.USER_REGISTER_CODE_KEY);
+        if (!userDTO.getCode().equals(cacheCode)) {
+            // 0.验证码错误，注册失败
+            throw new LoginFailedException(LoginErrorConstant.CODE_ERROR);
+        }
+        // 1.验证码比对成功,将用户DTO封装为用户实体对象
         User user = new User();
         // 1.1进行属性拷贝
         BeanUtil.copyProperties(userDTO, user);
         // 1.2将用户密码进行MD5加密
         user.setPassword(DigestUtil.md5Hex(user.getPassword().getBytes()));
-        // 2.判断用户的高考模式
-        Integer pattern = user.getPattern();
-        if (pattern.equals(0)) {
+        // 2.判断用户的高考模模式
+        if (user.getPattern().equals(0)) {
             // 2.1用户为老高考，需要确定用户的文理分科
             if (user.getCategory().equals(1)) {
                 // 2.2用户为理科，为其添加选科

@@ -20,6 +20,9 @@ public class UserDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @Schema(description = "验证码")
+    private String code;
+
     @Schema(description = "用户id")
     private Long id;
 

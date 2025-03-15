@@ -54,4 +54,6 @@ public interface UserMapper {
     @Select(("select comment from tb_comment where user_id = #{id}"))
     List<String> selectComment(Long id);
 
+    @Select(("select id from tb_user where username = #{username}"))
+    User selectByUsername(String username);
 }

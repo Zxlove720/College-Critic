@@ -61,6 +61,18 @@ public class UserController {
     }
 
     /**
+     * 用户名检查
+     *
+     * @param checkUserDTO 用户名检查DTO
+     * @return Integer 0该用户名不可用 1该用户名可用
+     */
+    @PostMapping("/check")
+    @Operation(summary = "用户名检查")
+    public Result<Integer> checkUser(@RequestBody CheckUserDTO checkUserDTO) {
+        return Result.success(userService.checkUser(checkUserDTO));
+    }
+
+    /**
      * 用户注册
      *
      * @param userDTO 用户DTO

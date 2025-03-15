@@ -38,4 +38,6 @@ public interface UserService {
     List<String> showComment();
 
     String sendRegisterCode(CodeDTO codeDTO);
+
+    Integer checkUser(CheckUserDTO checkUserDTO);
 }

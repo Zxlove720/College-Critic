@@ -165,6 +165,22 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * 用户名检查
+     *
+     * @param checkUserDTO 用户名检查DTO
+     * @return Integer 0该用户名不可用 1该用户名可用
+     */
+    @Override
+    public Integer checkUser(CheckUserDTO checkUserDTO) {
+        User user = userMapper.selectByUsername(checkUserDTO.getUsername());
+        if (user != null) {
+            // 该用户名有人使用，不能注册
+            return 0;
+        }
+        return 1;
+    }
+
+    /**
      * 用户注册
      *
      * @param userDTO userDTO

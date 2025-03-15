@@ -149,6 +149,17 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * 用户发送验证码注册
+     *
+     * @param codeDTO 验证码DTO
+     * @return code 验证码
+     */
+    @Override
+    public String sendRegisterCode(CodeDTO codeDTO) {
+        return code(codeDTO.getPhone(), RedisKeyConstant.USER_REGISTER_CODE_KEY);
+    }
+
+    /**
      * 用户注册
      *
      * @param userDTO userDTO

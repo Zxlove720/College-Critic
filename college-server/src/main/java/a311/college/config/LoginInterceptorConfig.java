@@ -20,13 +20,15 @@ public class LoginInterceptorConfig implements WebMvcConfigurer {
         // 注册登录拦截器
         registry.addInterceptor(new LoginInterceptor())
                 .excludePathPatterns(
-                        "/users/login",
-                        "/users/register",
-                        "/users/editCode",
-                        "/users/edit",
+                        "/users/login",         //用户登录
+                        "/upload",              //用户上传头像
+                        "/users/register",      //用户注册
+                        "/users/editCode",      //用户请求修改密码发送验证码
+                        "/users/edit",          //用户修改密码
                         "/colleges/initPage",
                         "/colleges/hot",
                         "/majors/initPage"
+
 
                 ).order(1);
         // 注册登录状态刷新拦截器

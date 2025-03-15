@@ -37,4 +37,5 @@ public interface UserService {
 
     List<String> showComment();
 
+    String sendRegisterCode(CodeDTO codeDTO);
 }

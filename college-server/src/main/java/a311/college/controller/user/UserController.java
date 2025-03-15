@@ -48,6 +48,19 @@ public class UserController {
     }
 
     /**
+     * 用户发送验证码注册
+     *
+     * @param codeDTO 验证码DTO
+     * @return code 验证码
+     */
+    @PostMapping("/registerCode")
+    @Operation(summary = "用户发送验证码注册")
+    public Result<String> sendRegisterCode(@RequestBody CodeDTO codeDTO) {
+        log.info("向手机号为'{}'的用户发送验证码，其正在注册", codeDTO.getPhone());
+        return Result.success(userService.sendRegisterCode(codeDTO));
+    }
+
+    /**
      * 用户注册
      *
      * @param userDTO 用户DTO

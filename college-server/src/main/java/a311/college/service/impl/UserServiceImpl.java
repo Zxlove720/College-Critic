@@ -18,7 +18,6 @@ import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.UserVO;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import jakarta.annotation.Resource;
@@ -117,39 +116,23 @@ public class UserServiceImpl implements UserService {
      * @return token 登录凭据
      */
     private String saveUserInRedis(User user) {
-        // 1.获取用户的唯一标识符作为其登录凭证的映射
-        Long id = user.getId();
-        // 2检查用户是否重复登录
-        // 2.1判断用户是否在缓存中已经存在登录凭证
-        String oldToken = stringRedisTemplate.opsForValue().get(RedisKeyConstant.USER_LOGIN_KEY + id);
-        if (oldToken != null) {
-            // 2.2存在登录凭证，此时用户已经登录，删除原登录凭证
-            stringRedisTemplate.delete(oldToken);
-            // 2.3删除用户id和token的映射关系
-            stringRedisTemplate.delete(RedisKeyConstant.USER_LOGIN_KEY + id);
-            // 2.4此时相当于用户原有的登录已经退出
+        String token = DigestUtil.md5Hex(RedisKeyConstant.USER_KEY_TOKEN + user.getId());
+        String key = RedisKeyConstant.USER_KEY + token;
+        Map<Object, Object> oldUserMap = stringRedisTemplate.opsForHash().entries(key);
+        if (!oldUserMap.isEmpty()) {
+            // 此时用户用户已经登录，需要删除登录信息，并重新登录
+            stringRedisTemplate.delete(key);
         }
-        // 3重新登录
-        // 3.1生成新的登录凭据
-        String token = UUID.randomUUID().toString(true);
-        String loginKey = RedisKeyConstant.USER_KEY + token;
         // 3.2将用户登录信息缓存到redis
-        LoginSymbol userPhoneLoginDTO = new LoginSymbol();
-        BeanUtil.copyProperties(user, userPhoneLoginDTO);
+        LoginSymbol loginSymbol = new LoginSymbol();
+        BeanUtil.copyProperties(user, loginSymbol);
         // 3.3将DTO类中的属性转换为String
-        Map<String, Object> userMap = BeanUtil.beanToMap(userPhoneLoginDTO, new HashMap<>(),
+        Map<String, Object> userMap = BeanUtil.beanToMap(loginSymbol, new HashMap<>(),
                 CopyOptions.create()
                         .setIgnoreNullValue(true)
                         .setFieldValueEditor((fieldName, fieldValue) -> fieldValue.toString()));
-        stringRedisTemplate.opsForHash().putAll(loginKey, userMap);
-        stringRedisTemplate.expire(loginKey, RedisKeyConstant.USER_TTL, TimeUnit.SECONDS);
-        // 4.新增用户和其登录凭据的映射关系
-        stringRedisTemplate.opsForValue().set(
-                RedisKeyConstant.USER_LOGIN_KEY + id,
-                loginKey,
-                RedisKeyConstant.USER_TTL,
-                TimeUnit.SECONDS
-        );
+        stringRedisTemplate.opsForHash().putAll(key, userMap);
+        stringRedisTemplate.expire(key, RedisKeyConstant.USER_TTL, TimeUnit.SECONDS);
         return token;
     }
 
@@ -299,8 +282,6 @@ public class UserServiceImpl implements UserService {
     public void layout(LayoutDTO layoutDTO) {
         // 删除redis中的用户登录信息
         stringRedisTemplate.delete(RedisKeyConstant.USER_KEY + layoutDTO.getPhone());
-        // 删除redis中的用户登录凭证
-        stringRedisTemplate.delete(RedisKeyConstant.USER_LOGIN_KEY + ThreadLocalUtil.getCurrentId());
     }
 
     /**
@@ -379,7 +360,6 @@ public class UserServiceImpl implements UserService {
         userMapper.deleteById(id);
         // 4.在redis中删除用户的登录信息
         stringRedisTemplate.delete(RedisKeyConstant.USER_KEY + phone);
-        stringRedisTemplate.delete(RedisKeyConstant.USER_LOGIN_KEY + id);
     }
 
     /**

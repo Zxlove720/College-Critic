@@ -42,16 +42,6 @@
         order by score desc, length(rank_list) desc
     </select>
 
-    <select id="selectByName" resultType="a311.college.vo.CollegeSimpleVO">
-        select s.school_id,
-               s.school_head,
-               s.school_name,
-               s.school_address,
-               s.rank_list
-        from tb_school as s where school_name like concat('%', #{schoolName}, '%')
-        order by score desc, length(rank_list) desc
-    </select>
-
     <select id="selectScoreByYear" resultType="a311.college.vo.YearScoreVO">
         select y.year,
                b.batch_name,
@@ -69,6 +59,16 @@
           and y.year = #{year}
         order by sc.min_score
         LIMIT 5
+    </select>
+
+    <select id="selectByName" resultType="a311.college.vo.CollegeSimpleVO">
+        select s.school_id,
+               s.school_head,
+               s.school_name,
+               s.school_address,
+               s.rank_list
+        from tb_school as s where school_name like concat('%', #{schoolName}, '%')
+        order by score desc, length(rank_list) desc
     </select>
 
     <select id="selectByGrade" resultType="a311.college.vo.CollegeSimpleVO">

@@ -7,9 +7,7 @@ import a311.college.dto.query.school.YearScoreDTO;
 import a311.college.mapper.college.CollegeMapper;
 import a311.college.redis.RedisKeyConstant;
 import a311.college.result.PageResult;
-import a311.college.result.Result;
 import a311.college.service.CollegeService;
-import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.YearScoreVO;
 import com.github.pagehelper.Page;
@@ -73,8 +71,7 @@ public class CollegeServiceImpl implements CollegeService {
      */
     public void cacheCollege() {
         // 定义热点地区列表
-        List<String> hotAreas = Arrays.asList("北京", "上海", "广东", "湖北", "重庆");
-
+        List<String> hotAreas = Arrays.asList("北京", "上海", "广东", "湖北", "重庆", "陕西");
         for (String area : hotAreas) {
             // 统一键名格式
             String key = RedisKeyConstant.COLLEGE_CACHE_KEY + area + ":";
@@ -96,32 +93,56 @@ public class CollegeServiceImpl implements CollegeService {
         }
     }
 
+    /**
+     * 根据学校名搜索大学
+     *
+     * @return List<CollegeSimpleVO
+     */
+    @Override
+    public List<CollegeSimpleVO> getCollegeByName(String schoolName) {
+        return collegeMapper.selectByName(schoolName);
+    }
+
+    /**
+     * 根据成绩匹配大学
+     *
+     * @return List<CollegeSimpleVO>
+     */
     @Override
     public List<CollegeSimpleVO> getByGrade(GradeDTO gradeDTO) {
         List<CollegeSimpleVO> collegeSimpleVOS = collegeMapper.selectByGrade(gradeDTO);
         return new ArrayList<>(collegeSimpleVOS);
     }
 
+    /**
+     * 查询大学历年分数线
+     *
+     * @return List<YearScoreVO>
+     */
     @Override
-    public Result<List<YearScoreVO>> getScoreByYear(YearScoreDTO yearScoreDTO) {
+    public List<YearScoreVO> getScoreByYear(YearScoreDTO yearScoreDTO) {
         List<YearScoreVO> yearScoreVOList = collegeMapper.selectScoreByYear(yearScoreDTO);
         for (YearScoreVO yearScoreVO : yearScoreVOList) {
             yearScoreVO.setMajorName(yearScoreVO.getMajorName()
                     .substring(yearScoreVO.getMajorName().indexOf("选科要求")));
         }
-        return Result.success(yearScoreVOList);
+        return yearScoreVOList;
     }
 
-    @Override
-    public Result<List<CollegeSimpleVO>> getCollegeByName(String schoolName) {
-        return Result.success(collegeMapper.selectByName(schoolName));
-    }
-
+    /**
+     * 用户评价大学
+     *
+     * @param addCommentDTO 评价DTO
+     */
     @Override
     public void addComment(AddCommentDTO addCommentDTO) {
         collegeMapper.addComment(addCommentDTO);
     }
 
+    /**
+     * 优化大学数据
+     *
+     */
     @Override
     public void addScore() {
         List<CollegeSimpleVO>list = collegeMapper.getAllCollege();

@@ -57,44 +57,47 @@ public class CollegeController {
     }
 
     /**
-     * 根据学校名搜索
+     * 根据学校名搜索大学
      *
-     * @param schoolName 学校名
+     * @param schoolName 学校名DTO
      * @return Result<List < CollegeSimpleVO>>
      */
     @PostMapping("/name")
     @Operation(summary = "根据学校名搜索大学")
     public Result<List<CollegeSimpleVO>> getCollegeByName(@RequestBody SchoolNameDTO schoolName) {
-        return collegeService.getCollegeByName(schoolName.getSchoolName());
-    }
-
-    /**
-     * 获取某一院校的历年分数线
-     *
-     * @return Result<YearScoreVO>
-     */
-    @PostMapping("/years")
-    @Operation(summary = "获取某院校的历年分数线")
-    public Result<List<YearScoreVO>> collegeScoreByYear(@RequestBody YearScoreDTO yearScoreDTO) {
-        return collegeService.getScoreByYear(yearScoreDTO);
+        return Result.success(collegeService.getCollegeByName(schoolName.getSchoolName()));
     }
 
     /**
      * 根据用户成绩查询大学
      *
-     * @return Result<CollegeVO>
+     * @param gradeDTO 成绩查询DTO
+     * @return List<CollegeSimpleVO>
      */
     @PostMapping("grade")
     @Operation(summary = "根据用户成绩查询大学")
     public Result<List<CollegeSimpleVO>> getByUserScore(@RequestBody GradeDTO gradeDTO) {
         log.info("用户成绩为：{}", gradeDTO.getGrade());
-        List<CollegeSimpleVO> collegeList = collegeService.getByGrade(gradeDTO);
-        return Result.success(collegeList);
+        return Result.success(collegeService.getByGrade(gradeDTO));
+    }
+
+    /**
+     * 获取某一院校的历年分数线
+     *
+     * @param yearScoreDTO 年份分数线DTO
+     * @return List<YearScoreVO>
+     */
+    @PostMapping("/years")
+    @Operation(summary = "获取某院校的历年分数线")
+    public Result<List<YearScoreVO>> collegeScoreByYear(@RequestBody YearScoreDTO yearScoreDTO) {
+        return Result.success(collegeService.getScoreByYear(yearScoreDTO));
     }
 
     /**
      * 用户评价大学
      *
+     * @param addCommentDTO 评价DTO
+     * @return Void
      */
     @PostMapping("/comment")
     @Operation(summary = "用户评价大学")

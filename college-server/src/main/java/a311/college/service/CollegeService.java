@@ -1,11 +1,13 @@
 package a311.college.service;
 
 import a311.college.dto.college.AddCommentDTO;
+import a311.college.dto.college.CollegeDTO;
 import a311.college.dto.college.CollegePageQueryDTO;
 import a311.college.dto.query.school.GradeDTO;
 import a311.college.dto.query.school.YearScoreDTO;
 import a311.college.result.PageResult;
 import a311.college.vo.CollegeSimpleVO;
+import a311.college.vo.CollegeVO;
 import a311.college.vo.YearScoreVO;
 
 import java.util.List;
@@ -29,4 +31,5 @@ public interface CollegeService {
 
     void addScore();
 
+    CollegeVO getCollege(CollegeDTO collegeDTO);
 }

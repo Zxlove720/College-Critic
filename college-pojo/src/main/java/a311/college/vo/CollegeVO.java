@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 @Data
@@ -29,22 +30,15 @@ public class CollegeVO implements Serializable {
     @Schema(description = "大学等级标签列表")
     private String rankList;
 
-    @Schema(description = "年份")
-    private Integer year;
+    @Schema(description = "校园风光")
+    private List<String> images;
 
-    @Schema(description = "招生类别名称")
-    private String category;
+    @Schema(description = "开设专业")
+    private List<String> majors;
 
-    @Schema(description = "批次")
-    private String batch;
+    @Schema(description = "校园配置")
+    private List<String> equipment;
 
-    @Schema(description = "专业")
-    private String major;
 
-    @Schema(description = "最低分数")
-    private String minScore;
-
-    @Schema(description = "最低位次")
-    private String minRanking;
 
 }

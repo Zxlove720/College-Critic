@@ -1,6 +1,7 @@
 package a311.college.service.impl;
 
 import a311.college.dto.college.AddCommentDTO;
+import a311.college.dto.college.CollegeDTO;
 import a311.college.dto.college.CollegePageQueryDTO;
 import a311.college.dto.query.school.GradeDTO;
 import a311.college.dto.query.school.YearScoreDTO;
@@ -9,6 +10,7 @@ import a311.college.redis.RedisKeyConstant;
 import a311.college.result.PageResult;
 import a311.college.service.CollegeService;
 import a311.college.vo.CollegeSimpleVO;
+import a311.college.vo.CollegeVO;
 import a311.college.vo.YearScoreVO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -153,6 +155,11 @@ public class CollegeServiceImpl implements CollegeService {
             collegeSimpleVO.setScore(score);
             collegeMapper.updateScore(collegeSimpleVO);
         }
+    }
+
+    @Override
+    public CollegeVO getCollege(CollegeDTO collegeDTO) {
+        return null;
     }
 
     private int getScore(CollegeSimpleVO collegeSimpleVO, String[] split) {

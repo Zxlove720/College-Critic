@@ -3,6 +3,7 @@ package a311.college.controller.college;
 
 import a311.college.constant.API.APIConstant;
 import a311.college.dto.college.AddCommentDTO;
+import a311.college.dto.college.CollegeDTO;
 import a311.college.dto.college.CollegePageQueryDTO;
 import a311.college.dto.query.school.GradeDTO;
 import a311.college.dto.query.school.SchoolNameDTO;
@@ -13,6 +14,7 @@ import a311.college.service.CollegeService;
 import a311.college.service.DeepSeekService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.CollegeSimpleVO;
+import a311.college.vo.CollegeVO;
 import a311.college.vo.YearScoreVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -79,6 +81,12 @@ public class CollegeController {
     public Result<List<CollegeSimpleVO>> getByUserScore(@RequestBody GradeDTO gradeDTO) {
         log.info("用户成绩为：{}", gradeDTO.getGrade());
         return Result.success(collegeService.getByGrade(gradeDTO));
+    }
+
+
+    public Result<CollegeVO> getCollege(@RequestBody CollegeDTO collegeDTO) {
+        CollegeVO collegeVO = collegeService.getCollege(collegeDTO);
+        return Result.success(collegeVO);
     }
 
     /**

@@ -3,20 +3,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="a311.college.mapper.college.CollegeMapper">
 
-    <!-- 多表联查结果映射 -->
-    <resultMap id="collegeScoreMap" type="a311.college.vo.CollegeVO">
-        <result property="schoolHead" column="school_head"/>
-        <result property="schoolName" column="school_name"/>
-        <result property="schoolProvince" column="province_name"/>
-        <result property="schoolAddress" column="school_address"/>
-        <result property="rankList" column="rank_list"/>
-        <result property="year" column="year"/>
-        <result property="category" column="category_name"/>
-        <result property="batch" column="batch_name"/>
-        <result property="major" column="major_name"/>
-        <result property="minScore" column="min_score"/>
-        <result property="minRanking" column="min_ranking"/>
-    </resultMap>
 
     <select id="pageQuery" resultType="a311.college.vo.CollegeSimpleVO">
         select

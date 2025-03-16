@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 
 @Data
@@ -37,8 +38,6 @@ public class CollegeVO implements Serializable {
     private List<String> majors;
 
     @Schema(description = "校园配置")
-    private List<String> equipment;
-
-
+    private Map<String, Integer> equipment;
 
 }

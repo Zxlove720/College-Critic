@@ -6,12 +6,15 @@ import a311.college.dto.college.CollegePageQueryDTO;
 import a311.college.dto.query.school.GradeDTO;
 import a311.college.dto.query.school.YearScoreDTO;
 import a311.college.mapper.college.CollegeMapper;
+import a311.college.mapper.resource.ResourceMapper;
 import a311.college.redis.RedisKeyConstant;
 import a311.college.result.PageResult;
 import a311.college.service.CollegeService;
 import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.CollegeVO;
 import a311.college.vo.YearScoreVO;
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.RandomUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import jakarta.annotation.Resource;
@@ -32,12 +35,15 @@ public class CollegeServiceImpl implements CollegeService {
 
     private final CollegeMapper collegeMapper;
 
+    private final ResourceMapper resourceMapper;
+
     @Resource
     private RedisTemplate<String, CollegeSimpleVO> redisTemplate;
 
     @Autowired
-    public CollegeServiceImpl(CollegeMapper collegeMapper) {
+    public CollegeServiceImpl(CollegeMapper collegeMapper, ResourceMapper resourceMapper) {
         this.collegeMapper = collegeMapper;
+        this.resourceMapper = resourceMapper;
     }
 
     /**
@@ -159,6 +165,18 @@ public class CollegeServiceImpl implements CollegeService {
 
     @Override
     public CollegeVO getCollege(CollegeDTO collegeDTO) {
+        CollegeSimpleVO collegeSimpleVO = collegeMapper.selectBySchoolId(collegeDTO.getCollegeId());
+        CollegeVO collegeVO = new CollegeVO();
+        BeanUtil.copyProperties(collegeSimpleVO, collegeVO);
+        List<String> imageList = resourceMapper.getAllImages();
+        List<String> images = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            int index = RandomUtil.randomInt(0, 250);
+            images.add(imageList.get(index));
+        }
+        collegeVO.setImages(images);
+
+
         return null;
     }
 

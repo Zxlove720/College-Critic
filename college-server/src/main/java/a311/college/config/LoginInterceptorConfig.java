@@ -23,6 +23,7 @@ public class LoginInterceptorConfig implements WebMvcConfigurer {
                         "/users/login",         //用户登录
                         "/upload",              //用户上传头像
                         "/users/register",      //用户注册
+                        "/users/check",
                         "/users/editCode",      //用户请求修改密码发送验证码
                         "/users/edit",          //用户修改密码
                         "/colleges/initPage",

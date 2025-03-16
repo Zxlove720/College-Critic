@@ -39,7 +39,7 @@
                 </foreach>
             </if>
         </where>
-        order by length(rank_list) desc
+        order by score desc, length(rank_list) desc
     </select>
 
     <select id="selectByName" resultType="a311.college.vo.CollegeSimpleVO">
@@ -49,6 +49,7 @@
                s.school_address,
                s.rank_list
         from tb_school as s where school_name like concat('%', #{schoolName}, '%')
+        order by score desc, length(rank_list) desc
     </select>
 
     <select id="selectScoreByYear" resultType="a311.college.vo.YearScoreVO">
@@ -71,18 +72,19 @@
     </select>
 
     <select id="selectByGrade" resultType="a311.college.vo.CollegeSimpleVO">
-        SELECT s.school_head,
+        SELECT DISTINCT
+               s.school_head,
                s.school_name,
                s.school_address,
-               s.rank_list
+               s.rank_list,
+               s.score
         FROM tb_school as s
                  JOIN tb_province as p ON s.school_id = p.school_id
                  JOIN tb_year as y ON p.province_id = y.province_id
                  JOIN tb_category as c ON y.year_id = c.year_id
                  JOIN tb_batch as b ON c.category_id = b.category_id
                  JOIN tb_score as sc ON b.batch_id = sc.batch_id
-        WHERE sc.min_score &lt; #{grade}
-          and p.province_name = #{province}
-        ORDER BY sc.min_score DESC
+        WHERE sc.min_score &lt; #{grade} and p.province_name = #{province}
+        ORDER BY score desc
     </select>
 </mapper>

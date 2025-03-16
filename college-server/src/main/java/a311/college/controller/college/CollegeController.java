@@ -104,6 +104,10 @@ public class CollegeController {
         return Result.success();
     }
 
+    /**
+     * 改变大学数据
+     *
+     */
     @PostMapping("/addScore")
     public Result<Void> addScore2College() {
         collegeService.addScore();

@@ -99,8 +99,7 @@ public class CollegeServiceImpl implements CollegeService {
     @Override
     public List<CollegeSimpleVO> getByGrade(GradeDTO gradeDTO) {
         List<CollegeSimpleVO> collegeSimpleVOS = collegeMapper.selectByGrade(gradeDTO);
-        Set<CollegeSimpleVO> tempSet = new HashSet<>(collegeSimpleVOS);
-        return new ArrayList<>(tempSet);
+        return new ArrayList<>(collegeSimpleVOS);
     }
 
     @Override
@@ -129,21 +128,28 @@ public class CollegeServiceImpl implements CollegeService {
         for (CollegeSimpleVO collegeSimpleVO : list) {
             String rankList = collegeSimpleVO.getRankList();
             String[] split = rankList.split(",");
-            int score = 0;
-            for (String s : split) {
-                 switch (s) {
-                     case "本科", "双一流", "强基计划" -> score += 15;
-                     case "公办", "双高计划" -> score += 10;
-                     case "985" -> score += 30;
-                     case "211" -> score += 20;
-                 }
-            }
-            if (collegeSimpleVO.getSchoolName().contains("大学")) {
-                score += 5;
-            }
+            int score = getScore(collegeSimpleVO, split);
             collegeSimpleVO.setScore(score);
             collegeMapper.updateScore(collegeSimpleVO);
         }
+    }
+
+    private int getScore(CollegeSimpleVO collegeSimpleVO, String[] split) {
+        int score = 0;
+        for (String s : split) {
+             switch (s) {
+                 case "本科", "双一流", "强基计划" -> score += 15;
+                 case "公办", "军事类" -> score += 10;
+                 case "985" -> score += 30;
+                 case "211" -> score += 20;
+                 case "医药类" -> score += 5;
+                 case "双高计划" -> score += 3;
+             }
+        }
+        if (collegeSimpleVO.getSchoolName().contains("大学")) {
+            score += 5;
+        }
+        return score;
     }
 
     private void updateRankList() {

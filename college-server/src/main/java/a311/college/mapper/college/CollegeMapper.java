@@ -43,7 +43,7 @@ public interface CollegeMapper {
      * @return List<CollegeVO>
      */
     @Select("select school_head, school_name,school_address, rank_list from tb_school " +
-            "where school_province = #{province} order by length(rank_list) desc")
+            "where school_province = #{province} order by score, length(rank_list) desc")
     List<CollegeSimpleVO> selectByAddress(String province);
 
     /**

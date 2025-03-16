@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.selectByPhone(phone);
         // 3.处理异常情况
         if (user == null) {
-            // 3.1手机号不存在，登录失败
+            // 3.1手机号对应的用户不存在，登录失败
             throw new LoginFailedException(LoginErrorConstant.ACCOUNT_NOT_FOUND);
         }
         // 3.2密码比对
@@ -174,7 +174,7 @@ public class UserServiceImpl implements UserService {
     public Integer checkUser(CheckUserDTO checkUserDTO) {
         User user = userMapper.selectByUsername(checkUserDTO.getUsername());
         if (user != null) {
-            // 该用户名有人使用，不能注册
+            // 该用户名已经存在，不能注册
             return 0;
         }
         return 1;

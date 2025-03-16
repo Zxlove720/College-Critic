@@ -11,6 +11,7 @@ import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -65,4 +66,13 @@ public interface CollegeMapper {
 
     @Insert("insert tb_comment set user_id = #{userId}, school_id = #{schoolId}, comment = #{comment}")
     void addComment(AddCommentDTO addCommentDTO);
+
+    @Select("select * from tb_school")
+    List<CollegeSimpleVO> getAllCollege();
+
+    @Update("update tb_school set rank_list = #{rankList} where school_id = #{schoolId}")
+    void updateRank(CollegeSimpleVO collegeSimpleVO);
+
+    @Update("update tb_school set score = #{score} where school_id = #{schoolId}")
+    void updateScore(CollegeSimpleVO collegeSimpleVO);
 }

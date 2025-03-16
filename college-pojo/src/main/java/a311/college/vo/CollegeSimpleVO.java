@@ -28,4 +28,7 @@ public class CollegeSimpleVO implements Serializable {
 
     @Schema(description = "大学等级标签列表")
     private String rankList;
+
+    @Schema(description = "大学等级得分")
+    private Integer score;
 }

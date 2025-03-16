@@ -10,6 +10,7 @@ import a311.college.dto.query.school.YearScoreDTO;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.CollegeService;
+import a311.college.service.DeepSeekService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.YearScoreVO;
@@ -33,9 +34,12 @@ public class CollegeController {
 
     private final CollegeService collegeService;
 
+    private final DeepSeekService deepSeekService;
+
     @Autowired
-    public CollegeController(CollegeService collegeService) {
+    public CollegeController(CollegeService collegeService, DeepSeekService deepSeekService) {
         this.collegeService = collegeService;
+        this.deepSeekService = deepSeekService;
     }
 
     /**
@@ -97,6 +101,12 @@ public class CollegeController {
     public Result<Void> addCollegeComment(@RequestBody AddCommentDTO addCommentDTO) {
         log.info("用户'{}'发表对于'{}'大学的评论", ThreadLocalUtil.getCurrentId(), addCommentDTO.getSchoolId());
         collegeService.addComment(addCommentDTO);
+        return Result.success();
+    }
+
+    @PostMapping("/addScore")
+    public Result<Void> addScore2College() {
+        collegeService.addScore();
         return Result.success();
     }
 }

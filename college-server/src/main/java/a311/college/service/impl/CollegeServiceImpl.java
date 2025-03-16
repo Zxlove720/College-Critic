@@ -123,4 +123,40 @@ public class CollegeServiceImpl implements CollegeService {
         collegeMapper.addComment(addCommentDTO);
     }
 
+    @Override
+    public void addScore() {
+        List<CollegeSimpleVO>list = collegeMapper.getAllCollege();
+        for (CollegeSimpleVO collegeSimpleVO : list) {
+            String rankList = collegeSimpleVO.getRankList();
+            String[] split = rankList.split(",");
+            int score = 0;
+            for (String s : split) {
+                 switch (s) {
+                     case "本科", "双一流", "强基计划" -> score += 15;
+                     case "公办", "双高计划" -> score += 10;
+                     case "985" -> score += 30;
+                     case "211" -> score += 20;
+                 }
+            }
+            if (collegeSimpleVO.getSchoolName().contains("大学")) {
+                score += 5;
+            }
+            collegeSimpleVO.setScore(score);
+            collegeMapper.updateScore(collegeSimpleVO);
+        }
+    }
+
+    private void updateRankList() {
+        List<CollegeSimpleVO>list = collegeMapper.getAllCollege();
+        for (CollegeSimpleVO collegeSimpleVO : list) {
+            String rankList = collegeSimpleVO.getRankList();
+            String tempResult = rankList.replace("[", "");
+            String tempResult2 = tempResult.replace("]", "");
+            String result = tempResult2.replaceAll("，", ",");
+            result = result.replaceAll(" ", "");
+            collegeSimpleVO.setRankList(result);
+            collegeMapper.updateRank(collegeSimpleVO);
+        }
+    }
+
 }

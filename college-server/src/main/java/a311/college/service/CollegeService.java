@@ -27,4 +27,7 @@ public interface CollegeService {
     Result<List<CollegeSimpleVO>> getCollegeByName(String schoolName);
 
     void addComment(AddCommentDTO addCommentDTO);
+
+    void addScore();
+
 }

@@ -83,7 +83,14 @@ public class CollegeController {
         return Result.success(collegeService.getByGrade(gradeDTO));
     }
 
-
+    /**
+     * 查询院校具体信息
+     *
+     * @param collegeDTO 大学查询DTO
+     * @return CollegeVO 大学具体信息
+     */
+    @PostMapping("/college")
+    @Operation(summary = "查询院校具体信息")
     public Result<CollegeVO> getCollege(@RequestBody CollegeDTO collegeDTO) {
         CollegeVO collegeVO = collegeService.getCollege(collegeDTO);
         return Result.success(collegeVO);

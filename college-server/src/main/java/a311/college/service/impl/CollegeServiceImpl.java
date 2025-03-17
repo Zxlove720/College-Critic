@@ -10,6 +10,7 @@ import a311.college.mapper.resource.ResourceMapper;
 import a311.college.redis.RedisKeyConstant;
 import a311.college.result.PageResult;
 import a311.college.service.CollegeService;
+import a311.college.vo.CollegeSimpleMajorVO;
 import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.CollegeVO;
 import a311.college.vo.YearScoreVO;
@@ -162,6 +163,12 @@ public class CollegeServiceImpl implements CollegeService {
         }
     }
 
+    /**
+     * 获取院校具体信息
+     *
+     * @param collegeDTO 大学查询DTO
+     * @return CollegeVO
+     */
     @Override
     public CollegeVO getCollege(CollegeDTO collegeDTO) {
         // 1.获取简略大学信息
@@ -171,15 +178,15 @@ public class CollegeServiceImpl implements CollegeService {
         BeanUtil.copyProperties(collegeSimpleVO, collegeVO);
         // 3.返回随机校园风光
         // 3.1获取所有照片
-        List<String> imageList = resourceMapper.getAllImages();
-        // 3.2从所有照片中随机选取6张
-        List<String> images = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            int index = RandomUtil.randomInt(0, 250);
-            images.add(imageList.get(index));
-        }
-        // 3.3返回随机6张校园风光
-        collegeVO.setImages(images);
+//        List<String> imageList = resourceMapper.getAllImages();
+//        // 3.2从所有照片中随机选取6张
+//        List<String> images = new ArrayList<>();
+//        for (int i = 0; i < 6; i++) {
+//            int index = RandomUtil.randomInt(0, 250);
+//            images.add(imageList.get(index));
+//        }
+//        // 3.3返回随机6张校园风光
+//        collegeVO.setImages(images);
         // 4.随机校园配置
         if (collegeSimpleVO.getScore() > 60) {
             // 4.1该学校属于好学校
@@ -192,7 +199,14 @@ public class CollegeServiceImpl implements CollegeService {
             collegeVO.setEquipment(commonSchool());
         }
         // 5.为该学校封装展示专业
-        collegeVO.setMajors(collegeMapper.selectSimpleMajor(collegeSimpleVO.getSchoolId()));
+        // 5.1获取专业
+        List<CollegeSimpleMajorVO> collegeSimpleList = collegeMapper.selectSimpleMajor(collegeSimpleVO.getSchoolId());
+        // 5.2调整专业格式
+        for (CollegeSimpleMajorVO collegeSimpleMajorVO : collegeSimpleList) {
+            collegeSimpleMajorVO.setMajorName(collegeSimpleMajorVO.getMajorName().split("\n")[0]);
+        }
+        // 5.3封装
+        collegeVO.setMajors(collegeSimpleList);
         return collegeVO;
     }
 

@@ -53,36 +53,47 @@
                s.school_name,
                s.school_address,
                s.rank_list
-        from tb_school as s where school_name like concat('%', #{schoolName}, '%')
+        from tb_school as s
+        where school_name like concat('%', #{schoolName}, '%')
         order by score desc, length(rank_list) desc
     </select>
 
     <select id="selectByGrade" resultType="a311.college.vo.CollegeSimpleVO">
-        SELECT DISTINCT
-               s.school_head,
-               s.school_name,
-               s.school_address,
-               s.rank_list,
-               s.score
+        SELECT DISTINCT s.school_head,
+                        s.school_name,
+                        s.school_address,
+                        s.rank_list,
+                        s.score
         FROM tb_school as s
                  JOIN tb_province as p ON s.school_id = p.school_id
                  JOIN tb_year as y ON p.province_id = y.province_id
                  JOIN tb_category as c ON y.year_id = c.year_id
                  JOIN tb_batch as b ON c.category_id = b.category_id
                  JOIN tb_score as sc ON b.batch_id = sc.batch_id
-        WHERE sc.min_score &lt; #{grade} and p.province_name = #{province}
+        WHERE sc.min_score &lt; #{grade}
+          and p.province_name = #{province}
         ORDER BY score desc
     </select>
 
     <select id="selectSimpleMajor" resultType="a311.college.vo.CollegeSimpleMajorVO">
-        SELECT *
-        FROM tb_school as s
-                 JOIN tb_province as p ON s.school_id = p.school_id
-                 JOIN tb_year as y ON p.province_id = y.province_id
-                 JOIN tb_category as c ON y.year_id = c.year_id
-                 JOIN tb_batch as b ON c.category_id = b.category_id
-                 JOIN tb_score as sc ON b.batch_id = sc.batch_id
-
-
+        SELECT category_name, major_name
+        FROM (SELECT c.category_name,
+                     sc.major_name,
+                     sc.min_score,
+                     sc.min_ranking,
+                     ROW_NUMBER() OVER (
+                         PARTITION BY c.category_name -- 按类别名称分组
+                         ORDER BY sc.min_score DESC, sc.min_ranking DESC
+                         ) AS rn
+              FROM tb_school AS s
+                       JOIN tb_province AS p ON s.school_id = p.school_id
+                       JOIN tb_year AS y ON p.province_id = y.province_id
+                       JOIN tb_category AS c ON y.year_id = c.year_id
+                       JOIN tb_batch AS b ON c.category_id = b.category_id
+                       JOIN tb_score AS sc ON b.batch_id = sc.batch_id
+              WHERE s.school_id = #{schoolId}) AS ranked
+        WHERE rn = 1 -- 每个类别保留最高分专业
+        ORDER BY min_score DESC, min_ranking DESC
+        LIMIT 5;
     </select>
 </mapper>

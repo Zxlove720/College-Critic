@@ -35,7 +35,7 @@ public class CollegeVO implements Serializable {
     private List<String> images;
 
     @Schema(description = "开设专业")
-    private List<String> majors;
+    private List<CollegeSimpleMajorVO> majors;
 
     @Schema(description = "校园配置")
     private Map<String, Integer> equipment;

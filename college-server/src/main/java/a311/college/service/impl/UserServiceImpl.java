@@ -137,25 +137,30 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 用户发送验证码注册
-     *
-     * @param codeDTO 验证码DTO
-     * @return code 验证码
-     */
-    @Override
-    public String sendRegisterCode(CodeDTO codeDTO) {
-        return code(codeDTO.getPhone(), RedisKeyConstant.USER_REGISTER_CODE_KEY);
-    }
-
-    /**
      * 用户名检查
      *
      * @param checkUserDTO 用户名检查DTO
      * @return Integer 0该用户名不可用 1该用户名可用
      */
     @Override
-    public Integer checkUser(CheckUserDTO checkUserDTO) {
+    public Integer checkUser(CheckUsernameDTO checkUserDTO) {
         User user = userMapper.selectByUsername(checkUserDTO.getUsername());
+        if (user != null) {
+            // 该用户名已经存在，不能注册
+            return 0;
+        }
+        return 1;
+    }
+
+    /**
+     * 手机号检查
+     *
+     * @param checkPhoneDTO 手机号检查DTO
+     * @return Integer 0该手机号不可用 1该手机号可用
+     */
+    @Override
+    public Integer checkPhone(CheckPhoneDTO checkPhoneDTO) {
+        User user = userMapper.selectByPhone(checkPhoneDTO.getPhone());
         if (user != null) {
             // 该用户名已经存在，不能注册
             return 0;
@@ -170,13 +175,6 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void register(UserDTO userDTO) {
-        // 0.获取验证码比对
-        String cacheCode = stringRedisTemplate.opsForValue().get(RedisKeyConstant.USER_REGISTER_CODE_KEY);
-        if (!userDTO.getCode().equals(cacheCode)) {
-            // 0.验证码错误，注册失败
-            throw new LoginFailedException(LoginErrorConstant.CODE_ERROR);
-        }
-        // 1.验证码比对成功,将用户DTO封装为用户实体对象
         User user = new User();
         // 1.1进行属性拷贝
         BeanUtil.copyProperties(userDTO, user);

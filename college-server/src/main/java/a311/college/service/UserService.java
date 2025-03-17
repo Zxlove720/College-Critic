@@ -37,7 +37,7 @@ public interface UserService {
 
     List<String> showComment();
 
-    String sendRegisterCode(CodeDTO codeDTO);
+    Integer checkUser(CheckUsernameDTO checkUserDTO);
 
-    Integer checkUser(CheckUserDTO checkUserDTO);
+    Integer checkPhone(CheckPhoneDTO checkPhoneDTO);
 }

@@ -48,28 +48,27 @@ public class UserController {
     }
 
     /**
-     * 用户发送验证码注册
-     *
-     * @param codeDTO 验证码DTO
-     * @return code 验证码
-     */
-    @PostMapping("/registerCode")
-    @Operation(summary = "用户发送验证码注册")
-    public Result<String> sendRegisterCode(@RequestBody CodeDTO codeDTO) {
-        log.info("向手机号为'{}'的用户发送验证码，其正在注册", codeDTO.getPhone());
-        return Result.success(userService.sendRegisterCode(codeDTO));
-    }
-
-    /**
      * 用户名检查
      *
      * @param checkUserDTO 用户名检查DTO
      * @return Integer 0该用户名不可用 1该用户名可用
      */
-    @PostMapping("/check")
+    @PostMapping("/checkUsername")
     @Operation(summary = "用户名检查")
-    public Result<Integer> checkUser(@RequestBody CheckUserDTO checkUserDTO) {
+    public Result<Integer> checkUser(@RequestBody CheckUsernameDTO checkUserDTO) {
         return Result.success(userService.checkUser(checkUserDTO));
+    }
+
+    /**
+     * 手机号检查
+     *
+     * @param checkPhoneDTO 手机号检查DTO
+     * @return Integer 0该手机号不可用 1该手机号可用
+     */
+    @PostMapping("/checkPhone")
+    @Operation(summary = "用户名检查")
+    public Result<Integer> checkPhone(@RequestBody CheckPhoneDTO checkPhoneDTO) {
+        return Result.success(userService.checkPhone(checkPhoneDTO));
     }
 
     /**

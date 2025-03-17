@@ -5,6 +5,7 @@ import a311.college.dto.college.AddCommentDTO;
 import a311.college.dto.college.CollegePageQueryDTO;
 import a311.college.dto.query.school.GradeDTO;
 import a311.college.dto.query.school.YearScoreDTO;
+import a311.college.vo.CollegeSimpleMajorVO;
 import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.YearScoreVO;
 import com.github.pagehelper.Page;
@@ -75,4 +76,7 @@ public interface CollegeMapper {
 
     @Update("update tb_school set score = #{score} where school_id = #{schoolId}")
     void updateScore(CollegeSimpleVO collegeSimpleVO);
+
+    List<CollegeSimpleMajorVO> selectSimpleMajor(int schoolId);
+
 }

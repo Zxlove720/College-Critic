@@ -191,6 +191,8 @@ public class CollegeServiceImpl implements CollegeService {
             // 4.3该学校属于一般学校
             collegeVO.setEquipment(commonSchool());
         }
+        // 5.为该学校封装展示专业
+        collegeVO.setMajors(collegeMapper.selectSimpleMajor(collegeSimpleVO.getSchoolId()));
         return collegeVO;
     }
 

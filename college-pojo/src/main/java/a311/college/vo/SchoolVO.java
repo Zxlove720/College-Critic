@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * 大学详细信息VO
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

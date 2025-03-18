@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.time.Year;
 
 /**
- * 用户个人主页
+ * 用户个人主页VO
  */
 @Data
 @NoArgsConstructor

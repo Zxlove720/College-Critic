@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 
+/**
+ * 历年分数线VO
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

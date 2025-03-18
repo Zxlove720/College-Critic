@@ -3,6 +3,9 @@ package a311.college.vo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+/**
+ * 专业简单信息VO
+ */
 @Data
 public class MajorSimpleVO {
 

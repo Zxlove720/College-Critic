@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class CollegeSimpleMajorVO {
+public class MajorSimpleVO {
 
     @Schema(description = "专业所属类别")
     private String categoryName;

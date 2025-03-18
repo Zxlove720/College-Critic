@@ -10,7 +10,7 @@ import a311.college.mapper.college.CollegeMapper;
 import a311.college.mapper.resource.ResourceMapper;
 import a311.college.result.PageResult;
 import a311.college.service.CollegeService;
-import a311.college.vo.CollegeSimpleMajorVO;
+import a311.college.vo.MajorSimpleVO;
 import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.CollegeVO;
 import a311.college.vo.YearScoreVO;
@@ -200,9 +200,9 @@ public class CollegeServiceImpl implements CollegeService {
         }
         // 5.为该学校封装展示专业
         // 5.1获取专业
-        List<CollegeSimpleMajorVO> collegeSimpleList = collegeMapper.selectSimpleMajor(collegeSimpleVO.getSchoolId());
+        List<MajorSimpleVO> collegeSimpleList = collegeMapper.selectSimpleMajor(collegeSimpleVO.getSchoolId());
         // 5.2调整专业格式
-        for (CollegeSimpleMajorVO collegeSimpleMajorVO : collegeSimpleList) {
+        for (MajorSimpleVO collegeSimpleMajorVO : collegeSimpleList) {
             collegeSimpleMajorVO.setMajorName(collegeSimpleMajorVO.getMajorName().split("\n")[0]);
         }
         // 5.3封装

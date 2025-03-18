@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+
+/**
+ * 用户登录后返回的登录凭证
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

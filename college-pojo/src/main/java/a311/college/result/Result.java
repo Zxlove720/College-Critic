@@ -14,15 +14,19 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "统一返回结果")
 public class Result<T> implements Serializable {
 
-
+    @Schema(description = "请求状态(HTTP请求通用状态码)")
     private String status;
+
     @Schema(description = "编码：1.成功；0和其他数字都是失败")
     private Integer code;
-    // 错误信息
+
+    @Schema(description = "返回信息")
     private String msg;
-    // 可能会返回的数据
+
+    @Schema(description = "返回数据")
     private T responseData;
 
     /**
@@ -32,6 +36,7 @@ public class Result<T> implements Serializable {
     public static <T> Result<T> success() {
         Result<T> result = new Result<>();
         result.code = 1;
+        result.msg = "successful";
         return result;
     }
 
@@ -43,6 +48,7 @@ public class Result<T> implements Serializable {
     public static <T> Result<T> success(T data) {
         Result<T> result = new Result<>();
         result.code = 1;
+        result.msg = "successful";
         result.responseData = data;
         return result;
     }

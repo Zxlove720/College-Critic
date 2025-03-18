@@ -75,7 +75,7 @@
         ORDER BY score desc
     </select>
 
-    <select id="selectSimpleMajor" resultType="a311.college.vo.CollegeSimpleMajorVO">
+    <select id="selectSimpleMajor" resultType="a311.college.vo.MajorSimpleVO">
         SELECT category_name, major_name
         FROM (SELECT c.category_name,
                      sc.major_name,

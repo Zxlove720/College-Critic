@@ -1,18 +1,16 @@
-package a311.college.dto.query.college;
+package a311.college.dto.query.school;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * 根据学校名查询大学DTO
  */
 @Data
 @Schema(description = "根据学校名查询大学DTO")
-public class CollegeNameQueryDTO {
+public class SchoolNameQueryDTO {
 
     @Schema(description = "学校名")
-    private String collegeName;
+    private String schoolName;
 }

@@ -1,12 +1,12 @@
 package a311.college.service;
 
-import a311.college.dto.college.AddCollegeCommentDTO;
-import a311.college.dto.college.CollegeDTO;
-import a311.college.dto.college.CollegePageQueryDTO;
-import a311.college.dto.query.college.UserGradeQueryDTO;
-import a311.college.dto.query.college.YearScoreQueryDTO;
+import a311.college.dto.school.AddSchoolCommentDTO;
+import a311.college.dto.school.SchoolDTO;
+import a311.college.dto.school.SchoolPageQueryDTO;
+import a311.college.dto.query.school.UserGradeQueryDTO;
+import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.result.PageResult;
-import a311.college.vo.CollegeSimpleVO;
+import a311.college.vo.SchoolSimpleVO;
 import a311.college.vo.CollegeVO;
 import a311.college.vo.YearScoreVO;
 
@@ -17,19 +17,19 @@ import java.util.List;
  */
 public interface CollegeService {
 
-    PageResult<CollegeSimpleVO> pageSelect(CollegePageQueryDTO collegePageQueryDTO);
+    PageResult<SchoolSimpleVO> pageSelect(SchoolPageQueryDTO collegePageQueryDTO);
 
     void cacheCollege();
 
-    List<CollegeSimpleVO> getCollegeByName(String schoolName);
+    List<SchoolSimpleVO> getCollegeByName(String schoolName);
 
-    List<CollegeSimpleVO> getByGrade(UserGradeQueryDTO gradeDTO);
+    List<SchoolSimpleVO> getByGrade(UserGradeQueryDTO gradeDTO);
 
     List<YearScoreVO> getScoreByYear(YearScoreQueryDTO yearScoreDTO);
 
-    void addComment(AddCollegeCommentDTO addCommentDTO);
+    void addComment(AddSchoolCommentDTO addCommentDTO);
 
     void addScore();
 
-    CollegeVO getCollege(CollegeDTO collegeDTO);
+    CollegeVO getCollege(SchoolDTO collegeDTO);
 }

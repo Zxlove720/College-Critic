@@ -1,4 +1,4 @@
-package a311.college.dto.college;
+package a311.college.dto.school;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -8,8 +8,8 @@ import lombok.Data;
  */
 @Data
 @Schema(description = "查询大学详细信息DTO")
-public class CollegeDTO {
+public class SchoolDTO {
 
     @Schema(description = "大学id")
-    private String collegeId;
+    private String schoolId;
 }

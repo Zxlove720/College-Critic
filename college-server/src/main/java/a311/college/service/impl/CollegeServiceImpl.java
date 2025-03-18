@@ -1,17 +1,17 @@
 package a311.college.service.impl;
 
 import a311.college.constant.redis.CollegeRedisKey;
-import a311.college.dto.college.AddCollegeCommentDTO;
-import a311.college.dto.college.CollegeDTO;
-import a311.college.dto.college.CollegePageQueryDTO;
-import a311.college.dto.query.college.UserGradeQueryDTO;
-import a311.college.dto.query.college.YearScoreQueryDTO;
+import a311.college.dto.school.AddSchoolCommentDTO;
+import a311.college.dto.school.SchoolDTO;
+import a311.college.dto.school.SchoolPageQueryDTO;
+import a311.college.dto.query.school.UserGradeQueryDTO;
+import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.mapper.college.CollegeMapper;
 import a311.college.mapper.resource.ResourceMapper;
 import a311.college.result.PageResult;
 import a311.college.service.CollegeService;
 import a311.college.vo.MajorSimpleVO;
-import a311.college.vo.CollegeSimpleVO;
+import a311.college.vo.SchoolSimpleVO;
 import a311.college.vo.CollegeVO;
 import a311.college.vo.YearScoreVO;
 import cn.hutool.core.bean.BeanUtil;
@@ -39,7 +39,7 @@ public class CollegeServiceImpl implements CollegeService {
     private final ResourceMapper resourceMapper;
 
     @Resource
-    private RedisTemplate<String, CollegeSimpleVO> redisTemplate;
+    private RedisTemplate<String, SchoolSimpleVO> redisTemplate;
 
     @Autowired
     public CollegeServiceImpl(CollegeMapper collegeMapper, ResourceMapper resourceMapper) {
@@ -54,20 +54,20 @@ public class CollegeServiceImpl implements CollegeService {
      * @return PageResult<CollegeVO>
      */
     @Override
-    public PageResult<CollegeSimpleVO> pageSelect(CollegePageQueryDTO collegePageQueryDTO) {
+    public PageResult<SchoolSimpleVO> pageSelect(SchoolPageQueryDTO collegePageQueryDTO) {
         String key = CollegeRedisKey.COLLEGE_CACHE_KEY + collegePageQueryDTO.getProvince() + ":";
-        List<CollegeSimpleVO> range = redisTemplate.opsForList().range(key, 0, -1);
+        List<SchoolSimpleVO> range = redisTemplate.opsForList().range(key, 0, -1);
         if (range != null && !range.isEmpty()) {
             log.info("缓存命中");
             return new PageResult<>((long) range.size(), range);
         }
         log.info("缓存未命中，开启分页查询");
         PageHelper.startPage(collegePageQueryDTO.getPage(), collegePageQueryDTO.getPageSize());
-        Page<CollegeSimpleVO> pageResult = collegeMapper.pageQuery(collegePageQueryDTO);
+        Page<SchoolSimpleVO> pageResult = collegeMapper.pageQuery(collegePageQueryDTO);
         // 获取总记录数
         long total = pageResult.getTotal();
         // 获取总记录
-        List<CollegeSimpleVO> result = pageResult.getResult();
+        List<SchoolSimpleVO> result = pageResult.getResult();
         // 将其添加到缓存
         redisTemplate.opsForList().rightPushAll(key, result);
         redisTemplate.expire(key, CollegeRedisKey.COLLEGE_CACHE_TTL, TimeUnit.SECONDS);
@@ -86,7 +86,7 @@ public class CollegeServiceImpl implements CollegeService {
             String key = CollegeRedisKey.COLLEGE_CACHE_KEY + area + ":";
             try {
                 // 1. 查询数据库
-                List<CollegeSimpleVO> collegeVOS = collegeMapper.selectByAddress(area);
+                List<SchoolSimpleVO> collegeVOS = collegeMapper.selectByAddress(area);
                 // 2. 删除旧缓存（避免残留旧数据）
                 redisTemplate.delete(key);
                 // 3. 批量插入新数据（使用rightPushAll）
@@ -105,21 +105,21 @@ public class CollegeServiceImpl implements CollegeService {
     /**
      * 根据学校名搜索大学
      *
-     * @return List<CollegeSimpleVO
+     * @return List<SchoolSimpleVO
      */
     @Override
-    public List<CollegeSimpleVO> getCollegeByName(String schoolName) {
+    public List<SchoolSimpleVO> getCollegeByName(String schoolName) {
         return collegeMapper.selectByName(schoolName);
     }
 
     /**
      * 根据成绩匹配大学
      *
-     * @return List<CollegeSimpleVO>
+     * @return List<SchoolSimpleVO>
      */
     @Override
-    public List<CollegeSimpleVO> getByGrade(UserGradeQueryDTO gradeDTO) {
-        List<CollegeSimpleVO> collegeSimpleVOS = collegeMapper.selectByGrade(gradeDTO);
+    public List<SchoolSimpleVO> getByGrade(UserGradeQueryDTO gradeDTO) {
+        List<SchoolSimpleVO> collegeSimpleVOS = collegeMapper.selectByGrade(gradeDTO);
         return new ArrayList<>(collegeSimpleVOS);
     }
 
@@ -144,7 +144,7 @@ public class CollegeServiceImpl implements CollegeService {
      * @param addCommentDTO 评价DTO
      */
     @Override
-    public void addComment(AddCollegeCommentDTO addCommentDTO) {
+    public void addComment(AddSchoolCommentDTO addCommentDTO) {
         collegeMapper.addComment(addCommentDTO);
     }
 
@@ -153,8 +153,8 @@ public class CollegeServiceImpl implements CollegeService {
      */
     @Override
     public void addScore() {
-        List<CollegeSimpleVO> list = collegeMapper.getAllCollege();
-        for (CollegeSimpleVO collegeSimpleVO : list) {
+        List<SchoolSimpleVO> list = collegeMapper.getAllCollege();
+        for (SchoolSimpleVO collegeSimpleVO : list) {
             String rankList = collegeSimpleVO.getRankList();
             String[] split = rankList.split(",");
             int score = getScore(collegeSimpleVO, split);
@@ -170,9 +170,9 @@ public class CollegeServiceImpl implements CollegeService {
      * @return CollegeVO
      */
     @Override
-    public CollegeVO getCollege(CollegeDTO collegeDTO) {
+    public CollegeVO getCollege(SchoolDTO collegeDTO) {
         // 1.获取简略大学信息
-        CollegeSimpleVO collegeSimpleVO = collegeMapper.selectBySchoolId(collegeDTO.getCollegeId());
+        SchoolSimpleVO collegeSimpleVO = collegeMapper.selectBySchoolId(collegeDTO.getCollegeId());
         // 2.封装大学详细信息
         CollegeVO collegeVO = new CollegeVO();
         BeanUtil.copyProperties(collegeSimpleVO, collegeVO);
@@ -258,7 +258,7 @@ public class CollegeServiceImpl implements CollegeService {
         return equipment;
     }
 
-    private int getScore(CollegeSimpleVO collegeSimpleVO, String[] split) {
+    private int getScore(SchoolSimpleVO collegeSimpleVO, String[] split) {
         int score = 0;
         for (String s : split) {
             switch (s) {
@@ -277,8 +277,8 @@ public class CollegeServiceImpl implements CollegeService {
     }
 
     private void updateRankList() {
-        List<CollegeSimpleVO> list = collegeMapper.getAllCollege();
-        for (CollegeSimpleVO collegeSimpleVO : list) {
+        List<SchoolSimpleVO> list = collegeMapper.getAllCollege();
+        for (SchoolSimpleVO collegeSimpleVO : list) {
             String rankList = collegeSimpleVO.getRankList();
             String tempResult = rankList.replace("[", "");
             String tempResult2 = tempResult.replace("]", "");

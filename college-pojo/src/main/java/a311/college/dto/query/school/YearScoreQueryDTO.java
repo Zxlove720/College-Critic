@@ -1,4 +1,4 @@
-package a311.college.dto.query.college;
+package a311.college.dto.query.school;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,7 +12,7 @@ import lombok.Data;
 public class YearScoreQueryDTO {
 
     @Schema(description = "学校id")
-    private Integer collegeId;
+    private Integer schoolId;
 
     @Schema(description = "招生省份")
     private String province;

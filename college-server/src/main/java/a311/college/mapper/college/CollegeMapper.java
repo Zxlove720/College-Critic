@@ -1,12 +1,12 @@
 package a311.college.mapper.college;
 
 
-import a311.college.dto.college.AddCollegeCommentDTO;
-import a311.college.dto.college.CollegePageQueryDTO;
-import a311.college.dto.query.college.UserGradeQueryDTO;
-import a311.college.dto.query.college.YearScoreQueryDTO;
+import a311.college.dto.school.AddSchoolCommentDTO;
+import a311.college.dto.school.SchoolPageQueryDTO;
+import a311.college.dto.query.school.UserGradeQueryDTO;
+import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.vo.MajorSimpleVO;
-import a311.college.vo.CollegeSimpleVO;
+import a311.college.vo.SchoolSimpleVO;
 import a311.college.vo.YearScoreVO;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Insert;
@@ -28,14 +28,14 @@ public interface CollegeMapper {
      * @param collegePageQueryDTO 大学分页查询DTO
      * @return Page<CollegeVO>
      */
-    Page<CollegeSimpleVO> pageQuery(CollegePageQueryDTO collegePageQueryDTO);
+    Page<SchoolSimpleVO> pageQuery(SchoolPageQueryDTO collegePageQueryDTO);
 
     /**
      * 根据成绩查询大学
      *
      * @return List<CollegeVO>
      */
-    List<CollegeSimpleVO> selectByGrade(UserGradeQueryDTO gradeDTO);
+    List<SchoolSimpleVO> selectByGrade(UserGradeQueryDTO gradeDTO);
 
     /**
      * 根据省份查询大学
@@ -45,7 +45,7 @@ public interface CollegeMapper {
      */
     @Select("select school_head, school_name,school_address, rank_list from tb_school " +
             "where school_province = #{province} order by score desc, length(rank_list) desc")
-    List<CollegeSimpleVO> selectByAddress(String province);
+    List<SchoolSimpleVO> selectByAddress(String province);
 
     /**
      * 获取某一院校的历年分数线
@@ -58,24 +58,24 @@ public interface CollegeMapper {
      * 根据学校名搜索
      *
      * @param schoolName 学校名
-     * @return Result<List < CollegeSimpleVO>>
+     * @return Result<List < SchoolSimpleVO>>
      */
-    List<CollegeSimpleVO> selectByName(String schoolName);
+    List<SchoolSimpleVO> selectByName(String schoolName);
 
     @Select("select * from tb_school where school_id = #{schoolId}")
-    CollegeSimpleVO selectBySchoolId(String schoolId);
+    SchoolSimpleVO selectBySchoolId(String schoolId);
 
     @Insert("insert tb_comment set user_id = #{userId}, school_id = #{schoolId}, comment = #{comment}")
-    void addComment(AddCollegeCommentDTO addCommentDTO);
+    void addComment(AddSchoolCommentDTO addCommentDTO);
 
     @Select("select * from tb_school")
-    List<CollegeSimpleVO> getAllCollege();
+    List<SchoolSimpleVO> getAllCollege();
 
     @Update("update tb_school set rank_list = #{rankList} where school_id = #{schoolId}")
-    void updateRank(CollegeSimpleVO collegeSimpleVO);
+    void updateRank(SchoolSimpleVO collegeSimpleVO);
 
     @Update("update tb_school set score = #{score} where school_id = #{schoolId}")
-    void updateScore(CollegeSimpleVO collegeSimpleVO);
+    void updateScore(SchoolSimpleVO collegeSimpleVO);
 
     List<MajorSimpleVO> selectSimpleMajor(int schoolId);
 

@@ -15,7 +15,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "大学简单信息VO")
-public class CollegeSimpleVO implements Serializable {
+public class SchoolSimpleVO implements Serializable {
 
     @Schema(description = "大学id")
     private Integer schoolId;

@@ -12,6 +12,6 @@ import lombok.Data;
 public class UserAddFavoriteDTO {
 
     @Schema(description = "大学id")
-    private String collegeId;
+    private String schoolId;
 
 }

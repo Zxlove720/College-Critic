@@ -4,7 +4,7 @@
 <mapper namespace="a311.college.mapper.college.CollegeMapper">
 
 
-    <select id="pageQuery" resultType="a311.college.vo.CollegeSimpleVO">
+    <select id="pageQuery" resultType="a311.college.vo.SchoolSimpleVO">
         select
         school_id,
         school_head,
@@ -47,7 +47,7 @@
         LIMIT 5
     </select>
 
-    <select id="selectByName" resultType="a311.college.vo.CollegeSimpleVO">
+    <select id="selectByName" resultType="a311.college.vo.SchoolSimpleVO">
         select s.school_id,
                s.school_head,
                s.school_name,
@@ -58,7 +58,7 @@
         order by score desc, length(rank_list) desc
     </select>
 
-    <select id="selectByGrade" resultType="a311.college.vo.CollegeSimpleVO">
+    <select id="selectByGrade" resultType="a311.college.vo.SchoolSimpleVO">
         SELECT DISTINCT s.school_head,
                         s.school_name,
                         s.school_address,

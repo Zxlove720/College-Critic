@@ -1,7 +1,7 @@
 package a311.college.interceptor;
 
 import a311.college.dto.login.LoginSymbol;
-import a311.college.redis.RedisKeyConstant;
+import a311.college.constant.redis.UserRedisKey;
 import a311.college.thread.ThreadLocalUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
@@ -39,7 +39,7 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
             return true;
         }
         // 2.根据token获取redis中缓存的用户
-        String key = RedisKeyConstant.USER_KEY + token;
+        String key = UserRedisKey.USER_KEY + token;
         Map<Object, Object> userMap = stringRedisTemplate.opsForHash().entries(key);
         // 3.判断用户是否存在
         if (userMap.isEmpty()) {
@@ -51,7 +51,7 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
         // 4.将用户信息保存到ThreadLocal
         ThreadLocalUtil.setCurrentId(loginSymbol.getId());
         // 5.刷新用户登录有效期
-        stringRedisTemplate.expire(key, RedisKeyConstant.USER_TTL, TimeUnit.SECONDS);
+        stringRedisTemplate.expire(key, UserRedisKey.USER_TTL, TimeUnit.SECONDS);
         // 6.放行至下一个拦截器
         return true;
     }

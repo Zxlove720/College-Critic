@@ -9,7 +9,7 @@ import a311.college.entity.user.User;
 import a311.college.exception.*;
 import a311.college.mapper.college.CollegeMapper;
 import a311.college.mapper.user.UserMapper;
-import a311.college.redis.RedisKeyConstant;
+import a311.college.constant.redis.UserRedisKey;
 import a311.college.regex.RegexUtils;
 import a311.college.result.LoginResult;
 import a311.college.service.UserService;
@@ -116,8 +116,8 @@ public class UserServiceImpl implements UserService {
      * @return token 登录凭据
      */
     private String saveUserInRedis(User user) {
-        String token = DigestUtil.md5Hex(RedisKeyConstant.USER_KEY_TOKEN + user.getId());
-        String key = RedisKeyConstant.USER_KEY + token;
+        String token = DigestUtil.md5Hex(UserRedisKey.USER_KEY_TOKEN + user.getId());
+        String key = UserRedisKey.USER_KEY + token;
         Map<Object, Object> oldUserMap = stringRedisTemplate.opsForHash().entries(key);
         if (!oldUserMap.isEmpty()) {
             // 此时用户用户已经登录，需要删除登录信息，并重新登录
@@ -132,7 +132,7 @@ public class UserServiceImpl implements UserService {
                         .setIgnoreNullValue(true)
                         .setFieldValueEditor((fieldName, fieldValue) -> fieldValue.toString()));
         stringRedisTemplate.opsForHash().putAll(key, userMap);
-        stringRedisTemplate.expire(key, RedisKeyConstant.USER_TTL, TimeUnit.SECONDS);
+        stringRedisTemplate.expire(key, UserRedisKey.USER_TTL, TimeUnit.SECONDS);
         return token;
     }
 
@@ -205,7 +205,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public String sendEditCode(CodeDTO codeDTO) {
-        return code(codeDTO.getPhone(), RedisKeyConstant.USER_EDIT_CODE_KEY);
+        return code(codeDTO.getPhone(), UserRedisKey.USER_EDIT_CODE_KEY);
     }
 
     /**
@@ -216,7 +216,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public String sendDeleteCode(CodeDTO codeDTO) {
-        return code(codeDTO.getPhone(), RedisKeyConstant.USER_DELETE_CODE_KEY);
+        return code(codeDTO.getPhone(), UserRedisKey.USER_DELETE_CODE_KEY);
     }
 
     /**
@@ -236,11 +236,11 @@ public class UserServiceImpl implements UserService {
         // 4.将验证码保存至redis
         stringRedisTemplate.opsForValue().set(preKey + phone, code);
         stringRedisTemplate.expire(preKey + phone,
-                RedisKeyConstant.USER_CODE_TTL, TimeUnit.SECONDS);
+                UserRedisKey.USER_CODE_TTL, TimeUnit.SECONDS);
         // 5.发送验证码（短信功能待完成）
         //TODO 后期如果有机会可以将其改为真实的发送手机验证码
         log.info("发送短信验证码成功，验证码为：{}", code);
-        log.info(RedisKeyConstant.CODE_TIME_MESSAGE);
+        log.info(UserRedisKey.CODE_TIME_MESSAGE);
         // 6.响应结果
         return code;
     }
@@ -261,7 +261,7 @@ public class UserServiceImpl implements UserService {
             throw new PasswordEditFailedException(LoginErrorConstant.PHONE_NUMBER_ERROR);
         }
         // 2.获取redis中验证码
-        String cacheCode = stringRedisTemplate.opsForValue().get(RedisKeyConstant.USER_EDIT_CODE_KEY + phone);
+        String cacheCode = stringRedisTemplate.opsForValue().get(UserRedisKey.USER_EDIT_CODE_KEY + phone);
         if (!code.equals(cacheCode)) {
             // 2.1验证码不匹配，修改密码失败，抛出异常
             throw new PasswordEditFailedException(LoginErrorConstant.CODE_ERROR);
@@ -279,7 +279,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void layout(LayoutDTO layoutDTO) {
         // 删除redis中的用户登录信息
-        stringRedisTemplate.delete(RedisKeyConstant.USER_KEY + layoutDTO.getPhone());
+        stringRedisTemplate.delete(UserRedisKey.USER_KEY + layoutDTO.getPhone());
     }
 
     /**
@@ -348,7 +348,7 @@ public class UserServiceImpl implements UserService {
         String code = deleteDTO.getCode();
         // 1.2获取当前用户id
         long id = ThreadLocalUtil.getCurrentId();
-        String cacheCode = stringRedisTemplate.opsForValue().get(RedisKeyConstant.USER_DELETE_CODE_KEY + phone);
+        String cacheCode = stringRedisTemplate.opsForValue().get(UserRedisKey.USER_DELETE_CODE_KEY + phone);
         // 2.进行验证码比对
         if (!code.equals(cacheCode)) {
             // 2.1验证码比对失败，注销失败
@@ -357,7 +357,7 @@ public class UserServiceImpl implements UserService {
         // 3.验证码比对成功，注销用户
         userMapper.deleteById(id);
         // 4.在redis中删除用户的登录信息
-        stringRedisTemplate.delete(RedisKeyConstant.USER_KEY + phone);
+        stringRedisTemplate.delete(UserRedisKey.USER_KEY + phone);
     }
 
     /**

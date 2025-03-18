@@ -1,10 +1,6 @@
-package a311.college.redis;
+package a311.college.constant.redis;
 
-/**
- * redis缓存常量
- */
-public class RedisKeyConstant {
-
+public class UserRedisKey {
     // 用户验证码
     // 用户注册验证码
     public static final String USER_REGISTER_CODE_KEY = "college:user:code:register";
@@ -25,13 +21,4 @@ public class RedisKeyConstant {
 
     // 验证码有效期
     public static final String CODE_TIME_MESSAGE = "验证码30S内有效";
-
-
-    // 大学相关
-    // 大学
-    public static final String COLLEGE_CACHE_KEY = "college:area:";
-
-    // 大学过期时间
-    public static final Long COLLEGE_CACHE_TTL = 1800L;
-
 }

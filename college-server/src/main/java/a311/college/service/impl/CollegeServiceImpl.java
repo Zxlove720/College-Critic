@@ -1,5 +1,6 @@
 package a311.college.service.impl;
 
+import a311.college.constant.redis.CollegeRedisKey;
 import a311.college.dto.college.AddCommentDTO;
 import a311.college.dto.college.CollegeDTO;
 import a311.college.dto.college.CollegePageQueryDTO;
@@ -7,7 +8,6 @@ import a311.college.dto.query.school.GradeDTO;
 import a311.college.dto.query.school.YearScoreDTO;
 import a311.college.mapper.college.CollegeMapper;
 import a311.college.mapper.resource.ResourceMapper;
-import a311.college.redis.RedisKeyConstant;
 import a311.college.result.PageResult;
 import a311.college.service.CollegeService;
 import a311.college.vo.CollegeSimpleMajorVO;
@@ -55,7 +55,7 @@ public class CollegeServiceImpl implements CollegeService {
      */
     @Override
     public PageResult<CollegeSimpleVO> pageSelect(CollegePageQueryDTO collegePageQueryDTO) {
-        String key = RedisKeyConstant.COLLEGE_CACHE_KEY + collegePageQueryDTO.getProvince() + ":";
+        String key = CollegeRedisKey.COLLEGE_CACHE_KEY + collegePageQueryDTO.getProvince() + ":";
         List<CollegeSimpleVO> range = redisTemplate.opsForList().range(key, 0, -1);
         if (range != null && !range.isEmpty()) {
             log.info("缓存命中");
@@ -70,7 +70,7 @@ public class CollegeServiceImpl implements CollegeService {
         List<CollegeSimpleVO> result = pageResult.getResult();
         // 将其添加到缓存
         redisTemplate.opsForList().rightPushAll(key, result);
-        redisTemplate.expire(key, RedisKeyConstant.COLLEGE_CACHE_TTL, TimeUnit.SECONDS);
+        redisTemplate.expire(key, CollegeRedisKey.COLLEGE_CACHE_TTL, TimeUnit.SECONDS);
         return new PageResult<>(total, result);
     }
 
@@ -83,7 +83,7 @@ public class CollegeServiceImpl implements CollegeService {
         List<String> hotAreas = Arrays.asList("北京", "上海", "广东", "湖北", "重庆", "陕西");
         for (String area : hotAreas) {
             // 统一键名格式
-            String key = RedisKeyConstant.COLLEGE_CACHE_KEY + area + ":";
+            String key = CollegeRedisKey.COLLEGE_CACHE_KEY + area + ":";
             try {
                 // 1. 查询数据库
                 List<CollegeSimpleVO> collegeVOS = collegeMapper.selectByAddress(area);

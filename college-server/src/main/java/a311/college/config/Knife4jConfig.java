@@ -22,7 +22,7 @@ public class Knife4jConfig {
 
     @Bean
     public GroupedOpenApi collegeApi() {
-        return createRestApi(APIConstant.SCHOOL_SERVICE, APIPathConstant.COLLEGE_PATH);
+        return createRestApi(APIConstant.SCHOOL_SERVICE, APIPathConstant.SCHOOL_PATH);
     }
 
     @Bean
@@ -33,6 +33,11 @@ public class Knife4jConfig {
     @Bean
     public GroupedOpenApi AIApi() {
         return createRestApi(APIConstant.DEEP_SEEK_SERVICE, APIPathConstant.DEEP_SEEK_PATH);
+    }
+
+    @Bean
+    public GroupedOpenApi commonApi() {
+        return createRestApi(APIConstant.COMMON_SERVICE, APIPathConstant.COMMON_SERVICE_PATH);
     }
 
     /**

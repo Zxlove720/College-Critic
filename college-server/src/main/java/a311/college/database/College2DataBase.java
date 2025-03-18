@@ -2,7 +2,7 @@ package a311.college.database;
 
 import a311.college.constant.resource.DataBaseConnectionConstant;
 import a311.college.constant.resource.LogoURLConstant;
-import a311.college.constant.resource.CollegeDataFilePath;
+import a311.college.constant.resource.SchoolDataFilePath;
 import a311.college.entity.school.*;
 import a311.college.entity.temp.TempSchoolID;
 import a311.college.entity.temp.TempSchoolInfo;
@@ -32,16 +32,16 @@ public class College2DataBase {
         try {
             ObjectMapper mapper = new ObjectMapper();
             // 序列化id.json
-            Map<String, TempSchoolID> map = mapper.readValue(new File(CollegeDataFilePath.ID_DATA_PATH),
+            Map<String, TempSchoolID> map = mapper.readValue(new File(SchoolDataFilePath.ID_DATA_PATH),
                     new TypeReference<>() {
                     });
             // 获取学校名和其对应的id
             Collection<TempSchoolID> values = map.values();
             // 序列化rank.json
-            List<SchoolRankInfo> rankData = mapper.readValue(new File(CollegeDataFilePath.RANKING_DATA_PATH),
+            List<SchoolRankInfo> rankData = mapper.readValue(new File(SchoolDataFilePath.RANKING_DATA_PATH),
                     mapper.getTypeFactory().constructCollectionType(List.class, SchoolRankInfo.class));
             // 序列化school.json
-            File dir = new File(CollegeDataFilePath.COLLEGE_DATA_PATH);
+            File dir = new File(SchoolDataFilePath.COLLEGE_DATA_PATH);
             File[] files = dir.listFiles();
             for (File file : files) {
                 try {

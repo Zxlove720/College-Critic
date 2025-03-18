@@ -2,7 +2,7 @@ package a311.college.controller.major;
 
 import a311.college.constant.API.APIConstant;
 import a311.college.dto.major.MajorQueryDTO;
-import a311.college.dto.query.major.MajorNameDTO;
+import a311.college.dto.query.major.MajorNameQueryDTO;
 import a311.college.result.Result;
 import a311.college.service.MajorService;
 import a311.college.vo.MajorVO;
@@ -46,7 +46,7 @@ public class MajorController {
      */
     @PostMapping("/major")
     @Operation(summary = "专业名搜索")
-    public Result<List<MajorVO>> getMajorByName(@RequestBody MajorNameDTO majorNameDTO) {
+    public Result<List<MajorVO>> getMajorByName(@RequestBody MajorNameQueryDTO majorNameDTO) {
         return majorService.getMajorByName(majorNameDTO.getMajorName());
     }
 

@@ -3,7 +3,6 @@ package a311.college.dto.login;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.io.Serial;
 import java.io.Serializable;
 
 /**

@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @Data
 @Schema(description = "根据专业名查询专业DTO")
-public class MajorNameDTO {
+public class MajorNameQueryDTO {
 
     @Schema(description = "专业名")
     private String majorName;

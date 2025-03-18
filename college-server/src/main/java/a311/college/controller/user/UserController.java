@@ -55,7 +55,7 @@ public class UserController {
      */
     @PostMapping("/checkUsername")
     @Operation(summary = "用户名检查")
-    public Result<Integer> checkUser(@RequestBody CheckUsernameDTO checkUserDTO) {
+    public Result<Integer> checkUser(@RequestBody UserCheckUsernameDTO checkUserDTO) {
         return Result.success(userService.checkUser(checkUserDTO));
     }
 
@@ -67,7 +67,7 @@ public class UserController {
      */
     @PostMapping("/checkPhone")
     @Operation(summary = "用户名检查")
-    public Result<Integer> checkPhone(@RequestBody CheckPhoneDTO checkPhoneDTO) {
+    public Result<Integer> checkPhone(@RequestBody UserCheckPhoneDTO checkPhoneDTO) {
         return Result.success(userService.checkPhone(checkPhoneDTO));
     }
 
@@ -92,7 +92,7 @@ public class UserController {
      */
     @PostMapping("/editCode")
     @Operation(summary = "用户发送验证码修改密码")
-    public Result<String> sendEditCode(@RequestBody CodeDTO codeDTO) {
+    public Result<String> sendEditCode(@RequestBody UserCodeDTO codeDTO) {
         log.info("向手机号为'{}'的用户发送验证码，其正在修改密码", codeDTO.getPhone());
         return Result.success(userService.sendEditCode(codeDTO));
     }
@@ -105,7 +105,7 @@ public class UserController {
      */
     @PostMapping("/edit")
     @Operation(summary = "用户修改密码")
-    public LoginResult editPassword(@RequestBody PasswordEditDTO passwordEditDTO) {
+    public LoginResult editPassword(@RequestBody UserPasswordEditDTO passwordEditDTO) {
         log.info("用户'{}'正在修改密码", ThreadLocalUtil.getCurrentId());
         return userService.editPassword(passwordEditDTO);
     }
@@ -117,7 +117,7 @@ public class UserController {
      */
     @PostMapping("/layout")
     @Operation(summary = "用户登出")
-    public Result<Void> layout(@RequestBody LayoutDTO layoutDTO) {
+    public Result<Void> layout(@RequestBody UserLayoutDTO layoutDTO) {
         log.info("用户'{}'退出登录", ThreadLocalUtil.getCurrentId());
         userService.layout(layoutDTO);
         return Result.success();
@@ -144,7 +144,7 @@ public class UserController {
      */
     @PostMapping("/addFavorite")
     @Operation(summary = "用户收藏学校")
-    public Result<Void> addFavorite(@RequestBody AddFavoriteDTO addFavoriteDTO) {
+    public Result<Void> addFavorite(@RequestBody UserAddFavoriteDTO addFavoriteDTO) {
         log.info("用户'{}'收藏了'{}'学校", ThreadLocalUtil.getCurrentId(), addFavoriteDTO.getSchoolId());
         userService.addFavorite(addFavoriteDTO);
         return Result.success();
@@ -184,7 +184,7 @@ public class UserController {
      */
     @PostMapping("/deleteCode")
     @Operation(summary = "用户注销发送验证码")
-    public Result<String> sendDeleteCode(@RequestBody CodeDTO codeDTO) {
+    public Result<String> sendDeleteCode(@RequestBody UserCodeDTO codeDTO) {
         log.info("用户'{}'正在进行注销操作", ThreadLocalUtil.getCurrentId());
         return Result.success(userService.sendDeleteCode(codeDTO));
     }
@@ -196,7 +196,7 @@ public class UserController {
      */
     @PostMapping("/delete")
     @Operation(summary = "用户注销")
-    public Result<Void> deleteUser(@RequestBody DeleteDTO deleteDTO) {
+    public Result<Void> deleteUser(@RequestBody UserDeleteDTO deleteDTO) {
         log.info("手机号为'{}'的用户正在注销", deleteDTO.getPhone());
         userService.deleteUser(deleteDTO);
         return Result.success();

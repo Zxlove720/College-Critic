@@ -17,27 +17,27 @@ public interface UserService {
 
     void register(UserDTO userDTO);
 
-    String sendEditCode(CodeDTO codeDTO);
+    String sendEditCode(UserCodeDTO codeDTO);
 
-    LoginResult editPassword(PasswordEditDTO passwordEditDTO);
+    LoginResult editPassword(UserPasswordEditDTO passwordEditDTO);
 
-    void layout(LayoutDTO layoutDTO);
+    void layout(UserLayoutDTO layoutDTO);
 
     UserVO selectById(Long id);
 
-    void addFavorite(AddFavoriteDTO addFavoriteDTO);
+    void addFavorite(UserAddFavoriteDTO addFavoriteDTO);
 
     List<CollegeSimpleVO> showFavorite();
 
     void update(UserDTO userDTO);
 
-    String sendDeleteCode(CodeDTO codeDTO);
+    String sendDeleteCode(UserCodeDTO codeDTO);
 
-    void deleteUser(DeleteDTO deleteDTO);
+    void deleteUser(UserDeleteDTO deleteDTO);
 
     List<String> showComment();
 
-    Integer checkUser(CheckUsernameDTO checkUserDTO);
+    Integer checkUser(UserCheckUsernameDTO checkUserDTO);
 
-    Integer checkPhone(CheckPhoneDTO checkPhoneDTO);
+    Integer checkPhone(UserCheckPhoneDTO checkPhoneDTO);
 }

@@ -2,23 +2,14 @@ package a311.college.dto.user;
 
 import a311.college.enumeration.ProvinceEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.io.Serial;
-import java.io.Serializable;
-import java.time.Year;
-
-
+/**
+ * 用户DTO
+ */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Schema(description = "用户DTO")
-public class UserDTO implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class UserDTO {
 
     @Schema(description = "用户id")
     private Long id;
@@ -36,7 +27,7 @@ public class UserDTO implements Serializable {
     private String head;
 
     @Schema(description = "用户毕业年份")
-    private Year year;
+    private Integer year;
 
     @Schema(description = "用户所在省份")
     private ProvinceEnum province;

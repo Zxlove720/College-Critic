@@ -144,7 +144,7 @@ public class UserServiceImpl implements UserService {
      * @return Integer 0该用户名不可用 1该用户名可用
      */
     @Override
-    public Integer checkUser(CheckUsernameDTO checkUserDTO) {
+    public Integer checkUser(UserCheckUsernameDTO checkUserDTO) {
         User user = userMapper.selectByUsername(checkUserDTO.getUsername());
         if (user != null) {
             // 该用户名已经存在，不能注册
@@ -160,7 +160,7 @@ public class UserServiceImpl implements UserService {
      * @return Integer 0该手机号不可用 1该手机号可用
      */
     @Override
-    public Integer checkPhone(CheckPhoneDTO checkPhoneDTO) {
+    public Integer checkPhone(UserCheckPhoneDTO checkPhoneDTO) {
         User user = userMapper.selectByPhone(checkPhoneDTO.getPhone());
         if (user != null) {
             // 该用户名已经存在，不能注册
@@ -205,7 +205,7 @@ public class UserServiceImpl implements UserService {
      * @return code 验证码
      */
     @Override
-    public String sendEditCode(CodeDTO codeDTO) {
+    public String sendEditCode(UserCodeDTO codeDTO) {
         return code(codeDTO.getPhone(), UserRedisKey.USER_EDIT_CODE_KEY);
     }
 
@@ -216,7 +216,7 @@ public class UserServiceImpl implements UserService {
      * @return code 验证码
      */
     @Override
-    public String sendDeleteCode(CodeDTO codeDTO) {
+    public String sendDeleteCode(UserCodeDTO codeDTO) {
         return code(codeDTO.getPhone(), UserRedisKey.USER_DELETE_CODE_KEY);
     }
 
@@ -253,7 +253,7 @@ public class UserServiceImpl implements UserService {
      * @return LoginResult
      */
     @Override
-    public LoginResult editPassword(PasswordEditDTO passwordEditDTO) {
+    public LoginResult editPassword(UserPasswordEditDTO passwordEditDTO) {
         String phone = passwordEditDTO.getPhone();
         String code = passwordEditDTO.getCode();
         // 1.判断手机号是否合法
@@ -278,7 +278,7 @@ public class UserServiceImpl implements UserService {
      * @param layoutDTO 登出DTO
      */
     @Override
-    public void layout(LayoutDTO layoutDTO) {
+    public void layout(UserLayoutDTO layoutDTO) {
         // 删除redis中的用户登录信息
         stringRedisTemplate.delete(UserRedisKey.USER_KEY + layoutDTO.getPhone());
     }
@@ -300,7 +300,7 @@ public class UserServiceImpl implements UserService {
      * @param addFavoriteDTO 学校收藏DTO
      */
     @Override
-    public void addFavorite(AddFavoriteDTO addFavoriteDTO) {
+    public void addFavorite(UserAddFavoriteDTO addFavoriteDTO) {
         String table = userMapper.selectFavoriteById(ThreadLocalUtil.getCurrentId());
         table = table + "," + addFavoriteDTO.getSchoolId();
         userMapper.addFavoriteTable(table, ThreadLocalUtil.getCurrentId());
@@ -342,7 +342,7 @@ public class UserServiceImpl implements UserService {
      * @param deleteDTO 用户注销DTO
      */
     @Override
-    public void deleteUser(DeleteDTO deleteDTO) {
+    public void deleteUser(UserDeleteDTO deleteDTO) {
         // 1.获取redis中缓存的验证码
         // 1.1获取用户手机号和验证码
         String phone = deleteDTO.getPhone();

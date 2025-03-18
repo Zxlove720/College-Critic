@@ -144,7 +144,7 @@ public class UserServiceImpl implements UserService {
      * @return Integer 0该用户名不可用 1该用户名可用
      */
     @Override
-    public Integer checkUser(UserCheckUsernameDTO checkUserDTO) {
+    public Integer checkUser(UserUsernameCheckDTO checkUserDTO) {
         User user = userMapper.selectByUsername(checkUserDTO.getUsername());
         if (user != null) {
             // 该用户名已经存在，不能注册
@@ -160,7 +160,7 @@ public class UserServiceImpl implements UserService {
      * @return Integer 0该手机号不可用 1该手机号可用
      */
     @Override
-    public Integer checkPhone(UserCheckPhoneDTO checkPhoneDTO) {
+    public Integer checkPhone(UserPhoneCheckDTO checkPhoneDTO) {
         User user = userMapper.selectByPhone(checkPhoneDTO.getPhone());
         if (user != null) {
             // 该用户名已经存在，不能注册
@@ -253,7 +253,7 @@ public class UserServiceImpl implements UserService {
      * @return LoginResult
      */
     @Override
-    public LoginResult editPassword(UserPasswordEditDTO passwordEditDTO) {
+    public LoginResult editPassword(UserEditPasswordDTO passwordEditDTO) {
         String phone = passwordEditDTO.getPhone();
         String code = passwordEditDTO.getCode();
         // 1.判断手机号是否合法

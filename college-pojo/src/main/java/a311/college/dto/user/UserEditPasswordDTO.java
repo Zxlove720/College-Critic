@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 @Schema(description = "用户修改密码DTO")
-public class UserPasswordEditDTO {
+public class UserEditPasswordDTO {
 
     @Schema(description = "用户手机号")
     private String phone;

@@ -19,7 +19,7 @@ public interface UserService {
 
     String sendEditCode(UserCodeDTO codeDTO);
 
-    LoginResult editPassword(UserPasswordEditDTO passwordEditDTO);
+    LoginResult editPassword(UserEditPasswordDTO passwordEditDTO);
 
     void layout(UserLayoutDTO layoutDTO);
 
@@ -37,7 +37,7 @@ public interface UserService {
 
     List<String> showComment();
 
-    Integer checkUser(UserCheckUsernameDTO checkUserDTO);
+    Integer checkUser(UserUsernameCheckDTO checkUserDTO);
 
-    Integer checkPhone(UserCheckPhoneDTO checkPhoneDTO);
+    Integer checkPhone(UserPhoneCheckDTO checkPhoneDTO);
 }

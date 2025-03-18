@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 @Schema(description = "用户名查重DTO")
-public class UserCheckUsernameDTO {
+public class UserUsernameCheckDTO {
 
     @Schema(description = "用户名")
     private String username;

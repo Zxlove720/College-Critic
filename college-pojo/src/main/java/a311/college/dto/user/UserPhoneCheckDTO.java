@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 @Schema(description = "用户手机号查重DTO")
-public class UserCheckPhoneDTO {
+public class UserPhoneCheckDTO {
 
     @Schema(description = "用户手机号")
     private String phone;

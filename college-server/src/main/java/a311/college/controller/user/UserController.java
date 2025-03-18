@@ -55,7 +55,7 @@ public class UserController {
      */
     @PostMapping("/checkUsername")
     @Operation(summary = "用户名检查")
-    public Result<Integer> checkUser(@RequestBody UserCheckUsernameDTO checkUserDTO) {
+    public Result<Integer> checkUser(@RequestBody UserUsernameCheckDTO checkUserDTO) {
         return Result.success(userService.checkUser(checkUserDTO));
     }
 
@@ -67,7 +67,7 @@ public class UserController {
      */
     @PostMapping("/checkPhone")
     @Operation(summary = "用户名检查")
-    public Result<Integer> checkPhone(@RequestBody UserCheckPhoneDTO checkPhoneDTO) {
+    public Result<Integer> checkPhone(@RequestBody UserPhoneCheckDTO checkPhoneDTO) {
         return Result.success(userService.checkPhone(checkPhoneDTO));
     }
 
@@ -105,7 +105,7 @@ public class UserController {
      */
     @PostMapping("/edit")
     @Operation(summary = "用户修改密码")
-    public LoginResult editPassword(@RequestBody UserPasswordEditDTO passwordEditDTO) {
+    public LoginResult editPassword(@RequestBody UserEditPasswordDTO passwordEditDTO) {
         log.info("用户'{}'正在修改密码", ThreadLocalUtil.getCurrentId());
         return userService.editPassword(passwordEditDTO);
     }

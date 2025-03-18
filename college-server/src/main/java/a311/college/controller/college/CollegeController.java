@@ -14,7 +14,7 @@ import a311.college.service.CollegeService;
 import a311.college.service.DeepSeekService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.SchoolSimpleVO;
-import a311.college.vo.CollegeVO;
+import a311.college.vo.SchoolVO;
 import a311.college.vo.YearScoreVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -67,7 +67,7 @@ public class CollegeController {
     @PostMapping("/name")
     @Operation(summary = "根据学校名搜索大学")
     public Result<List<SchoolSimpleVO>> getCollegeByName(@RequestBody SchoolNameQueryDTO schoolName) {
-        return Result.success(collegeService.getCollegeByName(schoolName.getCollegeName()));
+        return Result.success(collegeService.getCollegeByName(schoolName.getSchoolName()));
     }
 
     /**
@@ -87,12 +87,12 @@ public class CollegeController {
      * 查询院校具体信息
      *
      * @param collegeDTO 大学查询DTO
-     * @return CollegeVO 大学具体信息
+     * @return SchoolVO 大学具体信息
      */
     @PostMapping("/college")
     @Operation(summary = "查询院校具体信息")
-    public Result<CollegeVO> getCollege(@RequestBody SchoolDTO collegeDTO) {
-        CollegeVO collegeVO = collegeService.getCollege(collegeDTO);
+    public Result<SchoolVO> getCollege(@RequestBody SchoolDTO collegeDTO) {
+        SchoolVO collegeVO = collegeService.getCollege(collegeDTO);
         return Result.success(collegeVO);
     }
 
@@ -117,7 +117,7 @@ public class CollegeController {
     @PostMapping("/comment")
     @Operation(summary = "用户评价大学")
     public Result<Void> addCollegeComment(@RequestBody AddSchoolCommentDTO addCommentDTO) {
-        log.info("用户'{}'发表对于'{}'大学的评论", ThreadLocalUtil.getCurrentId(), addCommentDTO.getCollegeId());
+        log.info("用户'{}'发表对于'{}'大学的评论", ThreadLocalUtil.getCurrentId(), addCommentDTO.getSchoolId());
         collegeService.addComment(addCommentDTO);
         return Result.success();
     }

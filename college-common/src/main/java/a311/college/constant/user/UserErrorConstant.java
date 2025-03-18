@@ -1,5 +1,8 @@
 package a311.college.constant.user;
 
+/**
+ * 用户服务常量
+ */
 public class UserErrorConstant {
 
     // 用户被禁用了

@@ -26,14 +26,14 @@ public interface CollegeMapper {
      * 大学信息分页查询
      *
      * @param collegePageQueryDTO 大学分页查询DTO
-     * @return Page<CollegeVO>
+     * @return Page<SchoolVO>
      */
     Page<SchoolSimpleVO> pageQuery(SchoolPageQueryDTO collegePageQueryDTO);
 
     /**
      * 根据成绩查询大学
      *
-     * @return List<CollegeVO>
+     * @return List<SchoolVO>
      */
     List<SchoolSimpleVO> selectByGrade(UserGradeQueryDTO gradeDTO);
 
@@ -41,7 +41,7 @@ public interface CollegeMapper {
      * 根据省份查询大学
      *
      * @param province 省份
-     * @return List<CollegeVO>
+     * @return List<SchoolVO>
      */
     @Select("select school_head, school_name,school_address, rank_list from tb_school " +
             "where school_province = #{province} order by score desc, length(rank_list) desc")

@@ -14,7 +14,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "大学信息VO")
-public class CollegeVO implements Serializable {
+public class SchoolVO implements Serializable {
 
     @Schema(description = "大学校徽")
     private String schoolHead;

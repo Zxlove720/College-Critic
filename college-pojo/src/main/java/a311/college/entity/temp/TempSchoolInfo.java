@@ -1,6 +1,6 @@
 package a311.college.entity.temp;
 
-import a311.college.entity.college.Province;
+import a311.college.entity.school.Province;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

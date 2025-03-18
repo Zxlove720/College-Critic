@@ -7,7 +7,7 @@ import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.result.PageResult;
 import a311.college.vo.SchoolSimpleVO;
-import a311.college.vo.CollegeVO;
+import a311.college.vo.SchoolVO;
 import a311.college.vo.YearScoreVO;
 
 import java.util.List;
@@ -31,5 +31,5 @@ public interface CollegeService {
 
     void addScore();
 
-    CollegeVO getCollege(SchoolDTO collegeDTO);
+    SchoolVO getCollege(SchoolDTO collegeDTO);
 }

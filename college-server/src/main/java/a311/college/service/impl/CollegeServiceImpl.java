@@ -1,6 +1,6 @@
 package a311.college.service.impl;
 
-import a311.college.constant.redis.CollegeRedisKey;
+import a311.college.constant.redis.SchoolRedisKey;
 import a311.college.dto.school.AddSchoolCommentDTO;
 import a311.college.dto.school.SchoolDTO;
 import a311.college.dto.school.SchoolPageQueryDTO;
@@ -12,7 +12,7 @@ import a311.college.result.PageResult;
 import a311.college.service.CollegeService;
 import a311.college.vo.MajorSimpleVO;
 import a311.college.vo.SchoolSimpleVO;
-import a311.college.vo.CollegeVO;
+import a311.college.vo.SchoolVO;
 import a311.college.vo.YearScoreVO;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.RandomUtil;
@@ -51,11 +51,11 @@ public class CollegeServiceImpl implements CollegeService {
      * 大学数据分页查询
      *
      * @param collegePageQueryDTO 大学分页查询DTO
-     * @return PageResult<CollegeVO>
+     * @return PageResult<SchoolVO>
      */
     @Override
     public PageResult<SchoolSimpleVO> pageSelect(SchoolPageQueryDTO collegePageQueryDTO) {
-        String key = CollegeRedisKey.COLLEGE_CACHE_KEY + collegePageQueryDTO.getProvince() + ":";
+        String key = SchoolRedisKey.COLLEGE_CACHE_KEY + collegePageQueryDTO.getProvince() + ":";
         List<SchoolSimpleVO> range = redisTemplate.opsForList().range(key, 0, -1);
         if (range != null && !range.isEmpty()) {
             log.info("缓存命中");
@@ -70,7 +70,7 @@ public class CollegeServiceImpl implements CollegeService {
         List<SchoolSimpleVO> result = pageResult.getResult();
         // 将其添加到缓存
         redisTemplate.opsForList().rightPushAll(key, result);
-        redisTemplate.expire(key, CollegeRedisKey.COLLEGE_CACHE_TTL, TimeUnit.SECONDS);
+        redisTemplate.expire(key, SchoolRedisKey.COLLEGE_CACHE_TTL, TimeUnit.SECONDS);
         return new PageResult<>(total, result);
     }
 
@@ -83,7 +83,7 @@ public class CollegeServiceImpl implements CollegeService {
         List<String> hotAreas = Arrays.asList("北京", "上海", "广东", "湖北", "重庆", "陕西");
         for (String area : hotAreas) {
             // 统一键名格式
-            String key = CollegeRedisKey.COLLEGE_CACHE_KEY + area + ":";
+            String key = SchoolRedisKey.COLLEGE_CACHE_KEY + area + ":";
             try {
                 // 1. 查询数据库
                 List<SchoolSimpleVO> collegeVOS = collegeMapper.selectByAddress(area);
@@ -167,15 +167,15 @@ public class CollegeServiceImpl implements CollegeService {
      * 获取院校具体信息
      *
      * @param collegeDTO 大学查询DTO
-     * @return CollegeVO
+     * @return SchoolVO
      */
     @Override
-    public CollegeVO getCollege(SchoolDTO collegeDTO) {
+    public SchoolVO getCollege(SchoolDTO collegeDTO) {
         // 1.获取简略大学信息
-        SchoolSimpleVO collegeSimpleVO = collegeMapper.selectBySchoolId(collegeDTO.getCollegeId());
+        SchoolSimpleVO schoolSimpleVO = collegeMapper.selectBySchoolId(collegeDTO.getSchoolId());
         // 2.封装大学详细信息
-        CollegeVO collegeVO = new CollegeVO();
-        BeanUtil.copyProperties(collegeSimpleVO, collegeVO);
+        SchoolVO collegeVO = new SchoolVO();
+        BeanUtil.copyProperties(schoolSimpleVO, collegeVO);
         // 3.返回随机校园风光
         // 3.1获取所有照片
 //        List<String> imageList = resourceMapper.getAllImages();
@@ -188,10 +188,10 @@ public class CollegeServiceImpl implements CollegeService {
 //        // 3.3返回随机6张校园风光
 //        collegeVO.setImages(images);
         // 4.随机校园配置
-        if (collegeSimpleVO.getScore() > 60) {
+        if (schoolSimpleVO.getScore() > 60) {
             // 4.1该学校属于好学校
             collegeVO.setEquipment(highScoreSchool());
-        } else if (collegeSimpleVO.getRankList().contains("民办")) {
+        } else if (schoolSimpleVO.getRankList().contains("民办")) {
             // 4.2该学校属于有钱的学校
             collegeVO.setEquipment(richSchool());
         } else {
@@ -200,7 +200,7 @@ public class CollegeServiceImpl implements CollegeService {
         }
         // 5.为该学校封装展示专业
         // 5.1获取专业
-        List<MajorSimpleVO> collegeSimpleList = collegeMapper.selectSimpleMajor(collegeSimpleVO.getSchoolId());
+        List<MajorSimpleVO> collegeSimpleList = collegeMapper.selectSimpleMajor(schoolSimpleVO.getSchoolId());
         // 5.2调整专业格式
         for (MajorSimpleVO collegeSimpleMajorVO : collegeSimpleList) {
             collegeSimpleMajorVO.setMajorName(collegeSimpleMajorVO.getMajorName().split("\n")[0]);

@@ -3,7 +3,7 @@ package a311.college.database;
 import a311.college.constant.resource.DataBaseConnectionConstant;
 import a311.college.constant.resource.LogoURLConstant;
 import a311.college.constant.resource.CollegeDataFilePath;
-import a311.college.entity.college.*;
+import a311.college.entity.school.*;
 import a311.college.entity.temp.TempSchoolID;
 import a311.college.entity.temp.TempSchoolInfo;
 import cn.hutool.core.bean.BeanUtil;
@@ -128,7 +128,7 @@ public class College2DataBase {
                 }
 
                 // 遍历类别
-                for (Category category : year.getCategorys()) {
+                for (Category category : year.getCategories()) {
                     int categoryId;
                     String insertCategory = "INSERT INTO tb_category (year_id, category_name) VALUES (?, ?)";
                     try (PreparedStatement statement = conn.prepareStatement(insertCategory, Statement.RETURN_GENERATED_KEYS)) {

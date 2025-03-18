@@ -1,10 +1,10 @@
 package a311.college.mapper.college;
 
 
-import a311.college.dto.college.AddCommentDTO;
+import a311.college.dto.college.AddCollegeCommentDTO;
 import a311.college.dto.college.CollegePageQueryDTO;
-import a311.college.dto.query.school.GradeDTO;
-import a311.college.dto.query.school.YearScoreDTO;
+import a311.college.dto.query.college.UserGradeQueryDTO;
+import a311.college.dto.query.college.YearScoreQueryDTO;
 import a311.college.vo.CollegeSimpleMajorVO;
 import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.YearScoreVO;
@@ -35,7 +35,7 @@ public interface CollegeMapper {
      *
      * @return List<CollegeVO>
      */
-    List<CollegeSimpleVO> selectByGrade(GradeDTO gradeDTO);
+    List<CollegeSimpleVO> selectByGrade(UserGradeQueryDTO gradeDTO);
 
     /**
      * 根据省份查询大学
@@ -52,7 +52,7 @@ public interface CollegeMapper {
      *
      * @return Result<YearScoreVO>
      */
-    List<YearScoreVO> selectScoreByYear(YearScoreDTO yearScoreDTO);
+    List<YearScoreVO> selectScoreByYear(YearScoreQueryDTO yearScoreDTO);
 
     /**
      * 根据学校名搜索
@@ -66,7 +66,7 @@ public interface CollegeMapper {
     CollegeSimpleVO selectBySchoolId(String schoolId);
 
     @Insert("insert tb_comment set user_id = #{userId}, school_id = #{schoolId}, comment = #{comment}")
-    void addComment(AddCommentDTO addCommentDTO);
+    void addComment(AddCollegeCommentDTO addCommentDTO);
 
     @Select("select * from tb_school")
     List<CollegeSimpleVO> getAllCollege();

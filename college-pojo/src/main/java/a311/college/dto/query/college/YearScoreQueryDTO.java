@@ -1,4 +1,4 @@
-package a311.college.dto.query.school;
+package a311.college.dto.query.college;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -6,14 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 院校分数线查询DTO
+ */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Schema(description = "院校分数线查询DTO")
-public class YearScoreDTO {
+public class YearScoreQueryDTO {
 
     @Schema(description = "学校id")
-    private Integer id;
+    private Integer collegeId;
 
     @Schema(description = "招生省份")
     private String province;

@@ -2,12 +2,12 @@ package a311.college.controller.college;
 
 
 import a311.college.constant.API.APIConstant;
-import a311.college.dto.college.AddCommentDTO;
+import a311.college.dto.college.AddCollegeCommentDTO;
 import a311.college.dto.college.CollegeDTO;
 import a311.college.dto.college.CollegePageQueryDTO;
-import a311.college.dto.query.school.GradeDTO;
-import a311.college.dto.query.school.SchoolNameDTO;
-import a311.college.dto.query.school.YearScoreDTO;
+import a311.college.dto.query.college.UserGradeQueryDTO;
+import a311.college.dto.query.college.CollegeNameQueryDTO;
+import a311.college.dto.query.college.YearScoreQueryDTO;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.CollegeService;
@@ -66,7 +66,7 @@ public class CollegeController {
      */
     @PostMapping("/name")
     @Operation(summary = "根据学校名搜索大学")
-    public Result<List<CollegeSimpleVO>> getCollegeByName(@RequestBody SchoolNameDTO schoolName) {
+    public Result<List<CollegeSimpleVO>> getCollegeByName(@RequestBody CollegeNameQueryDTO schoolName) {
         return Result.success(collegeService.getCollegeByName(schoolName.getSchoolName()));
     }
 
@@ -78,7 +78,7 @@ public class CollegeController {
      */
     @PostMapping("grade")
     @Operation(summary = "根据用户成绩查询大学")
-    public Result<List<CollegeSimpleVO>> getByUserScore(@RequestBody GradeDTO gradeDTO) {
+    public Result<List<CollegeSimpleVO>> getByUserScore(@RequestBody UserGradeQueryDTO gradeDTO) {
         log.info("用户成绩为：{}", gradeDTO.getGrade());
         return Result.success(collegeService.getByGrade(gradeDTO));
     }
@@ -104,7 +104,7 @@ public class CollegeController {
      */
     @PostMapping("/years")
     @Operation(summary = "获取某院校的历年分数线")
-    public Result<List<YearScoreVO>> collegeScoreByYear(@RequestBody YearScoreDTO yearScoreDTO) {
+    public Result<List<YearScoreVO>> collegeScoreByYear(@RequestBody YearScoreQueryDTO yearScoreDTO) {
         return Result.success(collegeService.getScoreByYear(yearScoreDTO));
     }
 
@@ -116,7 +116,7 @@ public class CollegeController {
      */
     @PostMapping("/comment")
     @Operation(summary = "用户评价大学")
-    public Result<Void> addCollegeComment(@RequestBody AddCommentDTO addCommentDTO) {
+    public Result<Void> addCollegeComment(@RequestBody AddCollegeCommentDTO addCommentDTO) {
         log.info("用户'{}'发表对于'{}'大学的评论", ThreadLocalUtil.getCurrentId(), addCommentDTO.getSchoolId());
         collegeService.addComment(addCommentDTO);
         return Result.success();

@@ -1,11 +1,11 @@
 package a311.college.service.impl;
 
 import a311.college.constant.redis.CollegeRedisKey;
-import a311.college.dto.college.AddCommentDTO;
+import a311.college.dto.college.AddCollegeCommentDTO;
 import a311.college.dto.college.CollegeDTO;
 import a311.college.dto.college.CollegePageQueryDTO;
-import a311.college.dto.query.school.GradeDTO;
-import a311.college.dto.query.school.YearScoreDTO;
+import a311.college.dto.query.college.UserGradeQueryDTO;
+import a311.college.dto.query.college.YearScoreQueryDTO;
 import a311.college.mapper.college.CollegeMapper;
 import a311.college.mapper.resource.ResourceMapper;
 import a311.college.result.PageResult;
@@ -118,7 +118,7 @@ public class CollegeServiceImpl implements CollegeService {
      * @return List<CollegeSimpleVO>
      */
     @Override
-    public List<CollegeSimpleVO> getByGrade(GradeDTO gradeDTO) {
+    public List<CollegeSimpleVO> getByGrade(UserGradeQueryDTO gradeDTO) {
         List<CollegeSimpleVO> collegeSimpleVOS = collegeMapper.selectByGrade(gradeDTO);
         return new ArrayList<>(collegeSimpleVOS);
     }
@@ -129,7 +129,7 @@ public class CollegeServiceImpl implements CollegeService {
      * @return List<YearScoreVO>
      */
     @Override
-    public List<YearScoreVO> getScoreByYear(YearScoreDTO yearScoreDTO) {
+    public List<YearScoreVO> getScoreByYear(YearScoreQueryDTO yearScoreDTO) {
         List<YearScoreVO> yearScoreVOList = collegeMapper.selectScoreByYear(yearScoreDTO);
         for (YearScoreVO yearScoreVO : yearScoreVOList) {
             yearScoreVO.setMajorName(yearScoreVO.getMajorName()
@@ -144,7 +144,7 @@ public class CollegeServiceImpl implements CollegeService {
      * @param addCommentDTO 评价DTO
      */
     @Override
-    public void addComment(AddCommentDTO addCommentDTO) {
+    public void addComment(AddCollegeCommentDTO addCommentDTO) {
         collegeMapper.addComment(addCommentDTO);
     }
 

@@ -3,24 +3,22 @@ package a311.college.dto.college;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 
+/**
+ * 大学分页查询DTO
+ */
 @Data
 @Schema(description = "大学分页查询DTO")
-public class CollegePageQueryDTO implements Serializable {
+public class CollegePageQueryDTO {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    @Schema(description = "学校名")
-    private String schoolName;
+    @Schema(description = "大学名")
+    private String collegeName;
 
     @Schema(description = "省份名")
     private String province;
 
-    @Schema(description = "成绩")
+    @Schema(description = "用户成绩")
     private Integer grade;
 
     @Schema(description = "大学等级（类型）")

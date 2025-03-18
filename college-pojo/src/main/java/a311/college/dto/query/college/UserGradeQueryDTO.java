@@ -1,15 +1,16 @@
-package a311.college.dto.query.school;
+package a311.college.dto.query.college;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 根据用户成绩查询大学DTO
+ */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Schema(description = "据成绩查询DTO")
-public class GradeDTO {
+@Schema(description = "根据用户成绩查询大学DTO")
+public class UserGradeQueryDTO {
 
     @Schema(description = "用户成绩")
     private Integer grade;

@@ -1,7 +1,7 @@
 package a311.college.constant.AOP;
 
 /**
- * 公共字段填充相关常量
+ * AOP公共字段填充相关常量
  */
 public class AutoFillConstant {
 

@@ -67,7 +67,7 @@ public class CollegeController {
     @PostMapping("/name")
     @Operation(summary = "根据学校名搜索大学")
     public Result<List<CollegeSimpleVO>> getCollegeByName(@RequestBody CollegeNameQueryDTO schoolName) {
-        return Result.success(collegeService.getCollegeByName(schoolName.getSchoolName()));
+        return Result.success(collegeService.getCollegeByName(schoolName.getCollegeName()));
     }
 
     /**
@@ -117,7 +117,7 @@ public class CollegeController {
     @PostMapping("/comment")
     @Operation(summary = "用户评价大学")
     public Result<Void> addCollegeComment(@RequestBody AddCollegeCommentDTO addCommentDTO) {
-        log.info("用户'{}'发表对于'{}'大学的评论", ThreadLocalUtil.getCurrentId(), addCommentDTO.getSchoolId());
+        log.info("用户'{}'发表对于'{}'大学的评论", ThreadLocalUtil.getCurrentId(), addCommentDTO.getCollegeId());
         collegeService.addComment(addCommentDTO);
         return Result.success();
     }

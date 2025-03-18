@@ -1,7 +1,7 @@
 package a311.college.controller.major;
 
 import a311.college.constant.API.APIConstant;
-import a311.college.dto.major.MajorDTO;
+import a311.college.dto.major.MajorQueryDTO;
 import a311.college.dto.query.major.MajorNameDTO;
 import a311.college.result.Result;
 import a311.college.service.MajorService;
@@ -35,7 +35,7 @@ public class MajorController {
      */
     @PostMapping
     @Operation(summary = "专业查询")
-    public Result<List<MajorVO>> getMajors(@RequestBody MajorDTO majorDTO) {
+    public Result<List<MajorVO>> getMajors(@RequestBody MajorQueryDTO majorDTO) {
         return Result.success(majorService.getMajors(majorDTO));
     }
 

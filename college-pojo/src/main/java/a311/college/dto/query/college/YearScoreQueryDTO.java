@@ -2,9 +2,7 @@ package a311.college.dto.query.college;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * 院校分数线查询DTO

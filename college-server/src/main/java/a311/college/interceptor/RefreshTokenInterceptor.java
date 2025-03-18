@@ -1,6 +1,6 @@
 package a311.college.interceptor;
 
-import a311.college.dto.login.LoginSymbol;
+import a311.college.dto.login.UserLoginSymbol;
 import a311.college.constant.redis.UserRedisKey;
 import a311.college.thread.ThreadLocalUtil;
 import cn.hutool.core.bean.BeanUtil;
@@ -46,8 +46,8 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
             // 3.1用户不存在，放行到下一个拦截器
             return true;
         }
-        LoginSymbol loginSymbol = BeanUtil.fillBeanWithMap(userMap,
-                new LoginSymbol(), false);
+        UserLoginSymbol loginSymbol = BeanUtil.fillBeanWithMap(userMap,
+                new UserLoginSymbol(), false);
         // 4.将用户信息保存到ThreadLocal
         ThreadLocalUtil.setCurrentId(loginSymbol.getId());
         // 5.刷新用户登录有效期

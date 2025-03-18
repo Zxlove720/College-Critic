@@ -2,9 +2,9 @@ package a311.college.service.impl;
 
 import a311.college.constant.user.UserErrorConstant;
 import a311.college.constant.user.UserSubjectConstant;
-import a311.college.dto.login.LoginSymbol;
+import a311.college.dto.login.UserLoginSymbol;
 import a311.college.dto.user.*;
-import a311.college.dto.login.LoginDTO;
+import a311.college.dto.login.UserLoginDTO;
 import a311.college.entity.user.User;
 import a311.college.exception.*;
 import a311.college.mapper.college.CollegeMapper;
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
      * @return User用户对象
      */
     @Override
-    public LoginResult login(LoginDTO loginDTO) {
+    public LoginResult login(UserLoginDTO loginDTO) {
         // 1.获取用户的手机号和密码
         String phone = loginDTO.getPhone();
         String password = loginDTO.getPassword();
@@ -125,7 +125,7 @@ public class UserServiceImpl implements UserService {
             stringRedisTemplate.delete(key);
         }
         // 3.2将用户登录信息缓存到redis
-        LoginSymbol loginSymbol = new LoginSymbol();
+        UserLoginSymbol loginSymbol = new UserLoginSymbol();
         BeanUtil.copyProperties(user, loginSymbol);
         // 3.3将DTO类中的属性转换为String
         Map<String, Object> userMap = BeanUtil.beanToMap(loginSymbol, new HashMap<>(),

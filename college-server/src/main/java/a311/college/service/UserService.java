@@ -1,7 +1,7 @@
 package a311.college.service;
 
 import a311.college.dto.user.*;
-import a311.college.dto.login.LoginDTO;
+import a311.college.dto.login.UserLoginDTO;
 import a311.college.result.LoginResult;
 import a311.college.vo.CollegeSimpleVO;
 import a311.college.vo.UserVO;
@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface UserService {
 
-    LoginResult login(LoginDTO loginDTO);
+    LoginResult login(UserLoginDTO loginDTO);
 
     void register(UserDTO userDTO);
 

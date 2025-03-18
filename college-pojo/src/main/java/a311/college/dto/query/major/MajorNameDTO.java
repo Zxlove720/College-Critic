@@ -1,15 +1,13 @@
 package a311.college.dto.query.major;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-
+/**
+ * 根据专业名查询专业DTO
+ */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Schema(description = "专业名DTO")
+@Schema(description = "根据专业名查询专业DTO")
 public class MajorNameDTO {
 
     @Schema(description = "专业名")

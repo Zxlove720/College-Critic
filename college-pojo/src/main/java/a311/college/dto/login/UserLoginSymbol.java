@@ -6,13 +6,12 @@ import lombok.Data;
 import java.io.Serial;
 import java.io.Serializable;
 
-
+/**
+ * 用户登录凭证
+ */
 @Data
-@Schema(description = "用户登录（手机号）DTO")
-public class LoginSymbol implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+@Schema(description = "用户登录凭证")
+public class UserLoginSymbol implements Serializable {
 
     @Schema(description = "用户名")
     private String username;

@@ -1,8 +1,8 @@
 package a311.college.service.impl;
 
 import a311.college.constant.deepseek.DeepSeekConstant;
-import a311.college.entity.ai.Message;
-import a311.college.entity.ai.UserRequest;
+import a311.college.entity.ai.UserRequestAIMessage;
+import a311.college.entity.ai.UserRequestAI;
 import a311.college.service.DeepSeekService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -29,10 +29,10 @@ public class DeepSeekServiceImpl implements DeepSeekService {
     /**
      * 请求DeepSeekAPI并获取响应
      * @param request 请求
-     * @return Message 将DeepSeek的响应封装为Message对象返回
+     * @return UserRequestAIMessage 将DeepSeek的响应封装为Message对象返回
      */
     @Override
-    public Message response(UserRequest request) {
+    public UserRequestAIMessage response(UserRequestAI request) {
         OkHttpClient client = new OkHttpClient.Builder()
                 // 设置连接超时时间
                 .connectTimeout(60, TimeUnit.SECONDS)
@@ -66,7 +66,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         try (Response response = client.newCall(seekRequest).execute()) {
             if (!response.isSuccessful()) {
                 log.info(DeepSeekConstant.ERROR_CONSTANT);
-                return new Message(DeepSeekConstant.ROLE_ASSISTANT, "error");
+                return new UserRequestAIMessage(DeepSeekConstant.ROLE_ASSISTANT, "error");
             }
             JSONObject responseJson = null;
             // 获取响应体
@@ -82,11 +82,11 @@ public class DeepSeekServiceImpl implements DeepSeekService {
             addAssistantMessage(answer);
             log.info(DeepSeekConstant.ROLE_ASSISTANT + "{}", answer);
             // 返回回答
-            return new Message(DeepSeekConstant.ROLE_ASSISTANT, answer);
+            return new UserRequestAIMessage(DeepSeekConstant.ROLE_ASSISTANT, answer);
         } catch (IOException e) {
             log.info(DeepSeekConstant.REQUEST_CONSTANT);
         }
-        return new Message(DeepSeekConstant.ROLE_ASSISTANT, "error");
+        return new UserRequestAIMessage(DeepSeekConstant.ROLE_ASSISTANT, "error");
     }
 
     private JSONArray buildMessageArray() {

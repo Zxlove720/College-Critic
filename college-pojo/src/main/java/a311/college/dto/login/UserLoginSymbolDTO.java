@@ -6,11 +6,11 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 用户登录凭证
+ * 用户登录凭证DTO
  */
 @Data
-@Schema(description = "用户登录凭证")
-public class UserLoginSymbol implements Serializable {
+@Schema(description = "用户登录凭证DTO")
+public class UserLoginSymbolDTO implements Serializable {
 
     @Schema(description = "用户名")
     private String username;

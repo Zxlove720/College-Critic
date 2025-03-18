@@ -7,15 +7,17 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-
+/**
+ * 用户请求AI
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "用户请求AI")
-public class UserRequest implements Serializable {
+public class UserRequestAI implements Serializable {
 
     @Schema(description = "请求消息")
-    private Message message;
+    private UserRequestAIMessage message;
 
     @Schema(description = "模型温度")
     private Double temperature;

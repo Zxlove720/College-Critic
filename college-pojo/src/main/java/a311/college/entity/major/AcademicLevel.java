@@ -11,6 +11,7 @@ import java.util.Map;
 @Data
 @Schema(description = "培养层次，保存数据用")
 public class AcademicLevel implements Serializable {
+
     @JsonProperty("学科门类")
     private Map<String, SubjectCategory> subjectCategoryMap;
 }

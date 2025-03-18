@@ -2,7 +2,7 @@ package a311.college.service.impl;
 
 import a311.college.constant.user.UserErrorConstant;
 import a311.college.constant.user.UserSubjectConstant;
-import a311.college.dto.login.UserLoginSymbol;
+import a311.college.dto.login.UserLoginSymbolDTO;
 import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
 import a311.college.entity.user.User;
@@ -125,7 +125,7 @@ public class UserServiceImpl implements UserService {
             stringRedisTemplate.delete(key);
         }
         // 3.2将用户登录信息缓存到redis
-        UserLoginSymbol loginSymbol = new UserLoginSymbol();
+        UserLoginSymbolDTO loginSymbol = new UserLoginSymbolDTO();
         BeanUtil.copyProperties(user, loginSymbol);
         // 3.3将DTO类中的属性转换为String
         Map<String, Object> userMap = BeanUtil.beanToMap(loginSymbol, new HashMap<>(),

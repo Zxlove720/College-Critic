@@ -1,8 +1,8 @@
 package a311.college.controller.deepseek;
 
 import a311.college.constant.API.APIConstant;
-import a311.college.entity.ai.Message;
-import a311.college.entity.ai.UserRequest;
+import a311.college.entity.ai.UserRequestAIMessage;
+import a311.college.entity.ai.UserRequestAI;
 import a311.college.result.Result;
 import a311.college.service.DeepSeekService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,7 +34,7 @@ public class DeepSeekController {
      */
     @PostMapping("/answer")
     @Operation(summary = "DeepSeekApi回答问题")
-    public Result<Message> responseQuestion(@RequestBody UserRequest request) {
+    public Result<UserRequestAIMessage> responseQuestion(@RequestBody UserRequestAI request) {
         return Result.success(deepSeekService.response(request));
     }
 }

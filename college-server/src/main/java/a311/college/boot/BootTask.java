@@ -1,6 +1,6 @@
 package a311.college.boot;
 
-import a311.college.service.CollegeService;
+import a311.college.service.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class BootTask implements ApplicationRunner {
 
-    private final CollegeService collegeService;
+    private final SchoolService collegeService;
 
     @Autowired
-    public BootTask(CollegeService collegeService) {
+    public BootTask(SchoolService collegeService) {
         this.collegeService = collegeService;
     }
 
@@ -23,7 +23,7 @@ public class BootTask implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments arguments) {
         try {
-            collegeService.cacheCollege();
+            collegeService.cacheSchool();
         } catch (Exception e) {
             System.out.println("缓存预热失败");
         }

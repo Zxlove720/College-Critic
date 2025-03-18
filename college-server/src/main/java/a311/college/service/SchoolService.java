@@ -15,13 +15,13 @@ import java.util.List;
 /**
  * 大学相关服务
  */
-public interface CollegeService {
+public interface SchoolService {
 
-    PageResult<SchoolSimpleVO> pageSelect(SchoolPageQueryDTO collegePageQueryDTO);
+    PageResult<SchoolSimpleVO> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO);
 
-    void cacheCollege();
+    void cacheSchool();
 
-    List<SchoolSimpleVO> getCollegeByName(String schoolName);
+    List<SchoolSimpleVO> getSchoolByName(String schoolName);
 
     List<SchoolSimpleVO> getByGrade(UserGradeQueryDTO gradeDTO);
 
@@ -31,5 +31,5 @@ public interface CollegeService {
 
     void addScore();
 
-    SchoolVO getCollege(SchoolDTO collegeDTO);
+    SchoolVO getSchool(SchoolDTO schoolDTO);
 }

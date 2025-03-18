@@ -1,4 +1,4 @@
-package a311.college.controller.college;
+package a311.college.controller.school;
 
 
 import a311.college.constant.API.APIConstant;
@@ -10,7 +10,7 @@ import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
-import a311.college.service.CollegeService;
+import a311.college.service.SchoolService;
 import a311.college.service.DeepSeekService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.SchoolSimpleVO;
@@ -30,31 +30,31 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/colleges")
-@Tag(name = APIConstant.COLLEGE_SERVICE)
-public class CollegeController {
+@RequestMapping("/schools")
+@Tag(name = APIConstant.SCHOOL_SERVICE)
+public class SchoolController {
 
-    private final CollegeService collegeService;
+    private final SchoolService schoolService;
 
     private final DeepSeekService deepSeekService;
 
     @Autowired
-    public CollegeController(CollegeService collegeService, DeepSeekService deepSeekService) {
-        this.collegeService = collegeService;
+    public SchoolController(SchoolService schoolService, DeepSeekService deepSeekService) {
+        this.schoolService = schoolService;
         this.deepSeekService = deepSeekService;
     }
 
     /**
      * 大学信息分页查询
      *
-     * @param collegePageQueryDTO 大学分页查询DTO
+     * @param schoolPageQueryDTO 大学分页查询DTO
      * @return Result<PageResult < School>>
      */
     @PostMapping("/page")
     @Operation(summary = "大学信息分页查询")
-    public Result<PageResult<SchoolSimpleVO>> collegeList(@RequestBody SchoolPageQueryDTO collegePageQueryDTO) {
-        log.info("大学分页查询...查询参数为：第{}页，每页{}条", collegePageQueryDTO.getPage(), collegePageQueryDTO.getPageSize());
-        PageResult<SchoolSimpleVO> pageResult = collegeService.pageSelect(collegePageQueryDTO);
+    public Result<PageResult<SchoolSimpleVO>> schoolList(@RequestBody SchoolPageQueryDTO schoolPageQueryDTO) {
+        log.info("大学分页查询...查询参数为：第{}页，每页{}条", schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
+        PageResult<SchoolSimpleVO> pageResult = schoolService.pageSelect(schoolPageQueryDTO);
         return Result.success(pageResult);
     }
 
@@ -66,8 +66,8 @@ public class CollegeController {
      */
     @PostMapping("/name")
     @Operation(summary = "根据学校名搜索大学")
-    public Result<List<SchoolSimpleVO>> getCollegeByName(@RequestBody SchoolNameQueryDTO schoolName) {
-        return Result.success(collegeService.getCollegeByName(schoolName.getSchoolName()));
+    public Result<List<SchoolSimpleVO>> getSchoolByName(@RequestBody SchoolNameQueryDTO schoolName) {
+        return Result.success(schoolService.getSchoolByName(schoolName.getSchoolName()));
     }
 
     /**
@@ -80,20 +80,20 @@ public class CollegeController {
     @Operation(summary = "根据用户成绩查询大学")
     public Result<List<SchoolSimpleVO>> getByUserScore(@RequestBody UserGradeQueryDTO gradeDTO) {
         log.info("用户成绩为：{}", gradeDTO.getGrade());
-        return Result.success(collegeService.getByGrade(gradeDTO));
+        return Result.success(schoolService.getByGrade(gradeDTO));
     }
 
     /**
      * 查询院校具体信息
      *
-     * @param collegeDTO 大学查询DTO
+     * @param schoolDTO 大学查询DTO
      * @return SchoolVO 大学具体信息
      */
-    @PostMapping("/college")
+    @PostMapping("/school")
     @Operation(summary = "查询院校具体信息")
-    public Result<SchoolVO> getCollege(@RequestBody SchoolDTO collegeDTO) {
-        SchoolVO collegeVO = collegeService.getCollege(collegeDTO);
-        return Result.success(collegeVO);
+    public Result<SchoolVO> getSchool(@RequestBody SchoolDTO schoolDTO) {
+        SchoolVO schoolVO = schoolService.getSchool(schoolDTO);
+        return Result.success(schoolVO);
     }
 
     /**
@@ -104,8 +104,8 @@ public class CollegeController {
      */
     @PostMapping("/years")
     @Operation(summary = "获取某院校的历年分数线")
-    public Result<List<YearScoreVO>> collegeScoreByYear(@RequestBody YearScoreQueryDTO yearScoreDTO) {
-        return Result.success(collegeService.getScoreByYear(yearScoreDTO));
+    public Result<List<YearScoreVO>> schoolScoreByYear(@RequestBody YearScoreQueryDTO yearScoreDTO) {
+        return Result.success(schoolService.getScoreByYear(yearScoreDTO));
     }
 
     /**
@@ -116,9 +116,9 @@ public class CollegeController {
      */
     @PostMapping("/comment")
     @Operation(summary = "用户评价大学")
-    public Result<Void> addCollegeComment(@RequestBody AddSchoolCommentDTO addCommentDTO) {
+    public Result<Void> addSchoolComment(@RequestBody AddSchoolCommentDTO addCommentDTO) {
         log.info("用户'{}'发表对于'{}'大学的评论", ThreadLocalUtil.getCurrentId(), addCommentDTO.getSchoolId());
-        collegeService.addComment(addCommentDTO);
+        schoolService.addComment(addCommentDTO);
         return Result.success();
     }
 
@@ -127,8 +127,8 @@ public class CollegeController {
      *
      */
     @PostMapping("/addScore")
-    public Result<Void> addScore2College() {
-        collegeService.addScore();
+    public Result<Void> addScore2School() {
+        schoolService.addScore();
         return Result.success();
     }
 }

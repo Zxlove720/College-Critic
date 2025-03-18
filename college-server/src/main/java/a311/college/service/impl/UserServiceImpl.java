@@ -7,7 +7,7 @@ import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
 import a311.college.entity.user.User;
 import a311.college.exception.*;
-import a311.college.mapper.college.CollegeMapper;
+import a311.college.mapper.school.SchoolMapper;
 import a311.college.mapper.user.UserMapper;
 import a311.college.constant.redis.UserRedisKey;
 import a311.college.regex.RegexUtils;
@@ -40,10 +40,10 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
-    private final CollegeMapper collegeMapper;
+    private final SchoolMapper collegeMapper;
 
     @Autowired
-    public UserServiceImpl(UserMapper userMapper, CollegeMapper collegeMapper) {
+    public UserServiceImpl(UserMapper userMapper, SchoolMapper collegeMapper) {
         this.userMapper = userMapper;
         this.collegeMapper = collegeMapper;
     }

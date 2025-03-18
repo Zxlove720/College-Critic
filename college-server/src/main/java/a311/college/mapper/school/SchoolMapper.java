@@ -1,4 +1,4 @@
-package a311.college.mapper.college;
+package a311.college.mapper.school;
 
 
 import a311.college.dto.school.AddSchoolCommentDTO;
@@ -20,15 +20,15 @@ import java.util.List;
  * 大学相关Mapper
  */
 @Mapper
-public interface CollegeMapper {
+public interface SchoolMapper {
 
     /**
      * 大学信息分页查询
      *
-     * @param collegePageQueryDTO 大学分页查询DTO
+     * @param schoolPageQueryDTO 大学分页查询DTO
      * @return Page<SchoolVO>
      */
-    Page<SchoolSimpleVO> pageQuery(SchoolPageQueryDTO collegePageQueryDTO);
+    Page<SchoolSimpleVO> pageQuery(SchoolPageQueryDTO schoolPageQueryDTO);
 
     /**
      * 根据成绩查询大学
@@ -69,13 +69,13 @@ public interface CollegeMapper {
     void addComment(AddSchoolCommentDTO addCommentDTO);
 
     @Select("select * from tb_school")
-    List<SchoolSimpleVO> getAllCollege();
+    List<SchoolSimpleVO> getAllSchool();
 
     @Update("update tb_school set rank_list = #{rankList} where school_id = #{schoolId}")
-    void updateRank(SchoolSimpleVO collegeSimpleVO);
+    void updateRank(SchoolSimpleVO schoolSimpleVO);
 
     @Update("update tb_school set score = #{score} where school_id = #{schoolId}")
-    void updateScore(SchoolSimpleVO collegeSimpleVO);
+    void updateScore(SchoolSimpleVO schoolSimpleVO);
 
     List<MajorSimpleVO> selectSimpleMajor(int schoolId);
 

@@ -1,7 +1,7 @@
 package a311.college.database;
 
-import a311.college.constant.DataBaseConnectionConstant;
-import a311.college.constant.resource.ResourceFilePath;
+import a311.college.constant.resource.DataBaseConnectionConstant;
+import a311.college.constant.resource.CollegeDataFilePath;
 import a311.college.entity.major.*;
 import com.fasterxml.jackson.core.JsonpCharacterEscapes;
 import com.fasterxml.jackson.core.io.CharacterEscapes;
@@ -37,7 +37,7 @@ public class Major2DataBase {
         ObjectMapper mapper = new ObjectMapper();
         // 处理中文key必须配置的编码
         mapper.getFactory().setCharacterEscapes(new UnicodeEscapes());
-        return mapper.readValue(new File(ResourceFilePath.MAJOR_DATA_PATH), EducationHierarchy.class);
+        return mapper.readValue(new File(CollegeDataFilePath.MAJOR_DATA_PATH), EducationHierarchy.class);
     }
 
     // 将序列化对象保存到数据库

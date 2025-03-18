@@ -3,7 +3,7 @@ package a311.college.constant.resource;
 /**
  * 资源文件路径常量
  */
-public class ResourceFilePath {
+public class CollegeDataFilePath {
 
     // 大学相关数据
     public static final String ID_DATA_PATH = "C:\\Users\\wzb\\Desktop\\college\\school_id.json";

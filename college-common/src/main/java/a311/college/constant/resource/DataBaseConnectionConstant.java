@@ -1,4 +1,4 @@
-package a311.college.constant;
+package a311.college.constant.resource;
 
 
 /**

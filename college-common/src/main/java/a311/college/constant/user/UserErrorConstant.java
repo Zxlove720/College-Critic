@@ -1,6 +1,6 @@
 package a311.college.constant.user;
 
-public class LoginErrorConstant {
+public class UserErrorConstant {
 
     // 用户被禁用了
     public static final Integer DISABLE = 0;

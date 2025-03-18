@@ -1,4 +1,4 @@
-package a311.college.controller.upload;
+package a311.college.controller.common;
 
 import a311.college.ailiyun.AliOssUtil;
 import a311.college.constant.API.APIConstant;
@@ -19,13 +19,13 @@ import java.io.IOException;
 @Slf4j
 @RestController
 @RequestMapping("/upload")
-@Tag(name = APIConstant.UPLOAD_SERVICE)
-public class UploadController {
+@Tag(name = APIConstant.COMMON_SERVICE)
+public class CommonController {
 
     private final AliOssUtil aliOssUtil;
 
     @Autowired
-    public UploadController(AliOssUtil aliOssUtil) {
+    public CommonController(AliOssUtil aliOssUtil) {
         this.aliOssUtil = aliOssUtil;
     }
 

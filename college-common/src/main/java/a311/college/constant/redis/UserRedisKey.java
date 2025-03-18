@@ -2,8 +2,6 @@ package a311.college.constant.redis;
 
 public class UserRedisKey {
     // 用户验证码
-    // 用户注册验证码
-    public static final String USER_REGISTER_CODE_KEY = "college:user:code:register";
     // 用户修改密码验证码
     public static final String USER_EDIT_CODE_KEY = "college:user:code:edit:";
     // 用户注销验证码

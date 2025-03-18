@@ -1,7 +1,7 @@
 package a311.college.handler;
 
 
-import a311.college.constant.user.LoginErrorConstant;
+import a311.college.constant.user.UserErrorConstant;
 import a311.college.exception.BaseException;
 import a311.college.result.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
             // 获取重复添加的用户名
             String username = split[2];
             // 拼接报错信息
-            String errorMessage = username + LoginErrorConstant.ALREADY_EXISTS;
+            String errorMessage = username + UserErrorConstant.ALREADY_EXISTS;
             return Result.error(errorMessage);
         } else {
             // 并非重复添加报错

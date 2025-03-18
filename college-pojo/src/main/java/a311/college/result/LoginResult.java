@@ -3,7 +3,6 @@ package a311.college.result;
 import a311.college.enumeration.ProvinceEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -38,5 +37,8 @@ public class LoginResult implements Serializable {
 
     @Schema(description = "用户成绩")
     private Integer grade;
+
+    @Schema(description = "用户位次")
+    private Integer ranking;
 
 }

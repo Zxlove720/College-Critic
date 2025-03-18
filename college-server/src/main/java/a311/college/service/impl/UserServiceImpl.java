@@ -1,6 +1,6 @@
 package a311.college.service.impl;
 
-import a311.college.constant.user.LoginErrorConstant;
+import a311.college.constant.user.UserErrorConstant;
 import a311.college.constant.user.UserSubjectConstant;
 import a311.college.dto.login.LoginSymbol;
 import a311.college.dto.user.*;
@@ -64,25 +64,25 @@ public class UserServiceImpl implements UserService {
         String password = loginDTO.getPassword();
         if (RegexUtils.isPhoneInvalid(phone)) {
             // 1.1手机号格式不合法，登录失败
-            throw new LoginFailedException(LoginErrorConstant.PHONE_NUMBER_ERROR);
+            throw new LoginFailedException(UserErrorConstant.PHONE_NUMBER_ERROR);
         }
         // 2.根据手机号查询用户
         User user = userMapper.selectByPhone(phone);
         // 3.处理异常情况
         if (user == null) {
             // 3.1手机号对应的用户不存在，登录失败
-            throw new LoginFailedException(LoginErrorConstant.ACCOUNT_NOT_FOUND);
+            throw new LoginFailedException(UserErrorConstant.ACCOUNT_NOT_FOUND);
         }
         // 3.2密码比对
         password = DigestUtils.md5DigestAsHex(password.getBytes());
         if (!password.equals(user.getPassword())) {
             // 3.3密码错误，登录失败
-            throw new LoginFailedException(LoginErrorConstant.PASSWORD_ERROR);
+            throw new LoginFailedException(UserErrorConstant.PASSWORD_ERROR);
         }
         // 3.4判断当前用户是否可用
-        if (user.getStatus().equals(LoginErrorConstant.DISABLE)) {
+        if (user.getStatus().equals(UserErrorConstant.DISABLE)) {
             // 3.5账号被锁定，登录失败
-            throw new LoginFailedException(LoginErrorConstant.ACCOUNT_LOCKED);
+            throw new LoginFailedException(UserErrorConstant.ACCOUNT_LOCKED);
         }
         // 4.用户正常，成功登录，返回登录成功结果
         return loginSuccessful(user);
@@ -106,6 +106,7 @@ public class UserServiceImpl implements UserService {
         result.setProvince(user.getProvince());
         result.setSubjects(user.getSubjects());
         result.setGrade(user.getGrade());
+        result.setRanking(user.getRanking());
         return result;
     }
 
@@ -229,7 +230,7 @@ public class UserServiceImpl implements UserService {
     private String code(String phone, String preKey) {
         if (RegexUtils.isPhoneInvalid(phone)) {
             // 2.如果手机号不合法，返回错误信息
-            throw new LoginFailedException(LoginErrorConstant.PHONE_NUMBER_ERROR);
+            throw new LoginFailedException(UserErrorConstant.PHONE_NUMBER_ERROR);
         }
         // 3.手机号合法，生成验证码
         String code = RandomUtil.randomNumbers(6);
@@ -258,13 +259,13 @@ public class UserServiceImpl implements UserService {
         // 1.判断手机号是否合法
         if (RegexUtils.isPhoneInvalid(phone)) {
             // 1.1.如果手机号不合法，返回错误信息
-            throw new PasswordEditFailedException(LoginErrorConstant.PHONE_NUMBER_ERROR);
+            throw new PasswordEditFailedException(UserErrorConstant.PHONE_NUMBER_ERROR);
         }
         // 2.获取redis中验证码
         String cacheCode = stringRedisTemplate.opsForValue().get(UserRedisKey.USER_EDIT_CODE_KEY + phone);
         if (!code.equals(cacheCode)) {
             // 2.1验证码不匹配，修改密码失败，抛出异常
-            throw new PasswordEditFailedException(LoginErrorConstant.CODE_ERROR);
+            throw new PasswordEditFailedException(UserErrorConstant.CODE_ERROR);
         }
         // 3.手机号和验证码比对成功，可以修改密码
         userMapper.editPassword(DigestUtil.md5Hex(passwordEditDTO.getNewPassword().getBytes()), phone);
@@ -352,7 +353,7 @@ public class UserServiceImpl implements UserService {
         // 2.进行验证码比对
         if (!code.equals(cacheCode)) {
             // 2.1验证码比对失败，注销失败
-            throw new CodeErrorException(LoginErrorConstant.CODE_ERROR);
+            throw new CodeErrorException(UserErrorConstant.CODE_ERROR);
         }
         // 3.验证码比对成功，注销用户
         userMapper.deleteById(id);

@@ -118,7 +118,7 @@ public class SchoolServiceImpl implements SchoolService {
      * @return List<SchoolSimpleVO>
      */
     @Override
-    public List<SchoolSimpleVO> getByGrade(UserGradeQueryDTO gradeDTO) {
+    public List<SchoolSimpleVO> getSchoolByGrade(UserGradeQueryDTO gradeDTO) {
         List<SchoolSimpleVO> schoolSimpleVOS = schoolMapper.selectByGrade(gradeDTO);
         return new ArrayList<>(schoolSimpleVOS);
     }
@@ -129,7 +129,7 @@ public class SchoolServiceImpl implements SchoolService {
      * @return List<YearScoreVO>
      */
     @Override
-    public List<YearScoreVO> getScoreByYear(YearScoreQueryDTO yearScoreDTO) {
+    public List<YearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO) {
         List<YearScoreVO> yearScoreVOList = schoolMapper.selectScoreByYear(yearScoreDTO);
         for (YearScoreVO yearScoreVO : yearScoreVOList) {
             yearScoreVO.setMajorName(yearScoreVO.getMajorName()
@@ -144,7 +144,7 @@ public class SchoolServiceImpl implements SchoolService {
      * @param addCommentDTO 评价DTO
      */
     @Override
-    public void addComment(AddSchoolCommentDTO addCommentDTO) {
+    public void addSchoolComment(AddSchoolCommentDTO addCommentDTO) {
         schoolMapper.addComment(addCommentDTO);
     }
 
@@ -170,7 +170,7 @@ public class SchoolServiceImpl implements SchoolService {
      * @return SchoolVO
      */
     @Override
-    public SchoolVO getSchool(SchoolDTO schoolDTO) {
+    public SchoolVO getDetailSchool(SchoolDTO schoolDTO) {
         // 1.获取简略大学信息
         SchoolSimpleVO schoolSimpleVO = schoolMapper.selectBySchoolId(schoolDTO.getSchoolId());
         // 2.封装大学详细信息

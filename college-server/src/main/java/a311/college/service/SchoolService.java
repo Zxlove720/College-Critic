@@ -23,13 +23,13 @@ public interface SchoolService {
 
     List<SchoolSimpleVO> getSchoolByName(String schoolName);
 
-    List<SchoolSimpleVO> getByGrade(UserGradeQueryDTO gradeDTO);
+    List<SchoolSimpleVO> getSchoolByGrade(UserGradeQueryDTO gradeDTO);
 
-    List<YearScoreVO> getScoreByYear(YearScoreQueryDTO yearScoreDTO);
+    SchoolVO getDetailSchool(SchoolDTO schoolDTO);
 
-    void addComment(AddSchoolCommentDTO addCommentDTO);
+    List<YearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO);
+
+    void addSchoolComment(AddSchoolCommentDTO addCommentDTO);
 
     void addScore();
-
-    SchoolVO getSchool(SchoolDTO schoolDTO);
 }

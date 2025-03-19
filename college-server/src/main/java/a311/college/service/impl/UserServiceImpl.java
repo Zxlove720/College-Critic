@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
      * 用户登录：手机号 + 密码
      *
      * @param userLoginDTO 封装用户登录数据的DTO
-     * @return User用户对象
+     * @return LoginResult 登录返回结果
      */
     @Override
     public LoginResult login(UserLoginDTO userLoginDTO) {
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
      * 用户登录成功，返回成功结果
      *
      * @param user 用户
-     * @return LoginResult
+     * @return LoginResult 登录返回结果
      */
     private LoginResult loginSuccessful(User user) {
         LoginResult result = new LoginResult();
@@ -163,7 +163,7 @@ public class UserServiceImpl implements UserService {
     public Integer checkPhone(UserPhoneCheckDTO userPhoneCheckDTO) {
         User user = userMapper.selectByPhone(userPhoneCheckDTO.getPhone());
         if (user != null) {
-            // 该用户名已经存在，不能注册
+            // 该手机号已经存在，不能注册
             return 0;
         }
         return 1;

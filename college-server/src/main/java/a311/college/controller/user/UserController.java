@@ -36,39 +36,39 @@ public class UserController {
     /**
      * 用户登录
      *
-     * @param loginDTO 用户登录数据DTO
+     * @param userLoginDTO 用户登录数据DTO
      * @return Result<String>
      */
     @PostMapping("/login")
     @Operation(summary = "用户登录")
-    public Result<LoginResult> login(@RequestBody UserLoginDTO loginDTO) {
-        String phone = loginDTO.getPhone();
+    public Result<LoginResult> login(@RequestBody UserLoginDTO userLoginDTO) {
+        String phone = userLoginDTO.getPhone();
         log.info("手机号为'{}'的用户正在登录", phone);
-        return Result.success(userService.login(loginDTO));
+        return Result.success(userService.login(userLoginDTO));
     }
 
     /**
      * 用户名检查
      *
-     * @param checkUserDTO 用户名检查DTO
+     * @param userUsernameCheckDTO 用户名检查DTO
      * @return Integer 0该用户名不可用 1该用户名可用
      */
     @PostMapping("/checkUsername")
     @Operation(summary = "用户名检查")
-    public Result<Integer> checkUser(@RequestBody UserUsernameCheckDTO checkUserDTO) {
-        return Result.success(userService.checkUser(checkUserDTO));
+    public Result<Integer> checkUser(@RequestBody UserUsernameCheckDTO userUsernameCheckDTO) {
+        return Result.success(userService.checkUser(userUsernameCheckDTO));
     }
 
     /**
      * 手机号检查
      *
-     * @param checkPhoneDTO 手机号检查DTO
+     * @param userPhoneCheckDTO 手机号检查DTO
      * @return Integer 0该手机号不可用 1该手机号可用
      */
     @PostMapping("/checkPhone")
     @Operation(summary = "用户名检查")
-    public Result<Integer> checkPhone(@RequestBody UserPhoneCheckDTO checkPhoneDTO) {
-        return Result.success(userService.checkPhone(checkPhoneDTO));
+    public Result<Integer> checkPhone(@RequestBody UserPhoneCheckDTO userPhoneCheckDTO) {
+        return Result.success(userService.checkPhone(userPhoneCheckDTO));
     }
 
     /**
@@ -87,27 +87,27 @@ public class UserController {
     /**
      * 用户发送验证码修改密码
      *
-     * @param codeDTO 验证码DTO
+     * @param userCodeDTO 验证码DTO
      * @return Result<String>
      */
     @PostMapping("/editCode")
     @Operation(summary = "用户发送验证码修改密码")
-    public Result<String> sendEditCode(@RequestBody UserCodeDTO codeDTO) {
-        log.info("向手机号为'{}'的用户发送验证码，其正在修改密码", codeDTO.getPhone());
-        return Result.success(userService.sendEditCode(codeDTO));
+    public Result<String> sendEditCode(@RequestBody UserCodeDTO userCodeDTO) {
+        log.info("向手机号为'{}'的用户发送验证码，其正在修改密码", userCodeDTO.getPhone());
+        return Result.success(userService.sendEditCode(userCodeDTO));
     }
 
     /**
      * 用户修改密码
      *
-     * @param passwordEditDTO 密码修改DTO
+     * @param userEditPasswordDTO 密码修改DTO
      * @return Result<LoginResult>
      */
     @PostMapping("/edit")
     @Operation(summary = "用户修改密码")
-    public LoginResult editPassword(@RequestBody UserEditPasswordDTO passwordEditDTO) {
+    public LoginResult editPassword(@RequestBody UserEditPasswordDTO userEditPasswordDTO) {
         log.info("用户'{}'正在修改密码", ThreadLocalUtil.getCurrentId());
-        return userService.editPassword(passwordEditDTO);
+        return userService.editPassword(userEditPasswordDTO);
     }
 
     /**
@@ -117,16 +117,16 @@ public class UserController {
      */
     @PostMapping("/layout")
     @Operation(summary = "用户登出")
-    public Result<Void> layout(@RequestBody UserLayoutDTO layoutDTO) {
+    public Result<Void> layout(@RequestBody UserLayoutDTO userLayoutDTO) {
         log.info("用户'{}'退出登录", ThreadLocalUtil.getCurrentId());
-        userService.layout(layoutDTO);
+        userService.layout(userLayoutDTO);
         return Result.success();
     }
 
     /**
      * 用户个人主页
      *
-     * @return Result
+     * @return Result<UserVO>
      */
     @PostMapping("/me")
     @Operation(summary = "用户个人页面")
@@ -139,21 +139,20 @@ public class UserController {
     /**
      * 用户收藏学校
      *
-     * @param addFavoriteDTO 学校收藏DTO
-     * @return Void
+     * @param userAddFavoriteDTO 学校收藏DTO
      */
     @PostMapping("/addFavorite")
     @Operation(summary = "用户收藏学校")
-    public Result<Void> addFavorite(@RequestBody UserAddFavoriteDTO addFavoriteDTO) {
-        log.info("用户'{}'收藏了'{}'学校", ThreadLocalUtil.getCurrentId(), addFavoriteDTO.getSchoolId());
-        userService.addFavorite(addFavoriteDTO);
+    public Result<Void> addFavorite(@RequestBody UserAddFavoriteDTO userAddFavoriteDTO) {
+        log.info("用户'{}'收藏了'{}'学校", ThreadLocalUtil.getCurrentId(), userAddFavoriteDTO.getSchoolId());
+        userService.addFavorite(userAddFavoriteDTO);
         return Result.success();
     }
 
     /**
      * 展示用户收藏
      *
-     * @return Result<Void>
+     * @return Result<List<SchoolSimpleVO>>
      */
     @PostMapping("/favorite")
     @Operation(summary = "展示用户收藏")
@@ -179,26 +178,26 @@ public class UserController {
     /**
      * 用户注销发送验证码
      *
-     * @param codeDTO 验证码DTO
+     * @param userCodeDTO 验证码DTO
      * @return code 验证码
      */
     @PostMapping("/deleteCode")
     @Operation(summary = "用户注销发送验证码")
-    public Result<String> sendDeleteCode(@RequestBody UserCodeDTO codeDTO) {
+    public Result<String> sendDeleteCode(@RequestBody UserCodeDTO userCodeDTO) {
         log.info("用户'{}'正在进行注销操作", ThreadLocalUtil.getCurrentId());
-        return Result.success(userService.sendDeleteCode(codeDTO));
+        return Result.success(userService.sendDeleteCode(userCodeDTO));
     }
 
     /**
      * 用户注销
      *
-     * @param deleteDTO 用户注销DTO
+     * @param userDeleteDTO 用户注销DTO
      */
     @PostMapping("/delete")
     @Operation(summary = "用户注销")
-    public Result<Void> deleteUser(@RequestBody UserDeleteDTO deleteDTO) {
-        log.info("手机号为'{}'的用户正在注销", deleteDTO.getPhone());
-        userService.deleteUser(deleteDTO);
+    public Result<Void> deleteUser(@RequestBody UserDeleteDTO userDeleteDTO) {
+        log.info("手机号为'{}'的用户正在注销", userDeleteDTO.getPhone());
+        userService.deleteUser(userDeleteDTO);
         return Result.success();
     }
 

@@ -291,5 +291,4 @@ public class SchoolServiceImpl implements SchoolService {
             schoolMapper.updateRank(schoolSimpleVO);
         }
     }
-
 }

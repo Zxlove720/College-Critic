@@ -13,31 +13,31 @@ import java.util.List;
  */
 public interface UserService {
 
-    LoginResult login(UserLoginDTO loginDTO);
+    LoginResult login(UserLoginDTO userLoginDTO);
 
     void register(UserDTO userDTO);
 
-    String sendEditCode(UserCodeDTO codeDTO);
+    String sendEditCode(UserCodeDTO userCodeDTO);
 
-    LoginResult editPassword(UserEditPasswordDTO passwordEditDTO);
+    LoginResult editPassword(UserEditPasswordDTO userEditPasswordDTO);
 
-    void layout(UserLayoutDTO layoutDTO);
+    void layout(UserLayoutDTO userLayoutDTO);
 
     UserVO selectById(Long id);
 
-    void addFavorite(UserAddFavoriteDTO addFavoriteDTO);
+    void addFavorite(UserAddFavoriteDTO userAddFavoriteDTO);
 
     List<SchoolSimpleVO> showFavorite();
 
     void update(UserDTO userDTO);
 
-    String sendDeleteCode(UserCodeDTO codeDTO);
+    String sendDeleteCode(UserCodeDTO userCodeDTO);
 
-    void deleteUser(UserDeleteDTO deleteDTO);
+    void deleteUser(UserDeleteDTO userDeleteDTO);
 
     List<String> showComment();
 
-    Integer checkUser(UserUsernameCheckDTO checkUserDTO);
+    Integer checkUser(UserUsernameCheckDTO userUsernameCheckDTO);
 
-    Integer checkPhone(UserPhoneCheckDTO checkPhoneDTO);
+    Integer checkPhone(UserPhoneCheckDTO userPhoneCheckDTO);
 }

@@ -3,6 +3,7 @@ package a311.college.controller.school;
 
 import a311.college.constant.API.APIConstant;
 import a311.college.dto.school.AddSchoolCommentDTO;
+import a311.college.dto.school.ForecastDTO;
 import a311.college.dto.school.SchoolDTO;
 import a311.college.dto.school.SchoolPageQueryDTO;
 import a311.college.dto.query.school.UserGradeQueryDTO;
@@ -13,6 +14,7 @@ import a311.college.result.Result;
 import a311.college.service.SchoolService;
 import a311.college.service.DeepSeekService;
 import a311.college.thread.ThreadLocalUtil;
+import a311.college.vo.ForecastVO;
 import a311.college.vo.SchoolSimpleVO;
 import a311.college.vo.SchoolVO;
 import a311.college.vo.YearScoreVO;
@@ -123,11 +125,22 @@ public class SchoolController {
 
     /**
      * 改变大学数据
-     *
      */
     @PostMapping("/addScore")
     public Result<Void> addScore2School() {
         schoolService.addScore();
         return Result.success();
+    }
+
+    /**
+     * 录取预测
+     *
+     * @param forecastDTO 录取预测DTO
+     * @return ForecastVO 录取预测VO
+     */
+    @PostMapping("/forecast")
+    public Result<ForecastVO> forecast(@RequestBody ForecastDTO forecastDTO) {
+        log.info("用户'{}'正在做录取预测", ThreadLocalUtil.getCurrentId());
+        return Result.success(schoolService.forecast(forecastDTO));
     }
 }

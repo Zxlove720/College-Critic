@@ -5,6 +5,7 @@ import a311.college.dto.school.AddSchoolCommentDTO;
 import a311.college.dto.school.SchoolPageQueryDTO;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
+import a311.college.vo.MajorForecastResultVO;
 import a311.college.vo.MajorSimpleVO;
 import a311.college.vo.SchoolSimpleVO;
 import a311.college.vo.YearScoreVO;
@@ -110,4 +111,12 @@ public interface SchoolMapper {
      */
     @Update("update tb_school set score = #{score} where school_id = #{schoolId}")
     void updateScore(SchoolSimpleVO schoolSimpleVO);
+
+    /**
+     * 查询某学校所有专业
+     *
+     * @param schoolId 学校id
+     * @return List<MajorForecastResultVO>
+     */
+    List<MajorForecastResultVO> getAllMajor(String schoolId);
 }

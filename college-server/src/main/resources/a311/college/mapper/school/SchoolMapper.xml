@@ -96,4 +96,16 @@
         ORDER BY min_score DESC, min_ranking DESC
         LIMIT 5;
     </select>
+
+    <select id="getAllMajor" resultType="a311.college.vo.MajorForecastResultVO">
+        select
+            sc.major_name, sc.min_score, sc.min_ranking
+        FROM tb_school as s
+                 JOIN tb_province as p ON s.school_id = p.school_id
+                 JOIN tb_year as y ON p.province_id = y.province_id
+                 JOIN tb_category as c ON y.year_id = c.year_id
+                 JOIN tb_batch as b ON c.category_id = b.category_id
+                 JOIN tb_score as sc ON b.batch_id = sc.batch_id
+        where s.school_id = #{schoolId}
+    </select>
 </mapper>

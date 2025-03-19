@@ -46,7 +46,6 @@ public class SaveImages2DataBase {
                 Connection connection2 = DriverManager.getConnection("jdbc:mysql://8.137.37.221/college",
                         "root",
                         "123456");
-                String sql2 = "Insert INTO tb_image (url) VALUE(?)";
                 PreparedStatement preparedStatement2 = connection2.prepareStatement(sql);
                 preparedStatement2.setString(1, filePath);
                 preparedStatement2.executeUpdate();

@@ -2,6 +2,7 @@ package a311.college.service.impl;
 
 import a311.college.constant.redis.SchoolRedisKey;
 import a311.college.dto.school.AddSchoolCommentDTO;
+import a311.college.dto.school.ForecastDTO;
 import a311.college.dto.school.SchoolDTO;
 import a311.college.dto.school.SchoolPageQueryDTO;
 import a311.college.dto.query.school.UserGradeQueryDTO;
@@ -10,10 +11,7 @@ import a311.college.mapper.resource.ResourceMapper;
 import a311.college.mapper.school.SchoolMapper;
 import a311.college.result.PageResult;
 import a311.college.service.SchoolService;
-import a311.college.vo.MajorSimpleVO;
-import a311.college.vo.SchoolSimpleVO;
-import a311.college.vo.SchoolVO;
-import a311.college.vo.YearScoreVO;
+import a311.college.vo.*;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.github.pagehelper.Page;
@@ -140,15 +138,15 @@ public class SchoolServiceImpl implements SchoolService {
         BeanUtil.copyProperties(schoolSimpleVO, schoolVO);
         // 3.返回随机校园风光
         // 3.1获取所有照片
-//        List<String> imageList = resourceMapper.getAllImages();
-//        // 3.2从所有照片中随机选取6张
-//        List<String> images = new ArrayList<>();
-//        for (int i = 0; i < 6; i++) {
-//            int index = RandomUtil.randomInt(0, 250);
-//            images.add(imageList.get(index));
-//        }
-//        // 3.3返回随机6张校园风光
-//        schoolVO.setImages(images);
+        List<String> imageList = resourceMapper.getAllImages();
+        // 3.2从所有照片中随机选取6张
+        List<String> images = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            int index = RandomUtil.randomInt(0, 250);
+            images.add(imageList.get(index));
+        }
+        // 3.3返回随机6张校园风光
+        schoolVO.setImages(images);
         // 4.随机校园配置
         if (schoolSimpleVO.getScore() > 60) {
             // 4.1该学校属于好学校
@@ -211,6 +209,85 @@ public class SchoolServiceImpl implements SchoolService {
             schoolSimpleVO.setScore(score);
             schoolMapper.updateScore(schoolSimpleVO);
         }
+    }
+
+    /**
+     * 录取预测
+     *
+     * @param forecastDTO 录取预测DTO
+     * @return ForecastVO 录取预测VO
+     */
+    @Override
+    public ForecastVO forecast(ForecastDTO forecastDTO) {
+        // 0.三个不同难度的专业
+        int minimum = 0;
+        int stable = 0;
+        int rush = 0;
+        // 1.处理专业信息
+        // 1.1获得专业信息
+        List<MajorForecastResultVO> majorForecastResultList = schoolMapper.getAllMajor(forecastDTO.getSchoolId());
+        // 1.2处理专业名、特殊要求、选科要求
+        for (MajorForecastResultVO majorForecastResultVO : majorForecastResultList) {
+            majorRequire(majorForecastResultVO);
+            // 2.统计各个层次专业个数
+            // 2.1默认根据用户的位次进行统计
+            if (forecastDTO.getRanking() != null) {
+                if (majorForecastResultVO.getMinRanking() >= (forecastDTO.getRanking() + 3000)
+                        && majorForecastResultVO.getMinRanking() <= (forecastDTO.getRanking() - 2000)) {
+                    // 2.1.1该专业为稳专业
+                    majorForecastResultVO.setCategory(1);
+                    stable++;
+                } else if (majorForecastResultVO.getMinRanking() >= (forecastDTO.getRanking() + 6000)) {
+                    // 2.1.2该专业为保专业
+                    majorForecastResultVO.setCategory(0);
+                    minimum++;
+                } else if (majorForecastResultVO.getMinRanking() <= (forecastDTO.getRanking() - 5000)) {
+                    // 2.1.3该专业为冲专业
+                    majorForecastResultVO.setCategory(2);
+                    rush++;
+                }
+            } else {
+                // 2.2用户位次为null，根据分数统计
+
+            }
+        }
+        ForecastVO forecastVO = new ForecastVO();
+        forecastVO.setMajorForecastResultList(majorForecastResultList);
+        forecastVO.setChance(1.0);
+        forecastVO.setSelectableMajor(1);
+        return forecastVO;
+    }
+
+    /**
+     * 处理专业需求
+     *
+     * @param majorForecastResultVO 专业预测VO
+     */
+    private void majorRequire(MajorForecastResultVO majorForecastResultVO) {
+        String[] split = majorForecastResultVO.getMajorName().split("\n");
+        // 1.3判断是否有特殊需求
+        if (split.length == 3) {
+            // 1.4该专业有特殊需求
+            majorForecastResultVO.setMajorName(split[0]);
+            majorForecastResultVO.setSpecial(split[1]);
+            majorForecastResultVO.setRequire(split[2]);
+        } else if (split.length == 2) {
+            // 1.5该专业有选科要求
+            majorForecastResultVO.setMajorName(split[0]);
+            majorForecastResultVO.setRequire(split[1]);
+        } else {
+            // 1.6该专业无任何要求
+            majorForecastResultVO.setMajorName(split[0]);
+        }
+    }
+
+    /**
+     * 处理专业分类
+     *
+     * @param majorForecastResultVO 专业预测VO
+     */
+    private void majorCategory(MajorForecastResultVO majorForecastResultVO) {
+
     }
 
 

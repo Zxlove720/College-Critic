@@ -8,6 +8,6 @@ import java.util.List;
 @Mapper
 public interface ResourceMapper {
 
-    @Select("select * from tb_image")
+    @Select("select url from tb_image")
     List<String> getAllImages();
 }

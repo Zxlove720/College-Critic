@@ -99,7 +99,7 @@ public class SchoolController {
     /**
      * 获取某一院校的历年分数线
      *
-     * @param yearScoreDTO 年份分数线DTO
+     * @param yearScoreDTO 分数线查询DTO
      * @return List<YearScoreVO>
      */
     @PostMapping("/years")
@@ -112,7 +112,6 @@ public class SchoolController {
      * 用户评价大学
      *
      * @param addCommentDTO 评价DTO
-     * @return Void
      */
     @PostMapping("/comment")
     @Operation(summary = "用户评价大学")

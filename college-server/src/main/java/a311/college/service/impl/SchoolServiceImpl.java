@@ -80,7 +80,7 @@ public class SchoolServiceImpl implements SchoolService {
      */
     public void cacheSchool() {
         // 定义热点地区列表
-        List<String> hotAreas = Arrays.asList("北京", "上海", "广东", "湖北", "重庆", "陕西");
+        List<String> hotAreas = Arrays.asList("北京", "上海", "广东", "湖北", "重庆", "陕西", "湖北");
         for (String area : hotAreas) {
             // 统一键名格式
             String key = SchoolRedisKey.SCHOOL_CACHE_KEY + area + ":";
@@ -113,8 +113,9 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 根据成绩匹配大学
+     * 根据用户成绩查询大学
      *
+     * @param gradeDTO 用户成绩DTO
      * @return List<SchoolSimpleVO>
      */
     @Override
@@ -124,50 +125,10 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 查询大学历年分数线
-     *
-     * @return List<YearScoreVO>
-     */
-    @Override
-    public List<YearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO) {
-        List<YearScoreVO> yearScoreVOList = schoolMapper.selectScoreByYear(yearScoreDTO);
-        for (YearScoreVO yearScoreVO : yearScoreVOList) {
-            yearScoreVO.setMajorName(yearScoreVO.getMajorName()
-                    .substring(yearScoreVO.getMajorName().indexOf("选科要求")));
-        }
-        return yearScoreVOList;
-    }
-
-    /**
-     * 用户评价大学
-     *
-     * @param addCommentDTO 评价DTO
-     */
-    @Override
-    public void addSchoolComment(AddSchoolCommentDTO addCommentDTO) {
-        schoolMapper.addComment(addCommentDTO);
-    }
-
-    /**
-     * 优化大学数据
-     */
-    @Override
-    public void addScore() {
-        List<SchoolSimpleVO> list = schoolMapper.getAllSchool();
-        for (SchoolSimpleVO schoolSimpleVO : list) {
-            String rankList = schoolSimpleVO.getRankList();
-            String[] split = rankList.split(",");
-            int score = getScore(schoolSimpleVO, split);
-            schoolSimpleVO.setScore(score);
-            schoolMapper.updateScore(schoolSimpleVO);
-        }
-    }
-
-    /**
-     * 获取院校具体信息
+     * 查询大学具体信息
      *
      * @param schoolDTO 大学查询DTO
-     * @return SchoolVO
+     * @return SchoolVO 大学具体信息
      */
     @Override
     public SchoolVO getDetailSchool(SchoolDTO schoolDTO) {
@@ -208,6 +169,47 @@ public class SchoolServiceImpl implements SchoolService {
         // 5.3封装
         schoolVO.setMajors(simpleVOS);
         return schoolVO;
+    }
+
+    /**
+     * 获取某一院校的历年分数线
+     *
+     * @param yearScoreDTO 分数线查询DTO
+     * @return YearScoreVO
+     */
+    @Override
+    public List<YearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO) {
+        List<YearScoreVO> yearScoreVOList = schoolMapper.selectScoreByYear(yearScoreDTO);
+        for (YearScoreVO yearScoreVO : yearScoreVOList) {
+            yearScoreVO.setMajorName(yearScoreVO.getMajorName()
+                    .substring(yearScoreVO.getMajorName().indexOf("选科要求")));
+        }
+        return yearScoreVOList;
+    }
+
+    /**
+     * 用户评价大学
+     *
+     * @param addCommentDTO 评价DTO
+     */
+    @Override
+    public void addSchoolComment(AddSchoolCommentDTO addCommentDTO) {
+        schoolMapper.addComment(addCommentDTO);
+    }
+
+    /**
+     * 优化大学数据
+     */
+    @Override
+    public void addScore() {
+        List<SchoolSimpleVO> list = schoolMapper.getAllSchool();
+        for (SchoolSimpleVO schoolSimpleVO : list) {
+            String rankList = schoolSimpleVO.getRankList();
+            String[] split = rankList.split(",");
+            int score = getScore(schoolSimpleVO, split);
+            schoolSimpleVO.setScore(score);
+            schoolMapper.updateScore(schoolSimpleVO);
+        }
     }
 
 

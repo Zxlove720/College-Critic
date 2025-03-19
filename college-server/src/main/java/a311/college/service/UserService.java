@@ -15,6 +15,10 @@ public interface UserService {
 
     LoginResult login(UserLoginDTO userLoginDTO);
 
+    Integer checkUser(UserUsernameCheckDTO userUsernameCheckDTO);
+
+    Integer checkPhone(UserPhoneCheckDTO userPhoneCheckDTO);
+
     void register(UserDTO userDTO);
 
     String sendEditCode(UserCodeDTO userCodeDTO);
@@ -37,7 +41,4 @@ public interface UserService {
 
     List<String> showComment();
 
-    Integer checkUser(UserUsernameCheckDTO userUsernameCheckDTO);
-
-    Integer checkPhone(UserPhoneCheckDTO userPhoneCheckDTO);
 }

@@ -48,7 +48,7 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 大学数据分页查询
+     * 大学信息分页查询
      *
      * @param schoolPageQueryDTO 大学分页查询DTO
      * @return PageResult<SchoolVO>
@@ -105,7 +105,8 @@ public class SchoolServiceImpl implements SchoolService {
     /**
      * 根据学校名搜索大学
      *
-     * @return List<SchoolSimpleVO
+     * @param schoolName 学校名
+     * @return List<SchoolSimpleVO>
      */
     @Override
     public List<SchoolSimpleVO> getSchoolByName(String schoolName) {
@@ -190,7 +191,7 @@ public class SchoolServiceImpl implements SchoolService {
     /**
      * 用户评价大学
      *
-     * @param addCommentDTO 评价DTO
+     * @param addCommentDTO 用户评价DTO
      */
     @Override
     public void addSchoolComment(AddSchoolCommentDTO addCommentDTO) {

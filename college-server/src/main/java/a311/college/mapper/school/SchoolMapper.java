@@ -31,13 +31,6 @@ public interface SchoolMapper {
     Page<SchoolSimpleVO> pageQuery(SchoolPageQueryDTO schoolPageQueryDTO);
 
     /**
-     * 根据成绩查询大学
-     *
-     * @return List<SchoolVO>
-     */
-    List<SchoolSimpleVO> selectByGrade(UserGradeQueryDTO gradeDTO);
-
-    /**
      * 根据省份查询大学
      *
      * @param province 省份
@@ -48,6 +41,21 @@ public interface SchoolMapper {
     List<SchoolSimpleVO> selectByAddress(String province);
 
     /**
+     * 根据学校名搜索大学
+     *
+     * @param schoolName 学校名
+     * @return List<SchoolSimpleVO>
+     */
+    List<SchoolSimpleVO> selectByName(String schoolName);
+
+    /**
+     * 根据成绩查询大学
+     *
+     * @return List<SchoolVO>
+     */
+    List<SchoolSimpleVO> selectByGrade(UserGradeQueryDTO gradeDTO);
+
+    /**
      * 获取某一院校的历年分数线
      *
      * @return Result<YearScoreVO>
@@ -55,28 +63,51 @@ public interface SchoolMapper {
     List<YearScoreVO> selectScoreByYear(YearScoreQueryDTO yearScoreDTO);
 
     /**
-     * 根据学校名搜索
+     * 根据大学id查询学校
      *
-     * @param schoolName 学校名
-     * @return Result<List < SchoolSimpleVO>>
+     * @param schoolId 大学id
+     * @return SchoolSimpleVO
      */
-    List<SchoolSimpleVO> selectByName(String schoolName);
-
     @Select("select * from tb_school where school_id = #{schoolId}")
     SchoolSimpleVO selectBySchoolId(String schoolId);
 
+    /**
+     * 查询该学校开设专业
+     *
+     * @param schoolId 学校id
+     * @return List<MajorSimpleVO>
+     */
+    List<MajorSimpleVO> selectSimpleMajor(int schoolId);
+
+    /**
+     * 添加用户评价
+     *
+     * @param addCommentDTO 用户评价DTO
+     */
     @Insert("insert tb_comment set user_id = #{userId}, school_id = #{schoolId}, comment = #{comment}")
     void addComment(AddSchoolCommentDTO addCommentDTO);
 
+    /**
+     * 获取全部学校
+     *
+     * @return List<SchoolSimpleVO>
+     */
     @Select("select * from tb_school")
     List<SchoolSimpleVO> getAllSchool();
 
+    /**
+     * 更新学校等级
+     *
+     * @param schoolSimpleVO 学校简略信息VO
+     */
     @Update("update tb_school set rank_list = #{rankList} where school_id = #{schoolId}")
     void updateRank(SchoolSimpleVO schoolSimpleVO);
 
+    /**
+     * 更新学校客观评分
+     *
+     * @param schoolSimpleVO 学校简略信息VO
+     */
     @Update("update tb_school set score = #{score} where school_id = #{schoolId}")
     void updateScore(SchoolSimpleVO schoolSimpleVO);
-
-    List<MajorSimpleVO> selectSimpleMajor(int schoolId);
-
 }

@@ -1,4 +1,4 @@
-package a311.college.vo;
+package a311.college.vo.school;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -12,19 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "专业预测结果")
-public class MajorForecastResultVO {
+public class SchoolMajorVO {
 
     @Schema(description = "专业名")
     private String majorName;
 
     @Schema(description = "难度分类")
     private Integer category;
-
-    @Schema(description = "特殊要求")
-    private String special;
-
-    @Schema(description = "选科要求")
-    private String require;
 
     @Schema(description = "最低分数")
     private Integer minScore;

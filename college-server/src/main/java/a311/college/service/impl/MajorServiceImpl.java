@@ -4,7 +4,7 @@ import a311.college.dto.major.MajorQueryDTO;
 import a311.college.mapper.major.MajorMapper;
 import a311.college.result.Result;
 import a311.college.service.MajorService;
-import a311.college.vo.MajorVO;
+import a311.college.vo.major.MajorVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

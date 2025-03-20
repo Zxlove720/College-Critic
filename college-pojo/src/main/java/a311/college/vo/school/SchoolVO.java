@@ -1,5 +1,6 @@
-package a311.college.vo;
+package a311.college.vo.school;
 
+import a311.college.vo.major.MajorSimpleVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;

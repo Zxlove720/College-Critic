@@ -128,7 +128,7 @@ public class College2DataBase {
                 }
 
                 // 遍历类别
-                for (Category category : year.getCategories()) {
+                for (Category category : year.getCategorys()) {
                     int categoryId;
                     String insertCategory = "INSERT INTO tb_category (year_id, category_name) VALUES (?, ?)";
                     try (PreparedStatement statement = conn.prepareStatement(insertCategory, Statement.RETURN_GENERATED_KEYS)) {

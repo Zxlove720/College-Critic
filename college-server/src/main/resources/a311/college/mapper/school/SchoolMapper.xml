@@ -4,7 +4,7 @@
 <mapper namespace="a311.college.mapper.school.SchoolMapper">
 
 
-    <select id="pageQuery" resultType="a311.college.vo.SchoolSimpleVO">
+    <select id="pageQuery" resultType="a311.college.vo.school.SchoolSimpleVO">
         select
         school_id,
         school_head,
@@ -28,7 +28,7 @@
         order by score desc, length(rank_list) desc
     </select>
 
-    <select id="selectScoreByYear" resultType="a311.college.vo.YearScoreVO">
+    <select id="selectScoreByYear" resultType="a311.college.vo.school.YearScoreVO">
         select y.year,
                b.batch_name,
                sc.min_score,
@@ -47,7 +47,7 @@
         LIMIT 5
     </select>
 
-    <select id="selectByName" resultType="a311.college.vo.SchoolSimpleVO">
+    <select id="selectByName" resultType="a311.college.vo.school.SchoolSimpleVO">
         select s.school_id,
                s.school_head,
                s.school_name,
@@ -58,7 +58,7 @@
         order by score desc, length(rank_list) desc
     </select>
 
-    <select id="selectByGrade" resultType="a311.college.vo.SchoolSimpleVO">
+    <select id="selectByGrade" resultType="a311.college.vo.school.SchoolSimpleVO">
         SELECT DISTINCT s.school_head,
                         s.school_name,
                         s.school_address,
@@ -75,7 +75,7 @@
         ORDER BY score desc
     </select>
 
-    <select id="selectSimpleMajor" resultType="a311.college.vo.MajorSimpleVO">
+    <select id="selectSimpleMajor" resultType="a311.college.vo.major.MajorSimpleVO">
         SELECT category_name, major_name
         FROM (SELECT c.category_name,
                      sc.major_name,
@@ -97,7 +97,7 @@
         LIMIT 5;
     </select>
 
-    <select id="getAllMajor" resultType="a311.college.vo.MajorForecastResultVO">
+    <select id="getAllMajor" resultType="a311.college.vo.school.SchoolMajorVO">
         select
             sc.major_name, sc.min_score, sc.min_ranking
         FROM tb_school as s
@@ -106,6 +106,7 @@
                  JOIN tb_category as c ON y.year_id = c.year_id
                  JOIN tb_batch as b ON c.category_id = b.category_id
                  JOIN tb_score as sc ON b.batch_id = sc.batch_id
-        where s.school_id = #{schoolId}
+        where s.school_id = #{schoolId} and p.province_name = #{province}
+        and ( SELECT MAX(year) FROM tb_year WHERE year &lt; YEAR(CURDATE()))
     </select>
 </mapper>

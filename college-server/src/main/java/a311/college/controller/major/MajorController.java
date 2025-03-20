@@ -5,7 +5,7 @@ import a311.college.dto.major.MajorQueryDTO;
 import a311.college.dto.query.major.MajorNameQueryDTO;
 import a311.college.result.Result;
 import a311.college.service.MajorService;
-import a311.college.vo.MajorVO;
+import a311.college.vo.major.MajorVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

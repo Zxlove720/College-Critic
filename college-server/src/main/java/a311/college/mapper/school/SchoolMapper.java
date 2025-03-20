@@ -2,13 +2,15 @@ package a311.college.mapper.school;
 
 
 import a311.college.dto.school.AddSchoolCommentDTO;
+import a311.college.dto.school.ForecastDTO;
 import a311.college.dto.school.SchoolPageQueryDTO;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
-import a311.college.vo.MajorForecastResultVO;
-import a311.college.vo.MajorSimpleVO;
-import a311.college.vo.SchoolSimpleVO;
-import a311.college.vo.YearScoreVO;
+import a311.college.entity.school.SchoolMajor;
+import a311.college.vo.school.SchoolMajorVO;
+import a311.college.vo.major.MajorSimpleVO;
+import a311.college.vo.school.SchoolSimpleVO;
+import a311.college.vo.school.YearScoreVO;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -115,8 +117,15 @@ public interface SchoolMapper {
     /**
      * 查询某学校所有专业
      *
-     * @param schoolId 学校id
-     * @return List<MajorForecastResultVO>
+     * @param forecastDTO 预测DTO
+     * @return List<SchoolMajorVO>
      */
-    List<MajorForecastResultVO> getAllMajor(String schoolId);
+    List<SchoolMajorVO> getAllMajor(ForecastDTO forecastDTO);
+
+    @Select("select * from tb_score")
+    List<SchoolMajor> selectAllMajor();
+
+    @Update("update tb_score set major_name = #{majorName}, first_choice = #{firstChoice}, other_choice = #{otherChoice}, " +
+            "special = #{special}")
+    void updateMajor(SchoolMajor schoolMajor);
 }

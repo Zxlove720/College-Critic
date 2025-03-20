@@ -9,15 +9,16 @@ import a311.college.dto.school.SchoolPageQueryDTO;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
+import a311.college.entity.school.SchoolMajor;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.SchoolService;
 import a311.college.service.DeepSeekService;
 import a311.college.thread.ThreadLocalUtil;
-import a311.college.vo.ForecastVO;
-import a311.college.vo.SchoolSimpleVO;
-import a311.college.vo.SchoolVO;
-import a311.college.vo.YearScoreVO;
+import a311.college.vo.school.ForecastVO;
+import a311.college.vo.school.SchoolSimpleVO;
+import a311.college.vo.school.SchoolVO;
+import a311.college.vo.school.YearScoreVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -143,4 +144,6 @@ public class SchoolController {
         log.info("用户'{}'正在做录取预测", ThreadLocalUtil.getCurrentId());
         return Result.success(schoolService.forecast(forecastDTO));
     }
+
+
 }

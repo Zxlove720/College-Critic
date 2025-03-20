@@ -23,6 +23,6 @@ public class Years implements Serializable {
     private String year;
 
     @Schema(description = "招生分类")
-    private List<Category> categories;
+    private List<Category> categorys;
 
 }

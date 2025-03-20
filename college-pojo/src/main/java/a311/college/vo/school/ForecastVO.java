@@ -1,4 +1,4 @@
-package a311.college.vo;
+package a311.college.vo.school;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -23,6 +23,6 @@ public class ForecastVO {
     private Double chance;
 
     @Schema(description = "专业列表")
-    private List<MajorForecastResultVO> majorForecastResultList;
+    private List<SchoolMajorVO> majorForecastResultList;
 
 }

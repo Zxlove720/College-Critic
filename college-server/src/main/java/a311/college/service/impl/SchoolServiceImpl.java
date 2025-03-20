@@ -11,7 +11,8 @@ import a311.college.mapper.resource.ResourceMapper;
 import a311.college.mapper.school.SchoolMapper;
 import a311.college.result.PageResult;
 import a311.college.service.SchoolService;
-import a311.college.vo.*;
+import a311.college.vo.major.MajorSimpleVO;
+import a311.college.vo.school.*;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.github.pagehelper.Page;
@@ -225,68 +226,80 @@ public class SchoolServiceImpl implements SchoolService {
         int rush = 0;
         // 1.处理专业信息
         // 1.1获得专业信息
-        List<MajorForecastResultVO> majorForecastResultList = schoolMapper.getAllMajor(forecastDTO.getSchoolId());
+        List<SchoolMajorVO> majorForecastResultList = schoolMapper.getAllMajor(forecastDTO);
         // 1.2处理专业名、特殊要求、选科要求
-        for (MajorForecastResultVO majorForecastResultVO : majorForecastResultList) {
-            majorRequire(majorForecastResultVO);
+        for (SchoolMajorVO schoolMajorVO : majorForecastResultList) {
+//            majorRequire(schoolMajorVO);
             // 2.统计各个层次专业个数
             // 2.1默认根据用户的位次进行统计
-            if (forecastDTO.getRanking() != null) {
-                if (majorForecastResultVO.getMinRanking() >= (forecastDTO.getRanking() + 3000)
-                        && majorForecastResultVO.getMinRanking() <= (forecastDTO.getRanking() - 2000)) {
-                    // 2.1.1该专业为稳专业
-                    majorForecastResultVO.setCategory(1);
+            Integer userRanking = forecastDTO.getRanking();
+            if (userRanking != null) {
+                Integer majorRanking = schoolMajorVO.getMinRanking();
+                if (majorRanking >= userRanking - 3000 && majorRanking <= userRanking + 4000) {
+                    // 2.2该专业为稳
+                    schoolMajorVO.setCategory(1);
                     stable++;
-                } else if (majorForecastResultVO.getMinRanking() >= (forecastDTO.getRanking() + 6000)) {
-                    // 2.1.2该专业为保专业
-                    majorForecastResultVO.setCategory(0);
-                    minimum++;
-                } else if (majorForecastResultVO.getMinRanking() <= (forecastDTO.getRanking() - 5000)) {
-                    // 2.1.3该专业为冲专业
-                    majorForecastResultVO.setCategory(2);
-                    rush++;
+                } else if (majorRanking < userRanking - 3000 && majorRanking >= userRanking - 5000) {
+                    schoolMajorVO.setCategory(2);
+                    rush++;   // 冲：专业位次更优（数值更小）
+                } else if (majorRanking > userRanking + 4000) {
+                    schoolMajorVO.setCategory(0);
+                    minimum++; // 保：专业位次更差（数值更大）
                 }
             } else {
-                // 2.2用户位次为null，根据分数统计
-
+                Integer majorScore = schoolMajorVO.getMinScore();
+                Integer userGrade = forecastDTO.getGrade();
+                if (majorScore <= userGrade + 10 && majorScore >= userGrade - 10) {
+                    stable++;
+                } else if (majorScore > userGrade + 10 && majorScore <= userGrade + 20) {
+                    rush++;
+                } else if (majorScore < userGrade - 10 && majorScore >= userGrade - 30) {
+                    minimum++;
+                }
             }
         }
+
         ForecastVO forecastVO = new ForecastVO();
         forecastVO.setMajorForecastResultList(majorForecastResultList);
-        forecastVO.setChance(1.0);
-        forecastVO.setSelectableMajor(1);
+        forecastVO.setChance((stable + minimum + 0.3 * rush) / majorForecastResultList.size());
+        forecastVO.setSelectableMajor(majorForecastResultList.size());
         return forecastVO;
     }
 
-    /**
-     * 处理专业需求
-     *
-     * @param majorForecastResultVO 专业预测VO
-     */
-    private void majorRequire(MajorForecastResultVO majorForecastResultVO) {
-        String[] split = majorForecastResultVO.getMajorName().split("\n");
-        // 1.3判断是否有特殊需求
-        if (split.length == 3) {
-            // 1.4该专业有特殊需求
-            majorForecastResultVO.setMajorName(split[0]);
-            majorForecastResultVO.setSpecial(split[1]);
-            majorForecastResultVO.setRequire(split[2]);
-        } else if (split.length == 2) {
-            // 1.5该专业有选科要求
-            majorForecastResultVO.setMajorName(split[0]);
-            majorForecastResultVO.setRequire(split[1]);
-        } else {
-            // 1.6该专业无任何要求
-            majorForecastResultVO.setMajorName(split[0]);
-        }
+//    /**
+//     * 处理专业需求
+//     *
+//     * @param schoolMajorVO 专业预测VO
+//     */
+//    private void majorRequire(SchoolMajorVO schoolMajorVO) {
+//        String[] split = schoolMajorVO.getMajorName().split("\n");
+//        // 1.3判断是否有特殊需求
+//        if (split.length == 3) {
+//            // 1.4该专业有特殊需求
+//            schoolMajorVO.setMajorName(split[0]);
+//            schoolMajorVO.setSpecial(split[1]);
+//            schoolMajorVO.setRequire(split[2]);
+//        } else if (split.length == 2) {
+//            // 1.5该专业有选科要求
+//            schoolMajorVO.setMajorName(split[0]);
+//            schoolMajorVO.setRequire(split[1]);
+//        } else {
+//            // 1.6该专业无任何要求
+//            schoolMajorVO.setMajorName(split[0]);
+//        }
+//    }
+
+
+    public void changeSubject() {
+
     }
 
     /**
      * 处理专业分类
      *
-     * @param majorForecastResultVO 专业预测VO
+     * @param schoolMajorVO 专业预测VO
      */
-    private void majorCategory(MajorForecastResultVO majorForecastResultVO) {
+    private void majorCategory(SchoolMajorVO schoolMajorVO) {
 
     }
 

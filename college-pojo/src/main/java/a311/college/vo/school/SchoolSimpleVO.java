@@ -1,5 +1,6 @@
 package a311.college.vo.school;
 
+import a311.college.enumeration.ProvinceEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +26,9 @@ public class SchoolSimpleVO implements Serializable {
 
     @Schema(description = "大学名称")
     private String schoolName;
+
+    @Schema(description = "大学省份")
+    private ProvinceEnum schoolProvince;
 
     @Schema(description = "学校地址")
     private String schoolAddress;

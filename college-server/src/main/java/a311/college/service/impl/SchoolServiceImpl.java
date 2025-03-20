@@ -210,6 +210,16 @@ public class SchoolServiceImpl implements SchoolService {
             schoolSimpleVO.setScore(score);
             schoolMapper.updateScore(schoolSimpleVO);
         }
+//        List<SchoolSimpleVO> list = schoolMapper.getAllSchool();
+//        for (SchoolSimpleVO schoolSimpleVO : list) {
+//            String rankList = schoolSimpleVO.getRankList();
+//            String tempResult = rankList.replace("[", "");
+//            String tempResult2 = tempResult.replace("]", "");
+//            String result = tempResult2.replaceAll("，", ",");
+//            result = result.replaceAll(" ", "");
+//            schoolSimpleVO.setRankList(result);
+//            schoolMapper.updateRank(schoolSimpleVO);
+//        }
     }
 
     /**
@@ -352,33 +362,24 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     private int getScore(SchoolSimpleVO schoolSimpleVO, String[] split) {
-        int score = 0;
+        int rankScore = 0;
         for (String s : split) {
             switch (s) {
-                case "本科", "双一流", "强基计划" -> score += 15;
-                case "公办", "军事类" -> score += 10;
-                case "985" -> score += 30;
-                case "211" -> score += 20;
-                case "医药类" -> score += 5;
-                case "双高计划" -> score += 3;
+                case "本科", "双一流", "强基计划" -> rankScore += 15;
+                case "公办", "军事类" -> rankScore += 10;
+                case "985" -> rankScore += 30;
+                case "211" -> rankScore += 20;
+                case "医药类" -> rankScore += 5;
+                case "双高计划" -> rankScore += 3;
             }
         }
         if (schoolSimpleVO.getSchoolName().contains("大学")) {
-            score += 5;
+            rankScore += 5;
         }
-        return score;
+        return (((7 * rankScore) + (3 * schoolSimpleVO.getSchoolProvince().getScore())) / 10);
     }
 
     private void updateRankList() {
-        List<SchoolSimpleVO> list = schoolMapper.getAllSchool();
-        for (SchoolSimpleVO schoolSimpleVO : list) {
-            String rankList = schoolSimpleVO.getRankList();
-            String tempResult = rankList.replace("[", "");
-            String tempResult2 = tempResult.replace("]", "");
-            String result = tempResult2.replaceAll("，", ",");
-            result = result.replaceAll(" ", "");
-            schoolSimpleVO.setRankList(result);
-            schoolMapper.updateRank(schoolSimpleVO);
-        }
+
     }
 }

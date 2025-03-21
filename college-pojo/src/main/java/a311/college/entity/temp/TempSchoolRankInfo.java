@@ -1,5 +1,6 @@
-package a311.college.entity.school;
+package a311.college.entity.temp;
 
+import a311.college.enumeration.ProvinceEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "大学扩展信息（保存数据用）")
-public class SchoolRankInfo {
+public class TempSchoolRankInfo {
     @JsonProperty("SchoolName")
     private String schoolName;
 

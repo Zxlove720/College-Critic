@@ -4,8 +4,10 @@ import a311.college.constant.resource.DataBaseConnectionConstant;
 import a311.college.constant.resource.LogoURLConstant;
 import a311.college.constant.resource.SchoolDataFilePath;
 import a311.college.entity.school.*;
+import a311.college.entity.temp.TempSchoolRankInfo;
 import a311.college.entity.temp.TempSchoolID;
 import a311.college.entity.temp.TempSchoolInfo;
+import a311.college.enumeration.ProvinceEnum;
 import cn.hutool.core.bean.BeanUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,8 +40,8 @@ public class College2DataBase {
             // 获取学校名和其对应的id
             Collection<TempSchoolID> values = map.values();
             // 序列化rank.json
-            List<SchoolRankInfo> rankData = mapper.readValue(new File(SchoolDataFilePath.RANKING_DATA_PATH),
-                    mapper.getTypeFactory().constructCollectionType(List.class, SchoolRankInfo.class));
+            List<TempSchoolRankInfo> rankData = mapper.readValue(new File(SchoolDataFilePath.RANKING_DATA_PATH),
+                    mapper.getTypeFactory().constructCollectionType(List.class, TempSchoolRankInfo.class));
             // 序列化school.json
             File dir = new File(SchoolDataFilePath.COLLEGE_DATA_PATH);
             File[] files = dir.listFiles();
@@ -51,12 +53,32 @@ public class College2DataBase {
                     School school = new School();
                     BeanUtil.copyProperties(tempSchoolData, school);
                     // 设置学校地址和学校等级
-                    for (SchoolRankInfo rankDatum : rankData) {
-                        if (school.getSchoolName().equals(rankDatum.getSchoolName())) {
-                            school.setSchoolAddr(rankDatum.getSchoolAddr());
-                            school.setProvinceAddress(extractProvince(rankDatum.getSchoolAddr()));
-                            school.setRankList(rankDatum.getRankList());
-                            break;
+                    int rankScore = 0;
+                    for (TempSchoolRankInfo tempSchoolRankInfo : rankData) {
+                        if (school.getSchoolName().equals(tempSchoolRankInfo.getSchoolName())) {
+                            school.setSchoolAddr(tempSchoolRankInfo.getSchoolAddr());
+                            school.setProvinceAddress(ProvinceEnum.getProvince(extractProvince(tempSchoolRankInfo.getSchoolAddr())));
+                            // 特殊处理其rankList
+                            String rankListStr = tempSchoolRankInfo.getRankList().toString();
+                            String tempResult = rankListStr.replace("[", "");
+                            String tempResult2 = tempResult.replace("]", "");
+                            String result = tempResult2.replaceAll("，", ",");
+                            String rankList = result.replaceAll(" ", "");
+                            school.setRankList(rankList);
+                            for (String s : rankList.split(",")) {
+                                switch (s) {
+                                    case "本科", "双一流", "强基计划" -> rankScore += 15;
+                                    case "公办", "军事类" -> rankScore += 10;
+                                    case "985" -> rankScore += 30;
+                                    case "211" -> rankScore += 20;
+                                    case "医药类" -> rankScore += 5;
+                                    case "双高计划" -> rankScore += 3;
+                                }
+                            }
+                            if (school.getSchoolName().contains("大学")) {
+                                rankScore += 5;
+                            }
+                            school.setScore((7 * rankScore + 3 * school.getProvinceAddress().getScore()) / 10);
                         }
                     }
                     // 获取学校id和头像
@@ -87,15 +109,16 @@ public class College2DataBase {
         // 插入学校
         String schoolId = school.getSchoolId();
         String insertSchool = "INSERT INTO tb_school " +
-                "(school_id, school_head,school_name, school_province, school_address, rank_list)" +
-                " VALUES (?, ?, ?, ?, ?, ?)";
+                "(school_id, school_head,school_name, school_province, school_address, rank_list, score)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = conn.prepareStatement(insertSchool, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, school.getSchoolId());
             statement.setString(2, school.getSchoolHead());
             statement.setString(3, school.getSchoolName());
-            statement.setString(4, school.getProvinceAddress());
+            statement.setString(4, school.getProvinceAddress().getName());
             statement.setString(5, school.getSchoolAddr());
-            statement.setString(6, school.getRankList().toString());
+            statement.setString(6, updateRankList(school.getRankList()));
+            statement.setInt(7, school.getScore());
             statement.executeUpdate();
         }
 
@@ -156,14 +179,67 @@ public class College2DataBase {
                         }
 
                         // 插入分数
-                        String insertScore = "INSERT INTO tb_score (batch_id, major_name, min_score, min_ranking) VALUES (?, ?, ?, ?)";
+                        String insertScore = "INSERT INTO tb_score (batch_id, major_name, first_choice, other_choice" +
+                                ", special, min_score, min_ranking) VALUES (?, ?, ?, ?, ?, ?, ?)";
                         try (PreparedStatement statement = conn.prepareStatement(insertScore)) {
                             for (Score score : batch.getScores()) {
                                 statement.setInt(1, batchId);
-                                statement.setString(2, score.getMajor());
+                                String[] major = score.getMajor().split("\n");
+                                statement.setString(2, major[0]);
+                                String value3 = null;
+                                String value4 = null;
+                                String value5 = null;
+                                if (major.length == 3) {
+                                    value5 = major[1];
+                                    String[] split = major[2].split("：")[1].split("，");
+                                    if (split[0].contains("物理")) {
+                                        value3 = "物理";
+                                        if (split.length == 2) {
+                                            value4 = split[1];
+                                        }
+                                    } else if (split[0].contains("历史")) {
+                                        value3 = "历史";
+                                        if (split.length == 2) {
+                                            value4 = split[1];
+                                        }
+                                    } else {
+                                        value3 = "不限";
+                                    }
+                                } else if (major.length == 2) {
+                                    if (major[1].contains("选科")) {
+                                        String[] split = major[1].split("：")[1].split("，");
+                                        if (split[0].contains("物理")) {
+                                            value3 = "物理";
+                                            if (split.length == 2) {
+                                                value4 = split[1];
+                                            }
+                                        } else if (split[0].contains("历史")) {
+                                            value3 = "历史";
+                                            if (split.length == 2) {
+                                                value4 = split[1];
+                                            }
+                                        } else {
+                                            value3 = "不限";
+                                        }
+                                    } else {
+                                        value5 = major[1];
+                                    }
+                                }
+                                if (value3 == null) {
+                                    statement.setNull(3, Types.VARCHAR);
+                                }
+                                if (value4 == null) {
+                                    statement.setNull(4, Types.VARCHAR);
+                                }
+                                if (value5 == null) {
+                                    statement.setNull(5, Types.VARCHAR);
+                                }
+                                statement.setString(3, value3);
+                                statement.setString(4, value4);
+                                statement.setString(5, value5);
                                 int[] temp = getScoreAndRanking(score.getMinScore_weici());
-                                statement.setInt(3, temp[0]);
-                                statement.setInt(4, temp[1]);
+                                statement.setInt(6, temp[0]);
+                                statement.setInt(7, temp[1]);
                                 statement.addBatch();
                             }
                             statement.executeBatch();
@@ -225,5 +301,13 @@ public class College2DataBase {
             }
         }
         return "";
+    }
+
+    private static String updateRankList(String rankList) {
+        String tempResult = rankList.replace("[", "");
+        String tempResult2 = tempResult.replace("]", "");
+        String result = tempResult2.replaceAll("，", ",");
+        result = result.replaceAll(" ", "");
+        return result;
     }
 }

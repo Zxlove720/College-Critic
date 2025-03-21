@@ -202,24 +202,17 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public void addScore() {
+
         List<SchoolSimpleVO> list = schoolMapper.getAllSchool();
         for (SchoolSimpleVO schoolSimpleVO : list) {
             String rankList = schoolSimpleVO.getRankList();
-            String[] split = rankList.split(",");
-            int score = getScore(schoolSimpleVO, split);
-            schoolSimpleVO.setScore(score);
-            schoolMapper.updateScore(schoolSimpleVO);
+            String tempResult = rankList.replace("[", "");
+            String tempResult2 = tempResult.replace("]", "");
+            String result = tempResult2.replaceAll("，", ",");
+            result = result.replaceAll(" ", "");
+            schoolSimpleVO.setRankList(result);
+            schoolMapper.updateRank(schoolSimpleVO);
         }
-//        List<SchoolSimpleVO> list = schoolMapper.getAllSchool();
-//        for (SchoolSimpleVO schoolSimpleVO : list) {
-//            String rankList = schoolSimpleVO.getRankList();
-//            String tempResult = rankList.replace("[", "");
-//            String tempResult2 = tempResult.replace("]", "");
-//            String result = tempResult2.replaceAll("，", ",");
-//            result = result.replaceAll(" ", "");
-//            schoolSimpleVO.setRankList(result);
-//            schoolMapper.updateRank(schoolSimpleVO);
-//        }
     }
 
     /**
@@ -380,6 +373,13 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     private void updateRankList() {
-
+        List<SchoolSimpleVO> list = schoolMapper.getAllSchool();
+        for (SchoolSimpleVO schoolSimpleVO : list) {
+            String rankList = schoolSimpleVO.getRankList();
+            String[] split = rankList.split(",");
+            int score = getScore(schoolSimpleVO, split);
+            schoolSimpleVO.setScore(score);
+            schoolMapper.updateScore(schoolSimpleVO);
+        }
     }
 }

@@ -9,7 +9,6 @@ import a311.college.dto.school.SchoolPageQueryDTO;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
-import a311.college.entity.school.SchoolMajor;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.SchoolService;

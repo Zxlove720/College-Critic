@@ -47,4 +47,13 @@ public enum ProvinceEnum {
         this.score = score;
         this.status = status;
     }
+
+    public static ProvinceEnum getProvince(String province) {
+        for (ProvinceEnum value : ProvinceEnum.values()) {
+            if (province.equals(value.getName())) {
+                return value;
+            }
+        }
+        return null;
+    }
 }

@@ -29,5 +29,5 @@ public interface SchoolService {
 
     ForecastVO forecast(ForecastDTO forecastDTO);
 
-    List<BriefSchoolInfoVO> getHotSchool(HotSchoolDTO hotSchoolDTO);
+    List<BriefSchoolInfoVO> getHotSchool();
 }

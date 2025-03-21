@@ -131,6 +131,9 @@ public interface SchoolMapper {
             "special = #{special}")
     void updateMajor(SchoolMajor schoolMajor);
 
-    @Select("select * from tb_school where school_province = #{province} order by score desc")
+    @Select("select * from tb_school where school_province = #{province} order by score desc limit 9")
     List<SchoolInfo> selectByProvince(ProvinceEnum province);
+
+    @Select("select * from tb_school where school_name = #{school}")
+    SchoolInfo getByName(String school);
 }

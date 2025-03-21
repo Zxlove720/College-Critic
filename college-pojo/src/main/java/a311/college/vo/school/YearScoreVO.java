@@ -29,8 +29,15 @@ public class YearScoreVO implements Serializable {
     @Schema(description = "最低位次")
     private String minRanking;
 
-    @Schema(description = "选科要求")
+    @Schema(description = "专业名")
     private String majorName;
 
+    @Schema(description = "首选科目要求")
+    private String firstChoice;
 
+    @Schema(description = "其他选科要求")
+    private String otherChoice;
+
+    @Schema(description = "特殊")
+    private String special;
 }

@@ -29,18 +29,22 @@
     </select>
 
     <select id="selectScoreByYear" resultType="a311.college.vo.school.YearScoreVO">
-        select y.year,
+        select distinct
+               y.year,
                b.batch_name,
                sc.min_score,
                sc.min_ranking,
-               sc.major_name
+               sc.major_name,
+               sc.first_choice,
+               sc.other_choice,
+               sc.special
         from tb_school as s
                  JOIN tb_province as p ON s.school_id = p.school_id
                  JOIN tb_year as y ON p.province_id = y.province_id
                  JOIN tb_category as c ON y.year_id = c.year_id
                  JOIN tb_batch as b ON c.category_id = b.category_id
                  JOIN tb_score as sc ON b.batch_id = sc.batch_id
-        where s.school_id = #{id}
+        where s.school_id = #{schoolId}
           and p.province_name = #{province}
           and y.year = #{year}
         order by sc.min_score
@@ -52,7 +56,8 @@
                s.school_head,
                s.school_name,
                s.school_address,
-               s.rank_list
+               s.rank_list,
+               s.score
         from tb_school as s
         where school_name like concat('%', #{schoolName}, '%')
         order by score desc, length(rank_list) desc

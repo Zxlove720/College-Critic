@@ -132,13 +132,12 @@ public class SchoolController {
     /**
      * 获取热门院校
      *
-     * @param hotSchoolDTO 热点院校查询
      * @return Result<List<BriefSchoolInfoVO>>
      */
     @PostMapping("/hot")
-    public Result<List<BriefSchoolInfoVO>> hotSchool(@RequestBody HotSchoolDTO hotSchoolDTO) {
+    public Result<List<BriefSchoolInfoVO>> hotSchool() {
         log.info("获取热门院校");
-        List<BriefSchoolInfoVO>schoolSimpleVOList = schoolService.getHotSchool(hotSchoolDTO);
+        List<BriefSchoolInfoVO>schoolSimpleVOList = schoolService.getHotSchool();
         return Result.success(schoolSimpleVOList);
     }
 

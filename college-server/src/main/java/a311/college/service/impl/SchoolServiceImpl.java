@@ -5,12 +5,16 @@ import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.entity.school.SchoolInfo;
+import a311.college.entity.user.User;
 import a311.college.mapper.resource.ResourceMapper;
 import a311.college.mapper.school.SchoolMapper;
+import a311.college.mapper.user.UserMapper;
 import a311.college.result.PageResult;
 import a311.college.service.SchoolService;
+import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.major.MajorSimpleVO;
 import a311.college.vo.school.*;
+import a311.college.vo.user.UserVO;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.github.pagehelper.Page;
@@ -33,15 +37,18 @@ public class SchoolServiceImpl implements SchoolService {
 
     private final SchoolMapper schoolMapper;
 
+    private final UserMapper userMapper;
+
     private final ResourceMapper resourceMapper;
 
     @Resource
     private RedisTemplate<String, SchoolSimpleVO> redisTemplate;
 
     @Autowired
-    public SchoolServiceImpl(SchoolMapper schoolMapper, ResourceMapper resourceMapper) {
+    public SchoolServiceImpl(SchoolMapper schoolMapper, ResourceMapper resourceMapper, UserMapper userMapper) {
         this.schoolMapper = schoolMapper;
         this.resourceMapper = resourceMapper;
+        this.userMapper = userMapper;
     }
 
     /**
@@ -177,12 +184,7 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public List<YearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO) {
-        List<YearScoreVO> yearScoreVOList = schoolMapper.selectScoreByYear(yearScoreDTO);
-        for (YearScoreVO yearScoreVO : yearScoreVOList) {
-            yearScoreVO.setMajorName(yearScoreVO.getMajorName()
-                    .substring(yearScoreVO.getMajorName().indexOf("选科要求")));
-        }
-        return yearScoreVOList;
+        return schoolMapper.selectScoreByYear(yearScoreDTO);
     }
 
     /**
@@ -257,10 +259,11 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public List<BriefSchoolInfoVO> getHotSchool(HotSchoolDTO hotSchoolDTO) {
+    public List<BriefSchoolInfoVO> getHotSchool() {
+        UserVO user = userMapper.selectById(ThreadLocalUtil.getCurrentId());
         List<BriefSchoolInfoVO> briefSchoolInfoVOList = new ArrayList<>();
-        if (hotSchoolDTO.getProvince() != null) {
-            List<SchoolInfo> schoolInfoList = schoolMapper.selectByProvince(hotSchoolDTO.getProvince());
+        if (user != null) {
+            List<SchoolInfo> schoolInfoList = schoolMapper.selectByProvince(user.getProvince());
             for (SchoolInfo schoolInfo : schoolInfoList) {
                 schoolInfo.setRankList(schoolInfo.getRankList().split(",")[1]);
                 BriefSchoolInfoVO briefSchoolInfoVO = new BriefSchoolInfoVO();
@@ -271,7 +274,19 @@ public class SchoolServiceImpl implements SchoolService {
             }
             return briefSchoolInfoVOList;
         } else {
-            return null;
+            // 用户没有登录，展示默认的大学
+            List<String> hotSchool = new ArrayList<>();
+            Collections.addAll(hotSchool, "清华大学", "浙江大学", "四川大学", "中国科学技术大学", "中山大学", "哈尔滨工业大学",
+                    "武汉大学", "厦门大学", "西安交通大学", "西南大学");
+            for (String school : hotSchool) {
+                SchoolInfo schoolInfo = schoolMapper.getByName(school);
+                BriefSchoolInfoVO briefSchoolInfoVO = new BriefSchoolInfoVO();
+                briefSchoolInfoVO.setName(schoolInfo.getSchoolName());
+                briefSchoolInfoVO.setHead(schoolInfo.getSchoolHead());
+                briefSchoolInfoVO.setRank(schoolInfo.getRankList().split(",")[1]);
+                briefSchoolInfoVOList.add(briefSchoolInfoVO);
+            }
+            return briefSchoolInfoVOList;
         }
     }
 

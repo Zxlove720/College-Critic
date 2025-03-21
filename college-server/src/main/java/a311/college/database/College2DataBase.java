@@ -54,8 +54,8 @@ public class College2DataBase {
                         School school = new School();
                         BeanUtil.copyProperties(tempSchoolData, school);
                         // 设置学校地址和学校等级
-                        int rankScore = 0;
                         for (TempSchoolRankInfo tempSchoolRankInfo : rankData) {
+                            int rankScore = 0;
                             if (school.getSchoolName().equals(tempSchoolRankInfo.getSchoolName())) {
                                 school.setSchoolAddr(tempSchoolRankInfo.getSchoolAddr());
                                 school.setProvinceAddress(ProvinceEnum.getProvince(extractProvince(tempSchoolRankInfo.getSchoolAddr())));

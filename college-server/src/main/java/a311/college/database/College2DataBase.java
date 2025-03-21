@@ -45,58 +45,60 @@ public class College2DataBase {
             // 序列化school.json
             File dir = new File(SchoolDataFilePath.COLLEGE_DATA_PATH);
             File[] files = dir.listFiles();
-            for (File file : files) {
-                try {
-                    // 先序列化为临时的TempSchoolInfo对象，然后再结合三个json文件，拼接为完整的School对象
-                    TempSchoolInfo tempSchoolData = mapper.readValue
-                            (file, TempSchoolInfo.class);
-                    School school = new School();
-                    BeanUtil.copyProperties(tempSchoolData, school);
-                    // 设置学校地址和学校等级
-                    int rankScore = 0;
-                    for (TempSchoolRankInfo tempSchoolRankInfo : rankData) {
-                        if (school.getSchoolName().equals(tempSchoolRankInfo.getSchoolName())) {
-                            school.setSchoolAddr(tempSchoolRankInfo.getSchoolAddr());
-                            school.setProvinceAddress(ProvinceEnum.getProvince(extractProvince(tempSchoolRankInfo.getSchoolAddr())));
-                            // 特殊处理其rankList
-                            String rankListStr = tempSchoolRankInfo.getRankList().toString();
-                            String tempResult = rankListStr.replace("[", "");
-                            String tempResult2 = tempResult.replace("]", "");
-                            String result = tempResult2.replaceAll("，", ",");
-                            String rankList = result.replaceAll(" ", "");
-                            school.setRankList(rankList);
-                            for (String s : rankList.split(",")) {
-                                switch (s) {
-                                    case "本科", "双一流", "强基计划" -> rankScore += 15;
-                                    case "公办", "军事类" -> rankScore += 10;
-                                    case "985" -> rankScore += 30;
-                                    case "211" -> rankScore += 20;
-                                    case "医药类" -> rankScore += 5;
-                                    case "双高计划" -> rankScore += 3;
+            if (files != null) {
+                for (File file : files) {
+                    try {
+                        // 先序列化为临时的TempSchoolInfo对象，然后再结合三个json文件，拼接为完整的School对象
+                        TempSchoolInfo tempSchoolData = mapper.readValue
+                                (file, TempSchoolInfo.class);
+                        School school = new School();
+                        BeanUtil.copyProperties(tempSchoolData, school);
+                        // 设置学校地址和学校等级
+                        int rankScore = 0;
+                        for (TempSchoolRankInfo tempSchoolRankInfo : rankData) {
+                            if (school.getSchoolName().equals(tempSchoolRankInfo.getSchoolName())) {
+                                school.setSchoolAddr(tempSchoolRankInfo.getSchoolAddr());
+                                school.setProvinceAddress(ProvinceEnum.getProvince(extractProvince(tempSchoolRankInfo.getSchoolAddr())));
+                                // 特殊处理其rankList
+                                String rankListStr = tempSchoolRankInfo.getRankList().toString();
+                                String tempResult = rankListStr.replace("[", "");
+                                String tempResult2 = tempResult.replace("]", "");
+                                String result = tempResult2.replaceAll("，", ",");
+                                String rankList = result.replaceAll(" ", "");
+                                school.setRankList(rankList);
+                                for (String s : rankList.split(",")) {
+                                    switch (s) {
+                                        case "本科", "双一流", "强基计划" -> rankScore += 15;
+                                        case "公办", "军事类" -> rankScore += 10;
+                                        case "985" -> rankScore += 30;
+                                        case "211" -> rankScore += 20;
+                                        case "医药类" -> rankScore += 5;
+                                        case "双高计划" -> rankScore += 3;
+                                    }
                                 }
+                                if (school.getSchoolName().contains("大学")) {
+                                    rankScore += 5;
+                                }
+                                school.setScore((7 * rankScore + 3 * school.getProvinceAddress().getScore()) / 10);
                             }
-                            if (school.getSchoolName().contains("大学")) {
-                                rankScore += 5;
+                        }
+                        // 获取学校id和头像
+                        for (TempSchoolID value : values) {
+                            if (school.getSchoolName().equals(value.getName())) {
+                                school.setSchoolId(value.getSchoolId());
+                                school.setSchoolHead(LogoURLConstant.LOGO_PREFIX + school.getSchoolId() + ".jpg");
                             }
-                            school.setScore((7 * rankScore + 3 * school.getProvinceAddress().getScore()) / 10);
                         }
-                    }
-                    // 获取学校id和头像
-                    for (TempSchoolID value : values) {
-                        if (school.getSchoolName().equals(value.getName())) {
-                            school.setSchoolId(value.getSchoolId());
-                            school.setSchoolHead(LogoURLConstant.LOGO_PREFIX + school.getSchoolId() + ".jpg");
-                        }
-                    }
 
-                    try (Connection connection = DriverManager.getConnection(DataBaseConnectionConstant.URL,
-                            DataBaseConnectionConstant.USERNAME, DataBaseConnectionConstant.PASSWORD)) {
-                        connection.setAutoCommit(false);
-                        saveToDatabase(school, connection);  // 原有招生数据存储
-                        connection.commit();
+                        try (Connection connection = DriverManager.getConnection(DataBaseConnectionConstant.URL,
+                                DataBaseConnectionConstant.USERNAME, DataBaseConnectionConstant.PASSWORD)) {
+                            connection.setAutoCommit(false);
+                            saveToDatabase(school, connection);  // 原有招生数据存储
+                            connection.commit();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         } catch (Exception e) {

@@ -197,23 +197,11 @@ public class SchoolServiceImpl implements SchoolService {
         schoolMapper.addComment(addCommentDTO);
     }
 
-    /**
-     * 优化大学数据
-     */
     @Override
     public void addScore() {
 
-        List<SchoolSimpleVO> list = schoolMapper.getAllSchool();
-        for (SchoolSimpleVO schoolSimpleVO : list) {
-            String rankList = schoolSimpleVO.getRankList();
-            String tempResult = rankList.replace("[", "");
-            String tempResult2 = tempResult.replace("]", "");
-            String result = tempResult2.replaceAll("，", ",");
-            result = result.replaceAll(" ", "");
-            schoolSimpleVO.setRankList(result);
-            schoolMapper.updateRank(schoolSimpleVO);
-        }
     }
+
 
     /**
      * 录取预测
@@ -269,33 +257,10 @@ public class SchoolServiceImpl implements SchoolService {
         return forecastVO;
     }
 
-//    /**
-//     * 处理专业需求
-//     *
-//     * @param schoolMajorVO 专业预测VO
-//     */
-//    private void majorRequire(SchoolMajorVO schoolMajorVO) {
-//        String[] split = schoolMajorVO.getMajorName().split("\n");
-//        // 1.3判断是否有特殊需求
-//        if (split.length == 3) {
-//            // 1.4该专业有特殊需求
-//            schoolMajorVO.setMajorName(split[0]);
-//            schoolMajorVO.setSpecial(split[1]);
-//            schoolMajorVO.setRequire(split[2]);
-//        } else if (split.length == 2) {
-//            // 1.5该专业有选科要求
-//            schoolMajorVO.setMajorName(split[0]);
-//            schoolMajorVO.setRequire(split[1]);
-//        } else {
-//            // 1.6该专业无任何要求
-//            schoolMajorVO.setMajorName(split[0]);
-//        }
-//    }
 
 
-    public void changeSubject() {
 
-    }
+
 
     /**
      * 处理专业分类
@@ -354,32 +319,5 @@ public class SchoolServiceImpl implements SchoolService {
         return equipment;
     }
 
-    private int getScore(SchoolSimpleVO schoolSimpleVO, String[] split) {
-        int rankScore = 0;
-        for (String s : split) {
-            switch (s) {
-                case "本科", "双一流", "强基计划" -> rankScore += 15;
-                case "公办", "军事类" -> rankScore += 10;
-                case "985" -> rankScore += 30;
-                case "211" -> rankScore += 20;
-                case "医药类" -> rankScore += 5;
-                case "双高计划" -> rankScore += 3;
-            }
-        }
-        if (schoolSimpleVO.getSchoolName().contains("大学")) {
-            rankScore += 5;
-        }
-        return (((7 * rankScore) + (3 * schoolSimpleVO.getSchoolProvince().getScore())) / 10);
-    }
 
-    private void updateRankList() {
-        List<SchoolSimpleVO> list = schoolMapper.getAllSchool();
-        for (SchoolSimpleVO schoolSimpleVO : list) {
-            String rankList = schoolSimpleVO.getRankList();
-            String[] split = rankList.split(",");
-            int score = getScore(schoolSimpleVO, split);
-            schoolSimpleVO.setScore(score);
-            schoolMapper.updateScore(schoolSimpleVO);
-        }
-    }
 }

@@ -1,16 +1,10 @@
 package a311.college.service;
 
-import a311.college.dto.school.AddSchoolCommentDTO;
-import a311.college.dto.school.ForecastDTO;
-import a311.college.dto.school.SchoolDTO;
-import a311.college.dto.school.SchoolPageQueryDTO;
+import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.result.PageResult;
-import a311.college.vo.school.ForecastVO;
-import a311.college.vo.school.SchoolSimpleVO;
-import a311.college.vo.school.SchoolVO;
-import a311.college.vo.school.YearScoreVO;
+import a311.college.vo.school.*;
 
 import java.util.List;
 
@@ -34,4 +28,6 @@ public interface SchoolService {
     void addSchoolComment(AddSchoolCommentDTO addCommentDTO);
 
     ForecastVO forecast(ForecastDTO forecastDTO);
+
+    List<BriefSchoolInfoVO> getHotSchool(HotSchoolDTO hotSchoolDTO);
 }

@@ -1,12 +1,10 @@
 package a311.college.service.impl;
 
 import a311.college.constant.redis.SchoolRedisKey;
-import a311.college.dto.school.AddSchoolCommentDTO;
-import a311.college.dto.school.ForecastDTO;
-import a311.college.dto.school.SchoolDTO;
-import a311.college.dto.school.SchoolPageQueryDTO;
+import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
+import a311.college.entity.school.SchoolInfo;
 import a311.college.mapper.resource.ResourceMapper;
 import a311.college.mapper.school.SchoolMapper;
 import a311.college.result.PageResult;
@@ -256,6 +254,25 @@ public class SchoolServiceImpl implements SchoolService {
         forecastVO.setChance((int)Math.round(chance * 100));
         forecastVO.setSelectableMajor(schoolMajorVOList.size());
         return forecastVO;
+    }
+
+    @Override
+    public List<BriefSchoolInfoVO> getHotSchool(HotSchoolDTO hotSchoolDTO) {
+        List<BriefSchoolInfoVO> briefSchoolInfoVOList = new ArrayList<>();
+        if (hotSchoolDTO.getProvince() != null) {
+            List<SchoolInfo> schoolInfoList = schoolMapper.selectByProvince(hotSchoolDTO.getProvince());
+            for (SchoolInfo schoolInfo : schoolInfoList) {
+                schoolInfo.setRankList(schoolInfo.getRankList().split(",")[1]);
+                BriefSchoolInfoVO briefSchoolInfoVO = new BriefSchoolInfoVO();
+                briefSchoolInfoVO.setName(schoolInfo.getSchoolName());
+                briefSchoolInfoVO.setHead(schoolInfo.getSchoolHead());
+                briefSchoolInfoVO.setRank(schoolInfo.getRankList());
+                briefSchoolInfoVOList.add(briefSchoolInfoVO);
+            }
+            return briefSchoolInfoVOList;
+        } else {
+            return null;
+        }
     }
 
     private Map<String, Integer> highScoreSchool() {

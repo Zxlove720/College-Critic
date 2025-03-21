@@ -27,8 +27,8 @@ public class LoginInterceptorConfig implements WebMvcConfigurer {
                         "/users/checkPhone",    // 检查手机号是否可用
                         "/users/editCode",      //用户请求修改密码发送验证码
                         "/users/edit",          //用户修改密码
-                        "/colleges/initPage",
-                        "/colleges/hot",
+                        "/schools/initPage",
+                        "/schools/hot",
                         "/majors/initPage"
 
 

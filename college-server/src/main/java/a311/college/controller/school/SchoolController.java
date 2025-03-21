@@ -2,10 +2,7 @@ package a311.college.controller.school;
 
 
 import a311.college.constant.API.APIConstant;
-import a311.college.dto.school.AddSchoolCommentDTO;
-import a311.college.dto.school.ForecastDTO;
-import a311.college.dto.school.SchoolDTO;
-import a311.college.dto.school.SchoolPageQueryDTO;
+import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
@@ -14,10 +11,7 @@ import a311.college.result.Result;
 import a311.college.service.SchoolService;
 import a311.college.service.DeepSeekService;
 import a311.college.thread.ThreadLocalUtil;
-import a311.college.vo.school.ForecastVO;
-import a311.college.vo.school.SchoolSimpleVO;
-import a311.college.vo.school.SchoolVO;
-import a311.college.vo.school.YearScoreVO;
+import a311.college.vo.school.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -133,6 +127,19 @@ public class SchoolController {
     public Result<ForecastVO> forecast(@RequestBody ForecastDTO forecastDTO) {
         log.info("用户'{}'正在做录取预测", ThreadLocalUtil.getCurrentId());
         return Result.success(schoolService.forecast(forecastDTO));
+    }
+
+    /**
+     * 获取热门院校
+     *
+     * @param hotSchoolDTO 热点院校查询
+     * @return Result<List<BriefSchoolInfoVO>>
+     */
+    @PostMapping("/hot")
+    public Result<List<BriefSchoolInfoVO>> hotSchool(@RequestBody HotSchoolDTO hotSchoolDTO) {
+        log.info("获取热门院校");
+        List<BriefSchoolInfoVO>schoolSimpleVOList = schoolService.getHotSchool(hotSchoolDTO);
+        return Result.success(schoolSimpleVOList);
     }
 
 

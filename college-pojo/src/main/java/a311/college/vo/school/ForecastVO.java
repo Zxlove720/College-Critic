@@ -20,7 +20,7 @@ public class ForecastVO {
     private Integer selectableMajor;
 
     @Schema(description = "录取概率")
-    private Double chance;
+    private Integer chance;
 
     @Schema(description = "专业列表")
     private List<SchoolMajorVO> majorForecastResultList;

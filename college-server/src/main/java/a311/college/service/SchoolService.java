@@ -33,7 +33,5 @@ public interface SchoolService {
 
     void addSchoolComment(AddSchoolCommentDTO addCommentDTO);
 
-    void addScore();
-
     ForecastVO forecast(ForecastDTO forecastDTO);
 }

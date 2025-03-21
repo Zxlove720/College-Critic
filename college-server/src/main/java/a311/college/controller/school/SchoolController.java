@@ -124,15 +124,6 @@ public class SchoolController {
     }
 
     /**
-     * 改变大学数据
-     */
-    @PostMapping("/addScore")
-    public Result<Void> addScore2School() {
-        schoolService.addScore();
-        return Result.success();
-    }
-
-    /**
      * 录取预测
      *
      * @param forecastDTO 录取预测DTO

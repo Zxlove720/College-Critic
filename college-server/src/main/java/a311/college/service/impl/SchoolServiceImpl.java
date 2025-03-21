@@ -197,12 +197,6 @@ public class SchoolServiceImpl implements SchoolService {
         schoolMapper.addComment(addCommentDTO);
     }
 
-    @Override
-    public void addScore() {
-
-    }
-
-
     /**
      * 录取预测
      *
@@ -217,11 +211,9 @@ public class SchoolServiceImpl implements SchoolService {
         int rush = 0;
         // 1.处理专业信息
         // 1.1获得专业信息
-        List<SchoolMajorVO> majorForecastResultList = schoolMapper.getAllMajor(forecastDTO);
+        List<SchoolMajorVO> schoolMajorVOList = schoolMapper.getAllMajor(forecastDTO);
         // 1.2处理专业名、特殊要求、选科要求
-        for (SchoolMajorVO schoolMajorVO : majorForecastResultList) {
-//            majorRequire(schoolMajorVO);
-            // 2.统计各个层次专业个数
+        for (SchoolMajorVO schoolMajorVO : schoolMajorVOList){
             // 2.1默认根据用户的位次进行统计
             Integer userRanking = forecastDTO.getRanking();
             if (userRanking != null) {
@@ -241,36 +233,30 @@ public class SchoolServiceImpl implements SchoolService {
                 Integer majorScore = schoolMajorVO.getMinScore();
                 Integer userGrade = forecastDTO.getGrade();
                 if (majorScore <= userGrade + 10 && majorScore >= userGrade - 10) {
+                    schoolMajorVO.setCategory(1);
                     stable++;
                 } else if (majorScore > userGrade + 10 && majorScore <= userGrade + 20) {
+                    schoolMajorVO.setCategory(2);
                     rush++;
                 } else if (majorScore < userGrade - 10 && majorScore >= userGrade - 30) {
+                    schoolMajorVO.setCategory(0);
                     minimum++;
                 }
             }
         }
-
+        List<SchoolMajorVO> forecastList = new ArrayList<>();
+        for (SchoolMajorVO schoolMajorVO : schoolMajorVOList) {
+            if (schoolMajorVO.getCategory() != null) {
+                forecastList.add(schoolMajorVO);
+            }
+        }
         ForecastVO forecastVO = new ForecastVO();
-        forecastVO.setMajorForecastResultList(majorForecastResultList);
-        forecastVO.setChance((stable + minimum + 0.3 * rush) / majorForecastResultList.size());
-        forecastVO.setSelectableMajor(majorForecastResultList.size());
+        forecastVO.setMajorForecastResultList(forecastList);
+        double chance = (stable + minimum + 0.2 * rush) / schoolMajorVOList.size();
+        forecastVO.setChance((int)Math.round(chance * 100));
+        forecastVO.setSelectableMajor(schoolMajorVOList.size());
         return forecastVO;
     }
-
-
-
-
-
-
-    /**
-     * 处理专业分类
-     *
-     * @param schoolMajorVO 专业预测VO
-     */
-    private void majorCategory(SchoolMajorVO schoolMajorVO) {
-
-    }
-
 
     private Map<String, Integer> highScoreSchool() {
         Map<String, Integer> equipment = new HashMap<>();
@@ -318,6 +304,4 @@ public class SchoolServiceImpl implements SchoolService {
         equipment.put("ten", RandomUtil.randomInt(3, 7));
         return equipment;
     }
-
-
 }

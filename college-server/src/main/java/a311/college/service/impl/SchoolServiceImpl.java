@@ -296,7 +296,7 @@ public class SchoolServiceImpl implements SchoolService {
         for (SchoolSimpleVO schoolSimpleVO : allSchool) {
             int rankScore = 0;
             for (String rank : schoolSimpleVO.getRankList().split(",")) {
-                if (schoolSimpleVO.getSchoolName().equals("北京大学")){
+                if (schoolSimpleVO.getSchoolName().equals("北京大学")) {
                     System.out.printf("\n");
                 }
                 switch (rank) {
@@ -307,11 +307,11 @@ public class SchoolServiceImpl implements SchoolService {
                     case "医药类" -> rankScore += 5;
                     case "双高计划" -> rankScore += 3;
                 }
-                if (schoolSimpleVO.getSchoolName().contains("大学") && !schoolSimpleVO.getRankList().contains("民办")) {
-                    rankScore += 5;
-                }
-                schoolSimpleVO.setScore((7 * rankScore + 3 * schoolSimpleVO.getSchoolProvince().getScore()) / 10);
             }
+            if (schoolSimpleVO.getSchoolName().contains("大学") && !schoolSimpleVO.getRankList().contains("民办")) {
+                rankScore += 5;
+            }
+            schoolSimpleVO.setScore((7 * rankScore + 3 * schoolSimpleVO.getSchoolProvince().getScore()) / 10);
             schoolMapper.updateScore(schoolSimpleVO);
         }
     }

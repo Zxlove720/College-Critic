@@ -213,7 +213,7 @@ public class SchoolServiceImpl implements SchoolService {
         // 1.1获得专业信息
         List<SchoolMajorVO> schoolMajorVOList = schoolMapper.getAllMajor(forecastDTO);
         // 1.2处理专业名、特殊要求、选科要求
-        for (SchoolMajorVO schoolMajorVO : schoolMajorVOList){
+        for (SchoolMajorVO schoolMajorVO : schoolMajorVOList) {
             // 2.1默认根据用户的位次进行统计
             Integer userRanking = forecastDTO.getRanking();
             if (userRanking != null) {
@@ -253,7 +253,7 @@ public class SchoolServiceImpl implements SchoolService {
         ForecastVO forecastVO = new ForecastVO();
         forecastVO.setMajorForecastResultList(forecastList);
         double chance = (stable + minimum + 0.2 * rush) / schoolMajorVOList.size();
-        forecastVO.setChance((int)Math.round(chance * 100));
+        forecastVO.setChance((int) Math.round(chance * 100));
         forecastVO.setSelectableMajor(schoolMajorVOList.size());
         return forecastVO;
     }
@@ -287,6 +287,32 @@ public class SchoolServiceImpl implements SchoolService {
                 briefSchoolInfoVOList.add(briefSchoolInfoVO);
             }
             return briefSchoolInfoVOList;
+        }
+    }
+
+    @Override
+    public void updateData() {
+        List<SchoolSimpleVO> allSchool = schoolMapper.getAllSchool();
+        for (SchoolSimpleVO schoolSimpleVO : allSchool) {
+            int rankScore = 0;
+            for (String rank : schoolSimpleVO.getRankList().split(",")) {
+                if (schoolSimpleVO.getSchoolName().equals("北京大学")){
+                    System.out.printf("\n");
+                }
+                switch (rank) {
+                    case "本科", "双一流", "强基计划" -> rankScore += 15;
+                    case "公办", "军事类" -> rankScore += 10;
+                    case "985" -> rankScore += 30;
+                    case "211" -> rankScore += 20;
+                    case "医药类" -> rankScore += 5;
+                    case "双高计划" -> rankScore += 3;
+                }
+                if (schoolSimpleVO.getSchoolName().contains("大学") && !schoolSimpleVO.getRankList().contains("民办")) {
+                    rankScore += 5;
+                }
+                schoolSimpleVO.setScore((7 * rankScore + 3 * schoolSimpleVO.getSchoolProvince().getScore()) / 10);
+            }
+            schoolMapper.updateScore(schoolSimpleVO);
         }
     }
 

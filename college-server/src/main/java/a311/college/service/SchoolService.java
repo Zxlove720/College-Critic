@@ -30,4 +30,7 @@ public interface SchoolService {
     ForecastVO forecast(ForecastDTO forecastDTO);
 
     List<BriefSchoolInfoVO> getHotSchool();
+
+    void updateData();
+
 }

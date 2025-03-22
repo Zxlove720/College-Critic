@@ -55,8 +55,8 @@ public class College2DataBase {
                         BeanUtil.copyProperties(tempSchoolData, school);
                         // 设置学校地址和学校等级
                         for (TempSchoolRankInfo tempSchoolRankInfo : rankData) {
-                            int rankScore = 0;
                             if (school.getSchoolName().equals(tempSchoolRankInfo.getSchoolName())) {
+                                int rankScore = 0;
                                 school.setSchoolAddr(tempSchoolRankInfo.getSchoolAddr());
                                 school.setProvinceAddress(ProvinceEnum.getProvince(extractProvince(tempSchoolRankInfo.getSchoolAddr())));
                                 // 特殊处理其rankList
@@ -67,6 +67,9 @@ public class College2DataBase {
                                 String rankList = result.replaceAll(" ", "");
                                 school.setRankList(rankList);
                                 for (String s : rankList.split(",")) {
+                                    if (school.getSchoolName().equals("大连海事大学")) {
+                                        System.out.println("\n");
+                                    }
                                     switch (s) {
                                         case "本科", "双一流", "强基计划" -> rankScore += 15;
                                         case "公办", "军事类" -> rankScore += 10;
@@ -76,7 +79,7 @@ public class College2DataBase {
                                         case "双高计划" -> rankScore += 3;
                                     }
                                 }
-                                if (school.getSchoolName().contains("大学")) {
+                                if (school.getSchoolName().contains("大学") && !school.getSchoolName().contains("学院")) {
                                     rankScore += 5;
                                 }
                                 school.setScore((7 * rankScore + 3 * school.getProvinceAddress().getScore()) / 10);

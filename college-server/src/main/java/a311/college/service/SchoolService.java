@@ -5,6 +5,7 @@ import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.entity.school.School;
+import a311.college.entity.school.SchoolMajor;
 import a311.college.result.PageResult;
 import a311.college.vo.school.*;
 
@@ -33,4 +34,5 @@ public interface SchoolService {
 
     List<BriefSchoolInfoVO> getHotSchool();
 
+    PageResult<SchoolMajor> pageSelectMajor(SchoolMajorPageDTO schoolMajorPageDTO);
 }

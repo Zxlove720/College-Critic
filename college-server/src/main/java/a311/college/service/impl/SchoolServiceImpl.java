@@ -87,6 +87,25 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
+     * 大学专业分页查询
+     *
+     * @param schoolMajorPageDTO 大学专业分页查询DTO
+     * @return PageResult<SchoolMajor>
+     */
+    @Override
+    public PageResult<SchoolMajor> pageSelectMajor(SchoolMajorPageDTO schoolMajorPageDTO) {
+        try (Page<SchoolMajor> page = PageHelper.startPage(schoolMajorPageDTO.getPage(), schoolMajorPageDTO.getPageSize())) {
+            schoolMapper.pageQueryMajor(schoolMajorPageDTO);
+            long total = page.getTotal();
+            List<SchoolMajor> result = page.getResult();
+            return new PageResult<>(total, result);
+        } catch (Exception e) {
+            log.error("大学专业分页查询失败，报错为：{}", e.getMessage());
+            return null;
+        }
+    }
+
+    /**
      * 大学信息缓存预热
      * 添加热点地区的大学到缓存
      */
@@ -307,6 +326,8 @@ public class SchoolServiceImpl implements SchoolService {
         }
         return briefSchoolInfoVOList;
     }
+
+
 
     private Map<String, Integer> highScoreSchool() {
         Map<String, Integer> equipment = new HashMap<>();

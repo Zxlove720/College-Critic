@@ -3,6 +3,7 @@ package a311.college.mapper.school;
 
 import a311.college.dto.school.AddSchoolCommentDTO;
 import a311.college.dto.school.ForecastDTO;
+import a311.college.dto.school.SchoolMajorPageDTO;
 import a311.college.dto.school.SchoolPageQueryDTO;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
@@ -132,4 +133,6 @@ public interface SchoolMapper {
 
     @Select("select * from tb_school where school_name = #{school}")
     School getByName(String school);
+
+    List<SchoolMajor> pageQueryMajor(SchoolMajorPageDTO schoolMajorPageDTO);
 }

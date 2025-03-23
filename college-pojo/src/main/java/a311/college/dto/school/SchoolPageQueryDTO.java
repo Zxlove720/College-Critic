@@ -24,7 +24,7 @@ public class SchoolPageQueryDTO {
     @Schema(description = "大学等级（类型）")
     private List<String> rankList;
 
-    @Schema(description = "页码")
+    @Schema(description = "查询页码")
     private Integer page = 1;
 
     @Schema(description = "每页大小")

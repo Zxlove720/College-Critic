@@ -33,7 +33,7 @@ public interface SchoolMapper {
      * @param schoolPageQueryDTO 大学分页查询DTO
      * @return Page<DetailedSchoolVO>
      */
-    Page<School> pageQuery(SchoolPageQueryDTO schoolPageQueryDTO);
+    List<School> pageQuery(SchoolPageQueryDTO schoolPageQueryDTO);
 
     /**
      * 根据省份查询大学

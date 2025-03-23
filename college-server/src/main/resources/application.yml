@@ -37,6 +37,11 @@ mybatis:
     # 开启驼峰命名
     map-underscore-to-camel-case: true
 
+# 设置pageHelper分页插件
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+
 # 设置阿里云OSS
 college:
   aliyun:

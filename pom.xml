@@ -31,7 +31,7 @@
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <jjwt.version>0.9.1</jjwt.version>
         <knife4j.version>4.5.0</knife4j.version>
-        <pageHelper.version>1.4.7</pageHelper.version>
+        <pageHelper.version>2.1.0</pageHelper.version>
         <hutool.version>5.8.22</hutool.version>
         <okhttp.version>4.12.0</okhttp.version>
     </properties>

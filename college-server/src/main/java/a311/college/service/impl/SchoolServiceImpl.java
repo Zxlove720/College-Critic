@@ -64,20 +64,25 @@ public class SchoolServiceImpl implements SchoolService {
         List<School> range = redisTemplate.opsForList().range(key, 0, -1);
         if (range != null && !range.isEmpty()) {
             log.info("缓存命中");
-
             return new PageResult<>((long) range.size(), range);
         }
         log.info("缓存未命中，开启分页查询");
-        PageHelper.startPage(schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
-        Page<School> pageResult = schoolMapper.pageQuery(schoolPageQueryDTO);
-        // 获取总记录数
-        long total = pageResult.getTotal();
-        // 获取总记录
-        List<School> result = pageResult.getResult();
-        // 将其添加到缓存
-        redisTemplate.opsForList().rightPushAll(key, result);
-        redisTemplate.expire(key, SchoolRedisKey.SCHOOL_CACHE_TTL, TimeUnit.SECONDS);
-        return new PageResult<>(total, result);
+        try (Page<School> page = PageHelper.startPage(schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize())) {
+            List<School> schoolList = schoolMapper.pageQuery(schoolPageQueryDTO);
+            // 获取总记录数
+            long total = page.getTotal();
+            // 获取总记录
+            List<School> result = page.getResult();
+            if (!result.isEmpty()) {
+                // 将其添加到缓存
+                redisTemplate.opsForList().rightPushAll(key, result);
+                redisTemplate.expire(key, SchoolRedisKey.SCHOOL_CACHE_TTL, TimeUnit.SECONDS);
+            }
+            return new PageResult<>(total, result);
+        } catch (Exception e) {
+            PageHelper.clearPage();
+            return null;
+        }
     }
 
     /**

@@ -68,7 +68,7 @@ public class SchoolServiceImpl implements SchoolService {
         }
         log.info("缓存未命中，开启分页查询");
         try (Page<School> page = PageHelper.startPage(schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize())) {
-            List<School> schoolList = schoolMapper.pageQuery(schoolPageQueryDTO);
+            schoolMapper.pageQuery(schoolPageQueryDTO);
             // 获取总记录数
             long total = page.getTotal();
             // 获取总记录
@@ -80,7 +80,7 @@ public class SchoolServiceImpl implements SchoolService {
             }
             return new PageResult<>(total, result);
         } catch (Exception e) {
-            PageHelper.clearPage();
+            log.error("大学信息分页查询失败，报错为：{}", e.getMessage());
             return null;
         }
     }

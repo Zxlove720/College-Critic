@@ -295,7 +295,7 @@ public class SchoolServiceImpl implements SchoolService {
             // 用户没有登录，展示默认的大学
             List<String> hotSchool = new ArrayList<>();
             Collections.addAll(hotSchool, "清华大学", "浙江大学", "四川大学", "中国科学技术大学", "中山大学", "哈尔滨工业大学",
-                    "武汉大学", "厦门大学", "西安交通大学", "西南大学");
+                    "武汉大学", "厦门大学", "西安交通大学", "重庆文理学院");
             for (String school : hotSchool) {
                 School schoolInfo = schoolMapper.getByName(school);
                 BriefSchoolInfoVO briefSchoolInfoVO = new BriefSchoolInfoVO();

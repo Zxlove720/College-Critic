@@ -111,7 +111,7 @@ public class SchoolController {
      * @param yearScoreDTO 分数线查询DTO
      * @return List<YearScoreVO>
      */
-    @PostMapping("/years")
+    @PostMapping("/scoreLine")
     @Operation(summary = "获取某院校的历年分数线")
     public Result<List<YearScoreVO>> getScoreLine(@RequestBody YearScoreQueryDTO yearScoreDTO) {
         return Result.success(schoolService.scoreLineByYear(yearScoreDTO));

@@ -7,7 +7,7 @@ import a311.college.result.LoginResult;
 import a311.college.result.Result;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
-import a311.college.vo.school.SchoolSimpleVO;
+import a311.college.vo.school.SchoolVO;
 import a311.college.vo.user.UserVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -152,11 +152,11 @@ public class UserController {
     /**
      * 展示用户收藏
      *
-     * @return Result<List<SchoolSimpleVO>>
+     * @return Result<List<SchoolVO>>
      */
     @PostMapping("/favorite")
     @Operation(summary = "展示用户收藏")
-    public Result<List<SchoolSimpleVO>> showFavorite() {
+    public Result<List<SchoolVO>> showFavorite() {
         log.info("展示用户'{}'收藏", ThreadLocalUtil.getCurrentId());
         return Result.success(userService.showFavorite());
     }

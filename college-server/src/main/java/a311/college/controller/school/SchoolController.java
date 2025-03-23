@@ -48,9 +48,9 @@ public class SchoolController {
      */
     @PostMapping("/page")
     @Operation(summary = "大学分页查询")
-    public Result<PageResult<SchoolSimpleVO>> schoolList(@RequestBody SchoolPageQueryDTO schoolPageQueryDTO) {
+    public Result<PageResult<SchoolVO>> schoolList(@RequestBody SchoolPageQueryDTO schoolPageQueryDTO) {
         log.info("大学分页查询...查询参数为：第{}页，每页{}条", schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
-        PageResult<SchoolSimpleVO> pageResult = schoolService.pageSelect(schoolPageQueryDTO);
+        PageResult<SchoolVO> pageResult = schoolService.pageSelect(schoolPageQueryDTO);
         return Result.success(pageResult);
     }
 
@@ -58,11 +58,11 @@ public class SchoolController {
      * 根据学校名搜索大学
      *
      * @param schoolName 学校名DTO
-     * @return Result<List < SchoolSimpleVO>>
+     * @return Result<List < SchoolVO>>
      */
     @PostMapping("/name")
     @Operation(summary = "根据学校名搜索大学")
-    public Result<List<SchoolSimpleVO>> getSchoolByName(@RequestBody SchoolNameQueryDTO schoolName) {
+    public Result<List<SchoolVO>> getSchoolByName(@RequestBody SchoolNameQueryDTO schoolName) {
         return Result.success(schoolService.getSchoolByName(schoolName.getSchoolName()));
     }
 
@@ -70,11 +70,11 @@ public class SchoolController {
      * 根据用户成绩查询大学
      *
      * @param gradeDTO 成绩查询DTO
-     * @return List<SchoolSimpleVO>
+     * @return List<SchoolVO>
      */
     @PostMapping("grade")
     @Operation(summary = "根据用户成绩查询大学")
-    public Result<List<SchoolSimpleVO>> getByUserScore(@RequestBody UserGradeQueryDTO gradeDTO) {
+    public Result<List<SchoolVO>> getByUserScore(@RequestBody UserGradeQueryDTO gradeDTO) {
         log.info("用户成绩为：{}", gradeDTO.getGrade());
         return Result.success(schoolService.getSchoolByGrade(gradeDTO));
     }
@@ -83,13 +83,13 @@ public class SchoolController {
      * 查询大学具体信息
      *
      * @param schoolDTO 大学查询DTO
-     * @return SchoolVO 大学具体信息
+     * @return DetailedSchoolVO 大学具体信息
      */
     @PostMapping("/school")
     @Operation(summary = "查询大学具体信息")
-    public Result<SchoolVO> getDetailSchool(@RequestBody SchoolDTO schoolDTO) {
-        SchoolVO schoolVO = schoolService.getDetailSchool(schoolDTO);
-        return Result.success(schoolVO);
+    public Result<DetailedSchoolVO> getDetailSchool(@RequestBody SchoolDTO schoolDTO) {
+        DetailedSchoolVO detailedSchoolVO = schoolService.getDetailSchool(schoolDTO);
+        return Result.success(detailedSchoolVO);
     }
 
     /**

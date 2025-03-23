@@ -1,25 +1,27 @@
 package a311.college.vo.school;
 
-import a311.college.enumeration.ProvinceEnum;
+import a311.college.vo.major.MajorSimpleVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 
 /**
- * 大学简单信息VO
+ * 大学详细信息VO
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "大学简单信息VO")
-public class SchoolSimpleVO implements Serializable {
+@Schema(description = "大学信息VO")
+public class DetailedSchoolVO implements Serializable {
 
     @Schema(description = "大学id")
-    private Integer schoolId;
+    private String schoolId;
 
     @Schema(description = "大学校徽")
     private String schoolHead;
@@ -27,8 +29,8 @@ public class SchoolSimpleVO implements Serializable {
     @Schema(description = "大学名称")
     private String schoolName;
 
-    @Schema(description = "大学省份")
-    private ProvinceEnum schoolProvince;
+    @Schema(description = "所在省份")
+    private String schoolProvince;
 
     @Schema(description = "学校地址")
     private String schoolAddress;
@@ -36,6 +38,13 @@ public class SchoolSimpleVO implements Serializable {
     @Schema(description = "大学等级标签列表")
     private String rankList;
 
-    @Schema(description = "大学等级得分")
-    private Integer score;
+    @Schema(description = "校园风光")
+    private List<String> images;
+
+    @Schema(description = "开设专业")
+    private List<MajorSimpleVO> majors;
+
+    @Schema(description = "校园配置")
+    private Map<String, Integer> equipment;
+
 }

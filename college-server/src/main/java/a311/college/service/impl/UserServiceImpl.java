@@ -14,7 +14,7 @@ import a311.college.regex.RegexUtils;
 import a311.college.result.LoginResult;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
-import a311.college.vo.school.SchoolSimpleVO;
+import a311.college.vo.school.SchoolVO;
 import a311.college.vo.user.UserVO;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
@@ -309,14 +309,14 @@ public class UserServiceImpl implements UserService {
     /**
      * 展示用户收藏
      *
-     * @return List<SchoolSimpleVO>
+     * @return List<SchoolVO>
      */
     @Override
-    public List<SchoolSimpleVO> showFavorite() {
+    public List<SchoolVO> showFavorite() {
         Long id = ThreadLocalUtil.getCurrentId();
         String favoriteTable = userMapper.selectFavoriteById(id);
         String[] favorite = favoriteTable.split(",");
-        List<SchoolSimpleVO> collegeList = new ArrayList<>();
+        List<SchoolVO> collegeList = new ArrayList<>();
         for (String school : favorite) {
             collegeList.add(collegeMapper.selectBySchoolId(school));
         }

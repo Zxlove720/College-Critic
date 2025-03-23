@@ -13,15 +13,15 @@ import java.util.List;
  */
 public interface SchoolService {
 
-    PageResult<SchoolSimpleVO> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO);
+    PageResult<SchoolVO> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO);
 
     void cacheSchool();
 
-    List<SchoolSimpleVO> getSchoolByName(String schoolName);
+    List<SchoolVO> getSchoolByName(String schoolName);
 
-    List<SchoolSimpleVO> getSchoolByGrade(UserGradeQueryDTO gradeDTO);
+    List<SchoolVO> getSchoolByGrade(UserGradeQueryDTO gradeDTO);
 
-    SchoolVO getDetailSchool(SchoolDTO schoolDTO);
+    DetailedSchoolVO getDetailSchool(SchoolDTO schoolDTO);
 
     List<YearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO);
 

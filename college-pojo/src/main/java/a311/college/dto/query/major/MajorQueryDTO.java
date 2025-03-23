@@ -1,4 +1,4 @@
-package a311.college.dto.major;
+package a311.college.dto.query.major;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

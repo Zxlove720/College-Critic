@@ -11,7 +11,7 @@ import a311.college.entity.school.SchoolMajor;
 import a311.college.enumeration.ProvinceEnum;
 import a311.college.vo.school.SchoolMajorVO;
 import a311.college.vo.major.MajorSimpleVO;
-import a311.college.vo.school.SchoolSimpleVO;
+import a311.college.vo.school.SchoolVO;
 import a311.college.vo.school.YearScoreVO;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Insert;
@@ -31,34 +31,34 @@ public interface SchoolMapper {
      * 大学信息分页查询
      *
      * @param schoolPageQueryDTO 大学分页查询DTO
-     * @return Page<SchoolVO>
+     * @return Page<DetailedSchoolVO>
      */
-    Page<SchoolSimpleVO> pageQuery(SchoolPageQueryDTO schoolPageQueryDTO);
+    Page<SchoolVO> pageQuery(SchoolPageQueryDTO schoolPageQueryDTO);
 
     /**
      * 根据省份查询大学
      *
      * @param province 省份
-     * @return List<SchoolVO>
+     * @return List<DetailedSchoolVO>
      */
     @Select("select school_head, school_name,school_address, rank_list from tb_school " +
             "where school_province = #{province} order by score desc, length(rank_list) desc limit 9")
-    List<SchoolSimpleVO> selectByAddress(String province);
+    List<SchoolVO> selectByAddress(String province);
 
     /**
      * 根据学校名搜索大学
      *
      * @param schoolName 学校名
-     * @return List<SchoolSimpleVO>
+     * @return List<SchoolVO>
      */
-    List<SchoolSimpleVO> selectByName(String schoolName);
+    List<SchoolVO> selectByName(String schoolName);
 
     /**
      * 根据成绩查询大学
      *
-     * @return List<SchoolVO>
+     * @return List<DetailedSchoolVO>
      */
-    List<SchoolSimpleVO> selectByGrade(UserGradeQueryDTO gradeDTO);
+    List<SchoolVO> selectByGrade(UserGradeQueryDTO gradeDTO);
 
     /**
      * 获取某一院校的历年分数线
@@ -71,10 +71,10 @@ public interface SchoolMapper {
      * 根据大学id查询学校
      *
      * @param schoolId 大学id
-     * @return SchoolSimpleVO
+     * @return SchoolVO
      */
     @Select("select * from tb_school where school_id = #{schoolId}")
-    SchoolSimpleVO selectBySchoolId(String schoolId);
+    SchoolVO selectBySchoolId(String schoolId);
 
     /**
      * 查询该学校开设专业
@@ -95,26 +95,26 @@ public interface SchoolMapper {
     /**
      * 获取全部学校
      *
-     * @return List<SchoolSimpleVO>
+     * @return List<SchoolVO>
      */
     @Select("select * from tb_school")
-    List<SchoolSimpleVO> getAllSchool();
+    List<SchoolVO> getAllSchool();
 
     /**
      * 更新学校等级
      *
-     * @param schoolSimpleVO 学校简略信息VO
+     * @param schoolVO 学校简略信息VO
      */
     @Update("update tb_school set rank_list = #{rankList} where school_id = #{schoolId}")
-    void updateRank(SchoolSimpleVO schoolSimpleVO);
+    void updateRank(SchoolVO schoolVO);
 
     /**
      * 更新学校客观评分
      *
-     * @param schoolSimpleVO 学校简略信息VO
+     * @param schoolVO 学校简略信息VO
      */
     @Update("update tb_school set score = #{score} where school_id = #{schoolId}")
-    void updateScore(SchoolSimpleVO schoolSimpleVO);
+    void updateScore(SchoolVO schoolVO);
 
     /**
      * 查询某学校所有专业

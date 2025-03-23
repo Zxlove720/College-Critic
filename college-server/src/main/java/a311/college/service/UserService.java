@@ -3,7 +3,7 @@ package a311.college.service;
 import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
 import a311.college.result.LoginResult;
-import a311.college.vo.school.SchoolSimpleVO;
+import a311.college.vo.school.SchoolVO;
 import a311.college.vo.user.UserVO;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public interface UserService {
 
     void addFavorite(UserAddFavoriteDTO userAddFavoriteDTO);
 
-    List<SchoolSimpleVO> showFavorite();
+    List<SchoolVO> showFavorite();
 
     void update(UserDTO userDTO);
 

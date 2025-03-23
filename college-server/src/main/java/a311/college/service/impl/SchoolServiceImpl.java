@@ -41,7 +41,7 @@ public class SchoolServiceImpl implements SchoolService {
     private final ResourceMapper resourceMapper;
 
     @Resource
-    private RedisTemplate<String, SchoolSimpleVO> redisTemplate;
+    private RedisTemplate<String, SchoolVO> redisTemplate;
 
     @Autowired
     public SchoolServiceImpl(SchoolMapper schoolMapper, ResourceMapper resourceMapper, UserMapper userMapper) {
@@ -54,23 +54,23 @@ public class SchoolServiceImpl implements SchoolService {
      * 大学信息分页查询
      *
      * @param schoolPageQueryDTO 大学分页查询DTO
-     * @return PageResult<SchoolVO>
+     * @return PageResult<DetailedSchoolVO>
      */
     @Override
-    public PageResult<SchoolSimpleVO> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO) {
+    public PageResult<SchoolVO> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO) {
         String key = SchoolRedisKey.SCHOOL_CACHE_KEY + schoolPageQueryDTO.getProvince() + ":";
-        List<SchoolSimpleVO> range = redisTemplate.opsForList().range(key, 0, -1);
+        List<SchoolVO> range = redisTemplate.opsForList().range(key, 0, -1);
         if (range != null && !range.isEmpty()) {
             log.info("缓存命中");
             return new PageResult<>((long) range.size(), range);
         }
         log.info("缓存未命中，开启分页查询");
         PageHelper.startPage(schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
-        Page<SchoolSimpleVO> pageResult = schoolMapper.pageQuery(schoolPageQueryDTO);
+        Page<SchoolVO> pageResult = schoolMapper.pageQuery(schoolPageQueryDTO);
         // 获取总记录数
         long total = pageResult.getTotal();
         // 获取总记录
-        List<SchoolSimpleVO> result = pageResult.getResult();
+        List<SchoolVO> result = pageResult.getResult();
         // 将其添加到缓存
         redisTemplate.opsForList().rightPushAll(key, result);
         redisTemplate.expire(key, SchoolRedisKey.SCHOOL_CACHE_TTL, TimeUnit.SECONDS);
@@ -89,13 +89,13 @@ public class SchoolServiceImpl implements SchoolService {
             String key = SchoolRedisKey.SCHOOL_CACHE_KEY + area + ":";
             try {
                 // 1. 查询数据库
-                List<SchoolSimpleVO> schoolSimpleVOS = schoolMapper.selectByAddress(area);
+                List<SchoolVO> schoolVOS = schoolMapper.selectByAddress(area);
                 // 2. 删除旧缓存（避免残留旧数据）
                 redisTemplate.delete(key);
                 // 3. 批量插入新数据（使用rightPushAll）
-                if (!schoolSimpleVOS.isEmpty()) {
-                    redisTemplate.opsForList().rightPushAll(key, schoolSimpleVOS);
-                    log.info("地区 {} 缓存预热成功，共 {} 条数据", area, schoolSimpleVOS.size());
+                if (!schoolVOS.isEmpty()) {
+                    redisTemplate.opsForList().rightPushAll(key, schoolVOS);
+                    log.info("地区 {} 缓存预热成功，共 {} 条数据", area, schoolVOS.size());
                 } else {
                     log.warn("地区 {} 无数据，跳过缓存预热", area);
                 }
@@ -109,10 +109,10 @@ public class SchoolServiceImpl implements SchoolService {
      * 根据学校名搜索大学
      *
      * @param schoolName 学校名
-     * @return List<SchoolSimpleVO>
+     * @return List<SchoolVO>
      */
     @Override
-    public List<SchoolSimpleVO> getSchoolByName(String schoolName) {
+    public List<SchoolVO> getSchoolByName(String schoolName) {
         return schoolMapper.selectByName(schoolName);
     }
 
@@ -120,27 +120,27 @@ public class SchoolServiceImpl implements SchoolService {
      * 根据用户成绩查询大学
      *
      * @param gradeDTO 用户成绩DTO
-     * @return List<SchoolSimpleVO>
+     * @return List<SchoolVO>
      */
     @Override
-    public List<SchoolSimpleVO> getSchoolByGrade(UserGradeQueryDTO gradeDTO) {
-        List<SchoolSimpleVO> schoolSimpleVOS = schoolMapper.selectByGrade(gradeDTO);
-        return new ArrayList<>(schoolSimpleVOS);
+    public List<SchoolVO> getSchoolByGrade(UserGradeQueryDTO gradeDTO) {
+        List<SchoolVO> schoolVOS = schoolMapper.selectByGrade(gradeDTO);
+        return new ArrayList<>(schoolVOS);
     }
 
     /**
      * 查询大学具体信息
      *
      * @param schoolDTO 大学查询DTO
-     * @return SchoolVO 大学具体信息
+     * @return DetailedSchoolVO 大学具体信息
      */
     @Override
-    public SchoolVO getDetailSchool(SchoolDTO schoolDTO) {
+    public DetailedSchoolVO getDetailSchool(SchoolDTO schoolDTO) {
         // 1.获取简略大学信息
-        SchoolSimpleVO schoolSimpleVO = schoolMapper.selectBySchoolId(schoolDTO.getSchoolId());
+        SchoolVO schoolVO = schoolMapper.selectBySchoolId(schoolDTO.getSchoolId());
         // 2.封装大学详细信息
-        SchoolVO schoolVO = new SchoolVO();
-        BeanUtil.copyProperties(schoolSimpleVO, schoolVO);
+        DetailedSchoolVO detailedSchoolVO = new DetailedSchoolVO();
+        BeanUtil.copyProperties(schoolVO, detailedSchoolVO);
         // 3.返回随机校园风光
         // 3.1获取所有照片
         List<String> imageList = resourceMapper.getAllImages();
@@ -151,28 +151,28 @@ public class SchoolServiceImpl implements SchoolService {
             images.add(imageList.get(index));
         }
         // 3.3返回随机6张校园风光
-        schoolVO.setImages(images);
+        detailedSchoolVO.setImages(images);
         // 4.随机校园配置
-        if (schoolSimpleVO.getScore() > 60) {
+        if (schoolVO.getScore() > 60) {
             // 4.1该学校属于好学校
-            schoolVO.setEquipment(highScoreSchool());
-        } else if (schoolSimpleVO.getRankList().contains("民办")) {
+            detailedSchoolVO.setEquipment(highScoreSchool());
+        } else if (schoolVO.getRankList().contains("民办")) {
             // 4.2该学校属于有钱的学校
-            schoolVO.setEquipment(richSchool());
+            detailedSchoolVO.setEquipment(richSchool());
         } else {
             // 4.3该学校属于一般学校
-            schoolVO.setEquipment(commonSchool());
+            detailedSchoolVO.setEquipment(commonSchool());
         }
         // 5.为该学校封装展示专业
         // 5.1获取专业
-        List<MajorSimpleVO> simpleVOS = schoolMapper.selectSimpleMajor(schoolSimpleVO.getSchoolId());
+        List<MajorSimpleVO> simpleVOS = schoolMapper.selectSimpleMajor(schoolVO.getSchoolId());
         // 5.2调整专业格式
         for (MajorSimpleVO simpleVO : simpleVOS) {
             simpleVO.setMajorName(simpleVO.getMajorName().split("\n")[0]);
         }
         // 5.3封装
-        schoolVO.setMajors(simpleVOS);
-        return schoolVO;
+        detailedSchoolVO.setMajors(simpleVOS);
+        return detailedSchoolVO;
     }
 
     /**

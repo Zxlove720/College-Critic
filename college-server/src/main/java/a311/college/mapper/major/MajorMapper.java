@@ -1,6 +1,6 @@
 package a311.college.mapper.major;
 
-import a311.college.dto.major.MajorQueryDTO;
+import a311.college.dto.query.major.MajorQueryDTO;
 import a311.college.vo.major.MajorVO;
 import org.apache.ibatis.annotations.Mapper;
 

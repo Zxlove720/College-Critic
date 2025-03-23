@@ -17,4 +17,5 @@ public class HotSchoolDTO {
 
     @Schema(description = "省份")
     private ProvinceEnum province;
+
 }

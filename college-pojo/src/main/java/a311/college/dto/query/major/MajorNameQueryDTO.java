@@ -12,4 +12,5 @@ public class MajorNameQueryDTO {
 
     @Schema(description = "专业名")
     private String majorName;
+
 }

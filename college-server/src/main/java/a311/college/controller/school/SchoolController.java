@@ -6,6 +6,7 @@ import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
+import a311.college.entity.school.School;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.SchoolService;
@@ -48,9 +49,9 @@ public class SchoolController {
      */
     @PostMapping("/page")
     @Operation(summary = "大学分页查询")
-    public Result<PageResult<SchoolVO>> schoolPageSelect(@RequestBody SchoolPageQueryDTO schoolPageQueryDTO) {
+    public Result<PageResult<School>> schoolPageSelect(@RequestBody SchoolPageQueryDTO schoolPageQueryDTO) {
         log.info("大学分页查询...查询参数为：第{}页，每页{}条", schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
-        PageResult<SchoolVO> pageResult = schoolService.pageSelect(schoolPageQueryDTO);
+        PageResult<School> pageResult = schoolService.pageSelect(schoolPageQueryDTO);
         return Result.success(pageResult);
     }
 

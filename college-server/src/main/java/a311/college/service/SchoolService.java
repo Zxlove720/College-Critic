@@ -4,6 +4,7 @@ import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
+import a311.college.entity.school.School;
 import a311.college.result.PageResult;
 import a311.college.vo.school.*;
 
@@ -14,7 +15,7 @@ import java.util.List;
  */
 public interface SchoolService {
 
-    PageResult<SchoolVO> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO);
+    PageResult<School> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO);
 
     void cacheSchool();
 

@@ -43,7 +43,7 @@ public class SchoolServiceImpl implements SchoolService {
     private final ResourceMapper resourceMapper;
 
     @Resource
-    private RedisTemplate<String, SchoolVO> redisTemplate;
+    private RedisTemplate<String, School> redisTemplate;
 
     @Autowired
     public SchoolServiceImpl(SchoolMapper schoolMapper, ResourceMapper resourceMapper, UserMapper userMapper) {
@@ -59,20 +59,20 @@ public class SchoolServiceImpl implements SchoolService {
      * @return PageResult<DetailedSchoolVO>
      */
     @Override
-    public PageResult<SchoolVO> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO) {
+    public PageResult<School> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO) {
         String key = SchoolRedisKey.SCHOOL_CACHE_KEY + schoolPageQueryDTO.getProvince() + ":";
-        List<SchoolVO> range = redisTemplate.opsForList().range(key, 0, -1);
+        List<School> range = redisTemplate.opsForList().range(key, 0, -1);
         if (range != null && !range.isEmpty()) {
             log.info("缓存命中");
             return new PageResult<>((long) range.size(), range);
         }
         log.info("缓存未命中，开启分页查询");
         PageHelper.startPage(schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
-        Page<SchoolVO> pageResult = schoolMapper.pageQuery(schoolPageQueryDTO);
+        Page<School> pageResult = schoolMapper.pageQuery(schoolPageQueryDTO);
         // 获取总记录数
         long total = pageResult.getTotal();
         // 获取总记录
-        List<SchoolVO> result = pageResult.getResult();
+        List<School> result = pageResult.getResult();
         // 将其添加到缓存
         redisTemplate.opsForList().rightPushAll(key, result);
         redisTemplate.expire(key, SchoolRedisKey.SCHOOL_CACHE_TTL, TimeUnit.SECONDS);
@@ -91,13 +91,13 @@ public class SchoolServiceImpl implements SchoolService {
             String key = SchoolRedisKey.SCHOOL_CACHE_KEY + area + ":";
             try {
                 // 1. 查询数据库
-                List<SchoolVO> schoolVOS = schoolMapper.selectByAddress(area);
+                List<School> school = schoolMapper.selectByAddress(area);
                 // 2. 删除旧缓存（避免残留旧数据）
                 redisTemplate.delete(key);
                 // 3. 批量插入新数据（使用rightPushAll）
-                if (!schoolVOS.isEmpty()) {
-                    redisTemplate.opsForList().rightPushAll(key, schoolVOS);
-                    log.info("地区 {} 缓存预热成功，共 {} 条数据", area, schoolVOS.size());
+                if (!school.isEmpty()) {
+                    redisTemplate.opsForList().rightPushAll(key, school);
+                    log.info("地区 {} 缓存预热成功，共 {} 条数据", area, school.size());
                 } else {
                     log.warn("地区 {} 无数据，跳过缓存预热", area);
                 }

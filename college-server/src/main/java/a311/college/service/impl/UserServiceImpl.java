@@ -5,6 +5,7 @@ import a311.college.constant.user.UserSubjectConstant;
 import a311.college.dto.login.UserLoginSymbolDTO;
 import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
+import a311.college.entity.school.School;
 import a311.college.entity.user.User;
 import a311.college.exception.*;
 import a311.college.mapper.school.SchoolMapper;
@@ -14,7 +15,6 @@ import a311.college.regex.RegexUtils;
 import a311.college.result.LoginResult;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
-import a311.college.vo.school.SchoolVO;
 import a311.college.vo.user.UserVO;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
@@ -312,11 +312,11 @@ public class UserServiceImpl implements UserService {
      * @return List<SchoolVO>
      */
     @Override
-    public List<SchoolVO> showFavorite() {
+    public List<School> showFavorite() {
         Long id = ThreadLocalUtil.getCurrentId();
         String favoriteTable = userMapper.selectFavoriteById(id);
         String[] favorite = favoriteTable.split(",");
-        List<SchoolVO> collegeList = new ArrayList<>();
+        List<School> collegeList = new ArrayList<>();
         for (String school : favorite) {
             collegeList.add(collegeMapper.selectBySchoolId(school));
         }

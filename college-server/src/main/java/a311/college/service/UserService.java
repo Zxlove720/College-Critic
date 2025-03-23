@@ -2,6 +2,7 @@ package a311.college.service;
 
 import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
+import a311.college.entity.school.School;
 import a311.college.result.LoginResult;
 import a311.college.vo.school.SchoolVO;
 import a311.college.vo.user.UserVO;
@@ -31,7 +32,7 @@ public interface UserService {
 
     void addFavorite(UserAddFavoriteDTO userAddFavoriteDTO);
 
-    List<SchoolVO> showFavorite();
+    List<School> showFavorite();
 
     void update(UserDTO userDTO);
 

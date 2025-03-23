@@ -4,7 +4,7 @@
 <mapper namespace="a311.college.mapper.school.SchoolMapper">
 
     <!-- 大学信息分页查询 -->
-    <select id="pageQuery" resultType="a311.college.vo.school.SchoolVO">
+    <select id="pageQuery" resultType="a311.college.entity.school.School">
         select
         school_id,
         school_head,

@@ -87,25 +87,6 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 大学专业分页查询
-     *
-     * @param schoolMajorPageDTO 大学专业分页查询DTO
-     * @return PageResult<SchoolMajor>
-     */
-    @Override
-    public PageResult<SchoolMajor> pageSelectMajor(SchoolMajorPageDTO schoolMajorPageDTO) {
-        try (Page<SchoolMajor> page = PageHelper.startPage(schoolMajorPageDTO.getPage(), schoolMajorPageDTO.getPageSize())) {
-            schoolMapper.pageQueryMajor(schoolMajorPageDTO);
-            long total = page.getTotal();
-            List<SchoolMajor> result = page.getResult();
-            return new PageResult<>(total, result);
-        } catch (Exception e) {
-            log.error("大学专业分页查询失败，报错为：{}", e.getMessage());
-            return null;
-        }
-    }
-
-    /**
      * 大学信息缓存预热
      * 添加热点地区的大学到缓存
      */
@@ -130,6 +111,25 @@ public class SchoolServiceImpl implements SchoolService {
             } catch (Exception e) {
                 log.error("地区 {} 缓存预热失败: {}", area, e.getMessage(), e);
             }
+        }
+    }
+
+    /**
+     * 大学专业分页查询
+     *
+     * @param schoolMajorPageDTO 大学专业分页查询DTO
+     * @return PageResult<SchoolMajor>
+     */
+    @Override
+    public PageResult<SchoolMajor> pageSelectMajor(SchoolMajorPageDTO schoolMajorPageDTO) {
+        try (Page<SchoolMajor> page = PageHelper.startPage(schoolMajorPageDTO.getPage(), schoolMajorPageDTO.getPageSize())) {
+            schoolMapper.pageQueryMajor(schoolMajorPageDTO);
+            long total = page.getTotal();
+            List<SchoolMajor> result = page.getResult();
+            return new PageResult<>(total, result);
+        } catch (Exception e) {
+            log.error("大学专业分页查询失败，报错为：{}", e.getMessage());
+            return null;
         }
     }
 
@@ -203,24 +203,59 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 获取某一院校的历年分数线
-     *
-     * @param yearScoreDTO 分数线查询DTO
-     * @return YearScoreVO
+     * 为好学校设置学校设施
      */
-    @Override
-    public List<YearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO) {
-        return schoolMapper.selectScoreByYear(yearScoreDTO);
+    private Map<String, Integer> highScoreSchool() {
+        Map<String, Integer> equipment = new HashMap<>();
+        equipment.put("one", 4);
+        equipment.put("two", 1);
+        equipment.put("three", RandomUtil.randomInt(5, 16));
+        equipment.put("four", 1);
+        equipment.put("five", 1);
+        equipment.put("six", 1);
+        equipment.put("seven", 1);
+        equipment.put("eight", 1);
+        equipment.put("nine", 1);
+        equipment.put("ten", RandomUtil.randomInt(5, 11));
+        return equipment;
     }
 
     /**
-     * 用户评价大学
-     *
-     * @param addCommentDTO 用户评价DTO
+     * 为有钱的学校设置学校设施
      */
-    @Override
-    public void addSchoolComment(AddSchoolCommentDTO addCommentDTO) {
-        schoolMapper.addComment(addCommentDTO);
+    private Map<String, Integer> richSchool() {
+        Map<String, Integer> equipment = new HashMap<>();
+        equipment.put("one", 4);
+        equipment.put("two", 1);
+        equipment.put("three", RandomUtil.randomInt(3, 7));
+        equipment.put("four", 1);
+        equipment.put("five", 1);
+        equipment.put("six", 1);
+        equipment.put("seven", 1);
+        equipment.put("eight", 1);
+        equipment.put("nine", 1);
+        equipment.put("ten", RandomUtil.randomInt(2, 5));
+        return equipment;
+    }
+
+    /**
+     * 为一般学校设置学校设施
+     */
+    private Map<String, Integer> commonSchool() {
+        Map<String, Integer> equipment = new HashMap<>();
+        Integer[] room = {4, 6};
+        equipment.put("one", RandomUtil.randomEle(room));
+        Integer[] flag = {0, 1};
+        equipment.put("two", RandomUtil.randomEle(flag));
+        equipment.put("three", RandomUtil.randomInt(5, 11));
+        equipment.put("four", 1);
+        equipment.put("five", 1);
+        equipment.put("six", RandomUtil.randomEle(flag));
+        equipment.put("seven", 1);
+        equipment.put("eight", 0);
+        equipment.put("nine", RandomUtil.randomEle(flag));
+        equipment.put("ten", RandomUtil.randomInt(3, 7));
+        return equipment;
     }
 
     /**
@@ -296,6 +331,27 @@ public class SchoolServiceImpl implements SchoolService {
         return forecastVO;
     }
 
+    /**
+     * 获取某一院校的历年分数线
+     *
+     * @param yearScoreDTO 分数线查询DTO
+     * @return YearScoreVO
+     */
+    @Override
+    public List<YearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO) {
+        return schoolMapper.selectScoreByYear(yearScoreDTO);
+    }
+
+    /**
+     * 用户评价大学
+     *
+     * @param addCommentDTO 用户评价DTO
+     */
+    @Override
+    public void addSchoolComment(AddSchoolCommentDTO addCommentDTO) {
+        schoolMapper.addComment(addCommentDTO);
+    }
+
     @Override
     public List<BriefSchoolInfoVO> getHotSchool() {
         UserVO user = userMapper.selectById(ThreadLocalUtil.getCurrentId());
@@ -325,54 +381,5 @@ public class SchoolServiceImpl implements SchoolService {
             }
         }
         return briefSchoolInfoVOList;
-    }
-
-
-
-    private Map<String, Integer> highScoreSchool() {
-        Map<String, Integer> equipment = new HashMap<>();
-        equipment.put("one", 4);
-        equipment.put("two", 1);
-        equipment.put("three", RandomUtil.randomInt(5, 16));
-        equipment.put("four", 1);
-        equipment.put("five", 1);
-        equipment.put("six", 1);
-        equipment.put("seven", 1);
-        equipment.put("eight", 1);
-        equipment.put("nine", 1);
-        equipment.put("ten", RandomUtil.randomInt(5, 11));
-        return equipment;
-    }
-
-    private Map<String, Integer> richSchool() {
-        Map<String, Integer> equipment = new HashMap<>();
-        equipment.put("one", 4);
-        equipment.put("two", 1);
-        equipment.put("three", RandomUtil.randomInt(3, 7));
-        equipment.put("four", 1);
-        equipment.put("five", 1);
-        equipment.put("six", 1);
-        equipment.put("seven", 1);
-        equipment.put("eight", 1);
-        equipment.put("nine", 1);
-        equipment.put("ten", RandomUtil.randomInt(2, 5));
-        return equipment;
-    }
-
-    private Map<String, Integer> commonSchool() {
-        Map<String, Integer> equipment = new HashMap<>();
-        Integer[] room = {4, 6};
-        equipment.put("one", RandomUtil.randomEle(room));
-        Integer[] flag = {0, 1};
-        equipment.put("two", RandomUtil.randomEle(flag));
-        equipment.put("three", RandomUtil.randomInt(5, 11));
-        equipment.put("four", 1);
-        equipment.put("five", 1);
-        equipment.put("six", RandomUtil.randomEle(flag));
-        equipment.put("seven", 1);
-        equipment.put("eight", 0);
-        equipment.put("nine", RandomUtil.randomEle(flag));
-        equipment.put("ten", RandomUtil.randomInt(3, 7));
-        return equipment;
     }
 }

@@ -60,13 +60,14 @@
                s.school_name,
                s.school_province,
                s.school_address,
-               s.rank_list
+               s.rank_list,
+               s.score
         from tb_school as s
         where school_name like concat('%', #{schoolName}, '%')
         order by score desc, length(rank_list) desc
     </select>
 
-    <select id="selectByGrade" resultType="a311.college.vo.school.SchoolVO">
+    <select id="selectByGrade" resultType="a311.college.entity.school.School">
         SELECT DISTINCT s.school_head,
                         s.school_name,
                         s.school_address,

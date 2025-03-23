@@ -63,7 +63,7 @@ public class SchoolController {
      */
     @PostMapping("/name")
     @Operation(summary = "根据学校名搜索大学")
-    public Result<List<SchoolVO>> searchSchool(@RequestBody SchoolNameQueryDTO schoolNameQueryDTO) {
+    public Result<List<School>> searchSchool(@RequestBody SchoolNameQueryDTO schoolNameQueryDTO) {
         return Result.success(schoolService.searchSchool(schoolNameQueryDTO));
     }
 
@@ -71,11 +71,11 @@ public class SchoolController {
      * 根据用户成绩查询大学
      *
      * @param gradeDTO 成绩查询DTO
-     * @return List<SchoolVO>
+     * @return List<School>
      */
     @PostMapping("grade")
     @Operation(summary = "根据用户成绩查询大学")
-    public Result<List<SchoolVO>> getByUserScore(@RequestBody UserGradeQueryDTO gradeDTO) {
+    public Result<List<School>> getByUserScore(@RequestBody UserGradeQueryDTO gradeDTO) {
         log.info("用户成绩为：{}", gradeDTO.getGrade());
         return Result.success(schoolService.getSchoolByGrade(gradeDTO));
     }

@@ -58,7 +58,7 @@ public interface SchoolMapper {
      *
      * @return List<DetailedSchoolVO>
      */
-    List<SchoolVO> selectByGrade(UserGradeQueryDTO gradeDTO);
+    List<School> selectByGrade(UserGradeQueryDTO gradeDTO);
 
     /**
      * 获取某一院校的历年分数线

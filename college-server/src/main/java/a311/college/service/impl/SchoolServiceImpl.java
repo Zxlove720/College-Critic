@@ -59,6 +59,7 @@ public class SchoolServiceImpl implements SchoolService {
      * @return PageResult<DetailedSchoolVO>
      */
     @Override
+    //TODO该方法的缓存部分有大问题，缓存的数据不支持分页
     public PageResult<School> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO) {
         String key = SchoolRedisKey.SCHOOL_CACHE_KEY + schoolPageQueryDTO.getProvince() + ":";
         List<School> range = redisTemplate.opsForList().range(key, 0, -1);
@@ -119,26 +120,19 @@ public class SchoolServiceImpl implements SchoolService {
      * @param schoolNameQueryDTO@return List<SchoolVO>
      */
     @Override
-    public List<SchoolVO> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO) {
-        List<School> schoolList = schoolMapper.selectByName(schoolNameQueryDTO.getSchoolName());
-        List<SchoolVO> schoolVOList = new ArrayList<>();
-        for (School school : schoolList) {
-            SchoolVO schoolVO = new SchoolVO();
-            BeanUtil.copyProperties(school, schoolVO);
-            schoolVOList.add(schoolVO);
-        }
-        return schoolVOList;
-
+    public List<School> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO) {
+        // 1.根据大学名模糊查询大学
+        return schoolMapper.selectByName(schoolNameQueryDTO.getSchoolName());
     }
 
     /**
      * 根据用户成绩查询大学
      *
      * @param gradeDTO 用户成绩DTO
-     * @return List<SchoolVO>
+     * @return List<School>
      */
     @Override
-    public List<SchoolVO> getSchoolByGrade(UserGradeQueryDTO gradeDTO) {
+    public List<School> getSchoolByGrade(UserGradeQueryDTO gradeDTO) {
         return schoolMapper.selectByGrade(gradeDTO);
     }
 

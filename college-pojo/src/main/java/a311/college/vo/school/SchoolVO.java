@@ -27,10 +27,7 @@ public class SchoolVO implements Serializable {
     @Schema(description = "大学名称")
     private String schoolName;
 
-    @Schema(description = "所在省份")
-    private ProvinceEnum schoolProvince;
-
-    @Schema(description = "学校地址")
+    @Schema(description = "具体地址")
     private String schoolAddress;
 
     @Schema(description = "大学等级标签列表")

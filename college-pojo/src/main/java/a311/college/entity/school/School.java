@@ -23,16 +23,16 @@ public class School implements Serializable {
     @Schema(description = "大学校徽")
     private String schoolHead;
 
-    @Schema(description = "大学校名")
+    @Schema(description = "大学名称")
     private String schoolName;
 
-    @Schema(description = "学校省份")
+    @Schema(description = "所在省份")
     private ProvinceEnum schoolProvince;
 
     @Schema(description = "具体地址")
     private String schoolAddress;
 
-    @Schema(description = "等级列表")
+    @Schema(description = "大学等级标签列表")
     private String rankList;
 
     @Schema(description = "客观得分")

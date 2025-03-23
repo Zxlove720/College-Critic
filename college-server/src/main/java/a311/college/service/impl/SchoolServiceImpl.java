@@ -64,6 +64,7 @@ public class SchoolServiceImpl implements SchoolService {
         List<School> range = redisTemplate.opsForList().range(key, 0, -1);
         if (range != null && !range.isEmpty()) {
             log.info("缓存命中");
+
             return new PageResult<>((long) range.size(), range);
         }
         log.info("缓存未命中，开启分页查询");
@@ -114,7 +115,15 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public List<SchoolVO> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO) {
-        return schoolMapper.selectByName(schoolNameQueryDTO.getSchoolName());
+        List<School> schoolList = schoolMapper.selectByName(schoolNameQueryDTO.getSchoolName());
+        List<SchoolVO> schoolVOList = new ArrayList<>();
+        for (School school : schoolList) {
+            SchoolVO schoolVO = new SchoolVO();
+            BeanUtil.copyProperties(school, schoolVO);
+            schoolVOList.add(schoolVO);
+        }
+        return schoolVOList;
+
     }
 
     /**
@@ -283,7 +292,6 @@ public class SchoolServiceImpl implements SchoolService {
                 briefSchoolInfoVO.setRank(school.getRankList());
                 briefSchoolInfoVOList.add(briefSchoolInfoVO);
             }
-            return briefSchoolInfoVOList;
         } else {
             // 用户没有登录，展示默认的大学
             List<String> hotSchool = new ArrayList<>();
@@ -297,8 +305,8 @@ public class SchoolServiceImpl implements SchoolService {
                 briefSchoolInfoVO.setRank(schoolInfo.getRankList().split(",")[1]);
                 briefSchoolInfoVOList.add(briefSchoolInfoVO);
             }
-            return briefSchoolInfoVOList;
         }
+        return briefSchoolInfoVOList;
     }
 
     private Map<String, Integer> highScoreSchool() {

@@ -51,7 +51,7 @@ public interface SchoolMapper {
      * @param schoolName 学校名
      * @return List<SchoolVO>
      */
-    List<SchoolVO> selectByName(String schoolName);
+    List<School> selectByName(String schoolName);
 
     /**
      * 根据成绩查询大学

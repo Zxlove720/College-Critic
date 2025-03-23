@@ -136,7 +136,7 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public DetailedSchoolVO getDetailSchool(SchoolDTO schoolDTO) {
-        // 1.获取简略大学信息
+        // 1.获取大学信息
         School school = schoolMapper.selectBySchoolId(schoolDTO.getSchoolId());
         // 2.封装大学详细信息
         DetailedSchoolVO detailedSchoolVO = new DetailedSchoolVO();
@@ -168,7 +168,7 @@ public class SchoolServiceImpl implements SchoolService {
         List<MajorSimpleVO> majorSimpleVOList = schoolMapper.selectSimpleMajor(school.getSchoolId());
         // 5.2调整专业格式
         for (MajorSimpleVO majorSimpleVO : majorSimpleVOList) {
-            majorSimpleVO.setMajorName(majorSimpleVO.getMajorName().split("\n")[0]);
+            majorSimpleVO.setMajorName(majorSimpleVO.getMajorName());
         }
         // 5.3封装
         detailedSchoolVO.setMajors(majorSimpleVOList);

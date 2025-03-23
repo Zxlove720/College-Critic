@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Schema(description = "大学专业类")
 public class SchoolMajor implements Serializable {
 
-    @Schema(description = "专业名")
+    @Schema(description = "专业名称")
     private String majorName;
 
     @Schema(description = "首选科目")

@@ -1,4 +1,4 @@
-package a311.college.entity.school;
+package a311.college.database.pojo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

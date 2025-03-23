@@ -141,14 +141,4 @@ public class SchoolController {
         return Result.success(schoolSimpleVOList);
     }
 
-    /**
-     * 更新数据
-     *
-     */
-    @PostMapping("/data")
-    public Result<Void> updateData() {
-        schoolService.updateData();
-        return Result.success();
-    }
-
 }

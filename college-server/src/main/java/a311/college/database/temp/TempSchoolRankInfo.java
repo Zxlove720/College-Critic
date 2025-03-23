@@ -1,4 +1,4 @@
-package a311.college.entity.temp;
+package a311.college.database.temp;
 
 import a311.college.enumeration.ProvinceEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;

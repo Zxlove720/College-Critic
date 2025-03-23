@@ -1,6 +1,6 @@
-package a311.college.entity.temp;
+package a311.college.database.temp;
 
-import a311.college.entity.school.Province;
+import a311.college.database.pojo.Province;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

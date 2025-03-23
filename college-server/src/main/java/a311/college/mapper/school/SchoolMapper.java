@@ -6,7 +6,7 @@ import a311.college.dto.school.ForecastDTO;
 import a311.college.dto.school.SchoolPageQueryDTO;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
-import a311.college.entity.school.SchoolInfo;
+import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.enumeration.ProvinceEnum;
 import a311.college.vo.school.SchoolMajorVO;
@@ -127,13 +127,9 @@ public interface SchoolMapper {
     @Select("select * from tb_score")
     List<SchoolMajor> selectAllMajor();
 
-    @Update("update tb_score set major_name = #{majorName}, first_choice = #{firstChoice}, other_choice = #{otherChoice}, " +
-            "special = #{special}")
-    void updateMajor(SchoolMajor schoolMajor);
-
     @Select("select * from tb_school where school_province = #{province} order by score desc limit 9")
-    List<SchoolInfo> selectByProvince(ProvinceEnum province);
+    List<School> selectByProvince(ProvinceEnum province);
 
     @Select("select * from tb_school where school_name = #{school}")
-    SchoolInfo getByName(String school);
+    School getByName(String school);
 }

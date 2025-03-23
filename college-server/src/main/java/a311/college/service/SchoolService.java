@@ -31,6 +31,5 @@ public interface SchoolService {
 
     List<BriefSchoolInfoVO> getHotSchool();
 
-    void updateData();
 
 }

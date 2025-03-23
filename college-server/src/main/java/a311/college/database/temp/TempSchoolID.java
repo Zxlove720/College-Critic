@@ -1,4 +1,4 @@
-package a311.college.entity.temp;
+package a311.college.database.temp;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

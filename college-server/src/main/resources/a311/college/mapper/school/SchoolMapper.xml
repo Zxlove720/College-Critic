@@ -102,7 +102,7 @@
         LIMIT 5;
     </select>
 
-    <select id="getAllMajor" resultType="a311.college.vo.school.SchoolMajorVO">
+    <select id="getAllMajor" resultType="a311.college.entity.school.SchoolMajor">
         select distinct
             sc.major_name, sc.first_choice, sc.other_choice, sc.special, sc.min_score, sc.min_ranking
         FROM tb_school as s

@@ -24,13 +24,12 @@ public interface SchoolService {
 
     DetailedSchoolVO getDetailSchool(SchoolDTO schoolDTO);
 
+    ForecastVO forecast(ForecastDTO forecastDTO);
+
     List<YearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO);
 
     void addSchoolComment(AddSchoolCommentDTO addCommentDTO);
 
-    ForecastVO forecast(ForecastDTO forecastDTO);
-
     List<BriefSchoolInfoVO> getHotSchool();
-
 
 }

@@ -23,6 +23,6 @@ public class ForecastVO {
     private Integer chance;
 
     @Schema(description = "专业列表")
-    private List<SchoolMajorVO> majorForecastResultList;
+    private List<SchoolMajorVO> majorForecastList;
 
 }

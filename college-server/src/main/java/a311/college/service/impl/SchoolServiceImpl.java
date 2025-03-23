@@ -6,6 +6,7 @@ import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.entity.school.School;
+import a311.college.entity.school.SchoolMajor;
 import a311.college.mapper.resource.ResourceMapper;
 import a311.college.mapper.school.SchoolMapper;
 import a311.college.mapper.user.UserMapper;
@@ -79,12 +80,12 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 缓存预热
+     * 大学信息缓存预热
      * 添加热点地区的大学到缓存
      */
     public void cacheSchool() {
         // 定义热点地区列表
-        List<String> hotAreas = Arrays.asList("北京", "上海", "广东", "湖北", "重庆", "陕西", "湖北");
+        List<String> hotAreas = Arrays.asList("北京", "上海", "广东", "重庆", "天津", "浙江", "江苏", "陕西", "四川", "湖北");
         for (String area : hotAreas) {
             // 统一键名格式
             String key = SchoolRedisKey.SCHOOL_CACHE_KEY + area + ":";
@@ -203,56 +204,68 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public ForecastVO forecast(ForecastDTO forecastDTO) {
-        // 0.三个不同难度的专业
+        // 1.列出三种难度的专业
         int minimum = 0;
         int stable = 0;
         int rush = 0;
-        // 1.处理专业信息
-        // 1.1获得专业信息
-        List<SchoolMajorVO> schoolMajorVOList = schoolMapper.getAllMajor(forecastDTO);
-        // 1.2处理专业名、特殊要求、选科要求
-        for (SchoolMajorVO schoolMajorVO : schoolMajorVOList) {
-            // 2.1默认根据用户的位次进行统计
+        // 2.处理专业信息
+        // 2.1获得专业信息
+        List<SchoolMajor> schoolMajorList = schoolMapper.getAllMajor(forecastDTO);
+        // 2.2将SchoolMajor对象封装为SchoolMajorVO对象返回
+        List<SchoolMajorVO> schoolMajorVOList = new ArrayList<>();
+        for (SchoolMajor schoolMajor : schoolMajorList) {
+            // 2.3构造SchoolMajorVo对象
+            SchoolMajorVO schoolMajorVO = new SchoolMajorVO();
+            // 2.4属性拷贝
+            BeanUtil.copyProperties(schoolMajor, schoolMajorVO);
+            // 2.5默认根据用户的位次进行预测
             Integer userRanking = forecastDTO.getRanking();
             if (userRanking != null) {
-                Integer majorRanking = schoolMajorVO.getMinRanking();
+                int majorRanking = schoolMajor.getMinRanking();
                 if (majorRanking >= userRanking - 3000 && majorRanking <= userRanking + 4000) {
-                    // 2.2该专业为稳
+                    // 2.6该专业为稳
                     schoolMajorVO.setCategory(1);
                     stable++;
                 } else if (majorRanking < userRanking - 3000 && majorRanking >= userRanking - 5000) {
+                    // 2.7该专业为冲
                     schoolMajorVO.setCategory(2);
-                    rush++;   // 冲：专业位次更优（数值更小）
+                    rush++;
                 } else if (majorRanking > userRanking + 4000) {
+                    // 2.8该专业为保
                     schoolMajorVO.setCategory(0);
-                    minimum++; // 保：专业位次更差（数值更大）
+                    minimum++;
                 }
-            } else {
-                Integer majorScore = schoolMajorVO.getMinScore();
-                Integer userGrade = forecastDTO.getGrade();
+            } else if (forecastDTO.getGrade() != null) {
+                int majorScore = schoolMajor.getMinScore();
+                int userGrade = forecastDTO.getGrade();
                 if (majorScore <= userGrade + 10 && majorScore >= userGrade - 10) {
+                    // 该专业为稳
                     schoolMajorVO.setCategory(1);
                     stable++;
                 } else if (majorScore > userGrade + 10 && majorScore <= userGrade + 20) {
+                    // 该专业为冲
                     schoolMajorVO.setCategory(2);
                     rush++;
                 } else if (majorScore < userGrade - 10 && majorScore >= userGrade - 30) {
+                    // 该专业为保
                     schoolMajorVO.setCategory(0);
                     minimum++;
                 }
             }
-        }
-        List<SchoolMajorVO> forecastList = new ArrayList<>();
-        for (SchoolMajorVO schoolMajorVO : schoolMajorVOList) {
+            // 2.9将有分类的专业加入到SchoolMajorVOList中返回
             if (schoolMajorVO.getCategory() != null) {
-                forecastList.add(schoolMajorVO);
+                schoolMajorVOList.add(schoolMajorVO);
             }
         }
+        // 3.构建ForecastVO结果
         ForecastVO forecastVO = new ForecastVO();
-        forecastVO.setMajorForecastResultList(forecastList);
-        double chance = (stable + minimum + 0.2 * rush) / schoolMajorVOList.size();
+        // 3.1封装可选专业
+        forecastVO.setSelectableMajor(schoolMajorList.size());
+        // 3.2封装专业列表
+        forecastVO.setMajorForecastList(schoolMajorVOList);
+        // 3.3计算录取概率
+        double chance = (stable + minimum + 0.2 * rush) / schoolMajorList.size();
         forecastVO.setChance((int) Math.round(chance * 100));
-        forecastVO.setSelectableMajor(schoolMajorVOList.size());
         return forecastVO;
     }
 

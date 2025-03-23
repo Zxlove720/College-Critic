@@ -122,7 +122,7 @@ public interface SchoolMapper {
      * @param forecastDTO 预测DTO
      * @return List<SchoolMajorVO>
      */
-    List<SchoolMajorVO> getAllMajor(ForecastDTO forecastDTO);
+    List<SchoolMajor> getAllMajor(ForecastDTO forecastDTO);
 
     @Select("select * from tb_score")
     List<SchoolMajor> selectAllMajor();

@@ -93,6 +93,18 @@ public class SchoolController {
     }
 
     /**
+     * 录取预测
+     *
+     * @param forecastDTO 录取预测DTO
+     * @return ForecastVO 录取预测VO
+     */
+    @PostMapping("/forecast")
+    public Result<ForecastVO> forecast(@RequestBody ForecastDTO forecastDTO) {
+        log.info("用户'{}'正在做录取预测", ThreadLocalUtil.getCurrentId());
+        return Result.success(schoolService.forecast(forecastDTO));
+    }
+
+    /**
      * 获取某一院校的历年分数线
      *
      * @param yearScoreDTO 分数线查询DTO
@@ -115,18 +127,6 @@ public class SchoolController {
         log.info("用户'{}'发表对于'{}'大学的评论", ThreadLocalUtil.getCurrentId(), addCommentDTO.getSchoolId());
         schoolService.addSchoolComment(addCommentDTO);
         return Result.success();
-    }
-
-    /**
-     * 录取预测
-     *
-     * @param forecastDTO 录取预测DTO
-     * @return ForecastVO 录取预测VO
-     */
-    @PostMapping("/forecast")
-    public Result<ForecastVO> forecast(@RequestBody ForecastDTO forecastDTO) {
-        log.info("用户'{}'正在做录取预测", ThreadLocalUtil.getCurrentId());
-        return Result.success(schoolService.forecast(forecastDTO));
     }
 
     /**

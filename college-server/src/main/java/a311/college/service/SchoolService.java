@@ -1,5 +1,6 @@
 package a311.college.service;
 
+import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
@@ -17,7 +18,7 @@ public interface SchoolService {
 
     void cacheSchool();
 
-    List<SchoolVO> getSchoolByName(String schoolName);
+    List<SchoolVO> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO);
 
     List<SchoolVO> getSchoolByGrade(UserGradeQueryDTO gradeDTO);
 

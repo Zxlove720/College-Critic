@@ -1,6 +1,7 @@
 package a311.college.service.impl;
 
 import a311.college.constant.redis.SchoolRedisKey;
+import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
@@ -108,12 +109,11 @@ public class SchoolServiceImpl implements SchoolService {
     /**
      * 根据学校名搜索大学
      *
-     * @param schoolName 学校名
-     * @return List<SchoolVO>
+     * @param schoolNameQueryDTO@return List<SchoolVO>
      */
     @Override
-    public List<SchoolVO> getSchoolByName(String schoolName) {
-        return schoolMapper.selectByName(schoolName);
+    public List<SchoolVO> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO) {
+        return schoolMapper.selectByName(schoolNameQueryDTO.getSchoolName());
     }
 
     /**
@@ -124,8 +124,7 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public List<SchoolVO> getSchoolByGrade(UserGradeQueryDTO gradeDTO) {
-        List<SchoolVO> schoolVOS = schoolMapper.selectByGrade(gradeDTO);
-        return new ArrayList<>(schoolVOS);
+        return schoolMapper.selectByGrade(gradeDTO);
     }
 
     /**
@@ -137,10 +136,10 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public DetailedSchoolVO getDetailSchool(SchoolDTO schoolDTO) {
         // 1.获取简略大学信息
-        SchoolVO schoolVO = schoolMapper.selectBySchoolId(schoolDTO.getSchoolId());
+        School school = schoolMapper.selectBySchoolId(schoolDTO.getSchoolId());
         // 2.封装大学详细信息
         DetailedSchoolVO detailedSchoolVO = new DetailedSchoolVO();
-        BeanUtil.copyProperties(schoolVO, detailedSchoolVO);
+        BeanUtil.copyProperties(school, detailedSchoolVO);
         // 3.返回随机校园风光
         // 3.1获取所有照片
         List<String> imageList = resourceMapper.getAllImages();
@@ -153,10 +152,10 @@ public class SchoolServiceImpl implements SchoolService {
         // 3.3返回随机6张校园风光
         detailedSchoolVO.setImages(images);
         // 4.随机校园配置
-        if (schoolVO.getScore() > 60) {
+        if (school.getScore() > 60) {
             // 4.1该学校属于好学校
             detailedSchoolVO.setEquipment(highScoreSchool());
-        } else if (schoolVO.getRankList().contains("民办")) {
+        } else if (school.getRankList().contains("民办")) {
             // 4.2该学校属于有钱的学校
             detailedSchoolVO.setEquipment(richSchool());
         } else {
@@ -165,13 +164,13 @@ public class SchoolServiceImpl implements SchoolService {
         }
         // 5.为该学校封装展示专业
         // 5.1获取专业
-        List<MajorSimpleVO> simpleVOS = schoolMapper.selectSimpleMajor(schoolVO.getSchoolId());
+        List<MajorSimpleVO> majorSimpleVOList = schoolMapper.selectSimpleMajor(school.getSchoolId());
         // 5.2调整专业格式
-        for (MajorSimpleVO simpleVO : simpleVOS) {
-            simpleVO.setMajorName(simpleVO.getMajorName().split("\n")[0]);
+        for (MajorSimpleVO majorSimpleVO : majorSimpleVOList) {
+            majorSimpleVO.setMajorName(majorSimpleVO.getMajorName().split("\n")[0]);
         }
         // 5.3封装
-        detailedSchoolVO.setMajors(simpleVOS);
+        detailedSchoolVO.setMajors(majorSimpleVOList);
         return detailedSchoolVO;
     }
 

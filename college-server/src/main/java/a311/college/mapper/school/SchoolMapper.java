@@ -74,7 +74,7 @@ public interface SchoolMapper {
      * @return SchoolVO
      */
     @Select("select * from tb_school where school_id = #{schoolId}")
-    SchoolVO selectBySchoolId(String schoolId);
+    School selectBySchoolId(String schoolId);
 
     /**
      * 查询该学校开设专业

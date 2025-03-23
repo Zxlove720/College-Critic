@@ -36,5 +36,5 @@ public class School implements Serializable {
     private String rankList;
 
     @Schema(description = "客观得分")
-    private String score;
+    private Integer score;
 }

@@ -34,7 +34,7 @@ public interface SchoolService {
 
     void addSchoolComment(AddSchoolCommentDTO addCommentDTO);
 
-    List<BriefSchoolInfoVO> getHotSchool();
-
     List<CommentVO> showComment(SchoolDTO schoolDTO);
+
+    List<BriefSchoolInfoVO> getHotSchool();
 }

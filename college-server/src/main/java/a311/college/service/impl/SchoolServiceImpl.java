@@ -352,6 +352,22 @@ public class SchoolServiceImpl implements SchoolService {
         schoolMapper.addComment(addCommentDTO);
     }
 
+    /**
+     * 获取用户评价
+     *
+     * @param schoolDTO 大学DTO
+     * @return List<CommentVO>
+     */
+    @Override
+    public List<CommentVO> showComment(SchoolDTO schoolDTO) {
+        return schoolMapper.getComment(schoolDTO.getSchoolId());
+    }
+
+    /**
+     * 获取热门院校
+     *
+     * @return List<BriefSchoolInfoVO>
+     */
     @Override
     public List<BriefSchoolInfoVO> getHotSchool() {
         UserVO user = userMapper.selectById(ThreadLocalUtil.getCurrentId());
@@ -381,16 +397,5 @@ public class SchoolServiceImpl implements SchoolService {
             }
         }
         return briefSchoolInfoVOList;
-    }
-
-    /**
-     * 获取用户评价
-     *
-     * @param schoolDTO 大学DTO
-     * @return List<CommentVO>
-     */
-    @Override
-    public List<CommentVO> showComment(SchoolDTO schoolDTO) {
-        return schoolMapper.getComment(schoolDTO.getSchoolId());
     }
 }

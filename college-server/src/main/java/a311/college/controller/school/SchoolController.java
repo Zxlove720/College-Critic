@@ -116,6 +116,7 @@ public class SchoolController {
      * @return ForecastVO 录取预测VO
      */
     @PostMapping("/forecast")
+    @Operation(summary = "录取预测")
     public Result<ForecastVO> forecast(@RequestBody ForecastDTO forecastDTO) {
         log.info("用户'{}'正在做录取预测", ThreadLocalUtil.getCurrentId());
         return Result.success(schoolService.forecast(forecastDTO));

@@ -36,4 +36,5 @@ public interface SchoolService {
 
     List<BriefSchoolInfoVO> getHotSchool();
 
+    List<CommentVO> showComment(SchoolDTO schoolDTO);
 }

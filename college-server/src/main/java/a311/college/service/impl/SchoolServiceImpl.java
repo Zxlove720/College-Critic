@@ -382,4 +382,15 @@ public class SchoolServiceImpl implements SchoolService {
         }
         return briefSchoolInfoVOList;
     }
+
+    /**
+     * 获取用户评价
+     *
+     * @param schoolDTO 大学DTO
+     * @return List<CommentVO>
+     */
+    @Override
+    public List<CommentVO> showComment(SchoolDTO schoolDTO) {
+        return schoolMapper.getComment(schoolDTO.getSchoolId());
+    }
 }

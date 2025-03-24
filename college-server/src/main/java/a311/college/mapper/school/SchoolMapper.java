@@ -10,6 +10,7 @@ import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.enumeration.ProvinceEnum;
+import a311.college.vo.school.CommentVO;
 import a311.college.vo.school.SchoolMajorVO;
 import a311.college.vo.major.MajorSimpleVO;
 import a311.college.vo.school.SchoolVO;
@@ -135,4 +136,6 @@ public interface SchoolMapper {
     School getByName(String school);
 
     List<SchoolMajor> pageQueryMajor(SchoolMajorPageDTO schoolMajorPageDTO);
+
+    List<CommentVO> getComment(String schoolId);
 }

@@ -135,4 +135,12 @@
                  JOIN tb_score as sc ON b.batch_id = sc.batch_id
         WHERE s.school_id = #{schoolId}
     </select>
+
+    <select id="getComment" resultType="a311.college.vo.school.CommentVO">
+        select u.username, u.head, c.comment
+        from
+             tb_comment AS c,
+             tb_user AS u
+        where c.school_id = #{schoolId} and u.id = c.user_id
+    </select>
 </mapper>

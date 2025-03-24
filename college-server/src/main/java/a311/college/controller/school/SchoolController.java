@@ -90,6 +90,7 @@ public class SchoolController {
      */
     @PostMapping("grade")
     @Operation(summary = "根据用户成绩查询大学")
+    // TODO查询十分缓慢
     public Result<List<School>> getByUserScore(@RequestBody UserGradeQueryDTO gradeDTO) {
         log.info("用户成绩为：{}", gradeDTO.getGrade());
         return Result.success(schoolService.getSchoolByGrade(gradeDTO));
@@ -145,6 +146,20 @@ public class SchoolController {
         return Result.success();
     }
 
+    /**
+     * 获取用户评价
+     *
+     * @param schoolDTO 大学DTO
+     * @return Result<List<CommentVO>>
+     */
+    @PostMapping("/showComment")
+    @Operation(summary = "获取用户评价")
+    public Result<List<CommentVO>> showSchoolComment(@RequestBody SchoolDTO schoolDTO) {
+        log.info("查看大学'{}'的评价", schoolDTO.getSchoolId());
+        List<CommentVO> commentVOList = schoolService.showComment(schoolDTO);
+        return Result.success(commentVOList);
+    }
+    
     /**
      * 获取热门院校
      *

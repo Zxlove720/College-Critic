@@ -1,5 +1,8 @@
 package a311.college.constant.redis;
 
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+
 /**
  * 用户缓存键常量
  */
@@ -13,6 +16,7 @@ public class UserRedisKey {
     // 用户登录凭证
     public static final String USER_KEY_TOKEN = "college";
     public static final String USER_KEY = "college:user:login:";
+    public static final Long SECRET = LocalDate.of(2004, 10, 14).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
 
     // 验证码过期时间
     public static final Long USER_CODE_TTL = 60L;

@@ -28,6 +28,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -117,7 +119,7 @@ public class UserServiceImpl implements UserService {
      * @return token 登录凭据
      */
     private String saveUserInRedis(User user) {
-        String token = DigestUtil.md5Hex(UserRedisKey.USER_KEY_TOKEN + user.getId());
+        String token = DigestUtil.md5Hex(UserRedisKey.USER_KEY_TOKEN + user.getId() + ":" + UserRedisKey.SECRET);
         String key = UserRedisKey.USER_KEY + token;
         Map<Object, Object> oldUserMap = stringRedisTemplate.opsForHash().entries(key);
         if (!oldUserMap.isEmpty()) {

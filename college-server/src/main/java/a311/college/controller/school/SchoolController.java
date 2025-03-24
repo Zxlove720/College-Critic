@@ -6,6 +6,8 @@ import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
+import a311.college.entity.ai.UserRequestAI;
+import a311.college.entity.ai.UserRequestAIMessage;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.result.PageResult;
@@ -172,5 +174,16 @@ public class SchoolController {
         List<BriefSchoolInfoVO>schoolSimpleVOList = schoolService.getHotSchool();
         return Result.success(schoolSimpleVOList);
     }
+
+    /**
+     * 大学IA服务
+     *
+     * @return Result<String>
+     */
+    @PostMapping("/ai")
+    public Result<Void> schoolAIService(@RequestBody SchoolDTO schoolDTO) {
+        return Result.success();
+    }
+
 
 }

@@ -89,6 +89,11 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         return new UserRequestAIMessage(DeepSeekConstant.ROLE_ASSISTANT, "error");
     }
 
+    /**
+     * 将对话历史封装为JSONArray对象
+     *
+     * @return JSONArray由对话历史封装而来
+     */
     private JSONArray buildMessageArray() {
         JSONArray messages = new JSONArray();
         messages.addAll(messageHistory);

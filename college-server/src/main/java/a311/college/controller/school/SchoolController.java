@@ -175,6 +175,9 @@ public class SchoolController {
         return Result.success(schoolSimpleVOList);
     }
 
+
+    public Result<List<HotMajorVO>>
+
     /**
      * 大学IA服务
      *

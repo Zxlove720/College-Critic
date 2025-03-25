@@ -8,6 +8,7 @@ import a311.college.dto.user.UserSearchDTO;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.result.PageResult;
+import a311.college.vo.major.HotMajorVO;
 import a311.college.vo.school.*;
 
 import java.util.List;
@@ -38,6 +39,10 @@ public interface SchoolService {
     List<CommentVO> showComment(SchoolDTO schoolDTO);
 
     List<BriefSchoolInfoVO> getHotSchool();
+
+    List<HotMajorVO> getHotMajor();
+
+    List<HotMajorVO> getHotMajorProfessional();
 
     SearchVO search(UserSearchDTO userSearchDTO);
 }

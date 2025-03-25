@@ -14,6 +14,7 @@ import a311.college.result.Result;
 import a311.college.service.SchoolService;
 import a311.college.service.DeepSeekService;
 import a311.college.thread.ThreadLocalUtil;
+import a311.college.vo.major.HotMajorVO;
 import a311.college.vo.school.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -175,8 +176,31 @@ public class SchoolController {
         return Result.success(schoolSimpleVOList);
     }
 
+    /**
+     * 获取热门专业（本科）
+     *
+     * @return Result<List<HotMajorVO>>
+     */
+    @PostMapping("/hotMajor1")
+    @Operation(summary = "获取热门专业（本科）")
+    public Result<List<HotMajorVO>> hotMajor() {
+        log.info("获取热门专业（本科）");
+        List<HotMajorVO> hotMajorVOList = schoolService.getHotMajor();
+        return Result.success(hotMajorVOList);
+    }
 
-    public Result<List<HotMajorVO>>
+    /**
+     * 获取热门专业（专科）
+     *
+     * @return Result<List<HotMajorVO>>
+     */
+    @PostMapping("/hotMajor2")
+    @Operation(summary = "获取热门专业（专科）")
+    public Result<List<HotMajorVO>> hotMajorProfessional() {
+        log.info("获取热门专业（专科）");
+        List<HotMajorVO> hotMajorVOList = schoolService.getHotMajorProfessional();
+        return Result.success(hotMajorVOList);
+    }
 
     /**
      * 大学IA服务
@@ -185,6 +209,7 @@ public class SchoolController {
      */
     @PostMapping("/ai")
     public Result<Void> schoolAIService(@RequestBody SchoolDTO schoolDTO) {
+
         return Result.success();
     }
 

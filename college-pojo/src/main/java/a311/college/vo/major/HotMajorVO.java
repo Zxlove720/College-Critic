@@ -17,17 +17,14 @@ public class HotMajorVO {
     @Schema(description = "专业名")
     private String majorName;
 
-    @Schema(description = "所属小类")
-    private String className;
-
-    @Schema(description = "所属大类")
-    private String categoryName;
-
     @Schema(description = "专业信息")
     private String majorClass;
 
     @Schema(description = "专业对应学校名")
     private String schoolName;
+
+    @Schema(description = "学校id")
+    private Integer schoolId;
 
     @Schema(description = "最低分数")
     private Integer minScore;

@@ -6,6 +6,7 @@ import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
+import a311.college.dto.user.UserSearchDTO;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.result.PageResult;
@@ -182,6 +183,19 @@ public class SchoolController {
     @PostMapping("/ai")
     public Result<Void> schoolAIService(@RequestBody SchoolDTO schoolDTO) {
         return Result.success();
+    }
+
+    /**
+     * 用户搜索
+     *
+     * @param userSearchDTO 用户搜索DTO
+     * @return Result<SearchVO>
+     */
+    @PostMapping("/search")
+    public Result<SearchVO> search(@RequestBody UserSearchDTO userSearchDTO) {
+        log.info("用户正在搜索：{}", userSearchDTO.getMessage());
+        SearchVO searchVO = schoolService.search(userSearchDTO);
+        return Result.success(searchVO);
     }
 
 

@@ -5,6 +5,7 @@ import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
+import a311.college.dto.user.UserSearchDTO;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.mapper.resource.ResourceMapper;
@@ -397,5 +398,24 @@ public class SchoolServiceImpl implements SchoolService {
             }
         }
         return briefSchoolInfoVOList;
+    }
+
+    /**
+     * 用户搜索
+     *
+     * @param userSearchDTO 用户搜索DTO
+     * @return SearchVO
+     */
+    @Override
+    public SearchVO search(UserSearchDTO userSearchDTO) {
+        // 1.用户搜索，先返回学校信息
+
+        // 2.用户搜索，再返回专业信息
+
+        // 3.若无匹配的学校（用户输入错误），返回固定的学校信息
+
+        // 4.若无匹配的专业（用户输入错误），返回固定的专业信息
+
+        return null;
     }
 }

@@ -4,6 +4,7 @@ import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
+import a311.college.dto.user.UserSearchDTO;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.result.PageResult;
@@ -37,4 +38,6 @@ public interface SchoolService {
     List<CommentVO> showComment(SchoolDTO schoolDTO);
 
     List<BriefSchoolInfoVO> getHotSchool();
+
+    SearchVO search(UserSearchDTO userSearchDTO);
 }

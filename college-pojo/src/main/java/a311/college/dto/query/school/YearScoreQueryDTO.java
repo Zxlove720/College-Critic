@@ -18,5 +18,5 @@ public class YearScoreQueryDTO {
     private String province;
 
     @Schema(description = "招生年份")
-    private String year;
+    private Integer year;
 }

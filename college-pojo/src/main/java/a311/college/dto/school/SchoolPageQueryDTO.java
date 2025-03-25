@@ -18,9 +18,6 @@ public class SchoolPageQueryDTO {
     @Schema(description = "省份名")
     private String province;
 
-    @Schema(description = "用户成绩")
-    private Integer grade;
-
     @Schema(description = "大学等级（类型）")
     private List<String> rankList;
 

@@ -33,8 +33,9 @@
             from major as m
         <where>
             <if test="message != null and message != ''">
-                m.name like concat('%', #{message}, '%')
+                m.major_name like concat('%', #{message}, '%')
             </if>
         </where>
+        limit 5
     </select>
 </mapper>

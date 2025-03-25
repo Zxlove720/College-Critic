@@ -384,9 +384,9 @@ public class SchoolServiceImpl implements SchoolService {
             for (School school : schoolList) {
                 school.setRankList(school.getRankList().split(",")[1]);
                 BriefSchoolInfoVO briefSchoolInfoVO = new BriefSchoolInfoVO();
-                briefSchoolInfoVO.setName(school.getSchoolName());
-                briefSchoolInfoVO.setHead(school.getSchoolHead());
-                briefSchoolInfoVO.setRank(school.getRankList());
+                briefSchoolInfoVO.setSchoolName(school.getSchoolName());
+                briefSchoolInfoVO.setSchoolHead(school.getSchoolHead());
+                briefSchoolInfoVO.setRankList(school.getRankList());
                 briefSchoolInfoVOList.add(briefSchoolInfoVO);
             }
         } else {
@@ -397,9 +397,9 @@ public class SchoolServiceImpl implements SchoolService {
             for (String school : hotSchool) {
                 School schoolInfo = schoolMapper.getByName(school);
                 BriefSchoolInfoVO briefSchoolInfoVO = new BriefSchoolInfoVO();
-                briefSchoolInfoVO.setName(schoolInfo.getSchoolName());
-                briefSchoolInfoVO.setHead(schoolInfo.getSchoolHead());
-                briefSchoolInfoVO.setRank(schoolInfo.getRankList().split(",")[1]);
+                briefSchoolInfoVO.setSchoolName(schoolInfo.getSchoolName());
+                briefSchoolInfoVO.setSchoolHead(schoolInfo.getSchoolHead());
+                briefSchoolInfoVO.setRankList(schoolInfo.getRankList().split(",")[1]);
                 briefSchoolInfoVOList.add(briefSchoolInfoVO);
             }
         }
@@ -419,7 +419,8 @@ public class SchoolServiceImpl implements SchoolService {
         // 2.用户搜索，再返回专业信息
         List<BriefMajorVO> briefMajorVOList = majorMapper.searchMajor(userSearchDTO.getMessage());
         // 3.若无匹配的学校（用户输入错误）
-        if (briefSchoolInfoVOList == null) {
+        if (briefSchoolInfoVOList == null || briefSchoolInfoVOList.isEmpty()) {
+            log.info("用户'{}'，没有搜索到学校信息，返回默认学校信息", ThreadLocalUtil.getCurrentId());
             // 3.1返回固定的学校信息
             briefSchoolInfoVOList = new ArrayList<>();
             briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/31.jpg", "北京大学", "985,211,双一流"));
@@ -430,7 +431,7 @@ public class SchoolServiceImpl implements SchoolService {
         } else {
             // 3.2成功匹配到学校数据，对其进行处理
             for (BriefSchoolInfoVO briefSchoolInfoVO : briefSchoolInfoVOList) {
-                String[] split = briefSchoolInfoVO.getRank().split(",");
+                String[] split = briefSchoolInfoVO.getRankList().split(",");
                 StringBuilder rank = new StringBuilder(split[0]);
                 if (split.length == 3) {
                     rank.append(split[1]).append(split[2]);
@@ -438,11 +439,12 @@ public class SchoolServiceImpl implements SchoolService {
                 if (split.length > 3) {
                     rank.append(split[3]).append(split[4]);
                 }
-                briefSchoolInfoVO.setRank(rank.toString());
+                briefSchoolInfoVO.setRankList(rank.toString());
             }
         }
         // 4.若无匹配的专业（用户输入错误）
-        if (briefMajorVOList == null) {
+        if (briefMajorVOList == null || briefMajorVOList.isEmpty()) {
+            log.info("用户'{}'，没有搜索到专业信息，返回默认专业信息", ThreadLocalUtil.getCurrentId());
             // 4.1返回固定的专业信息
             briefMajorVOList = new ArrayList<>();
             briefMajorVOList.add(new BriefMajorVO("计算机科学与技术", "66:34", "14200", "66:34,14200"));
@@ -453,6 +455,8 @@ public class SchoolServiceImpl implements SchoolService {
         } else {
             // 4.2成功匹配到专业数据，对其进行处理
             for (BriefMajorVO briefMajorVO : briefMajorVOList) {
+                briefMajorVO.setGender(briefMajorVO.getGender().equals("--") ? null : briefMajorVO.getGender());
+                briefMajorVO.setAvgSalary(briefMajorVO.getAvgSalary().equals("0") ? null : briefMajorVO.getAvgSalary());
                 briefMajorVO.setInformation(briefMajorVO.getGender() + "," + briefMajorVO.getAvgSalary());
             }
         }

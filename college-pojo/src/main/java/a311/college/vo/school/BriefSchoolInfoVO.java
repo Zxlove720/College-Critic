@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 public class BriefSchoolInfoVO {
 
     @Schema(description = "学校校徽")
-    private String head;
+    private String schoolHead;
 
     @Schema(description = "学校名")
-    private String name;
+    private String schoolName;
 
     @Schema(description = "学校等级")
-    private String rank;
+    private String rankList;
 
 }

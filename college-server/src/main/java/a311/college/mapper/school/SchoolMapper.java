@@ -10,11 +10,8 @@ import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.enumeration.ProvinceEnum;
-import a311.college.vo.school.CommentVO;
-import a311.college.vo.school.SchoolMajorVO;
+import a311.college.vo.school.*;
 import a311.college.vo.major.MajorSimpleVO;
-import a311.college.vo.school.SchoolVO;
-import a311.college.vo.school.YearScoreVO;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -138,4 +135,6 @@ public interface SchoolMapper {
     List<SchoolMajor> pageQueryMajor(SchoolMajorPageDTO schoolMajorPageDTO);
 
     List<CommentVO> getComment(String schoolId);
+
+    List<BriefSchoolInfoVO> searchSchool(String message);
 }

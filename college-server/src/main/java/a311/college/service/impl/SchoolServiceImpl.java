@@ -8,12 +8,14 @@ import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.dto.user.UserSearchDTO;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
+import a311.college.mapper.major.MajorMapper;
 import a311.college.mapper.resource.ResourceMapper;
 import a311.college.mapper.school.SchoolMapper;
 import a311.college.mapper.user.UserMapper;
 import a311.college.result.PageResult;
 import a311.college.service.SchoolService;
 import a311.college.thread.ThreadLocalUtil;
+import a311.college.vo.major.BriefMajorVO;
 import a311.college.vo.major.MajorSimpleVO;
 import a311.college.vo.school.*;
 import a311.college.vo.user.UserVO;
@@ -43,14 +45,18 @@ public class SchoolServiceImpl implements SchoolService {
 
     private final ResourceMapper resourceMapper;
 
+    private final MajorMapper majorMapper;
+
     @Resource
     private RedisTemplate<String, School> redisTemplate;
 
     @Autowired
-    public SchoolServiceImpl(SchoolMapper schoolMapper, ResourceMapper resourceMapper, UserMapper userMapper) {
+    public SchoolServiceImpl(SchoolMapper schoolMapper, ResourceMapper resourceMapper,
+                             UserMapper userMapper, MajorMapper majorMapper) {
         this.schoolMapper = schoolMapper;
         this.resourceMapper = resourceMapper;
         this.userMapper = userMapper;
+        this.majorMapper = majorMapper;
     }
 
     /**
@@ -409,13 +415,47 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public SearchVO search(UserSearchDTO userSearchDTO) {
         // 1.用户搜索，先返回学校信息
-
+        List<BriefSchoolInfoVO> briefSchoolInfoVOList = schoolMapper.searchSchool(userSearchDTO.getMessage());
         // 2.用户搜索，再返回专业信息
-
-        // 3.若无匹配的学校（用户输入错误），返回固定的学校信息
-
-        // 4.若无匹配的专业（用户输入错误），返回固定的专业信息
-
-        return null;
+        List<BriefMajorVO> briefMajorVOList = majorMapper.searchMajor(userSearchDTO.getMessage());
+        // 3.若无匹配的学校（用户输入错误）
+        if (briefSchoolInfoVOList == null) {
+            // 3.1返回固定的学校信息
+            briefSchoolInfoVOList = new ArrayList<>();
+            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/31.jpg", "北京大学", "985,211,双一流"));
+            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/140.jpg", "清华大学", "985,211,双一流"));
+            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/114.jpg", "浙江大学", "985,211,双一流"));
+            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/132.jpg", "复旦大学", "985,211,双一流"));
+            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/42.jpg", "武汉大学", "985,211,双一流"));
+        } else {
+            // 3.2成功匹配到学校数据，对其进行处理
+            for (BriefSchoolInfoVO briefSchoolInfoVO : briefSchoolInfoVOList) {
+                String[] split = briefSchoolInfoVO.getRank().split(",");
+                StringBuilder rank = new StringBuilder(split[0]);
+                if (split.length == 3) {
+                    rank.append(split[1]).append(split[2]);
+                }
+                if (split.length > 3) {
+                    rank.append(split[3]).append(split[4]);
+                }
+                briefSchoolInfoVO.setRank(rank.toString());
+            }
+        }
+        // 4.若无匹配的专业（用户输入错误）
+        if (briefMajorVOList == null) {
+            // 4.1返回固定的专业信息
+            briefMajorVOList = new ArrayList<>();
+            briefMajorVOList.add(new BriefMajorVO("计算机科学与技术", "66:34", "14200", "66:34,14200"));
+            briefMajorVOList.add(new BriefMajorVO("人工智能", "70:30", "17200", "66:34,17200"));
+            briefMajorVOList.add(new BriefMajorVO("电子信息工程", "73:27", "12900", "73:27,12900"));
+            briefMajorVOList.add(new BriefMajorVO("汉语言文学", "16:84", "10900", "16:84,10900"));
+            briefMajorVOList.add(new BriefMajorVO("临床医学", "44:56", "13000", "44:56,13000"));
+        } else {
+            // 4.2成功匹配到专业数据，对其进行处理
+            for (BriefMajorVO briefMajorVO : briefMajorVOList) {
+                briefMajorVO.setInformation(briefMajorVO.getGender() + "," + briefMajorVO.getAvgSalary());
+            }
+        }
+        return new SearchVO(briefSchoolInfoVOList, briefMajorVOList);
     }
 }

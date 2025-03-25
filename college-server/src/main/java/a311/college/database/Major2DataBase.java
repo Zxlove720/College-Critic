@@ -108,7 +108,7 @@ public class Major2DataBase {
     }
 
     private static void insertMajor(Connection conn, Major major, int classId) throws SQLException {
-        String sql = "INSERT INTO major (class_id, name, code, year, degrees, gender, avg_salary) "
+        String sql = "INSERT INTO major (class_id, major_name, major_code, major_year, degrees, gender, avg_salary) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, classId);

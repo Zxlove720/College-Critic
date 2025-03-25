@@ -143,4 +143,14 @@
              tb_user AS u
         where c.school_id = #{schoolId} and u.id = c.user_id
     </select>
+
+    <select id="searchSchool" resultType="a311.college.vo.school.BriefSchoolInfoVO">
+        select school_head, school_name, rank_list from tb_school as s
+        <where>
+            <if test="message != null and message != ''">
+                where s.school_name like concat('%', #{message}, '%')
+            </if>
+        </where>
+        limit 5 order by score
+    </select>
 </mapper>

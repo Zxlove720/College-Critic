@@ -17,6 +17,12 @@ public class BriefMajorVO {
     @Schema(description = "专业名")
     private String majorName;
 
+    @Schema(description = "男女比例")
+    private String gender;
+
+    @Schema(description = "平均薪资")
+    private String avgSalary;
+
     @Schema(description = "专业信息")
     private String information;
 }

@@ -391,15 +391,15 @@ public class SchoolServiceImpl implements SchoolService {
             }
         } else {
             // 用户没有登录，展示默认的大学
-            List<String> hotSchool = new ArrayList<>();
-            Collections.addAll(hotSchool, "清华大学", "浙江大学", "四川大学", "中国科学技术大学", "中山大学", "哈尔滨工业大学",
+            List<String> hotSchoolList = new ArrayList<>();
+            Collections.addAll(hotSchoolList, "清华大学", "浙江大学", "四川大学", "中国科学技术大学", "中山大学", "哈尔滨工业大学",
                     "武汉大学", "厦门大学", "西安交通大学", "重庆文理学院");
-            for (String school : hotSchool) {
-                School schoolInfo = schoolMapper.getByName(school);
+            for (String hotSchool : hotSchoolList) {
+                School school = schoolMapper.getByName(hotSchool);
                 BriefSchoolInfoVO briefSchoolInfoVO = new BriefSchoolInfoVO();
-                briefSchoolInfoVO.setSchoolName(schoolInfo.getSchoolName());
-                briefSchoolInfoVO.setSchoolHead(schoolInfo.getSchoolHead());
-                briefSchoolInfoVO.setRankList(schoolInfo.getRankList().split(",")[1]);
+                briefSchoolInfoVO.setSchoolName(school.getSchoolName());
+                briefSchoolInfoVO.setSchoolHead(school.getSchoolHead());
+                briefSchoolInfoVO.setRankList(school.getRankList().split(",")[1]);
                 briefSchoolInfoVOList.add(briefSchoolInfoVO);
             }
         }
@@ -423,11 +423,11 @@ public class SchoolServiceImpl implements SchoolService {
             log.info("用户'{}'，没有搜索到学校信息，返回默认学校信息", ThreadLocalUtil.getCurrentId());
             // 3.1返回固定的学校信息
             briefSchoolInfoVOList = new ArrayList<>();
-            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/31.jpg", "北京大学", "985,211,双一流"));
-            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/140.jpg", "清华大学", "985,211,双一流"));
-            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/114.jpg", "浙江大学", "985,211,双一流"));
-            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/132.jpg", "复旦大学", "985,211,双一流"));
-            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/42.jpg", "武汉大学", "985,211,双一流"));
+            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/31.jpg", "北京大学", "985,211,双一流", "北京市海淀区"));
+            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/140.jpg", "清华大学", "985,211,双一流", "北京市海淀区"));
+            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/114.jpg", "浙江大学", "985,211,双一流", "浙江杭州市"));
+            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/132.jpg", "复旦大学", "985,211,双一流", "上海市杨浦区"));
+            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/42.jpg", "武汉大学", "985,211,双一流", "湖北武汉市"));
         } else {
             // 3.2成功匹配到学校数据，对其进行处理
             for (BriefSchoolInfoVO briefSchoolInfoVO : briefSchoolInfoVOList) {

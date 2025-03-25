@@ -20,4 +20,7 @@ public class BriefSchoolInfoVO {
     @Schema(description = "学校等级")
     private String rankList;
 
+    @Schema(description = "学校地址")
+    private String schoolAddress;
+
 }

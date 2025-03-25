@@ -220,10 +220,24 @@ public class SchoolController {
      * @return Result<SearchVO>
      */
     @PostMapping("/search")
+    @Operation(summary = "用户搜索")
     public Result<SearchVO> search(@RequestBody UserSearchDTO userSearchDTO) {
         log.info("用户正在搜索：{}", userSearchDTO.getMessage());
         SearchVO searchVO = schoolService.search(userSearchDTO);
         return Result.success(searchVO);
+    }
+
+    /**
+     * 获取首页校园风光
+     *
+     * @return Result<List<SchoolSceneryVO>>
+     */
+    @PostMapping("/scenery")
+    @Operation(summary = "获取首页校园风光")
+    public Result<List<SchoolSceneryVO>> getSchoolScenery() {
+        log.info("获取校园风光");
+        List<SchoolSceneryVO> schoolSceneryVOList = schoolService.getScenery();
+        return Result.success(schoolSceneryVOList);
     }
 
 

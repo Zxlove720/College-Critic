@@ -505,4 +505,15 @@ public class SchoolServiceImpl implements SchoolService {
         }
         return new SearchVO(briefSchoolInfoVOList, briefMajorVOList);
     }
+
+    /**
+     * 首页获取校园风光
+     *
+     * @return List<SchoolSceneryVO>
+     */
+    @Override
+    // TODO获取校园风光返回
+    public List<SchoolSceneryVO> getScenery() {
+        return null;
+    }
 }

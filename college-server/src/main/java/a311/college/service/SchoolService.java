@@ -45,4 +45,7 @@ public interface SchoolService {
     List<HotMajorVO> getHotMajorProfessional();
 
     SearchVO search(UserSearchDTO userSearchDTO);
+
+    List<SchoolSceneryVO> getScenery();
+
 }

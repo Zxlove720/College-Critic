@@ -1,9 +1,11 @@
 package a311.college.service.impl;
 
 import a311.college.constant.deepseek.DeepSeekConstant;
+import a311.college.constant.redis.DeepSeekRedisKey;
 import a311.college.entity.ai.UserAIRequestMessage;
 import a311.college.entity.ai.UserAIRequest;
 import a311.college.service.DeepSeekService;
+import a311.college.thread.ThreadLocalUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -148,6 +150,21 @@ public class DeepSeekServiceImpl implements DeepSeekService {
                 .getJSONObject(0)
                 .getJSONObject("message")
                 .getString("content");
+    }
+
+    /**
+     * 初始化用户消息
+     *
+     */
+    private void initUserMessageHistory() {
+        String key = DeepSeekRedisKey.DEEP_SEEK_HISTORY_KEY + ThreadLocalUtil.getCurrentId();
+        if (Boolean.FALSE.equals(redisTemplate.hasKey(key))) {
+            JSONObject systemMessage = new JSONObject()
+                    .fluentPut("role", DeepSeekConstant.ROLE_SYSTEM)
+                    .fluentPut("content", DeepSeekConstant.INIT_CONSTANT);
+            redisTemplate.opsForList().rightPush(key, systemMessage.toJSONString());
+            redisTemplate.expire(key, DeepSeekRedisKey.DEEP_SEEK_HISTORY_TTL, TimeUnit.HOURS);
+        }
     }
 }
 

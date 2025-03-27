@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -22,6 +23,14 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Service
 public class DeepSeekServiceImpl implements DeepSeekService {
+
+
+    // 通过Redis存储对话历史
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    public DeepSeekServiceImpl(RedisTemplate<String, Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     // 存储对话历史
     private static final List<JSONObject> messageHistory = new ArrayList<>();

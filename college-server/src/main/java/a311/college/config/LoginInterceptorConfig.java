@@ -37,4 +37,5 @@ public class LoginInterceptorConfig implements WebMvcConfigurer {
         registry.addInterceptor(new RefreshTokenInterceptor(stringRedisTemplate))
                 .order(0);
     }
+
 }

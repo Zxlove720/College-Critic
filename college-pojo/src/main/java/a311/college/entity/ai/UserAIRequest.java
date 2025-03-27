@@ -14,10 +14,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "用户请求AI")
-public class UserRequestAI implements Serializable {
+public class UserAIRequest implements Serializable {
 
     @Schema(description = "请求消息")
-    private UserRequestAIMessage message;
+    private UserAIRequestMessage message;
 
     @Schema(description = "模型温度")
     private Double temperature;

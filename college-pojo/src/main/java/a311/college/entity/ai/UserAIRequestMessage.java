@@ -15,7 +15,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "用户请求AI消息")
-public class UserRequestAIMessage implements Serializable {
+public class UserAIRequestMessage implements Serializable {
 
     @Schema(description = "对话角色")
     private String role;

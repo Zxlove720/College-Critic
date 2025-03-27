@@ -1,11 +1,10 @@
 package a311.college.service;
 
-import a311.college.dto.school.SchoolDTO;
-import a311.college.entity.ai.UserRequestAIMessage;
-import a311.college.entity.ai.UserRequestAI;
+import a311.college.entity.ai.UserAIRequestMessage;
+import a311.college.entity.ai.UserAIRequest;
 
 public interface DeepSeekService {
 
-    UserRequestAIMessage response(UserRequestAI request);
+    UserAIRequestMessage response(UserAIRequest request);
 
 }

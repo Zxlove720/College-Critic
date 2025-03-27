@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -36,16 +37,21 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         this.redisTemplate = redisTemplate;
     }
 
-    // 存储对话历史
-    private static final List<JSONObject> messageHistory = new ArrayList<>();
-
     /**
      * 请求DeepSeekAPI并获取响应
+     *
      * @param request 请求
      * @return UserAIRequestMessage 将DeepSeek的响应封装为Message对象返回
      */
     @Override
     public UserAIRequestMessage response(UserAIRequest request) {
+        initUserMessageHistory();
+        try {
+            addMessage(request.getMessage());
+        } catch (RedisConnectionFailureException e) {
+            log.error("redis连接异常");
+        }
+        JSONArray messages = buildHistoryMessageArray();
         OkHttpClient client = new OkHttpClient.Builder()
                 // 设置连接超时时间
                 .connectTimeout(60, TimeUnit.SECONDS)
@@ -54,16 +60,12 @@ public class DeepSeekServiceImpl implements DeepSeekService {
                 // 设置写入超时时间
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .build();
-        // 初始化AI
-        addSystemMessage();
-        // 将用户消息添加到历史
-        addUserMessage(request.getMessage().getContent());
         // 构建请求体
         JSONObject requestBody = new JSONObject();
         // 选择模型
         requestBody.put("model", DeepSeekConstant.MODEL_NAME);
         // 构建消息
-        requestBody.put("messages", buildMessageArray());
+        requestBody.put("messages", messages);
         // 是否开启流式输出
         requestBody.put("stream", request.getStream());
         // 请求DeepSeek
@@ -102,57 +104,6 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         return new UserAIRequestMessage(DeepSeekConstant.ROLE_ASSISTANT, "error");
     }
 
-    /**
-     * 将对话历史封装为JSONArray对象
-     *
-     * @return JSONArray由对话历史封装而来
-     */
-    private JSONArray buildMessageArray() {
-        JSONArray messages = new JSONArray();
-        messages.addAll(messageHistory);
-        return messages;
-    }
-
-    /**
-     * 初始化AI
-     */
-    private void addSystemMessage() {
-        messageHistory.add(new JSONObject()
-                .fluentPut("role", DeepSeekConstant.ROLE_SYSTEM)
-                .fluentPut("content", DeepSeekConstant.INIT_CONSTANT));
-    }
-
-    /**
-     * 添加用户问题
-     * @param content 用户问题
-     */
-    private void addUserMessage(String content) {
-        messageHistory.add(new JSONObject()
-                .fluentPut("role", DeepSeekConstant.ROLE_USER)
-                .fluentPut("content", content));
-    }
-
-    /**
-     * 添加回答
-     * @param content 回答
-     */
-    private void addAssistantMessage(String content) {
-        messageHistory.add(new JSONObject()
-                .fluentPut("role", DeepSeekConstant.ROLE_ASSISTANT)
-                .fluentPut("content", content));
-    }
-
-    /**
-     * 解析回答
-     * @param response 响应
-     * @return String 回答
-     */
-    private String extractAnswer(JSONObject response) {
-        return response.getJSONArray("choices")
-                .getJSONObject(0)
-                .getJSONObject("message")
-                .getString("content");
-    }
 
     /**
      * 封装不同用户的历史消息Key
@@ -165,7 +116,6 @@ public class DeepSeekServiceImpl implements DeepSeekService {
 
     /**
      * 初始化用户消息
-     *
      */
     private void initUserMessageHistory() {
         String key = buildMessageKey();
@@ -193,15 +143,47 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         redisTemplate.opsForList().rightPush(buildMessageKey(), message.toJSONString());
     }
 
-
+    /**
+     * 构造历史消息数组
+     *
+     * @return JSONArray 历史消息数组
+     */
     private JSONArray buildHistoryMessageArray() {
         List<Object> messages = redisTemplate.opsForList().range(buildMessageKey(), 0, -1);
         return Optional.ofNullable(messages).map(list -> list.stream()
-                .map(String::valueOf)
-                .map(JSON::parseObject)
-                .collect(Collectors.toCollection(JSONArray::new)))
+                        .map(String::valueOf)
+                        .map(JSON::parseObject)
+                        .collect(Collectors.toCollection(JSONArray::new)))
                 .orElseGet(JSONArray::new);
     }
+
+    /**
+     * 添加助手消息到历史记录（新增方法）
+     */
+    private void addAssistantMessage(String content) {
+        UserAIRequestMessage message = new UserAIRequestMessage(
+                DeepSeekConstant.ROLE_ASSISTANT,
+                Optional.ofNullable(content).orElse("")
+        );
+        addMessage(message); // 复用已有添加逻辑
+    }
+
+    /**
+     * 从响应中提取答案（新增方法）
+     */
+    private String extractAnswer(JSONObject responseJson) {
+        try {
+            return responseJson.getJSONArray("choices")
+                    .getJSONObject(0)
+                    .getJSONObject("message")
+                    .getString("content");
+        } catch (Exception e) {
+            log.error("解析响应异常: {}", e.getMessage());
+            return "答案解析失败";
+        }
+    }
+
+
 }
 
 

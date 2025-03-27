@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * DeepSeek多轮对话
@@ -153,11 +155,20 @@ public class DeepSeekServiceImpl implements DeepSeekService {
     }
 
     /**
+     * 封装不同用户的历史消息Key
+     *
+     * @return 不同用户的消息Key
+     */
+    private String buildMessageKey() {
+        return DeepSeekRedisKey.DEEP_SEEK_HISTORY_KEY + ThreadLocalUtil.getCurrentId();
+    }
+
+    /**
      * 初始化用户消息
      *
      */
     private void initUserMessageHistory() {
-        String key = DeepSeekRedisKey.DEEP_SEEK_HISTORY_KEY + ThreadLocalUtil.getCurrentId();
+        String key = buildMessageKey();
         if (Boolean.FALSE.equals(redisTemplate.hasKey(key))) {
             JSONObject systemMessage = new JSONObject()
                     .fluentPut("role", DeepSeekConstant.ROLE_SYSTEM)
@@ -165,6 +176,31 @@ public class DeepSeekServiceImpl implements DeepSeekService {
             redisTemplate.opsForList().rightPush(key, systemMessage.toJSONString());
             redisTemplate.expire(key, DeepSeekRedisKey.DEEP_SEEK_HISTORY_TTL, TimeUnit.HOURS);
         }
+    }
+
+    /**
+     * 添加用户对话消息
+     *
+     * @param userAIRequestMessage 用户对话消息对象
+     */
+    private void addMessage(UserAIRequestMessage userAIRequestMessage) {
+        if (userAIRequestMessage == null) {
+            throw new IllegalArgumentException("message is null");
+        }
+        JSONObject message = new JSONObject()
+                .fluentPut("role", userAIRequestMessage.getRole())
+                .fluentPut("content", userAIRequestMessage.getContent());
+        redisTemplate.opsForList().rightPush(buildMessageKey(), message.toJSONString());
+    }
+
+
+    private JSONArray buildHistoryMessageArray() {
+        List<Object> messages = redisTemplate.opsForList().range(buildMessageKey(), 0, -1);
+        return Optional.ofNullable(messages).map(list -> list.stream()
+                .map(String::valueOf)
+                .map(JSON::parseObject)
+                .collect(Collectors.toCollection(JSONArray::new)))
+                .orElseGet(JSONArray::new);
     }
 }
 

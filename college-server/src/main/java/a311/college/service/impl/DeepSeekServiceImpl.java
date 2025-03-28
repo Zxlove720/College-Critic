@@ -53,12 +53,13 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         }
         // 3.获取用户对话的历史消息
         JSONArray messages = buildHistoryMessageArray();
+        // 4.构建请求
         OkHttpClient client = new OkHttpClient.Builder()
-                // 设置连接超时时间
+                // 4.1设置连接超时时间
                 .connectTimeout(60, TimeUnit.SECONDS)
-                // 设置读取超时时间
+                // 4.2设置读取超时时间
                 .readTimeout(60, TimeUnit.SECONDS)
-                // 设置写入超时时间
+                // 4.3设置写入超时时间
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .build();
         // 构建请求体
@@ -155,6 +156,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
      * @return JSONArray 历史消息数组
      */
     private JSONArray buildHistoryMessageArray() {
+        // 将用户的历史消息构造为JSONArray数组
         List<Object> messages = redisTemplate.opsForList().range(buildMessageKey(), 0, -1);
         return Optional.ofNullable(messages).map(list -> list.stream()
                         .map(String::valueOf)

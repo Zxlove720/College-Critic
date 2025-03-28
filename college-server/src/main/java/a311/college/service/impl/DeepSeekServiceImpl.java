@@ -62,15 +62,15 @@ public class DeepSeekServiceImpl implements DeepSeekService {
                 // 4.3设置写入超时时间
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .build();
-        // 构建请求体
+        // 4.4构建请求体
         JSONObject requestBody = new JSONObject();
-        // 选择模型
+        // 4.5选择模型
         requestBody.put("model", DeepSeekConstant.MODEL_NAME);
-        // 构建消息
+        // 4.6构建消息
         requestBody.put("messages", messages);
-        // 是否开启流式输出
+        // 4.7是否开启流式输出
         requestBody.put("stream", request.getStream());
-        // 请求DeepSeek
+        // 4.8发起请求，请求DeepSeek
         Request seekRequest = new Request.Builder()
                 .url(DeepSeekConstant.API_URL)
                 .addHeader("Authorization", "Bearer " + DeepSeekConstant.API_KEY)
@@ -79,26 +79,26 @@ public class DeepSeekServiceImpl implements DeepSeekService {
                         requestBody.toJSONString(),
                         MediaType.parse(DeepSeekConstant.PARSE_SET)))
                 .build();
-        // 获取响应
+        // 5.获取响应
         try (Response response = client.newCall(seekRequest).execute()) {
             if (!response.isSuccessful()) {
                 log.info(DeepSeekConstant.ERROR_CONSTANT);
                 return new UserAIRequestMessage(DeepSeekConstant.ROLE_ASSISTANT, "error");
             }
             JSONObject responseJson = null;
-            // 获取响应体
+            // 5.1获取响应体
             if (response.body() != null) {
                 responseJson = JSON.parseObject(response.body().string());
             }
-            // 封装答案
+            // 5.2封装答案
             String answer = null;
             if (responseJson != null) {
                 answer = extractAnswer(responseJson);
             }
-            // 添加助手回复到历史
+            // 5.3添加助手回复到历史
             addAssistantMessage(answer);
             log.info(DeepSeekConstant.ROLE_ASSISTANT + "{}", answer);
-            // 返回回答
+            // 5.4返回回答
             return new UserAIRequestMessage(DeepSeekConstant.ROLE_ASSISTANT, answer);
         } catch (IOException e) {
             log.info(DeepSeekConstant.REQUEST_CONSTANT);
@@ -177,7 +177,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
     }
 
     /**
-     * 从响应中提取答案（新增方法）
+     * 从响应中提取答案
      */
     private String extractAnswer(JSONObject responseJson) {
         try {

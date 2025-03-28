@@ -28,8 +28,7 @@ import java.util.stream.Collectors;
 @Service
 public class DeepSeekServiceImpl implements DeepSeekService {
 
-
-    // 通过Redis存储对话历史
+    // 通过Redis存储用户对话历史
     private final RedisTemplate<String, Object> redisTemplate;
 
     public DeepSeekServiceImpl(RedisTemplate<String, Object> redisTemplate) {
@@ -44,6 +43,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
      */
     @Override
     public UserAIRequestMessage response(UserAIRequest request) {
+        // 1.初始化
         initUserMessageHistory();
         try {
             addMessage(request.getMessage());
@@ -114,11 +114,14 @@ public class DeepSeekServiceImpl implements DeepSeekService {
     }
 
     /**
-     * 初始化用户消息
+     * 初始化用户信息
      */
     private void initUserMessageHistory() {
+        // 1.获取不同用户的Key
         String key = buildMessageKey();
+        // 2.判断用户的Key是否存在
         if (Boolean.FALSE.equals(redisTemplate.hasKey(key))) {
+            // 2.1Key不存在，封装初始化信息并存入Redis
             JSONObject systemMessage = new JSONObject()
                     .fluentPut("role", DeepSeekConstant.ROLE_SYSTEM)
                     .fluentPut("content", DeepSeekConstant.INIT_CONSTANT);
@@ -181,7 +184,6 @@ public class DeepSeekServiceImpl implements DeepSeekService {
             return "答案解析失败";
         }
     }
-
 
 }
 

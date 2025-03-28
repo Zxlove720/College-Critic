@@ -43,13 +43,15 @@ public class DeepSeekServiceImpl implements DeepSeekService {
      */
     @Override
     public UserAIRequestMessage response(UserAIRequest request) {
-        // 1.初始化
+        // 1.初始化用户信息
         initUserMessageHistory();
         try {
+            // 2.将用户的问题加入历史消息记录，存入Redis
             addMessage(request.getMessage());
         } catch (RedisConnectionFailureException e) {
             log.error("redis连接异常");
         }
+        // 3.获取用户对话的历史消息
         JSONArray messages = buildHistoryMessageArray();
         OkHttpClient client = new OkHttpClient.Builder()
                 // 设置连接超时时间
@@ -119,7 +121,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
     private void initUserMessageHistory() {
         // 1.获取不同用户的Key
         String key = buildMessageKey();
-        // 2.判断用户的Key是否存在
+        // 2.判断用户的Key是否存在（是否需要初始化）
         if (Boolean.FALSE.equals(redisTemplate.hasKey(key))) {
             // 2.1Key不存在，封装初始化信息并存入Redis
             JSONObject systemMessage = new JSONObject()
@@ -136,9 +138,11 @@ public class DeepSeekServiceImpl implements DeepSeekService {
      * @param userAIRequestMessage 用户对话消息对象
      */
     private void addMessage(UserAIRequestMessage userAIRequestMessage) {
+        // 1.如果用户消息为空，则报错
         if (userAIRequestMessage == null) {
             throw new IllegalArgumentException("message is null");
         }
+        // 2.将用户的消息加入redis
         JSONObject message = new JSONObject()
                 .fluentPut("role", userAIRequestMessage.getRole())
                 .fluentPut("content", userAIRequestMessage.getContent());

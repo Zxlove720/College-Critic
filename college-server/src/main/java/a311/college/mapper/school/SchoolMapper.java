@@ -97,15 +97,45 @@ public interface SchoolMapper {
      */
     List<SchoolMajor> selectAllMajor(ForecastDTO forecastDTO);
 
+    /**
+     * 根据省份查询学校
+     *
+     * @param province 省份
+     * @return School 学校实体对象
+     */
     @Select("select * from tb_school where school_province = #{province} order by score desc limit 9")
     List<School> selectByProvince(ProvinceEnum province);
 
-    @Select("select * from tb_school where school_name = #{school}")
-    School selectBySchoolName(String school);
+    /**
+     * 根据学校名查询学校
+     *
+     * @param schoolName 学校名
+     * @return School 学校实体对象
+     */
+    @Select("select * from tb_school where school_name = #{schoolName}")
+    School selectBySchoolName(String schoolName);
 
+    /**
+     * 专业分页查询
+     *
+     * @param schoolMajorPageDTO 学校专业查询DTO
+     * @return SchoolMajor 学校专业实体对象
+     */
     List<SchoolMajor> pageQuerySchoolMajor(SchoolMajorPageDTO schoolMajorPageDTO);
 
+    /**
+     * 查询学校评价
+     *
+     * @param schoolId 学校ID
+     * @return CommentVO实体对象
+     */
     List<CommentVO> selectComment(int schoolId);
 
+    /**
+     * 学校搜索
+     *
+     * @param message 搜索信息
+     * @return BriefSchoolInfoVO 简略学校信息
+     */
     List<BriefSchoolInfoVO> searchSchool(String message);
 }

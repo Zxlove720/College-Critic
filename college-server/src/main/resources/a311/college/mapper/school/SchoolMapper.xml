@@ -67,7 +67,6 @@
     </select>
 
 
-
     <select id="selectByGrade" resultType="a311.college.entity.school.School">
         SELECT DISTINCT s.school_head,
                         s.school_name,
@@ -87,22 +86,38 @@
 
     <select id="selectMajor" resultType="a311.college.vo.major.MajorSimpleVO">
         SELECT category_name, major_name
-        FROM (SELECT c.category_name,
-                     sc.major_name,
-                     sc.min_score,
-                     sc.min_ranking,
-                     ROW_NUMBER() OVER (
-                         PARTITION BY c.category_name -- 按类别名称分组
-                         ORDER BY sc.min_score DESC, sc.min_ranking DESC
-                         ) AS rn
-              FROM tb_school AS s
-                       JOIN tb_province AS p ON s.school_id = p.school_id
-                       JOIN tb_year AS y ON p.province_id = y.province_id
-                       JOIN tb_category AS c ON y.year_id = c.year_id
-                       JOIN tb_batch AS b ON c.category_id = b.category_id
-                       JOIN tb_score AS sc ON b.batch_id = sc.batch_id
-              WHERE s.school_id = #{schoolId}) AS ranked
-        WHERE rn = 1 -- 每个类别保留最高分专业
+        FROM (SELECT category_name,
+                     major_name,
+                     min_score,
+                     min_ranking,
+                     @rn_major := IF(@prev_major = major_name, @rn_major + 1, 1) AS rn_major,
+                     @prev_major := major_name
+              FROM (
+                       -- 第一步：按学科类别分组，获取每个类别最高分专业
+                       SELECT category_name,
+                              major_name,
+                              min_score,
+                              min_ranking
+                       FROM (SELECT c.category_name,
+                                    sc.major_name,
+                                    sc.min_score,
+                                    sc.min_ranking,
+                                    @rn := IF(@cat = c.category_name, @rn + 1, 1) AS rn,
+                                    @cat := c.category_name
+                             FROM tb_school AS s
+                                      JOIN tb_province AS p ON s.school_id = p.school_id
+                                      JOIN tb_year AS y ON p.province_id = y.province_id
+                                      JOIN tb_category AS c ON y.year_id = c.year_id
+                                      JOIN tb_batch AS b ON c.category_id = b.category_id
+                                      JOIN tb_score AS sc ON b.batch_id = sc.batch_id
+                                      CROSS JOIN (SELECT @cat := NULL, @rn := 0) AS vars
+                             WHERE s.school_id = #{schoolId}
+                             ORDER BY c.category_name, sc.min_score DESC, sc.min_ranking DESC) AS category_ranked
+                       WHERE rn = 1) AS category_top
+              -- 第二步：按专业名称重新排序，为同名专业保留最高分
+              ORDER BY major_name, min_score DESC, min_ranking DESC) AS major_ranked
+                 CROSS JOIN (SELECT @prev_major := NULL, @rn_major := 0) AS vars_major
+        WHERE rn_major = 1 -- 每个专业只保留最高分记录
         ORDER BY min_score DESC, min_ranking DESC
         LIMIT 5;
     </select>
@@ -140,10 +155,10 @@
 
     <select id="selectComment" resultType="a311.college.vo.school.CommentVO">
         select u.username, u.head, c.comment
-        from
-             tb_comment AS c,
+        from tb_comment AS c,
              tb_user AS u
-        where c.school_id = #{schoolId} and u.id = c.user_id
+        where c.school_id = #{schoolId}
+          and u.id = c.user_id
     </select>
 
     <select id="searchSchool" resultType="a311.college.vo.school.BriefSchoolInfoVO">

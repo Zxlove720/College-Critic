@@ -169,12 +169,7 @@ public class SchoolServiceImpl implements SchoolService {
         if (briefSchoolInfoVOList == null || briefSchoolInfoVOList.isEmpty()) {
             log.info("用户'{}'，没有搜索到学校信息，返回默认学校信息", ThreadLocalUtil.getCurrentId());
             // 3.1返回固定的学校信息
-            briefSchoolInfoVOList = new ArrayList<>();
-            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/31.jpg", "北京大学", "985,211,双一流", "北京市海淀区"));
-            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/140.jpg", "清华大学", "985,211,双一流", "北京市海淀区"));
-            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/114.jpg", "浙江大学", "985,211,双一流", "浙江杭州市"));
-            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/132.jpg", "复旦大学", "985,211,双一流", "上海市杨浦区"));
-            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/42.jpg", "武汉大学", "985,211,双一流", "湖北武汉市"));
+            briefSchoolInfoVOList = SchoolConstant.getSchool();
         } else {
             // 3.2成功匹配到学校数据，对其进行处理
             for (BriefSchoolInfoVO briefSchoolInfoVO : briefSchoolInfoVOList) {
@@ -193,12 +188,7 @@ public class SchoolServiceImpl implements SchoolService {
         if (briefMajorVOList == null || briefMajorVOList.isEmpty()) {
             log.info("用户'{}'，没有搜索到专业信息，返回默认专业信息", ThreadLocalUtil.getCurrentId());
             // 4.1返回固定的专业信息
-            briefMajorVOList = new ArrayList<>();
-            briefMajorVOList.add(new BriefMajorVO("计算机科学与技术", "66:34", "14200", "66:34,14200"));
-            briefMajorVOList.add(new BriefMajorVO("人工智能", "70:30", "17200", "66:34,17200"));
-            briefMajorVOList.add(new BriefMajorVO("电子信息工程", "73:27", "12900", "73:27,12900"));
-            briefMajorVOList.add(new BriefMajorVO("汉语言文学", "16:84", "10900", "16:84,10900"));
-            briefMajorVOList.add(new BriefMajorVO("临床医学", "44:56", "13000", "44:56,13000"));
+            briefMajorVOList = SchoolConstant.getMajor();
         } else {
             // 4.2成功匹配到专业数据，对其进行处理
             for (BriefMajorVO briefMajorVO : briefMajorVOList) {
@@ -450,9 +440,7 @@ public class SchoolServiceImpl implements SchoolService {
             }
         } else {
             // 用户没有登录，展示默认的大学
-            List<String> hotSchoolList = new ArrayList<>();
-            Collections.addAll(hotSchoolList, "清华大学", "浙江大学", "四川大学", "中国科学技术大学", "中山大学", "哈尔滨工业大学",
-                    "武汉大学", "厦门大学", "西安交通大学", "重庆文理学院");
+            List<String> hotSchoolList = SchoolConstant.getHotSchoolList();
             for (String hotSchool : hotSchoolList) {
                 School school = schoolMapper.selectBySchoolName(hotSchool);
                 BriefSchoolInfoVO briefSchoolInfoVO = new BriefSchoolInfoVO();
@@ -482,7 +470,7 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public List<HotMajorVO> getHotMajorProfessional() {
-        return SchoolConstant.getHotMajor(1);
+        return SchoolConstant.getHotProfessionalMajor();
     }
 
     /**

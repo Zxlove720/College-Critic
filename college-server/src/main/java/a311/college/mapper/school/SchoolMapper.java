@@ -65,7 +65,7 @@ public interface SchoolMapper {
     List<YearScoreVO> selectScoreByYear(YearScoreQueryDTO yearScoreDTO);
 
     /**
-     * 根据大学id查询学校
+     * 根据大学id查询大学
      *
      * @param schoolId 大学id
      * @return SchoolVO

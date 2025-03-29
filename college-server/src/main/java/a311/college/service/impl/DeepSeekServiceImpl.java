@@ -207,7 +207,12 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         // 1.获取需要请求的学校名
         String schoolName = schoolMapper.selectBySchoolId(schoolAIRequestDTO.getSchoolId()).getSchoolName();
         // 2.封装问题
-        String init = "你现在是" + schoolName + "的AI助手，请给我介绍你们的学校";
+        String question = "你现在是" + schoolName + "的AI助手，请给我介绍你们的学校";
+        JSONArray message = new JSONArray();
+        JSONObject initMessage = new JSONObject();
+        initMessage.put("role", "system");
+        initMessage.put("content", question);
+        message.add(initMessage);
         // 3.构建请求
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(60, TimeUnit.SECONDS)
@@ -217,7 +222,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         // 4.构建请求体
         JSONObject requestBody = new JSONObject();
         requestBody.put("model", DeepSeekConstant.MODEL_NAME);
-        requestBody.put("messages", schoolAIRequestDTO.getMessage().getContent());
+        requestBody.put("messages", message);
         requestBody.put("stream", schoolAIRequestDTO.getStream());
         // 4.发起请求，请求DeepSeekAPI
         Request request = new Request.Builder()

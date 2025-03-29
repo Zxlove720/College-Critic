@@ -107,7 +107,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
             // 5.4返回回答
             return new UserAIRequestMessageVO(DeepSeekConstant.ROLE_ASSISTANT, answer);
         } catch (IOException e) {
-            log.info(DeepSeekConstant.REQUEST_CONSTANT);
+            log.info(DeepSeekConstant.REQUEST_ERROR_CONSTANT);
         }
         return new UserAIRequestMessageVO(DeepSeekConstant.ROLE_ASSISTANT, "error");
     }
@@ -201,18 +201,42 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         // 1.获取需要请求的学校名
         String schoolName = schoolMapper.selectBySchoolId(schoolAIRequestDTO.getSchoolId()).getSchoolName();
         // 2.封装问题
-        String question = "你现在是" + schoolName + "的AI助手，请给我介绍你们的学校";
+        String init = "你现在是" + schoolName + "的AI助手，请给我介绍你们的学校";
         // 3.构建请求
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .build();
+        // 4.构建请求体
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("model", DeepSeekConstant.MODEL_NAME);
+        requestBody.put("messages", schoolAIRequestDTO.getMessage().getContent());
+        requestBody.put("stream", schoolAIRequestDTO.getStream());
+        // 4.发起请求，请求DeepSeekAPI
+        Request request = new Request.Builder()
+                .url(DeepSeekConstant.API_URL)
+                .addHeader("Authorization", "Bearer " + DeepSeekConstant.API_KEY)
+                .addHeader("Content-Type", DeepSeekConstant.PARSE_SET)
+                .post(RequestBody.create(
+                        requestBody.toJSONString(),
+                        MediaType.parse(DeepSeekConstant.PARSE_SET)))
+                .build();
+        // 6.获取响应
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                // 6.1响应失败
+                log.info(DeepSeekConstant.ERROR_CONSTANT);
+                return new SchoolAIRequestMessageVO(DeepSeekConstant.ROLE_ASSISTANT, "error");
+            }
+
+        } catch (IOException e) {
+            log.info(DeepSeekConstant.REQUEST_ERROR_CONSTANT);
+        }
+
 
         return null;
     }
-
-
 
 
 }

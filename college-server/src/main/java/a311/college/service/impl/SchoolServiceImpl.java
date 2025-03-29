@@ -48,9 +48,6 @@ public class SchoolServiceImpl implements SchoolService {
 
     private final MajorMapper majorMapper;
 
-    @Resource
-    private RedisTemplate<String, School> redisTemplate;
-
     @Autowired
     public SchoolServiceImpl(SchoolMapper schoolMapper, ResourceMapper resourceMapper,
                              UserMapper userMapper, MajorMapper majorMapper) {
@@ -59,6 +56,9 @@ public class SchoolServiceImpl implements SchoolService {
         this.userMapper = userMapper;
         this.majorMapper = majorMapper;
     }
+
+    @Resource
+    private RedisTemplate<String, School> redisTemplate;
 
     /**
      * 大学信息分页查询
@@ -131,7 +131,7 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public PageResult<SchoolMajor> pageSelectMajor(SchoolMajorPageDTO schoolMajorPageDTO) {
         try (Page<SchoolMajor> page = PageHelper.startPage(schoolMajorPageDTO.getPage(), schoolMajorPageDTO.getPageSize())) {
-            schoolMapper.pageQueryMajor(schoolMajorPageDTO);
+            schoolMapper.pageQuerySchoolMajor(schoolMajorPageDTO);
             long total = page.getTotal();
             List<SchoolMajor> result = page.getResult();
             return new PageResult<>(total, result);
@@ -200,7 +200,7 @@ public class SchoolServiceImpl implements SchoolService {
         }
         // 5.为该学校封装展示专业
         // 5.1获取专业
-        List<MajorSimpleVO> majorSimpleVOList = schoolMapper.selectSimpleMajor(school.getSchoolId());
+        List<MajorSimpleVO> majorSimpleVOList = schoolMapper.selectMajor(school.getSchoolId());
         // 5.2调整专业格式
         for (MajorSimpleVO majorSimpleVO : majorSimpleVOList) {
             majorSimpleVO.setMajorName(majorSimpleVO.getMajorName());
@@ -396,7 +396,7 @@ public class SchoolServiceImpl implements SchoolService {
             Collections.addAll(hotSchoolList, "清华大学", "浙江大学", "四川大学", "中国科学技术大学", "中山大学", "哈尔滨工业大学",
                     "武汉大学", "厦门大学", "西安交通大学", "重庆文理学院");
             for (String hotSchool : hotSchoolList) {
-                School school = schoolMapper.selectByName(hotSchool);
+                School school = schoolMapper.selectBySchoolName(hotSchool);
                 BriefSchoolInfoVO briefSchoolInfoVO = new BriefSchoolInfoVO();
                 briefSchoolInfoVO.setSchoolName(school.getSchoolName());
                 briefSchoolInfoVO.setSchoolHead(school.getSchoolHead());

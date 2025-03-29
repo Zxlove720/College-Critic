@@ -79,7 +79,7 @@ public interface SchoolMapper {
      * @param schoolId 学校id
      * @return List<MajorSimpleVO>
      */
-    List<MajorSimpleVO> selectSimpleMajor(int schoolId);
+    List<MajorSimpleVO> selectMajor(int schoolId);
 
     /**
      * 添加用户评价
@@ -97,16 +97,13 @@ public interface SchoolMapper {
      */
     List<SchoolMajor> selectAllMajor(ForecastDTO forecastDTO);
 
-    @Select("select * from tb_score")
-    List<SchoolMajor> selectAllMajor();
-
     @Select("select * from tb_school where school_province = #{province} order by score desc limit 9")
     List<School> selectByProvince(ProvinceEnum province);
 
     @Select("select * from tb_school where school_name = #{school}")
-    School selectByName(String school);
+    School selectBySchoolName(String school);
 
-    List<SchoolMajor> pageQueryMajor(SchoolMajorPageDTO schoolMajorPageDTO);
+    List<SchoolMajor> pageQuerySchoolMajor(SchoolMajorPageDTO schoolMajorPageDTO);
 
     List<CommentVO> selectComment(int schoolId);
 

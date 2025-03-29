@@ -31,6 +31,19 @@
         order by score desc, length(rank_list) desc
     </select>
 
+    <select id="searchBySchoolName" resultType="a311.college.entity.school.School">
+        select s.school_id,
+               s.school_head,
+               s.school_name,
+               s.school_province,
+               s.school_address,
+               s.rank_list,
+               s.score
+        from tb_school as s
+        where school_name like concat('%', #{schoolName}, '%')
+        order by score desc, length(rank_list) desc
+    </select>
+
     <select id="selectScoreByYear" resultType="a311.college.vo.school.YearScoreVO">
         select distinct y.year,
                         b.batch_name,
@@ -53,18 +66,7 @@
         LIMIT 5
     </select>
 
-    <select id="searchBySchoolName" resultType="a311.college.entity.school.School">
-        select s.school_id,
-               s.school_head,
-               s.school_name,
-               s.school_province,
-               s.school_address,
-               s.rank_list,
-               s.score
-        from tb_school as s
-        where school_name like concat('%', #{schoolName}, '%')
-        order by score desc, length(rank_list) desc
-    </select>
+
 
     <select id="selectByGrade" resultType="a311.college.entity.school.School">
         SELECT DISTINCT s.school_head,
@@ -83,7 +85,7 @@
         ORDER BY score desc
     </select>
 
-    <select id="selectSimpleMajor" resultType="a311.college.vo.major.MajorSimpleVO">
+    <select id="selectMajor" resultType="a311.college.vo.major.MajorSimpleVO">
         SELECT category_name, major_name
         FROM (SELECT c.category_name,
                      sc.major_name,
@@ -125,7 +127,7 @@
         order by sc.min_ranking
     </select>
 
-    <select id="pageQueryMajor" resultType="a311.college.entity.school.SchoolMajor">
+    <select id="pageQuerySchoolMajor" resultType="a311.college.entity.school.SchoolMajor">
         select sc.major_name, b.batch_name, sc.first_choice, sc.other_choice, sc.special, sc.min_score, sc.min_ranking
         FROM tb_school AS s
                  JOIN tb_province as p ON s.school_id = p.school_id

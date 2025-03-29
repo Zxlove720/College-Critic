@@ -106,7 +106,7 @@ public class SchoolServiceImpl implements SchoolService {
             String key = SchoolRedisKey.SCHOOL_CACHE_KEY + area + ":";
             try {
                 // 1. 查询数据库
-                List<School> school = schoolMapper.selectByAddress(area);
+                List<School> school = schoolMapper.selectByProvince(area);
                 // 2. 删除旧缓存（避免残留旧数据）
                 redisTemplate.delete(key);
                 // 3. 批量插入新数据（使用rightPushAll）
@@ -149,7 +149,7 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public List<School> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO) {
         // 1.根据大学名模糊查询大学
-        return schoolMapper.selectByName(schoolNameQueryDTO.getSchoolName());
+        return schoolMapper.searchBySchoolName(schoolNameQueryDTO.getSchoolName());
     }
 
     /**
@@ -280,7 +280,7 @@ public class SchoolServiceImpl implements SchoolService {
         int rush = 0;
         // 2.处理专业信息
         // 2.1获得专业信息
-        List<SchoolMajor> schoolMajorList = schoolMapper.getAllMajor(forecastDTO);
+        List<SchoolMajor> schoolMajorList = schoolMapper.selectAllMajor(forecastDTO);
         // 2.2将SchoolMajor对象封装为SchoolMajorVO对象返回
         List<SchoolMajorVO> schoolMajorVOList = new ArrayList<>();
         for (SchoolMajor schoolMajor : schoolMajorList) {
@@ -368,7 +368,7 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public List<CommentVO> showComment(SchoolDTO schoolDTO) {
-        return schoolMapper.getComment(schoolDTO.getSchoolId());
+        return schoolMapper.selectComment(schoolDTO.getSchoolId());
     }
 
     /**
@@ -396,7 +396,7 @@ public class SchoolServiceImpl implements SchoolService {
             Collections.addAll(hotSchoolList, "清华大学", "浙江大学", "四川大学", "中国科学技术大学", "中山大学", "哈尔滨工业大学",
                     "武汉大学", "厦门大学", "西安交通大学", "重庆文理学院");
             for (String hotSchool : hotSchoolList) {
-                School school = schoolMapper.getByName(hotSchool);
+                School school = schoolMapper.selectByName(hotSchool);
                 BriefSchoolInfoVO briefSchoolInfoVO = new BriefSchoolInfoVO();
                 briefSchoolInfoVO.setSchoolName(school.getSchoolName());
                 briefSchoolInfoVO.setSchoolHead(school.getSchoolHead());

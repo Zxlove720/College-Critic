@@ -12,11 +12,9 @@ import a311.college.entity.school.SchoolMajor;
 import a311.college.enumeration.ProvinceEnum;
 import a311.college.vo.school.*;
 import a311.college.vo.major.MajorSimpleVO;
-import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -42,7 +40,7 @@ public interface SchoolMapper {
      */
     @Select("select school_id, school_head, school_name,school_address, rank_list from tb_school " +
             "where school_province = #{province} order by score desc, length(rank_list) desc")
-    List<School> selectByAddress(String province);
+    List<School> selectByProvince(String province);
 
     /**
      * 根据学校名搜索大学
@@ -50,7 +48,7 @@ public interface SchoolMapper {
      * @param schoolName 学校名
      * @return List<SchoolVO>
      */
-    List<School> selectByName(String schoolName);
+    List<School> searchBySchoolName(String schoolName);
 
     /**
      * 根据成绩查询大学
@@ -92,36 +90,12 @@ public interface SchoolMapper {
     void addComment(AddSchoolCommentDTO addCommentDTO);
 
     /**
-     * 获取全部学校
-     *
-     * @return List<SchoolVO>
-     */
-    @Select("select * from tb_school")
-    List<SchoolVO> getAllSchool();
-
-    /**
-     * 更新学校等级
-     *
-     * @param schoolVO 学校简略信息VO
-     */
-    @Update("update tb_school set rank_list = #{rankList} where school_id = #{schoolId}")
-    void updateRank(SchoolVO schoolVO);
-
-    /**
-     * 更新学校客观评分
-     *
-     * @param schoolVO 学校简略信息VO
-     */
-    @Update("update tb_school set score = #{score} where school_id = #{schoolId}")
-    void updateScore(SchoolVO schoolVO);
-
-    /**
      * 查询某学校所有专业
      *
      * @param forecastDTO 预测DTO
      * @return List<SchoolMajorVO>
      */
-    List<SchoolMajor> getAllMajor(ForecastDTO forecastDTO);
+    List<SchoolMajor> selectAllMajor(ForecastDTO forecastDTO);
 
     @Select("select * from tb_score")
     List<SchoolMajor> selectAllMajor();
@@ -130,11 +104,11 @@ public interface SchoolMapper {
     List<School> selectByProvince(ProvinceEnum province);
 
     @Select("select * from tb_school where school_name = #{school}")
-    School getByName(String school);
+    School selectByName(String school);
 
     List<SchoolMajor> pageQueryMajor(SchoolMajorPageDTO schoolMajorPageDTO);
 
-    List<CommentVO> getComment(int schoolId);
+    List<CommentVO> selectComment(int schoolId);
 
     List<BriefSchoolInfoVO> searchSchool(String message);
 }

@@ -2,6 +2,8 @@ package a311.college.service.impl;
 
 import a311.college.constant.deepseek.DeepSeekConstant;
 import a311.college.constant.redis.DeepSeekRedisKey;
+import a311.college.dto.ai.SchoolAIRequestDTO;
+import a311.college.vo.ai.SchoolAIRequestMessageVO;
 import a311.college.vo.ai.UserAIRequestMessageVO;
 import a311.college.dto.ai.UserAIRequestDTO;
 import a311.college.service.DeepSeekService;
@@ -106,13 +108,18 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         return new UserAIRequestMessageVO(DeepSeekConstant.ROLE_ASSISTANT, "error");
     }
 
+    @Override
+    public SchoolAIRequestMessageVO schoolInformation(SchoolAIRequestDTO schoolAIRequestDTO) {
+        return null;
+    }
+
 
     /**
      * 封装不同用户的历史消息Key
      *
      * @return 不同用户的消息Key
      */
-    private String buildMessageKey() {
+    private String buildUserMessageKey() {
         return DeepSeekRedisKey.DEEP_SEEK_HISTORY_KEY + ThreadLocalUtil.getCurrentId();
     }
 
@@ -121,7 +128,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
      */
     private void initUserMessageHistory() {
         // 1.获取不同用户的Key
-        String key = buildMessageKey();
+        String key = buildUserMessageKey();
         // 2.判断用户的Key是否存在（是否需要初始化）
         if (Boolean.FALSE.equals(redisTemplate.hasKey(key))) {
             // 2.1Key不存在，封装初始化信息并存入Redis
@@ -147,7 +154,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         JSONObject message = new JSONObject()
                 .fluentPut("role", userAIRequestMessageVO.getRole())
                 .fluentPut("content", userAIRequestMessageVO.getContent());
-        redisTemplate.opsForList().rightPush(buildMessageKey(), message.toJSONString());
+        redisTemplate.opsForList().rightPush(buildUserMessageKey(), message.toJSONString());
     }
 
     /**
@@ -157,7 +164,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
      */
     private JSONArray buildHistoryMessageArray() {
         // 将用户的历史消息构造为JSONArray数组
-        List<Object> messages = redisTemplate.opsForList().range(buildMessageKey(), 0, -1);
+        List<Object> messages = redisTemplate.opsForList().range(buildUserMessageKey(), 0, -1);
         return Optional.ofNullable(messages).map(list -> list.stream()
                         .map(String::valueOf)
                         .map(JSON::parseObject)

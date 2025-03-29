@@ -2,12 +2,14 @@ package a311.college.controller.school;
 
 
 import a311.college.constant.API.APIConstant;
+import a311.college.dto.ai.SchoolAIRequestDTO;
 import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.dto.user.UserSearchDTO;
 import a311.college.dto.ai.UserAIRequestDTO;
+import a311.college.vo.ai.SchoolAIRequestMessageVO;
 import a311.college.vo.ai.UserAIRequestMessageVO;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
@@ -245,13 +247,15 @@ public class SchoolController {
     /**
      * 请求AI获取学校信息
      *
-     * @param userAIRequestDTO 用户AI请求
-     * @return Result<UserAIRequestMessageVO>
+     * @param schoolAIRequestDTO 大学AI请求
+     * @return Result<SchoolAIRequestMessageVO>
      */
     @PostMapping("/ai")
     @Operation(summary = "请求AI获取学校信息")
-    public Result<UserAIRequestMessageVO> schoolAIRequest(@RequestBody UserAIRequestDTO userAIRequestDTO) {
-        log.info("正在请求");
+    public Result<SchoolAIRequestMessageVO> schoolAIRequest(@RequestBody SchoolAIRequestDTO schoolAIRequestDTO) {
+        log.info("正在请求'{}'学校的信息", schoolAIRequestDTO.getSchoolId());
+        SchoolAIRequestMessageVO schoolAIRequestMessageVO = deepSeekService.schoolInformation(schoolAIRequestDTO);
+        return Result.success(schoolAIRequestMessageVO);
     }
 
 

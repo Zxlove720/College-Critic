@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "用户请求AI消息")
+@Schema(description = "用户AI请求消息")
 public class UserAIRequestMessageVO {
 
     @Schema(description = "对话角色")

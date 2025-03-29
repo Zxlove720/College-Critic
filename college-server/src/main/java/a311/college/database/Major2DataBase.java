@@ -115,7 +115,7 @@ public class Major2DataBase {
             preparedStatement.setString(2, major.getMajorName());
             preparedStatement.setString(3, major.getMajorCode());
             preparedStatement.setString(4, major.getMajorYear());
-            preparedStatement.setString(5, String.join(",", major.getMajorDegree())); // 转换为逗号分隔字符串
+            preparedStatement.setString(5, String.join(",", major.getMajorDegree()));
             preparedStatement.setString(6, major.getGender());
             preparedStatement.setInt(7, major.getAverageSalary());
             preparedStatement.executeUpdate();

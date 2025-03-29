@@ -80,10 +80,24 @@ public class SchoolController {
      * @param schoolNameQueryDTO 学校名DTO
      * @return Result<List < SchoolVO>>
      */
-    @PostMapping("/name")
+    @PostMapping("/search")
     @Operation(summary = "根据学校名搜索大学")
     public Result<List<School>> searchSchool(@RequestBody SchoolNameQueryDTO schoolNameQueryDTO) {
         return Result.success(schoolService.searchSchool(schoolNameQueryDTO));
+    }
+
+    /**
+     * 用户搜索
+     *
+     * @param userSearchDTO 用户搜索DTO
+     * @return Result<SearchVO>
+     */
+    @PostMapping("/searchList")
+    @Operation(summary = "用户搜索")
+    public Result<SearchVO> search(@RequestBody UserSearchDTO userSearchDTO) {
+        log.info("用户正在搜索：{}", userSearchDTO.getMessage());
+        SearchVO searchVO = schoolService.search(userSearchDTO);
+        return Result.success(searchVO);
     }
 
     /**
@@ -170,7 +184,7 @@ public class SchoolController {
      *
      * @return Result<List<BriefSchoolInfoVO>>
      */
-    @PostMapping("/hot")
+    @PostMapping("/hotSchool")
     @Operation(summary = "获取热门院校")
     public Result<List<BriefSchoolInfoVO>> hotSchool() {
         log.info("获取热门院校");
@@ -205,20 +219,6 @@ public class SchoolController {
     }
 
     /**
-     * 用户搜索
-     *
-     * @param userSearchDTO 用户搜索DTO
-     * @return Result<SearchVO>
-     */
-    @PostMapping("/search")
-    @Operation(summary = "用户搜索")
-    public Result<SearchVO> search(@RequestBody UserSearchDTO userSearchDTO) {
-        log.info("用户正在搜索：{}", userSearchDTO.getMessage());
-        SearchVO searchVO = schoolService.search(userSearchDTO);
-        return Result.success(searchVO);
-    }
-
-    /**
      * 获取首页校园风光
      *
      * @return Result<List<SchoolSceneryVO>>
@@ -237,13 +237,11 @@ public class SchoolController {
      * @param schoolAIRequestDTO 大学AI请求 DTO
      * @return Result<SchoolAIRequestMessageVO>
      */
-    @PostMapping("/ai")
+    @PostMapping("/information")
     @Operation(summary = "请求AI获取学校信息")
     public Result<SchoolAIRequestMessageVO> schoolAIRequest(@RequestBody SchoolAIRequestDTO schoolAIRequestDTO) {
         log.info("正在请求'{}'学校的信息", schoolAIRequestDTO.getSchoolId());
         SchoolAIRequestMessageVO schoolAIRequestMessageVO = deepSeekService.schoolInformation(schoolAIRequestDTO);
         return Result.success(schoolAIRequestMessageVO);
     }
-
-
 }

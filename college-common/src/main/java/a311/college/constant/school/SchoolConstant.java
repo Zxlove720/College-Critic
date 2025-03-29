@@ -5,6 +5,9 @@ import a311.college.vo.major.HotMajorVO;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * School常量
+ */
 public class SchoolConstant {
 
     public static List<HotMajorVO> getHotMajor() {

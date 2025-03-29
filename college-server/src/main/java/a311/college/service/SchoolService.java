@@ -20,11 +20,13 @@ public interface SchoolService {
 
     PageResult<School> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO);
 
-    void cacheSchool();
-
     PageResult<SchoolMajor> pageSelectMajor(SchoolMajorPageDTO schoolMajorPageDTO);
 
+    void cacheSchool();
+
     List<School> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO);
+
+    SearchVO search(UserSearchDTO userSearchDTO);
 
     List<School> getSchoolByGrade(UserGradeQueryDTO gradeDTO);
 
@@ -43,8 +45,6 @@ public interface SchoolService {
     List<HotMajorVO> getHotMajor();
 
     List<HotMajorVO> getHotMajorProfessional();
-
-    SearchVO search(UserSearchDTO userSearchDTO);
 
     List<SchoolSceneryVO> getScenery();
 

@@ -154,6 +154,63 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
+     * 用户搜索展示
+     *
+     * @param userSearchDTO 用户搜索DTO
+     * @return SearchVO
+     */
+    @Override
+    public SearchVO search(UserSearchDTO userSearchDTO) {
+        // 1.用户搜索，先返回学校信息
+        List<BriefSchoolInfoVO> briefSchoolInfoVOList = schoolMapper.searchSchool(userSearchDTO.getMessage());
+        // 2.用户搜索，再返回专业信息
+        List<BriefMajorVO> briefMajorVOList = majorMapper.searchMajor(userSearchDTO.getMessage());
+        // 3.若无匹配的学校（用户输入错误）
+        if (briefSchoolInfoVOList == null || briefSchoolInfoVOList.isEmpty()) {
+            log.info("用户'{}'，没有搜索到学校信息，返回默认学校信息", ThreadLocalUtil.getCurrentId());
+            // 3.1返回固定的学校信息
+            briefSchoolInfoVOList = new ArrayList<>();
+            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/31.jpg", "北京大学", "985,211,双一流", "北京市海淀区"));
+            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/140.jpg", "清华大学", "985,211,双一流", "北京市海淀区"));
+            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/114.jpg", "浙江大学", "985,211,双一流", "浙江杭州市"));
+            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/132.jpg", "复旦大学", "985,211,双一流", "上海市杨浦区"));
+            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/42.jpg", "武汉大学", "985,211,双一流", "湖北武汉市"));
+        } else {
+            // 3.2成功匹配到学校数据，对其进行处理
+            for (BriefSchoolInfoVO briefSchoolInfoVO : briefSchoolInfoVOList) {
+                String[] split = briefSchoolInfoVO.getRankList().split(",");
+                StringBuilder rank = new StringBuilder(split[0]);
+                if (split.length == 3) {
+                    rank.append(split[1]).append(split[2]);
+                }
+                if (split.length > 3) {
+                    rank.append(split[3]).append(split[4]);
+                }
+                briefSchoolInfoVO.setRankList(rank.toString());
+            }
+        }
+        // 4.若无匹配的专业（用户输入错误）
+        if (briefMajorVOList == null || briefMajorVOList.isEmpty()) {
+            log.info("用户'{}'，没有搜索到专业信息，返回默认专业信息", ThreadLocalUtil.getCurrentId());
+            // 4.1返回固定的专业信息
+            briefMajorVOList = new ArrayList<>();
+            briefMajorVOList.add(new BriefMajorVO("计算机科学与技术", "66:34", "14200", "66:34,14200"));
+            briefMajorVOList.add(new BriefMajorVO("人工智能", "70:30", "17200", "66:34,17200"));
+            briefMajorVOList.add(new BriefMajorVO("电子信息工程", "73:27", "12900", "73:27,12900"));
+            briefMajorVOList.add(new BriefMajorVO("汉语言文学", "16:84", "10900", "16:84,10900"));
+            briefMajorVOList.add(new BriefMajorVO("临床医学", "44:56", "13000", "44:56,13000"));
+        } else {
+            // 4.2成功匹配到专业数据，对其进行处理
+            for (BriefMajorVO briefMajorVO : briefMajorVOList) {
+                briefMajorVO.setGender(briefMajorVO.getGender().equals("--") ? null : briefMajorVO.getGender());
+                briefMajorVO.setAvgSalary(briefMajorVO.getAvgSalary().equals("0") ? null : briefMajorVO.getAvgSalary());
+                briefMajorVO.setInformation(briefMajorVO.getGender() + "," + briefMajorVO.getAvgSalary());
+            }
+        }
+        return new SearchVO(briefSchoolInfoVOList, briefMajorVOList);
+    }
+
+    /**
      * 根据用户成绩查询大学
      *
      * @param gradeDTO 用户成绩DTO
@@ -426,63 +483,6 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public List<HotMajorVO> getHotMajorProfessional() {
         return SchoolConstant.getHotMajor(1);
-    }
-
-    /**
-     * 用户搜索
-     *
-     * @param userSearchDTO 用户搜索DTO
-     * @return SearchVO
-     */
-    @Override
-    public SearchVO search(UserSearchDTO userSearchDTO) {
-        // 1.用户搜索，先返回学校信息
-        List<BriefSchoolInfoVO> briefSchoolInfoVOList = schoolMapper.searchSchool(userSearchDTO.getMessage());
-        // 2.用户搜索，再返回专业信息
-        List<BriefMajorVO> briefMajorVOList = majorMapper.searchMajor(userSearchDTO.getMessage());
-        // 3.若无匹配的学校（用户输入错误）
-        if (briefSchoolInfoVOList == null || briefSchoolInfoVOList.isEmpty()) {
-            log.info("用户'{}'，没有搜索到学校信息，返回默认学校信息", ThreadLocalUtil.getCurrentId());
-            // 3.1返回固定的学校信息
-            briefSchoolInfoVOList = new ArrayList<>();
-            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/31.jpg", "北京大学", "985,211,双一流", "北京市海淀区"));
-            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/140.jpg", "清华大学", "985,211,双一流", "北京市海淀区"));
-            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/114.jpg", "浙江大学", "985,211,双一流", "浙江杭州市"));
-            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/132.jpg", "复旦大学", "985,211,双一流", "上海市杨浦区"));
-            briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/42.jpg", "武汉大学", "985,211,双一流", "湖北武汉市"));
-        } else {
-            // 3.2成功匹配到学校数据，对其进行处理
-            for (BriefSchoolInfoVO briefSchoolInfoVO : briefSchoolInfoVOList) {
-                String[] split = briefSchoolInfoVO.getRankList().split(",");
-                StringBuilder rank = new StringBuilder(split[0]);
-                if (split.length == 3) {
-                    rank.append(split[1]).append(split[2]);
-                }
-                if (split.length > 3) {
-                    rank.append(split[3]).append(split[4]);
-                }
-                briefSchoolInfoVO.setRankList(rank.toString());
-            }
-        }
-        // 4.若无匹配的专业（用户输入错误）
-        if (briefMajorVOList == null || briefMajorVOList.isEmpty()) {
-            log.info("用户'{}'，没有搜索到专业信息，返回默认专业信息", ThreadLocalUtil.getCurrentId());
-            // 4.1返回固定的专业信息
-            briefMajorVOList = new ArrayList<>();
-            briefMajorVOList.add(new BriefMajorVO("计算机科学与技术", "66:34", "14200", "66:34,14200"));
-            briefMajorVOList.add(new BriefMajorVO("人工智能", "70:30", "17200", "66:34,17200"));
-            briefMajorVOList.add(new BriefMajorVO("电子信息工程", "73:27", "12900", "73:27,12900"));
-            briefMajorVOList.add(new BriefMajorVO("汉语言文学", "16:84", "10900", "16:84,10900"));
-            briefMajorVOList.add(new BriefMajorVO("临床医学", "44:56", "13000", "44:56,13000"));
-        } else {
-            // 4.2成功匹配到专业数据，对其进行处理
-            for (BriefMajorVO briefMajorVO : briefMajorVOList) {
-                briefMajorVO.setGender(briefMajorVO.getGender().equals("--") ? null : briefMajorVO.getGender());
-                briefMajorVO.setAvgSalary(briefMajorVO.getAvgSalary().equals("0") ? null : briefMajorVO.getAvgSalary());
-                briefMajorVO.setInformation(briefMajorVO.getGender() + "," + briefMajorVO.getAvgSalary());
-            }
-        }
-        return new SearchVO(briefSchoolInfoVOList, briefMajorVOList);
     }
 
     /**

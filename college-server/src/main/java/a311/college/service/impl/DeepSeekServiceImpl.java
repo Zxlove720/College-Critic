@@ -196,6 +196,12 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         }
     }
 
+    /**
+     * 请求AI获取学校信息
+     *
+     * @param schoolAIRequestDTO 大学AI请求DTO
+     * @return SchoolAIRequestMessageVO 大学AI请求VO
+     */
     @Override
     public SchoolAIRequestMessageVO schoolInformation(SchoolAIRequestDTO schoolAIRequestDTO) {
         // 1.获取需要请求的学校名
@@ -229,13 +235,23 @@ public class DeepSeekServiceImpl implements DeepSeekService {
                 log.info(DeepSeekConstant.ERROR_CONSTANT);
                 return new SchoolAIRequestMessageVO(DeepSeekConstant.ROLE_ASSISTANT, "error");
             }
-
+            // 6.2获取响应体
+            JSONObject responseJson = null;
+            if (response.body() != null) {
+                responseJson = JSON.parseObject(response.body().string());
+            }
+            // 6.3封装答案
+            String answer = null;
+            if (responseJson != null) {
+                answer = extractAnswer(responseJson);
+            }
+            // 6.4返回回答
+            log.info(DeepSeekConstant.ROLE_ASSISTANT + "{}", answer);
+            return new SchoolAIRequestMessageVO(DeepSeekConstant.ROLE_ASSISTANT, answer);
         } catch (IOException e) {
             log.info(DeepSeekConstant.REQUEST_ERROR_CONSTANT);
         }
-
-
-        return null;
+        return new SchoolAIRequestMessageVO(DeepSeekConstant.ROLE_ASSISTANT, "error");
     }
 
 

@@ -234,7 +234,7 @@ public class SchoolController {
     /**
      * 请求AI获取学校信息
      *
-     * @param schoolAIRequestDTO 大学AI请求
+     * @param schoolAIRequestDTO 大学AI请求 DTO
      * @return Result<SchoolAIRequestMessageVO>
      */
     @PostMapping("/ai")

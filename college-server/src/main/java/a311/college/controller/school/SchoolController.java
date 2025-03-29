@@ -8,9 +8,7 @@ import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.dto.user.UserSearchDTO;
-import a311.college.dto.ai.UserAIRequestDTO;
 import a311.college.vo.ai.SchoolAIRequestMessageVO;
-import a311.college.vo.ai.UserAIRequestMessageVO;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.result.PageResult;
@@ -204,17 +202,6 @@ public class SchoolController {
         log.info("获取热门专业（专科）");
         List<HotMajorVO> hotMajorVOList = schoolService.getHotMajorProfessional();
         return Result.success(hotMajorVOList);
-    }
-
-    /**
-     * 大学IA服务
-     *
-     * @return Result<String>
-     */
-    @PostMapping("/ai")
-    public Result<Void> schoolAIService(@RequestBody SchoolDTO schoolDTO) {
-
-        return Result.success();
     }
 
     /**

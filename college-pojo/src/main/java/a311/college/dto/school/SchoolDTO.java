@@ -11,5 +11,5 @@ import lombok.Data;
 public class SchoolDTO {
 
     @Schema(description = "大学id")
-    private String schoolId;
+    private Integer schoolId;
 }

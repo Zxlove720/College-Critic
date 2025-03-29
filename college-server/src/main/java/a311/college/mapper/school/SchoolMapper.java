@@ -73,7 +73,7 @@ public interface SchoolMapper {
      * @return SchoolVO
      */
     @Select("select * from tb_school where school_id = #{schoolId}")
-    School selectBySchoolId(String schoolId);
+    School selectBySchoolId(int schoolId);
 
     /**
      * 查询该学校开设专业
@@ -134,7 +134,7 @@ public interface SchoolMapper {
 
     List<SchoolMajor> pageQueryMajor(SchoolMajorPageDTO schoolMajorPageDTO);
 
-    List<CommentVO> getComment(String schoolId);
+    List<CommentVO> getComment(int schoolId);
 
     List<BriefSchoolInfoVO> searchSchool(String message);
 }

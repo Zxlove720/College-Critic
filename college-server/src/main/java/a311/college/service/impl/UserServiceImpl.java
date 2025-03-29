@@ -28,8 +28,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -42,12 +40,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
-    private final SchoolMapper collegeMapper;
+    private final SchoolMapper schoolMapper;
 
     @Autowired
-    public UserServiceImpl(UserMapper userMapper, SchoolMapper collegeMapper) {
+    public UserServiceImpl(UserMapper userMapper, SchoolMapper schoolMapper) {
         this.userMapper = userMapper;
-        this.collegeMapper = collegeMapper;
+        this.schoolMapper = schoolMapper;
     }
 
     @Resource
@@ -318,11 +316,11 @@ public class UserServiceImpl implements UserService {
         Long id = ThreadLocalUtil.getCurrentId();
         String favoriteTable = userMapper.selectFavoriteById(id);
         String[] favorite = favoriteTable.split(",");
-        List<School> collegeList = new ArrayList<>();
+        List<School> schoolList = new ArrayList<>();
         for (String school : favorite) {
-            collegeList.add(collegeMapper.selectBySchoolId(school));
+            schoolList.add(schoolMapper.selectBySchoolId(Integer.parseInt(school)));
         }
-        return collegeList;
+        return schoolList;
     }
 
     /**

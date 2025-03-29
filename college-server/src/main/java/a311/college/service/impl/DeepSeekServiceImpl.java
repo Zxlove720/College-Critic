@@ -3,6 +3,7 @@ package a311.college.service.impl;
 import a311.college.constant.deepseek.DeepSeekConstant;
 import a311.college.constant.redis.DeepSeekRedisKey;
 import a311.college.dto.ai.SchoolAIRequestDTO;
+import a311.college.mapper.school.SchoolMapper;
 import a311.college.vo.ai.SchoolAIRequestMessageVO;
 import a311.college.vo.ai.UserAIRequestMessageVO;
 import a311.college.dto.ai.UserAIRequestDTO;
@@ -33,8 +34,11 @@ public class DeepSeekServiceImpl implements DeepSeekService {
     // 通过Redis存储用户对话历史
     private final RedisTemplate<String, Object> redisTemplate;
 
-    public DeepSeekServiceImpl(RedisTemplate<String, Object> redisTemplate) {
+    private final SchoolMapper schoolMapper;
+
+    public DeepSeekServiceImpl(RedisTemplate<String, Object> redisTemplate, SchoolMapper schoolMapper) {
         this.redisTemplate = redisTemplate;
+        this.schoolMapper = schoolMapper;
     }
 
     /**
@@ -107,12 +111,6 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         }
         return new UserAIRequestMessageVO(DeepSeekConstant.ROLE_ASSISTANT, "error");
     }
-
-    @Override
-    public SchoolAIRequestMessageVO schoolInformation(SchoolAIRequestDTO schoolAIRequestDTO) {
-        return null;
-    }
-
 
     /**
      * 封装不同用户的历史消息Key
@@ -197,6 +195,25 @@ public class DeepSeekServiceImpl implements DeepSeekService {
             return "答案解析失败";
         }
     }
+
+    @Override
+    public SchoolAIRequestMessageVO schoolInformation(SchoolAIRequestDTO schoolAIRequestDTO) {
+        // 1.获取需要请求的学校名
+        String schoolName = schoolMapper.selectBySchoolId(schoolAIRequestDTO.getSchoolId()).getSchoolName();
+        // 2.封装问题
+        String question = "你现在是" + schoolName + "的AI助手，请给我介绍你们的学校";
+        // 3.构建请求
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .build();
+
+        return null;
+    }
+
+
+
 
 }
 

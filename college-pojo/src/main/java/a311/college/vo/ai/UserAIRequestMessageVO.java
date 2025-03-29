@@ -1,11 +1,10 @@
-package a311.college.entity.ai;
+package a311.college.vo.ai;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 
 
 /**
@@ -15,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "用户请求AI消息")
-public class UserAIRequestMessage implements Serializable {
+public class UserAIRequestMessageVO {
 
     @Schema(description = "对话角色")
     private String role;

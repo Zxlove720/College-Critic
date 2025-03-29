@@ -7,6 +7,8 @@ import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.dto.user.UserSearchDTO;
+import a311.college.dto.ai.UserAIRequestDTO;
+import a311.college.vo.ai.UserAIRequestMessageVO;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.result.PageResult;
@@ -238,6 +240,18 @@ public class SchoolController {
         log.info("获取校园风光");
         List<SchoolSceneryVO> schoolSceneryVOList = schoolService.getScenery();
         return Result.success(schoolSceneryVOList);
+    }
+
+    /**
+     * 请求AI获取学校信息
+     *
+     * @param userAIRequestDTO 用户AI请求
+     * @return Result<UserAIRequestMessageVO>
+     */
+    @PostMapping("/ai")
+    @Operation(summary = "请求AI获取学校信息")
+    public Result<UserAIRequestMessageVO> schoolAIRequest(@RequestBody UserAIRequestDTO userAIRequestDTO) {
+        log.info("正在请求");
     }
 
 

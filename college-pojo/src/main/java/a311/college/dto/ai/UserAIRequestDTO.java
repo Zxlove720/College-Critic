@@ -1,11 +1,11 @@
-package a311.college.entity.ai;
+package a311.college.dto.ai;
 
+import a311.college.vo.ai.UserAIRequestMessageVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 
 /**
  * 用户请求AI
@@ -14,10 +14,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "用户请求AI")
-public class UserAIRequest implements Serializable {
+public class UserAIRequestDTO {
 
     @Schema(description = "请求消息")
-    private UserAIRequestMessage message;
+    private UserAIRequestMessageVO message;
 
     @Schema(description = "模型温度")
     private Double temperature;

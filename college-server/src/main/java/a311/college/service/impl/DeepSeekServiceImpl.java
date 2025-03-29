@@ -2,8 +2,8 @@ package a311.college.service.impl;
 
 import a311.college.constant.deepseek.DeepSeekConstant;
 import a311.college.constant.redis.DeepSeekRedisKey;
-import a311.college.entity.ai.UserAIRequestMessage;
-import a311.college.entity.ai.UserAIRequest;
+import a311.college.vo.ai.UserAIRequestMessageVO;
+import a311.college.dto.ai.UserAIRequestDTO;
 import a311.college.service.DeepSeekService;
 import a311.college.thread.ThreadLocalUtil;
 import com.alibaba.fastjson.JSON;
@@ -39,10 +39,10 @@ public class DeepSeekServiceImpl implements DeepSeekService {
      * 请求DeepSeekAPI并获取响应
      *
      * @param request 请求
-     * @return UserAIRequestMessage 将DeepSeek的响应封装为Message对象返回
+     * @return UserAIRequestMessageVO 将DeepSeek的响应封装为Message对象返回
      */
     @Override
-    public UserAIRequestMessage response(UserAIRequest request) {
+    public UserAIRequestMessageVO response(UserAIRequestDTO request) {
         // 1.初始化用户信息
         initUserMessageHistory();
         try {
@@ -83,7 +83,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         try (Response response = client.newCall(seekRequest).execute()) {
             if (!response.isSuccessful()) {
                 log.info(DeepSeekConstant.ERROR_CONSTANT);
-                return new UserAIRequestMessage(DeepSeekConstant.ROLE_ASSISTANT, "error");
+                return new UserAIRequestMessageVO(DeepSeekConstant.ROLE_ASSISTANT, "error");
             }
             JSONObject responseJson = null;
             // 5.1获取响应体
@@ -99,11 +99,11 @@ public class DeepSeekServiceImpl implements DeepSeekService {
             addAssistantMessage(answer);
             log.info(DeepSeekConstant.ROLE_ASSISTANT + "{}", answer);
             // 5.4返回回答
-            return new UserAIRequestMessage(DeepSeekConstant.ROLE_ASSISTANT, answer);
+            return new UserAIRequestMessageVO(DeepSeekConstant.ROLE_ASSISTANT, answer);
         } catch (IOException e) {
             log.info(DeepSeekConstant.REQUEST_CONSTANT);
         }
-        return new UserAIRequestMessage(DeepSeekConstant.ROLE_ASSISTANT, "error");
+        return new UserAIRequestMessageVO(DeepSeekConstant.ROLE_ASSISTANT, "error");
     }
 
 
@@ -136,17 +136,17 @@ public class DeepSeekServiceImpl implements DeepSeekService {
     /**
      * 添加用户对话消息
      *
-     * @param userAIRequestMessage 用户对话消息对象
+     * @param userAIRequestMessageVO 用户对话消息对象
      */
-    private void addMessage(UserAIRequestMessage userAIRequestMessage) {
+    private void addMessage(UserAIRequestMessageVO userAIRequestMessageVO) {
         // 1.如果用户消息为空，则报错
-        if (userAIRequestMessage == null) {
+        if (userAIRequestMessageVO == null) {
             throw new IllegalArgumentException("message is null");
         }
         // 2.将用户的消息加入redis
         JSONObject message = new JSONObject()
-                .fluentPut("role", userAIRequestMessage.getRole())
-                .fluentPut("content", userAIRequestMessage.getContent());
+                .fluentPut("role", userAIRequestMessageVO.getRole())
+                .fluentPut("content", userAIRequestMessageVO.getContent());
         redisTemplate.opsForList().rightPush(buildMessageKey(), message.toJSONString());
     }
 
@@ -169,7 +169,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
      * 添加助手消息到历史记录（新增方法）
      */
     private void addAssistantMessage(String content) {
-        UserAIRequestMessage message = new UserAIRequestMessage(
+        UserAIRequestMessageVO message = new UserAIRequestMessageVO(
                 DeepSeekConstant.ROLE_ASSISTANT,
                 Optional.ofNullable(content).orElse("")
         );

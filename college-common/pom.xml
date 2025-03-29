@@ -14,13 +14,6 @@
     <description>college-common</description>
 
     <dependencies>
-
-        <dependency>
-            <groupId>a311</groupId>
-            <artifactId>college-pojo</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

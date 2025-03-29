@@ -1,7 +1,7 @@
 package a311.college.service.impl;
 
 import a311.college.constant.redis.SchoolRedisKey;
-import a311.college.constant.school.SchoolConstant;
+import a311.college.controller.school.constant.SchoolConstant;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
@@ -107,7 +107,7 @@ public class SchoolServiceImpl implements SchoolService {
             String key = SchoolRedisKey.SCHOOL_CACHE_KEY + area + ":";
             try {
                 // 1. 查询数据库
-                List<School> school = schoolMapper.selectByProvince(area);
+                List<School> school = schoolMapper.selectByAddress(area);
                 // 2. 删除旧缓存（避免残留旧数据）
                 redisTemplate.delete(key);
                 // 3. 批量插入新数据（使用rightPushAll）

@@ -40,7 +40,7 @@ public interface SchoolMapper {
      */
     @Select("select school_id, school_head, school_name,school_address, rank_list from tb_school " +
             "where school_province = #{province} order by score desc, length(rank_list) desc")
-    List<School> selectByProvince(String province);
+    List<School> selectByAddress(String province);
 
     /**
      * 根据学校名搜索大学

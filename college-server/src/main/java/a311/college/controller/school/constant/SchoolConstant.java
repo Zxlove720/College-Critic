@@ -1,4 +1,4 @@
-package a311.college.constant.school;
+package a311.college.controller.school.constant;
 
 import a311.college.vo.major.BriefMajorVO;
 import a311.college.vo.major.HotMajorVO;

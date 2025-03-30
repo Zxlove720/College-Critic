@@ -2,8 +2,11 @@ package a311.college.service.impl;
 
 import a311.college.constant.deepseek.DeepSeekConstant;
 import a311.college.constant.redis.DeepSeekRedisKey;
+import a311.college.dto.ai.MajorAIRequestDTO;
 import a311.college.dto.ai.SchoolAIRequestDTO;
+import a311.college.mapper.major.MajorMapper;
 import a311.college.mapper.school.SchoolMapper;
+import a311.college.vo.ai.MajorAIMessageVO;
 import a311.college.vo.ai.SchoolAIMessageVO;
 import a311.college.vo.ai.UserAIMessageVO;
 import a311.college.dto.ai.UserAIRequestDTO;
@@ -36,9 +39,12 @@ public class DeepSeekServiceImpl implements DeepSeekService {
 
     private final SchoolMapper schoolMapper;
 
-    public DeepSeekServiceImpl(RedisTemplate<String, Object> redisTemplate, SchoolMapper schoolMapper) {
+    private final MajorMapper majorMapper;
+
+    public DeepSeekServiceImpl(RedisTemplate<String, Object> redisTemplate, SchoolMapper schoolMapper, MajorMapper majorMapper) {
         this.redisTemplate = redisTemplate;
         this.schoolMapper = schoolMapper;
+        this.majorMapper = majorMapper;
     }
 
     /**
@@ -257,6 +263,69 @@ public class DeepSeekServiceImpl implements DeepSeekService {
             log.info(DeepSeekConstant.REQUEST_ERROR_CONSTANT);
         }
         return new SchoolAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, "error");
+    }
+
+    /**
+     * 请求AI获取专业信息
+     *
+     * @param majorAIRequestDTO 专业AI请求DTO
+     * @return MajorAIMessageVO 专业AI请求VO
+     */
+    @Override
+    public MajorAIMessageVO majorInformation(MajorAIRequestDTO majorAIRequestDTO) {
+        // 1.获取需要请求的专业名
+        String majorName = majorMapper.selectById(majorAIRequestDTO.getMajorId()).getMajorName();
+        // 2.封装问题
+        String question = "请为我介绍" + majorName + "这个专业";
+        JSONArray message = new JSONArray();
+        JSONObject initMessage = new JSONObject();
+        initMessage.put("role", "system");
+        initMessage.put("content", question);
+        message.add(initMessage);
+        // 3.构建请求
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .build();
+        // 4.构建请求体
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("model", DeepSeekConstant.MODEL_NAME);
+        requestBody.put("messages", message);
+        requestBody.put("stream", majorAIRequestDTO.getStream());
+        // 4.发起请求，请求DeepSeekAPI
+        Request request = new Request.Builder()
+                .url(DeepSeekConstant.API_URL)
+                .addHeader("Authorization", "Bearer " + DeepSeekConstant.API_KEY)
+                .addHeader("Content-Type", DeepSeekConstant.PARSE_SET)
+                .post(RequestBody.create(
+                        requestBody.toJSONString(),
+                        MediaType.parse(DeepSeekConstant.PARSE_SET)))
+                .build();
+        // 6.获取响应
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                // 6.1响应失败
+                log.info(DeepSeekConstant.ERROR_CONSTANT);
+                return new MajorAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, "error");
+            }
+            // 6.2获取响应体
+            JSONObject responseJson = null;
+            if (response.body() != null) {
+                responseJson = JSON.parseObject(response.body().string());
+            }
+            // 6.3封装答案
+            String answer = null;
+            if (responseJson != null) {
+                answer = extractAnswer(responseJson);
+            }
+            // 6.4返回回答
+            log.info(DeepSeekConstant.ROLE_ASSISTANT + "{}", answer);
+            return new MajorAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, answer);
+        } catch (IOException e) {
+            log.info(DeepSeekConstant.REQUEST_ERROR_CONSTANT);
+        }
+        return new MajorAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, "error");
     }
 
 

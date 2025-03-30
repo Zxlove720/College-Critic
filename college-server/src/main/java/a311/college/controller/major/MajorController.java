@@ -68,7 +68,9 @@ public class MajorController {
     @PostMapping("/information")
     @Operation(summary = "请求AI获取专业信息")
     public Result<MajorAIMessageVO> majorAIRequest(@RequestBody MajorAIRequestDTO majorAIRequestDTO) {
-        return null;
+        log.info("正在请求'{}'专业的信息", majorAIRequestDTO.getMajorId());
+        MajorAIMessageVO majorAIMessageVO = deepSeekService.majorInformation(majorAIRequestDTO);
+        return Result.success(majorAIMessageVO);
     }
 
 }

@@ -81,7 +81,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         // 4.6构建消息
         requestBody.put("messages", messages);
         // 4.7是否开启流式输出
-        requestBody.put("stream", request.getStream());
+        requestBody.put("stream", false);
         // 4.8发起请求，请求DeepSeek
         Request seekRequest = new Request.Builder()
                 .url(DeepSeekConstant.API_URL)
@@ -229,7 +229,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         JSONObject requestBody = new JSONObject();
         requestBody.put("model", DeepSeekConstant.MODEL_NAME);
         requestBody.put("messages", message);
-        requestBody.put("stream", schoolAIRequestDTO.getStream());
+        requestBody.put("stream", false);
         // 4.发起请求，请求DeepSeekAPI
         Request request = new Request.Builder()
                 .url(DeepSeekConstant.API_URL)
@@ -334,7 +334,6 @@ public class DeepSeekServiceImpl implements DeepSeekService {
                         MediaType.parse(DeepSeekConstant.PARSE_SET)))
                 .build();
     }
-
 }
 
 

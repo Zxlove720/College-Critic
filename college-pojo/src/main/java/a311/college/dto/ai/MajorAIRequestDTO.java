@@ -21,7 +21,4 @@ public class MajorAIRequestDTO {
     @Schema(description = "模型温度")
     private Double temperature;
 
-    @Schema(description = "是否启用流式编程")
-    private Boolean stream;
-
 }

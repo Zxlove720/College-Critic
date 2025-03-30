@@ -273,53 +273,34 @@ public class DeepSeekServiceImpl implements DeepSeekService {
      */
     @Override
     public MajorAIMessageVO majorInformation(MajorAIRequestDTO majorAIRequestDTO) {
-        // 1.获取需要请求的专业名
+        // 1.获取需要请求的专业名并封装问题
         String majorName = majorMapper.selectById(majorAIRequestDTO.getMajorId()).getMajorName();
-        // 2.封装问题
         String question = "请为我介绍" + majorName + "这个专业";
-        JSONArray message = new JSONArray();
-        JSONObject initMessage = new JSONObject();
-        initMessage.put("role", "system");
-        initMessage.put("content", question);
-        message.add(initMessage);
-        // 3.构建请求
+        // 2.构建请求
+        Request request = buildRequest(question);
+        // 3.发起请求并获取响应
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .build();
-        // 4.构建请求体
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("model", DeepSeekConstant.MODEL_NAME);
-        requestBody.put("messages", message);
-        requestBody.put("stream", majorAIRequestDTO.getStream());
-        // 4.发起请求，请求DeepSeekAPI
-        Request request = new Request.Builder()
-                .url(DeepSeekConstant.API_URL)
-                .addHeader("Authorization", "Bearer " + DeepSeekConstant.API_KEY)
-                .addHeader("Content-Type", DeepSeekConstant.PARSE_SET)
-                .post(RequestBody.create(
-                        requestBody.toJSONString(),
-                        MediaType.parse(DeepSeekConstant.PARSE_SET)))
-                .build();
-        // 6.获取响应
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                // 6.1响应失败
+                // 3.1响应失败，记录错误日志并返回
                 log.info(DeepSeekConstant.ERROR_CONSTANT);
                 return new MajorAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, "error");
             }
-            // 6.2获取响应体
+            // 3.2获取响应体
             JSONObject responseJson = null;
             if (response.body() != null) {
                 responseJson = JSON.parseObject(response.body().string());
             }
-            // 6.3封装答案
+            // 3.3封装答案
             String answer = null;
             if (responseJson != null) {
                 answer = extractAnswer(responseJson);
             }
-            // 6.4返回回答
+            // 3.4返回回答
             log.info(DeepSeekConstant.ROLE_ASSISTANT + "{}", answer);
             return new MajorAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, answer);
         } catch (IOException e) {
@@ -328,6 +309,31 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         return new MajorAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, "error");
     }
 
+    /**
+     * 构建请求
+     *
+     * @param question 请求问题
+     * @return Request 请求
+     */
+    private Request buildRequest(String question) {
+        JSONArray message = new JSONArray();
+        JSONObject initMessage = new JSONObject();
+        initMessage.put("role", "system");
+        initMessage.put("content", question);
+        message.add(initMessage);
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("model", DeepSeekConstant.MODEL_NAME);
+        requestBody.put("messages", message);
+        requestBody.put("stream", false);
+        return new Request.Builder()
+                .url(DeepSeekConstant.API_URL)
+                .addHeader("Authorization", "Bearer " + DeepSeekConstant.API_KEY)
+                .addHeader("Content-Type", DeepSeekConstant.PARSE_SET)
+                .post(RequestBody.create(
+                        requestBody.toJSONString(),
+                        MediaType.parse(DeepSeekConstant.PARSE_SET)))
+                .build();
+    }
 
 }
 

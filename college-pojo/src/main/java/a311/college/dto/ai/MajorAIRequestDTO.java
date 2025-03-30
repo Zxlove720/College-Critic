@@ -24,6 +24,4 @@ public class MajorAIRequestDTO {
     @Schema(description = "是否启用流式编程")
     private Boolean stream;
 
-
-
 }

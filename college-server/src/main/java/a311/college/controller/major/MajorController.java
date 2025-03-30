@@ -1,13 +1,17 @@
 package a311.college.controller.major;
 
 import a311.college.constant.API.APIConstant;
+import a311.college.dto.ai.MajorAIRequestDTO;
 import a311.college.dto.query.major.MajorQueryDTO;
 import a311.college.dto.query.major.MajorNameQueryDTO;
 import a311.college.result.Result;
+import a311.college.service.DeepSeekService;
 import a311.college.service.MajorService;
+import a311.college.vo.ai.MajorAIMessageVO;
 import a311.college.vo.major.MajorVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +20,7 @@ import java.util.List;
 /**
  * 专业Controller
  */
+@Slf4j
 @RestController
 @RequestMapping("/majors")
 @Tag(name = APIConstant.MAJOR_SERVICE)
@@ -23,9 +28,12 @@ public class MajorController {
 
     private final MajorService majorService;
 
+    private final DeepSeekService deepSeekService;
+
     @Autowired
-    public MajorController(MajorService majorService) {
+    public MajorController(MajorService majorService, DeepSeekService deepSeekService) {
         this.majorService = majorService;
+        this.deepSeekService = deepSeekService;
     }
 
     /**
@@ -36,6 +44,7 @@ public class MajorController {
     @PostMapping
     @Operation(summary = "专业查询")
     public Result<List<MajorVO>> getMajors(@RequestBody MajorQueryDTO majorDTO) {
+        log.info("专业查询...");
         return Result.success(majorService.getMajors(majorDTO));
     }
 
@@ -47,7 +56,19 @@ public class MajorController {
     @PostMapping("/major")
     @Operation(summary = "专业名搜索")
     public Result<List<MajorVO>> getMajorByName(@RequestBody MajorNameQueryDTO majorNameDTO) {
-        return majorService.getMajorByName(majorNameDTO.getMajorName());
+        log.info("专业名搜索'{}'", majorNameDTO.getMajorName());
+        return Result.success(majorService.getMajorByName(majorNameDTO.getMajorName()));
+    }
+
+    /**
+     * 请求AI获取专业信息
+     *
+     * @return Result<MajorAIMessageVO>
+     */
+    @PostMapping("/information")
+    @Operation(summary = "请求AI获取专业信息")
+    public Result<MajorAIMessageVO> majorAIRequest(@RequestBody MajorAIRequestDTO majorAIRequestDTO) {
+        return null;
     }
 
 }

@@ -5,21 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-
-/**
- * 用户请求AI消息
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "用户AI请求消息")
-public class UserAIRequestMessageVO {
+@Schema(description = "专业AI请求消息")
+public class MajorAIMessageVO {
 
     @Schema(description = "对话角色")
     private String role;
 
     @Schema(description = "消息内容")
     private String content;
-
 }

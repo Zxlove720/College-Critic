@@ -8,7 +8,7 @@ import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.dto.user.UserSearchDTO;
-import a311.college.vo.ai.SchoolAIRequestMessageVO;
+import a311.college.vo.ai.SchoolAIMessageVO;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.result.PageResult;
@@ -235,13 +235,13 @@ public class SchoolController {
      * 请求AI获取学校信息
      *
      * @param schoolAIRequestDTO 大学AI请求 DTO
-     * @return Result<SchoolAIRequestMessageVO>
+     * @return Result<SchoolAIMessageVO>
      */
     @PostMapping("/information")
     @Operation(summary = "请求AI获取学校信息")
-    public Result<SchoolAIRequestMessageVO> schoolAIRequest(@RequestBody SchoolAIRequestDTO schoolAIRequestDTO) {
+    public Result<SchoolAIMessageVO> schoolAIRequest(@RequestBody SchoolAIRequestDTO schoolAIRequestDTO) {
         log.info("正在请求'{}'学校的信息", schoolAIRequestDTO.getSchoolId());
-        SchoolAIRequestMessageVO schoolAIRequestMessageVO = deepSeekService.schoolInformation(schoolAIRequestDTO);
-        return Result.success(schoolAIRequestMessageVO);
+        SchoolAIMessageVO schoolAIMessageVO = deepSeekService.schoolInformation(schoolAIRequestDTO);
+        return Result.success(schoolAIMessageVO);
     }
 }

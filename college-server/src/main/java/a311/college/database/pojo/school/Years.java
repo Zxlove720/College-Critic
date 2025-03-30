@@ -1,4 +1,4 @@
-package a311.college.database.pojo;
+package a311.college.database.pojo.school;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -13,15 +13,16 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "招生批次")
-public class Batch implements Serializable {
+@Schema(description = "招生年份")
+public class Years implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "招生批次名")
-    private String batch;
+    @Schema(description = "招生年份")
+    private String year;
 
-    @Schema(description = "分数列表")
-    private List<Score> scores;
+    @Schema(description = "招生分类")
+    private List<Category> categorys;
+
 }

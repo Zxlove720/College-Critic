@@ -1,7 +1,7 @@
 package a311.college.controller.deepseek;
 
 import a311.college.constant.API.APIConstant;
-import a311.college.vo.ai.UserAIRequestMessageVO;
+import a311.college.vo.ai.UserAIMessageVO;
 import a311.college.dto.ai.UserAIRequestDTO;
 import a311.college.result.Result;
 import a311.college.service.DeepSeekService;
@@ -34,7 +34,7 @@ public class DeepSeekController {
      */
     @PostMapping("/answer")
     @Operation(summary = "DeepSeekApi回答问题")
-    public Result<UserAIRequestMessageVO> responseQuestion(@RequestBody UserAIRequestDTO request) {
+    public Result<UserAIMessageVO> responseQuestion(@RequestBody UserAIRequestDTO request) {
         return Result.success(deepSeekService.response(request));
     }
 }

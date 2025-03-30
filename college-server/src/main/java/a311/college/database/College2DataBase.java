@@ -3,7 +3,7 @@ package a311.college.database;
 import a311.college.constant.resource.DataBaseConnectionConstant;
 import a311.college.constant.resource.LogoURLConstant;
 import a311.college.constant.resource.SchoolDataFilePath;
-import a311.college.database.pojo.*;
+import a311.college.database.pojo.school.*;
 import a311.college.database.temp.TempSchoolRankInfo;
 import a311.college.database.temp.TempSchoolID;
 import a311.college.database.temp.TempSchoolInfo;

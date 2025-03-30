@@ -1,6 +1,6 @@
 package a311.college.dto.ai;
 
-import a311.college.vo.ai.SchoolAIRequestMessageVO;
+import a311.college.vo.ai.SchoolAIMessageVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,7 +16,7 @@ public class SchoolAIRequestDTO {
     private Integer schoolId;
 
     @Schema(description = "请求消息")
-    private SchoolAIRequestMessageVO message;
+    private SchoolAIMessageVO message;
 
     @Schema(description = "模型温度")
     private Double temperature;

@@ -1,28 +1,28 @@
 package a311.college.dto.ai;
 
-import a311.college.vo.ai.UserAIMessageVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-/**
- * 用户请求AI
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "用户请求AI")
-public class UserAIRequestDTO {
+@Schema(description = "专业AI请求")
+public class MajorAIRequestDTO {
+
+    @Schema(description = "专业ID")
+    private Integer majorId;
 
     @Schema(description = "请求消息")
-    private UserAIMessageVO message;
+    private MajorAIRequestMessageVO message;
 
     @Schema(description = "模型温度")
     private Double temperature;
 
     @Schema(description = "是否启用流式编程")
     private Boolean stream;
+
+
 
 }

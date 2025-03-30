@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "大学AI请求消息")
-public class SchoolAIRequestMessageVO {
+public class SchoolAIMessageVO {
 
     @Schema(description = "对话角色")
     private String role;

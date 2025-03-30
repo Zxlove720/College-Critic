@@ -1,4 +1,4 @@
-package a311.college.entity.major;
+package a311.college.database.pojo.major;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;

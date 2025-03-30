@@ -1,4 +1,4 @@
-package a311.college.database.pojo;
+package a311.college.database.pojo.school;
 
 import a311.college.enumeration.ProvinceEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;

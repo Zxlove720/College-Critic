@@ -2,7 +2,7 @@ package a311.college.database;
 
 import a311.college.constant.resource.DataBaseConnectionConstant;
 import a311.college.constant.resource.SchoolDataFilePath;
-import a311.college.entity.major.*;
+import a311.college.database.pojo.major.*;
 import com.fasterxml.jackson.core.JsonpCharacterEscapes;
 import com.fasterxml.jackson.core.io.CharacterEscapes;
 import com.fasterxml.jackson.databind.ObjectMapper;

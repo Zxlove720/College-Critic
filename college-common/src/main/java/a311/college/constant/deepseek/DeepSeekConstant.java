@@ -12,13 +12,11 @@ public class DeepSeekConstant {
 
     public static final String PARSE_SET = "application/json";
 
-    public static final String ERROR_CONSTANT = "请求失败";
+    public static final String RESPONSE_ERROR_CONSTANT = "响应异常";
 
-    public static final String REQUEST_ERROR_CONSTANT = "请求异常";
+    public static final String REQUEST_ERROR_CONSTANT = "请求失败";
 
     public static final String ROLE_SYSTEM = "system";
-
-    public static final String ROLE_USER = "user";
 
     public static final String ROLE_ASSISTANT = "assistant";
 }

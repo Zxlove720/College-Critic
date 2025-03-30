@@ -4,6 +4,7 @@ import a311.college.constant.deepseek.DeepSeekConstant;
 import a311.college.constant.redis.DeepSeekRedisKey;
 import a311.college.dto.ai.MajorAIRequestDTO;
 import a311.college.dto.ai.SchoolAIRequestDTO;
+import a311.college.exception.DeepSeekAPIErrorException;
 import a311.college.mapper.major.MajorMapper;
 import a311.college.mapper.school.SchoolMapper;
 import a311.college.vo.ai.MajorAIMessageVO;
@@ -215,35 +216,10 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         // 2.封装问题
         String question = "你现在是" + schoolName + "的AI助手，请给我介绍你们的学校";
         Request request = buildRequest(question);
-        OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
-                .writeTimeout(60, TimeUnit.SECONDS)
-                .build();
-        // 6.获取响应
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                // 6.1响应失败
-                log.info(DeepSeekConstant.RESPONSE_ERROR_CONSTANT);
-                return new SchoolAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, "error");
-            }
-            // 6.2获取响应体
-            JSONObject responseJson = null;
-            if (response.body() != null) {
-                responseJson = JSON.parseObject(response.body().string());
-            }
-            // 6.3封装答案
-            String answer = null;
-            if (responseJson != null) {
-                answer = extractAnswer(responseJson);
-            }
-            // 6.4返回回答
-            log.info(DeepSeekConstant.ROLE_ASSISTANT + "{}", answer);
-            return new SchoolAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, answer);
-        } catch (IOException e) {
-            log.info(DeepSeekConstant.REQUEST_ERROR_CONSTANT);
-        }
-        return new SchoolAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, "error");
+        // 3.发起请求并获取回答
+        String answer = executeRequest(request);
+        log.info(DeepSeekConstant.ROLE_ASSISTANT + "{}", answer);
+        return new SchoolAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, answer);
     }
 
     /**
@@ -259,9 +235,8 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         String question = "请为我介绍" + majorName + "这个专业";
         // 2.构建请求
         Request request = buildRequest(question);
-        // 3.发起请求并获取响应
-        String answer = getResponse(request);
-        // 3.4返回回答
+        // 3.发起请求并获取回答
+        String answer = executeRequest(request);
         log.info(DeepSeekConstant.ROLE_ASSISTANT + "{}", answer);
         return new MajorAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, answer);
     }
@@ -273,15 +248,18 @@ public class DeepSeekServiceImpl implements DeepSeekService {
      * @return Request 请求
      */
     private Request buildRequest(String question) {
+        // 1.将问题封装为JSON数组
         JSONArray message = new JSONArray();
         JSONObject initMessage = new JSONObject();
         initMessage.put("role", "system");
         initMessage.put("content", question);
         message.add(initMessage);
+        // 2.构建请求体
         JSONObject requestBody = new JSONObject();
         requestBody.put("model", DeepSeekConstant.MODEL_NAME);
         requestBody.put("messages", message);
         requestBody.put("stream", false);
+        // 3.构建新的请求，请求DeepSeekAPI
         return new Request.Builder()
                 .url(DeepSeekConstant.API_URL)
                 .addHeader("Authorization", "Bearer " + DeepSeekConstant.API_KEY)
@@ -298,7 +276,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
      * @param request 请求
      * @return answer 回答
      */
-    private String getResponse(Request request) {
+    private String executeRequest(Request request) {
         // 1.获取请求客户端
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(60, TimeUnit.SECONDS)
@@ -310,7 +288,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
             if (!response.isSuccessful()) {
                 // 2.1响应失败，记录错误日志并返回
                 log.info(DeepSeekConstant.RESPONSE_ERROR_CONSTANT);
-                return DeepSeekConstant.REQUEST_ERROR_CONSTANT;
+                throw new DeepSeekAPIErrorException(DeepSeekConstant.RESPONSE_ERROR_CONSTANT);
             }
             // 2.2获取响应体
             JSONObject responseJson = null;
@@ -320,10 +298,10 @@ public class DeepSeekServiceImpl implements DeepSeekService {
             // 2.3解析响应体获取回答并返回
             return extractAnswer(responseJson);
         } catch (IOException e) {
+            // 2.4请求失败则报错
             log.info(DeepSeekConstant.REQUEST_ERROR_CONSTANT);
+            throw new DeepSeekAPIErrorException(DeepSeekConstant.REQUEST_ERROR_CONSTANT);
         }
-        // 若请求/响应失败，则返回错误信息
-        return DeepSeekConstant.REQUEST_ERROR_CONSTANT;
     }
 }
 

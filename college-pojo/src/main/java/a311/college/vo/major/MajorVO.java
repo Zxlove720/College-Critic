@@ -18,13 +18,13 @@ import java.io.Serializable;
 public class MajorVO implements Serializable {
 
     @Schema(description = "专业名称")
-    private String name;
+    private String majorName;
 
     @Schema(description = "专业代码")
-    private String code;
+    private String majorCode;
 
     @Schema(description = "专业年限")
-    private String year;
+    private String majorYear;
 
     @Schema(description = "授予学位")
     private String degrees;

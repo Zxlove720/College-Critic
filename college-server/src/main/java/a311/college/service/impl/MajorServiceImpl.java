@@ -29,6 +29,28 @@ public class MajorServiceImpl implements MajorService {
     }
 
     /**
+     * 查询学科门类
+     *
+     * @param subjectCategoryQueryDTO 学科门类查询DTO
+     * @return List<SubjectCategory>
+     */
+    @Override
+    public List<SubjectCategory> getSubjectCategory(SubjectCategoryQueryDTO subjectCategoryQueryDTO) {
+        return majorMapper.selectSubjectCategory(subjectCategoryQueryDTO);
+    }
+
+    /**
+     * 获取专业类别
+     *
+     * @param professionalClassQueryDTO 专业类别查询DTO
+     * @return List<ProfessionalClass>
+     */
+    @Override
+    public List<ProfessionalClass> getProfessionalClass(ProfessionalClassQueryDTO professionalClassQueryDTO) {
+        return majorMapper.selectProfessionalClass(professionalClassQueryDTO);
+    }
+
+    /**
      * 专业分页查询
      *
      * @param majorPageQueryDTO 专业分页查询DTO
@@ -60,19 +82,5 @@ public class MajorServiceImpl implements MajorService {
         return majorMapper.searchMajorByName(majorName);
     }
 
-    /**
-     * 查询学科门类
-     *
-     * @param subjectCategoryQueryDTO 学科门类查询DTO
-     * @return List<SubjectCategory>
-     */
-    @Override
-    public List<SubjectCategory> getSubjectCategory(SubjectCategoryQueryDTO subjectCategoryQueryDTO) {
-        return majorMapper.selectSubjectCategory(subjectCategoryQueryDTO);
-    }
 
-    @Override
-    public List<ProfessionalClass> getProfessionalClass(ProfessionalClassQueryDTO professionalClassQueryDTO) {
-        return majorMapper.selectProfessionalClass(professionalClassQueryDTO);
-    }
 }

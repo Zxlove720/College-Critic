@@ -12,11 +12,12 @@ import java.util.List;
 
 public interface MajorService {
 
+    List<SubjectCategory> getSubjectCategory(SubjectCategoryQueryDTO subjectCategoryQueryDTO);
+
+    List<ProfessionalClass> getProfessionalClass(ProfessionalClassQueryDTO professionalClassQueryDTO);
+
     PageResult<Major> majorPageQuery(MajorPageQueryDTO majorDTO);
 
     List<Major> searchMajorByName(String majorName);
 
-    List<SubjectCategory> getSubjectCategory(SubjectCategoryQueryDTO subjectCategoryQueryDTO);
-
-    List<ProfessionalClass> getProfessionalClass(ProfessionalClassQueryDTO professionalClassQueryDTO);
 }

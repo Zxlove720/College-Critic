@@ -16,6 +16,24 @@ import java.util.List;
 public interface MajorMapper {
 
     /**
+     * 查询学科门类
+     *
+     * @param subjectCategoryQueryDTO 学科门类查询DTO
+     * @return List<SubjectCategory>
+     */
+    @Select("select * from tb_subject_category where academic_level_id = #{academicId}")
+    List<SubjectCategory> selectSubjectCategory(SubjectCategoryQueryDTO subjectCategoryQueryDTO);
+
+    /**
+     * 查询专业类别
+     *
+     * @param professionalClassQueryDTO 专业类别查询DTO
+     * @return List<ProfessionalClass>
+     */
+    @Select("select * from tb_professional_class where subject_category_id = #{subjectCategoryId}")
+    List<ProfessionalClass> selectProfessionalClass(ProfessionalClassQueryDTO professionalClassQueryDTO);
+
+    /**
      * 专业信息分页查询
      *
      * @param majorPageQueryDTO 专业分页查询DTO
@@ -48,16 +66,4 @@ public interface MajorMapper {
     @Select("select * from tb_major where major_id = #{majorId}")
     Major selectById(Integer majorId);
 
-    /**
-     * 查询学科门类
-     *
-     * @param subjectCategoryQueryDTO 学科门类查询DTO
-     * @return List<SubjectCategory>
-     */
-    @Select("select * from tb_subject_category where academic_level_id = #{academicId}")
-    List<SubjectCategory> selectSubjectCategory(SubjectCategoryQueryDTO subjectCategoryQueryDTO);
-
-
-    @Select("select * from tb_professional_class where subject_category_id = #{subjectCategoryId}")
-    List<ProfessionalClass> selectProfessionalClass(ProfessionalClassQueryDTO professionalClassQueryDTO);
 }

@@ -9,7 +9,6 @@ import a311.college.result.Result;
 import a311.college.service.DeepSeekService;
 import a311.college.service.MajorService;
 import a311.college.vo.ai.MajorAIMessageVO;
-import a311.college.vo.major.MajorVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;

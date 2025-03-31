@@ -10,5 +10,5 @@ public interface MajorService {
 
     PageResult<Major> getMajors(MajorPageQueryDTO majorDTO);
 
-    List<Major> getMajorByName(String majorName);
+    List<Major> searchMajorByName(String majorName);
 }

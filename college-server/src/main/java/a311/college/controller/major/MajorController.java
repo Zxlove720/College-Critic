@@ -45,7 +45,7 @@ public class MajorController {
      */
     @PostMapping("/page")
     @Operation(summary = "专业分页查询")
-    public Result<PageResult<Major>> getMajors(@RequestBody MajorPageQueryDTO majorPageQueryDTO) {
+    public Result<PageResult<Major>> majorPageSelect(@RequestBody MajorPageQueryDTO majorPageQueryDTO) {
         log.info("专业分页查询...");
         return Result.success(majorService.getMajors(majorPageQueryDTO));
     }
@@ -57,9 +57,9 @@ public class MajorController {
      */
     @PostMapping("/major")
     @Operation(summary = "专业名搜索")
-    public Result<List<Major>> getMajorByName(@RequestBody MajorNameQueryDTO majorNameDTO) {
+    public Result<List<Major>> searchMajorByName(@RequestBody MajorNameQueryDTO majorNameDTO) {
         log.info("专业名搜索'{}'", majorNameDTO.getMajorName());
-        return Result.success(majorService.getMajorByName(majorNameDTO.getMajorName()));
+        return Result.success(majorService.searchMajorByName(majorNameDTO.getMajorName()));
     }
 
     /**

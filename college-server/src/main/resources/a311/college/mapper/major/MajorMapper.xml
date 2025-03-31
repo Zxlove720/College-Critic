@@ -6,17 +6,17 @@
         select m.major_id, m.major_name, m.major_code, m.major_year, m.degrees, m.gender, m.avg_salary
         from tb_academic_level as al
                  join tb_subject_category as sc on al.id = sc.academic_level_id
-                 join tb_professional_class as pc on sc.id = pc.subject_category_id
-                 join tb_major as m on pc.id = m.class_id
+                 join tb_professional_class as pc on sc.subject_category_id = pc.subject_category_id
+                 join tb_major as m on pc.professional_id = m.class_id
         <where>
             <if test="levelId != null">
                 and al.id = #{levelId}
             </if>
             <if test="categoryId != null">
-                and sc.id = #{categoryId}
+                and sc.subject_category_id = #{categoryId}
             </if>
             <if test="professionalId != null">
-                and pc.id = #{professionalId}
+                and pc.professional_id = #{professionalId}
             </if>
         </where>
     </select>

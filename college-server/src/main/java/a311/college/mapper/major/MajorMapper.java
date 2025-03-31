@@ -1,7 +1,9 @@
 package a311.college.mapper.major;
 
 import a311.college.dto.query.major.MajorPageQueryDTO;
+import a311.college.dto.query.major.SubjectCategoryQueryDTO;
 import a311.college.entity.major.Major;
+import a311.college.entity.major.SubjectCategory;
 import a311.college.vo.major.BriefMajorVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -43,4 +45,13 @@ public interface MajorMapper {
      */
     @Select("select * from tb_major where major_id = #{majorId}")
     Major selectById(Integer majorId);
+
+    /**
+     * 查询学科门类
+     *
+     * @param subjectCategoryQueryDTO 学科门类查询DTO
+     * @return List<SubjectCategory>
+     */
+    @Select("select * from tb_subject_category where academic_level_id = #{academicId}")
+    List<SubjectCategory> selectSubjectCategory(SubjectCategoryQueryDTO subjectCategoryQueryDTO);
 }

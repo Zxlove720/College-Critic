@@ -1,7 +1,9 @@
 package a311.college.service.impl;
 
 import a311.college.dto.query.major.MajorPageQueryDTO;
+import a311.college.dto.query.major.SubjectCategoryQueryDTO;
 import a311.college.entity.major.Major;
+import a311.college.entity.major.SubjectCategory;
 import a311.college.mapper.major.MajorMapper;
 import a311.college.result.PageResult;
 import a311.college.service.MajorService;
@@ -54,5 +56,16 @@ public class MajorServiceImpl implements MajorService {
     @Override
     public List<Major> searchMajorByName(String majorName) {
         return majorMapper.searchMajorByName(majorName);
+    }
+
+    /**
+     * 查询学科门类
+     *
+     * @param subjectCategoryQueryDTO 学科门类查询DTO
+     * @return List<SubjectCategory>
+     */
+    @Override
+    public List<SubjectCategory> getSubjectCategory(SubjectCategoryQueryDTO subjectCategoryQueryDTO) {
+        return majorMapper.selectSubjectCategory(subjectCategoryQueryDTO);
     }
 }

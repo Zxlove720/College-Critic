@@ -84,7 +84,7 @@ public class Major2DataBase {
     }
 
     private static int insertSubjectCategory(Connection conn, String name, int levelId) throws SQLException {
-        String sql = "INSERT INTO tb_subject_category (academic_level_id, name) VALUES (?, ?)";
+        String sql = "INSERT INTO tb_subject_category (academic_level_id, subject_category_name) VALUES (?, ?)";
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, levelId);
             preparedStatement.setString(2, name);

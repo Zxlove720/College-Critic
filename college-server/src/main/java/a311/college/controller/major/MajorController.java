@@ -4,7 +4,9 @@ import a311.college.constant.API.APIConstant;
 import a311.college.dto.ai.MajorAIRequestDTO;
 import a311.college.dto.query.major.MajorPageQueryDTO;
 import a311.college.dto.query.major.MajorNameQueryDTO;
+import a311.college.dto.query.major.SubjectCategoryQueryDTO;
 import a311.college.entity.major.Major;
+import a311.college.entity.major.SubjectCategory;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.DeepSeekService;
@@ -35,6 +37,19 @@ public class MajorController {
     public MajorController(MajorService majorService, DeepSeekService deepSeekService) {
         this.majorService = majorService;
         this.deepSeekService = deepSeekService;
+    }
+
+    /**
+     * 查询学科门类
+     *
+     * @param subjectCategoryQueryDTO 学科门类查询DTO
+     * @return Result<List<SubjectCategory>>
+     */
+    @PostMapping("/subject")
+    public Result<List<SubjectCategory>> subjectCategoryQuery(@RequestBody SubjectCategoryQueryDTO subjectCategoryQueryDTO) {
+        log.info("查询'{}'下的学科门类", subjectCategoryQueryDTO.getAcademicId());
+        List<SubjectCategory> subjectCategoryList = majorService.getSubjectCategory(subjectCategoryQueryDTO);
+        return Result.success(subjectCategoryList);
     }
 
     /**

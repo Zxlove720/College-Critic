@@ -1,8 +1,10 @@
 package a311.college.service.impl;
 
 import a311.college.dto.query.major.MajorPageQueryDTO;
+import a311.college.dto.query.major.ProfessionalClassQueryDTO;
 import a311.college.dto.query.major.SubjectCategoryQueryDTO;
 import a311.college.entity.major.Major;
+import a311.college.entity.major.ProfessionalClass;
 import a311.college.entity.major.SubjectCategory;
 import a311.college.mapper.major.MajorMapper;
 import a311.college.result.PageResult;
@@ -67,5 +69,10 @@ public class MajorServiceImpl implements MajorService {
     @Override
     public List<SubjectCategory> getSubjectCategory(SubjectCategoryQueryDTO subjectCategoryQueryDTO) {
         return majorMapper.selectSubjectCategory(subjectCategoryQueryDTO);
+    }
+
+    @Override
+    public List<ProfessionalClass> getProfessionalClass(ProfessionalClassQueryDTO professionalClassQueryDTO) {
+        return majorMapper.selectProfessionalClass(professionalClassQueryDTO);
     }
 }

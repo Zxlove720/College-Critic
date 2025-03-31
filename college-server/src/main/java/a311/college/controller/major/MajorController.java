@@ -1,9 +1,11 @@
 package a311.college.controller.major;
 
 import a311.college.constant.API.APIConstant;
+import a311.college.entity.major.ProfessionalClass;
 import a311.college.dto.ai.MajorAIRequestDTO;
 import a311.college.dto.query.major.MajorPageQueryDTO;
 import a311.college.dto.query.major.MajorNameQueryDTO;
+import a311.college.dto.query.major.ProfessionalClassQueryDTO;
 import a311.college.dto.query.major.SubjectCategoryQueryDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.major.SubjectCategory;
@@ -50,6 +52,20 @@ public class MajorController {
         log.info("查询'{}'下的学科门类", subjectCategoryQueryDTO.getAcademicId());
         List<SubjectCategory> subjectCategoryList = majorService.getSubjectCategory(subjectCategoryQueryDTO);
         return Result.success(subjectCategoryList);
+    }
+
+    /**
+     * 专业类别查询
+     *
+     * @param professionalClassQueryDTO 专业类别查询DTO
+     * @return Result<List<ProfessionalClass>>
+     */
+    @PostMapping("/professional")
+    @Operation(summary = "专业类别查询")
+    public Result<List<ProfessionalClass>> professionalClassQuery(@RequestBody ProfessionalClassQueryDTO professionalClassQueryDTO) {
+        log.info("查询'{}'学科门类下的专业类别", professionalClassQueryDTO.getSubjectCategoryId());
+        List<ProfessionalClass> professionalClassList = majorService.getProfessionalClass(professionalClassQueryDTO);
+        return Result.success(professionalClassList);
     }
 
     /**

@@ -1,8 +1,10 @@
 package a311.college.mapper.major;
 
 import a311.college.dto.query.major.MajorPageQueryDTO;
+import a311.college.dto.query.major.ProfessionalClassQueryDTO;
 import a311.college.dto.query.major.SubjectCategoryQueryDTO;
 import a311.college.entity.major.Major;
+import a311.college.entity.major.ProfessionalClass;
 import a311.college.entity.major.SubjectCategory;
 import a311.college.vo.major.BriefMajorVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -54,4 +56,8 @@ public interface MajorMapper {
      */
     @Select("select * from tb_subject_category where academic_level_id = #{academicId}")
     List<SubjectCategory> selectSubjectCategory(SubjectCategoryQueryDTO subjectCategoryQueryDTO);
+
+
+    @Select("select * from tb_professional_class where subject_category_id = #{subjectCategoryId}")
+    List<ProfessionalClass> selectProfessionalClass(ProfessionalClassQueryDTO professionalClassQueryDTO);
 }

@@ -96,7 +96,7 @@ public class Major2DataBase {
     }
 
     private static int insertProfessionalClass(Connection conn, String name, int subjectId) throws SQLException {
-        String sql = "INSERT INTO tb_professional_class (subject_category_id, name) VALUES (?, ?)";
+        String sql = "INSERT INTO tb_professional_class (subject_category_id, professional_class_name) VALUES (?, ?)";
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, subjectId);
             preparedStatement.setString(2, name);

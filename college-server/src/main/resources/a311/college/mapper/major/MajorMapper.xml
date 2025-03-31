@@ -7,7 +7,7 @@
         from tb_academic_level as al
                  join tb_subject_category as sc on al.id = sc.academic_level_id
                  join tb_professional_class as pc on sc.subject_category_id = pc.subject_category_id
-                 join tb_major as m on pc.professional_id = m.class_id
+                 join tb_major as m on pc.professional_class_id = m.class_id
         <where>
             <if test="levelId != null">
                 and al.id = #{levelId}
@@ -16,7 +16,7 @@
                 and sc.subject_category_id = #{categoryId}
             </if>
             <if test="professionalId != null">
-                and pc.professional_id = #{professionalId}
+                and pc.professional_class_id = #{professionalId}
             </if>
         </where>
     </select>

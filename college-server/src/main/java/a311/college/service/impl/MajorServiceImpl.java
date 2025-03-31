@@ -47,6 +47,6 @@ public class MajorServiceImpl implements MajorService {
 
     @Override
     public List<Major> getMajorByName(String majorName) {
-        return majorMapper.selectByName(majorName);
+        return majorMapper.searchMajorByName(majorName);
     }
 }

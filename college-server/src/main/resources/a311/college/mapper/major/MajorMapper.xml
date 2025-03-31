@@ -21,7 +21,7 @@
         </where>
     </select>
 
-    <select id="selectByName" resultType="a311.college.entity.major.Major">
+    <select id="searchMajorByName" resultType="a311.college.entity.major.Major">
         select
             m.major_id,
             m.major_name,

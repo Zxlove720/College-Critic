@@ -43,7 +43,7 @@ public class MajorController {
      * @param majorPageQueryDTO 专业分页查询DTO
      * @return Result<PageResult < Major>>
      */
-    @PostMapping
+    @PostMapping("/page")
     @Operation(summary = "专业分页查询")
     public Result<PageResult<Major>> getMajors(@RequestBody MajorPageQueryDTO majorPageQueryDTO) {
         log.info("专业分页查询...");

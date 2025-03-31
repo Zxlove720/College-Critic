@@ -73,7 +73,7 @@ public class Major2DataBase {
     }
 
     private static int insertAcademicLevel(Connection conn, String name) throws SQLException {
-        String sql = "INSERT INTO tb_academic_level (name) VALUES (?)";
+        String sql = "INSERT INTO tb_academic_level (academic_level_name) VALUES (?)";
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, name);
             preparedStatement.executeUpdate();
@@ -108,7 +108,7 @@ public class Major2DataBase {
     }
 
     private static void insertMajor(Connection conn, Major major, int classId) throws SQLException {
-        String sql = "INSERT INTO tb_major (class_id, major_name, major_code, major_year, degrees, gender, avg_salary) "
+        String sql = "INSERT INTO tb_major (professional_class_id, major_name, major_code, major_year, degrees, gender, avg_salary) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, classId);

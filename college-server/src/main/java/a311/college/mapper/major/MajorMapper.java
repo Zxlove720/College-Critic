@@ -1,6 +1,6 @@
 package a311.college.mapper.major;
 
-import a311.college.dto.query.major.MajorQueryDTO;
+import a311.college.dto.query.major.MajorPageQueryDTO;
 import a311.college.entity.major.Major;
 import a311.college.vo.major.BriefMajorVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface MajorMapper {
 
-    List<Major> selectMajors(MajorQueryDTO majorDTO);
+    List<Major> pageQueryMajors(MajorPageQueryDTO majorPageQueryDTO);
 
     List<Major> selectByName(String majorName);
 

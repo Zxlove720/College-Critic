@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 @Schema(description = "专业查询DTO")
-public class MajorQueryDTO {
+public class MajorPageQueryDTO {
 
     @Schema(description = "专业所属层次id")
     private Integer levelId;
@@ -19,4 +19,10 @@ public class MajorQueryDTO {
 
     @Schema(description = "专业所属专业类id")
     private Integer professionalId;
+
+    @Schema(description = "查询页码")
+    private Integer page = 1;
+
+    @Schema(description = "每页大小")
+    private Integer pageSize = 15;
 }

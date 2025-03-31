@@ -2,9 +2,10 @@ package a311.college.controller.major;
 
 import a311.college.constant.API.APIConstant;
 import a311.college.dto.ai.MajorAIRequestDTO;
-import a311.college.dto.query.major.MajorQueryDTO;
+import a311.college.dto.query.major.MajorPageQueryDTO;
 import a311.college.dto.query.major.MajorNameQueryDTO;
 import a311.college.entity.major.Major;
+import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.DeepSeekService;
 import a311.college.service.MajorService;
@@ -37,21 +38,22 @@ public class MajorController {
     }
 
     /**
-     * 专业查询
-     * @param majorDTO 专业查询DTO
-     * @return Result<List<MajorVO>>
+     * 专业分页查询
+     *
+     * @param majorPageQueryDTO 专业分页查询DTO
+     * @return Result<PageResult < Major>>
      */
     @PostMapping
-    @Operation(summary = "专业查询")
-    public Result<List<Major>> getMajors(@RequestBody MajorQueryDTO majorDTO) {
-        log.info("专业查询...");
-        return Result.success(majorService.getMajors(majorDTO));
+    @Operation(summary = "专业分页查询")
+    public Result<PageResult<Major>> getMajors(@RequestBody MajorPageQueryDTO majorPageQueryDTO) {
+        log.info("专业分页查询...");
+        return Result.success(majorService.getMajors(majorPageQueryDTO));
     }
 
     /**
      * 根据专业名搜索
      *
-     * @return Result<List<MajorVO>>
+     * @return Result<List < MajorVO>>
      */
     @PostMapping("/major")
     @Operation(summary = "专业名搜索")

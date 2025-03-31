@@ -23,7 +23,8 @@
             </if>
             <if test="rankList != null and !rankList.isEmpty()">
                 AND (
-                <foreach collection="rankList" item="item" separator="AND">rank_list LIKE CONCAT('%', #{item}, '%')
+                <foreach collection="rankList" item="item" separator="AND">
+                    rank_list LIKE CONCAT('%', #{item}, '%')
                 </foreach>
                 )
             </if>

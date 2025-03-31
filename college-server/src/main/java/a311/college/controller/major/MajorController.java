@@ -49,7 +49,7 @@ public class MajorController {
      */
     @PostMapping("/subject")
     public Result<List<SubjectCategory>> subjectCategoryQuery(@RequestBody SubjectCategoryQueryDTO subjectCategoryQueryDTO) {
-        log.info("查询'{}'下的学科门类", subjectCategoryQueryDTO.getAcademicId());
+        log.info("查询'{}'下的学科门类", subjectCategoryQueryDTO.getAcademicLevelId());
         List<SubjectCategory> subjectCategoryList = majorService.getSubjectCategory(subjectCategoryQueryDTO);
         return Result.success(subjectCategoryList);
     }

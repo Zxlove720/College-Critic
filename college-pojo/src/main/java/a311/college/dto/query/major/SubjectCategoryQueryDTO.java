@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 public class SubjectCategoryQueryDTO {
 
     @Schema(description = "培养层次id")
-    private Integer academicId;
+    private Integer academicLevelId;
 }

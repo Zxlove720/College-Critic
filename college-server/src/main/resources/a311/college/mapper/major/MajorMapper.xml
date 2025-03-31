@@ -4,10 +4,10 @@
 <mapper namespace="a311.college.mapper.major.MajorMapper">
     <select id="pageQueryMajors" resultType="a311.college.entity.major.Major">
         select m.major_id, m.major_name, m.major_code, m.major_year, m.degrees, m.gender, m.avg_salary
-        from academic_level as al
-                 join subject_category as sc on al.id = sc.academic_level_id
-                 join professional_class as pc on sc.id = pc.subject_category_id
-                 join major as m on pc.id = m.class_id
+        from tb_academic_level as al
+                 join tb_subject_category as sc on al.id = sc.academic_level_id
+                 join tb_professional_class as pc on sc.id = pc.subject_category_id
+                 join tb_major as m on pc.id = m.class_id
         <where>
             <if test="levelId != null">
                 and al.id = #{levelId}
@@ -29,7 +29,7 @@
             m.degrees,
             m.gender,
             m.avg_salary
-        from major as m
+        from tb_major as m
         where m.major_name like concat('%', #{majorName}, '%')
     </select>
 
@@ -38,7 +38,7 @@
             m.major_name,
             m.gender,
             m.avg_salary
-            from major as m
+            from tb_major as m
         <where>
             <if test="message != null and message != ''">
                 m.major_name like concat('%', #{message}, '%')

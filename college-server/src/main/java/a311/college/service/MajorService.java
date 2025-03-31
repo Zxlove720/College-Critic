@@ -1,13 +1,13 @@
 package a311.college.service;
 
 import a311.college.dto.query.major.MajorQueryDTO;
-import a311.college.vo.major.MajorVO;
+import a311.college.entity.major.Major;
 
 import java.util.List;
 
 public interface MajorService {
 
-    List<MajorVO> getMajors(MajorQueryDTO majorDTO);
+    List<Major> getMajors(MajorQueryDTO majorDTO);
 
-    List<MajorVO> getMajorByName(String majorName);
+    List<Major> getMajorByName(String majorName);
 }

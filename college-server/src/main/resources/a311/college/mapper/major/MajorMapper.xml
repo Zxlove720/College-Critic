@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="a311.college.mapper.major.MajorMapper">
-    <select id="selectMajors" resultType="a311.college.vo.major.MajorVO">
+    <select id="selectMajors" resultType="a311.college.entity.major.Major">
         select m.major_name, m.major_code, m.major_year, m.degrees, m.gender, m.avg_salary
         from academic_level as al
                  join subject_category as sc on al.id = sc.academic_level_id
@@ -13,7 +13,7 @@
           and pc.id = #{professionalId}
     </select>
 
-    <select id="selectByName" resultType="a311.college.vo.major.MajorVO">
+    <select id="selectByName" resultType="a311.college.entity.major.Major">
         select
             m.major_id,
             m.major_name,

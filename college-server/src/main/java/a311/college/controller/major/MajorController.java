@@ -4,6 +4,7 @@ import a311.college.constant.API.APIConstant;
 import a311.college.dto.ai.MajorAIRequestDTO;
 import a311.college.dto.query.major.MajorQueryDTO;
 import a311.college.dto.query.major.MajorNameQueryDTO;
+import a311.college.entity.major.Major;
 import a311.college.result.Result;
 import a311.college.service.DeepSeekService;
 import a311.college.service.MajorService;
@@ -43,7 +44,7 @@ public class MajorController {
      */
     @PostMapping
     @Operation(summary = "专业查询")
-    public Result<List<MajorVO>> getMajors(@RequestBody MajorQueryDTO majorDTO) {
+    public Result<List<Major>> getMajors(@RequestBody MajorQueryDTO majorDTO) {
         log.info("专业查询...");
         return Result.success(majorService.getMajors(majorDTO));
     }
@@ -55,7 +56,7 @@ public class MajorController {
      */
     @PostMapping("/major")
     @Operation(summary = "专业名搜索")
-    public Result<List<MajorVO>> getMajorByName(@RequestBody MajorNameQueryDTO majorNameDTO) {
+    public Result<List<Major>> getMajorByName(@RequestBody MajorNameQueryDTO majorNameDTO) {
         log.info("专业名搜索'{}'", majorNameDTO.getMajorName());
         return Result.success(majorService.getMajorByName(majorNameDTO.getMajorName()));
     }

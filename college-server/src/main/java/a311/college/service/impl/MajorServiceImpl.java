@@ -31,7 +31,7 @@ public class MajorServiceImpl implements MajorService {
      * @return PageResult<Major>
      */
     @Override
-    public PageResult<Major> getMajors(MajorPageQueryDTO majorPageQueryDTO) {
+    public PageResult<Major> majorPageQuery(MajorPageQueryDTO majorPageQueryDTO) {
         try (Page<Major> page = PageHelper.startPage(majorPageQueryDTO.getPage(), majorPageQueryDTO.getPageSize())) {
             majorMapper.pageQueryMajors(majorPageQueryDTO);
             // 获取专业记录数

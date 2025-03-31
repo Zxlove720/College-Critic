@@ -45,9 +45,9 @@ public class MajorController {
      */
     @PostMapping("/page")
     @Operation(summary = "专业分页查询")
-    public Result<PageResult<Major>> majorPageSelect(@RequestBody MajorPageQueryDTO majorPageQueryDTO) {
+    public Result<PageResult<Major>> majorPageQuery(@RequestBody MajorPageQueryDTO majorPageQueryDTO) {
         log.info("专业分页查询...");
-        return Result.success(majorService.getMajors(majorPageQueryDTO));
+        return Result.success(majorService.majorPageQuery(majorPageQueryDTO));
     }
 
     /**

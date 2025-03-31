@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface MajorService {
 
-    PageResult<Major> getMajors(MajorPageQueryDTO majorDTO);
+    PageResult<Major> majorPageQuery(MajorPageQueryDTO majorDTO);
 
     List<Major> searchMajorByName(String majorName);
 }

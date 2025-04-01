@@ -1,5 +1,6 @@
 package a311.college.service.impl;
 
+import a311.college.dto.major.MajorDTO;
 import a311.college.dto.query.major.MajorPageQueryDTO;
 import a311.college.dto.query.major.ProfessionalClassQueryDTO;
 import a311.college.dto.query.major.SubjectCategoryQueryDTO;
@@ -9,12 +10,16 @@ import a311.college.entity.major.SubjectCategory;
 import a311.college.mapper.major.MajorMapper;
 import a311.college.result.PageResult;
 import a311.college.service.MajorService;
+import a311.college.vo.major.DetailMajorVO;
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.RandomUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -80,6 +85,27 @@ public class MajorServiceImpl implements MajorService {
     @Override
     public List<Major> searchMajorByName(String majorName) {
         return majorMapper.searchMajorByName(majorName);
+    }
+
+    /**
+     * 查询专业具体信息
+     *
+     * @param majorDTO 专业DTO
+     * @return DetailMajorVO
+     */
+    @Override
+    public DetailMajorVO getDetailMajor(MajorDTO majorDTO) {
+        Major major = majorMapper.selectById(majorDTO.getMajorId());
+        DetailMajorVO detailMajorVO = new DetailMajorVO();
+        BeanUtil.copyProperties(major, detailMajorVO);
+        List<Double> satisfaction = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            double randomSatisfaction = RandomUtil.randomDouble(3.8, 5.0);
+            satisfaction.add(randomSatisfaction);
+        }
+
+
+        return null;
     }
 
 

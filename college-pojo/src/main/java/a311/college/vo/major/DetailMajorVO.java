@@ -26,7 +26,7 @@ public class DetailMajorVO {
     private String degrees;
 
     @Schema(description = "平均薪资")
-    private String avgSalary;
+    private Integer avgSalary;
 
     @Schema(description = "专业满意度")
     private List<Double> satisfaction;

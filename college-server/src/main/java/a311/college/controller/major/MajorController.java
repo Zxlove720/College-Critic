@@ -15,6 +15,7 @@ import a311.college.result.Result;
 import a311.college.service.DeepSeekService;
 import a311.college.service.MajorService;
 import a311.college.vo.ai.MajorAIMessageVO;
+import a311.college.vo.major.DetailMajorVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -110,13 +111,15 @@ public class MajorController {
     /**
      * 查询专业具体信息
      *
-     * @param
-     * @return
+     * @param majorDTO 专业DTO
+     * @return Result<DetailMajorVO>
      */
     @PostMapping("/major")
     @Operation(summary = "查询专业具体信息")
     public Result<DetailMajorVO> getDetailMajor(@RequestBody MajorDTO majorDTO) {
-
+        log.info("正在查询'{}'专业的详细信息", majorDTO.getMajorId());
+        DetailMajorVO detailMajorVO = majorService.getDetailMajor(majorDTO);
+        return Result.success(detailMajorVO);
     }
 
 }

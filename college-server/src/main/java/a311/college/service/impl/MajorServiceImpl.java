@@ -103,9 +103,16 @@ public class MajorServiceImpl implements MajorService {
             double randomSatisfaction = RandomUtil.randomDouble(3.8, 5.0);
             satisfaction.add(randomSatisfaction);
         }
-
-
-        return null;
+        List<String> employmentRate = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            int start = RandomUtil.randomInt(75, 81);
+            int end = RandomUtil.randomInt(81, 93);
+            String rate = start + "%" + "~" + end + "%";
+            employmentRate.add(rate);
+        }
+        detailMajorVO.setSatisfaction(satisfaction);
+        detailMajorVO.setEmploymentRate(employmentRate);
+        return detailMajorVO;
     }
 
 

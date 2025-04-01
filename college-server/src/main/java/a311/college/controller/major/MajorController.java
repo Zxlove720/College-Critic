@@ -114,7 +114,7 @@ public class MajorController {
      * @param majorDTO 专业DTO
      * @return Result<DetailMajorVO>
      */
-    @PostMapping("/major")
+    @PostMapping("/detail")
     @Operation(summary = "查询专业具体信息")
     public Result<DetailMajorVO> getDetailMajor(@RequestBody MajorDTO majorDTO) {
         log.info("正在查询'{}'专业的详细信息", majorDTO.getMajorId());

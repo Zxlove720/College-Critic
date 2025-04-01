@@ -100,7 +100,7 @@ public class MajorServiceImpl implements MajorService {
         BeanUtil.copyProperties(major, detailMajorVO);
         List<Double> satisfaction = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            double randomSatisfaction = RandomUtil.randomDouble(3.8, 5.0);
+            double randomSatisfaction = Math.round(RandomUtil.randomDouble(3.7, 5.0) * 10) / 10.0;
             satisfaction.add(randomSatisfaction);
         }
         List<String> employmentRate = new ArrayList<>();

@@ -1,6 +1,7 @@
 package a311.college.controller.major;
 
 import a311.college.constant.API.APIConstant;
+import a311.college.dto.major.MajorDTO;
 import a311.college.entity.major.ProfessionalClass;
 import a311.college.dto.ai.MajorAIRequestDTO;
 import a311.college.dto.query.major.MajorPageQueryDTO;
@@ -104,6 +105,18 @@ public class MajorController {
         log.info("正在请求'{}'专业的信息", majorAIRequestDTO.getMajorId());
         MajorAIMessageVO majorAIMessageVO = deepSeekService.majorInformation(majorAIRequestDTO);
         return Result.success(majorAIMessageVO);
+    }
+
+    /**
+     * 查询专业具体信息
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/major")
+    @Operation(summary = "查询专业具体信息")
+    public Result<DetailMajorVO> getDetailMajor(@RequestBody MajorDTO majorDTO) {
+
     }
 
 }

@@ -11,13 +11,13 @@ import lombok.Data;
 @Schema(description = "专业查询DTO")
 public class MajorPageQueryDTO {
 
-    @Schema(description = "专业所属层次id")
+    @Schema(description = "专业所属培养层次id")
     private Integer academicLevelId;
 
-    @Schema(description = "专业所属分类id")
+    @Schema(description = "专业所属学科门类id")
     private Integer subjectCategoryId;
 
-    @Schema(description = "专业所属专业类id")
+    @Schema(description = "专业所属专业类别id")
     private Integer professionalClassId;
 
     @Schema(description = "查询页码")

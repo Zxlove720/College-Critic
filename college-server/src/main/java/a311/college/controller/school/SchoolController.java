@@ -128,9 +128,9 @@ public class SchoolController {
     }
 
     /**
-     * 用户收藏学校
+     * 用户收藏大学
      *
-     * @param schoolDTO 学校DTO
+     * @param schoolDTO 大学DTO
      */
     @PostMapping("/addSchool")
     @Operation(summary = "用户收藏学校")
@@ -143,7 +143,7 @@ public class SchoolController {
     /**
      * 用户删除收藏
      *
-     * @param schoolDTO 学校DTO
+     * @param schoolDTO 大学DTO
      */
     @PostMapping("/deleteFavorite")
     @Operation(summary = "用户删除收藏")
@@ -151,7 +151,6 @@ public class SchoolController {
         log.info("用户'{}'删除收藏'{}'学校", ThreadLocalUtil.getCurrentId(), schoolDTO.getSchoolId());
         schoolService.deleteFavoriteSchool(schoolDTO);
         return Result.success();
-
     }
 
     /**

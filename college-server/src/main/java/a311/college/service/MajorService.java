@@ -27,4 +27,5 @@ public interface MajorService {
 
     void addFavoriteMajor(MajorDTO majorDTO);
 
+    void deleteFavoriteMajor(MajorDTO majorDTO);
 }

@@ -109,8 +109,6 @@ public class MajorController {
         return Result.success(majorAIMessageVO);
     }
 
-
-
     /**
      * 查询专业具体信息
      *
@@ -135,6 +133,19 @@ public class MajorController {
     public Result<Void> addFavoriteMajor(@RequestBody MajorDTO majorDTO) {
         log.info("用户'{}'收藏了'{}'专业", ThreadLocalUtil.getCurrentId(), majorDTO.getMajorId());
         majorService.addFavoriteMajor(majorDTO);
+        return Result.success();
+    }
+
+    /**
+     * 用户删除收藏
+     *
+     * @param majorDTO 大学DTO
+     */
+    @PostMapping("/deleteFavorite")
+    @Operation(summary = "用户删除收藏")
+    public Result<Void> deleteFavoriteSchool(@RequestBody MajorDTO majorDTO) {
+        log.info("用户'{}'删除收藏'{}'学校", ThreadLocalUtil.getCurrentId(), majorDTO.getMajorId());
+        majorService.deleteFavoriteMajor(majorDTO);
         return Result.success();
     }
 

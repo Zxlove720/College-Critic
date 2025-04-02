@@ -203,9 +203,9 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 用户收藏学校
+     * 用户收藏大学
      *
-     * @param schoolDTO 学校收藏DTO
+     * @param schoolDTO 大学DTO
      */
     @Override
     public void addFavoriteSchool(SchoolDTO schoolDTO) {
@@ -220,7 +220,7 @@ public class SchoolServiceImpl implements SchoolService {
     /**
      * 用户删除收藏
      *
-     * @param schoolDTO 学校DTO
+     * @param schoolDTO 大学DTO
      */
     @Override
     public void deleteFavoriteSchool(SchoolDTO schoolDTO) {

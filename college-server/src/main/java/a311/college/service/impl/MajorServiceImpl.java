@@ -142,5 +142,17 @@ public class MajorServiceImpl implements MajorService {
         majorMapper.addFavoriteMajor(majorDTO);
     }
 
+    /**
+     * 用户删除收藏
+     *
+     * @param majorDTO 大学DTO
+     */
+    @Override
+    public void deleteFavoriteMajor(MajorDTO majorDTO) {
+        long userId = ThreadLocalUtil.getCurrentId();
+        majorDTO.setUserId(userId);
+        majorMapper.deleteFavoriteMajor(majorDTO);
+    }
+
 
 }

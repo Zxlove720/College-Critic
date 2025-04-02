@@ -253,8 +253,11 @@ public class SchoolServiceImpl implements SchoolService {
         for (MajorSimpleVO majorSimpleVO : majorSimpleVOList) {
             majorSimpleVO.setMajorName(majorSimpleVO.getMajorName());
         }
-        // 5.3封装
+        // 5.3封装专业列表
         detailedSchoolVO.setMajors(majorSimpleVOList);
+        // 6.判断该学校是否被用户收藏
+        schoolDTO.setUserId(ThreadLocalUtil.getCurrentId());
+        detailedSchoolVO.setFavorite(schoolMapper.checkFavorite(schoolDTO) == 1);
         return detailedSchoolVO;
     }
 

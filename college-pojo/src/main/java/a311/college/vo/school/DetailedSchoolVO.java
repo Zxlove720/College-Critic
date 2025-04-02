@@ -47,4 +47,7 @@ public class DetailedSchoolVO implements Serializable {
     @Schema(description = "校园配置")
     private Map<String, Integer> equipment;
 
+    @Schema(description = "是否被收藏")
+    private Boolean favorite;
+
 }

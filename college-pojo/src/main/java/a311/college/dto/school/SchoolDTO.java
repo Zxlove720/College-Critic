@@ -12,4 +12,7 @@ public class SchoolDTO {
 
     @Schema(description = "大学id")
     private Integer schoolId;
+
+    @Schema(description = "用户id")
+    private Long userId;
 }

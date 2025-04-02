@@ -1,10 +1,7 @@
 package a311.college.mapper.school;
 
 
-import a311.college.dto.school.AddSchoolCommentDTO;
-import a311.college.dto.school.ForecastDTO;
-import a311.college.dto.school.SchoolMajorPageDTO;
-import a311.college.dto.school.SchoolPageQueryDTO;
+import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.entity.school.School;
@@ -138,4 +135,13 @@ public interface SchoolMapper {
      * @return BriefSchoolInfoVO 简略学校信息
      */
     List<BriefSchoolInfoVO> searchSchool(String message);
+
+    /**
+     * 判断该学校是否已经被收藏
+     *
+     * @param schoolDTO 大学查询DTO
+     * @return int 收藏表中符合条件学校数量
+     */
+    @Select("select count(school_id) from tb_fav_school where user_id = #{userId} and school_id = #{schoolId}")
+    int checkFavorite(SchoolDTO schoolDTO);
 }

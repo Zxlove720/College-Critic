@@ -143,5 +143,14 @@ public interface SchoolMapper {
      * @return int 收藏表中符合条件学校数量
      */
     @Select("select count(school_id) from tb_fav_school where user_id = #{userId} and school_id = #{schoolId}")
-    int checkFavorite(SchoolDTO schoolDTO);
+    int checkSchoolDistinct(SchoolDTO schoolDTO);
+
+    /**
+     * 根据用户id添加用户收藏
+     *
+     * @param schoolDTO 用户收藏学校DTO
+     */
+    @Select("insert into tb_fav_school (user_id, school_id) VALUES (#{userId}, #{schoolId})")
+    void addFavoriteSchool(SchoolDTO schoolDTO);
+
 }

@@ -64,7 +64,7 @@ public class SchoolController {
      * 大学专业分页查询
      *
      * @param schoolMajorPageDTO 大学专业分页查询DTO
-     * @return Result<PageResult<SchoolMajor>>
+     * @return Result<PageResult < SchoolMajor>>
      */
     @PostMapping("/majors")
     @Operation(summary = "大学专业分页查询")
@@ -128,6 +128,19 @@ public class SchoolController {
     }
 
     /**
+     * 用户收藏学校
+     *
+     * @param schoolDTO 用户学校收藏DTO
+     */
+    @PostMapping("/addSchool")
+    @Operation(summary = "用户收藏学校")
+    public Result<Void> addFavoriteSchool(@RequestBody SchoolDTO schoolDTO) {
+        log.info("用户'{}'收藏了'{}'学校", ThreadLocalUtil.getCurrentId(), schoolDTO.getSchoolId());
+        schoolService.addFavoriteSchool(schoolDTO);
+        return Result.success();
+    }
+
+    /**
      * 录取预测
      *
      * @param forecastDTO 录取预测DTO
@@ -169,7 +182,7 @@ public class SchoolController {
      * 获取用户评价
      *
      * @param schoolDTO 大学DTO
-     * @return Result<List<CommentVO>>
+     * @return Result<List < CommentVO>>
      */
     @PostMapping("/showComment")
     @Operation(summary = "获取用户评价")
@@ -178,24 +191,24 @@ public class SchoolController {
         List<CommentVO> commentVOList = schoolService.showComment(schoolDTO);
         return Result.success(commentVOList);
     }
-    
+
     /**
      * 获取热门院校
      *
-     * @return Result<List<BriefSchoolInfoVO>>
+     * @return Result<List < BriefSchoolInfoVO>>
      */
     @PostMapping("/hotSchool")
     @Operation(summary = "获取热门院校")
     public Result<List<BriefSchoolInfoVO>> hotSchool() {
         log.info("获取热门院校");
-        List<BriefSchoolInfoVO>schoolSimpleVOList = schoolService.getHotSchool();
+        List<BriefSchoolInfoVO> schoolSimpleVOList = schoolService.getHotSchool();
         return Result.success(schoolSimpleVOList);
     }
 
     /**
      * 获取热门专业（本科）
      *
-     * @return Result<List<HotMajorVO>>
+     * @return Result<List < HotMajorVO>>
      */
     @PostMapping("/hotMajor1")
     @Operation(summary = "获取热门专业（本科）")
@@ -208,7 +221,7 @@ public class SchoolController {
     /**
      * 获取热门专业（专科）
      *
-     * @return Result<List<HotMajorVO>>
+     * @return Result<List < HotMajorVO>>
      */
     @PostMapping("/hotMajor2")
     @Operation(summary = "获取热门专业（专科）")
@@ -221,7 +234,7 @@ public class SchoolController {
     /**
      * 获取首页校园风光
      *
-     * @return Result<List<SchoolSceneryVO>>
+     * @return Result<List < SchoolSceneryVO>>
      */
     @PostMapping("/scenery")
     @Operation(summary = "获取首页校园风光")

@@ -1,6 +1,7 @@
 package a311.college.service.impl;
 
 import a311.college.constant.redis.SchoolRedisKey;
+import a311.college.constant.user.UserErrorConstant;
 import a311.college.controller.school.constant.SchoolConstant;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.school.*;
@@ -9,6 +10,7 @@ import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.dto.user.UserSearchDTO;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
+import a311.college.exception.ReAdditionException;
 import a311.college.mapper.major.MajorMapper;
 import a311.college.mapper.resource.ResourceMapper;
 import a311.college.mapper.school.SchoolMapper;
@@ -201,6 +203,21 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
+     * 用户收藏学校
+     *
+     * @param schoolDTO 学校收藏DTO
+     */
+    @Override
+    public void addFavoriteSchool(SchoolDTO schoolDTO) {
+        long userId = ThreadLocalUtil.getCurrentId();
+        schoolDTO.setUserId(userId);
+        if (schoolMapper.checkSchoolDistinct(schoolDTO) != 0) {
+            throw new ReAdditionException(UserErrorConstant.RE_ADDITION);
+        }
+        schoolMapper.addFavoriteSchool(schoolDTO);
+    }
+
+    /**
      * 根据用户成绩查询大学
      *
      * @param gradeDTO 用户成绩DTO
@@ -257,7 +274,7 @@ public class SchoolServiceImpl implements SchoolService {
         detailedSchoolVO.setMajors(majorSimpleVOList);
         // 6.判断该学校是否被用户收藏
         schoolDTO.setUserId(ThreadLocalUtil.getCurrentId());
-        detailedSchoolVO.setFavorite(schoolMapper.checkFavorite(schoolDTO) == 1);
+        detailedSchoolVO.setFavorite(schoolMapper.checkSchoolDistinct(schoolDTO) == 1);
         return detailedSchoolVO;
     }
 

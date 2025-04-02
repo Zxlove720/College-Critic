@@ -66,7 +66,7 @@ public interface UserMapper {
      * 用户修改密码
      *
      * @param newPassword 新密码
-     * @param phone 手机号
+     * @param phone       手机号
      */
     @AutoFill(OperationType.UPDATE)
     @Update("update tb_user set password = #{newPassword} where phone = #{phone}")
@@ -81,13 +81,7 @@ public interface UserMapper {
     @Select("select * from tb_school where school_id = (select tb_fav_school.school_id from tb_fav_school where user_id = #{userId})")
     List<School> getUserFavoriteSchool(Long userId);
 
-    /**
-     * 根据用户id添加用户收藏
-     *
-     * @param userAddFavoriteSchoolDTO 用户收藏学校DTO
-     */
-    @Select("insert into tb_fav_school (user_id, school_id) VALUES (#{userId}, #{schoolId})")
-    void addFavoriteSchool(UserAddFavoriteSchoolDTO userAddFavoriteSchoolDTO);
+
 
     /**
      * 根据用户id查询用户评论
@@ -107,6 +101,4 @@ public interface UserMapper {
     @Select(("select id from tb_user where username = #{username}"))
     User selectByUsername(String username);
 
-    @Select("select count(user_id) from tb_fav_school where user_id = #{userId} and school_id = #{schoolId}")
-    int checkSchoolDistinct(UserAddFavoriteSchoolDTO userAddFavoriteSchoolDTO);
 }

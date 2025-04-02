@@ -32,6 +32,8 @@ public interface SchoolService {
 
     DetailedSchoolVO getDetailSchool(SchoolDTO schoolDTO);
 
+    void addFavoriteSchool(SchoolDTO schoolDTO);
+
     ForecastVO forecast(ForecastDTO forecastDTO);
 
     List<YearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO);

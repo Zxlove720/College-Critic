@@ -137,18 +137,7 @@ public class UserController {
         return Result.success(userService.selectById(userId));
     }
 
-    /**
-     * 用户收藏学校
-     *
-     * @param userAddFavoriteSchoolDTO 用户学校收藏DTO
-     */
-    @PostMapping("/addSchool")
-    @Operation(summary = "用户收藏学校")
-    public Result<Void> addFavoriteSchool(@RequestBody UserAddFavoriteSchoolDTO userAddFavoriteSchoolDTO) {
-        log.info("用户'{}'收藏了'{}'学校", ThreadLocalUtil.getCurrentId(), userAddFavoriteSchoolDTO.getSchoolId());
-        userService.addFavoriteSchool(userAddFavoriteSchoolDTO);
-        return Result.success();
-    }
+
 
     /**
      * 用户收藏专业

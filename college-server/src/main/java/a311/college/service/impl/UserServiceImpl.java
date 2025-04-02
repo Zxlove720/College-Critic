@@ -295,20 +295,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectById(id);
     }
 
-    /**
-     * 用户收藏学校
-     *
-     * @param userAddFavoriteSchoolDTO 学校收藏DTO
-     */
-    @Override
-    public void addFavoriteSchool(UserAddFavoriteSchoolDTO userAddFavoriteSchoolDTO) {
-        long userId = ThreadLocalUtil.getCurrentId();
-        userAddFavoriteSchoolDTO.setUserId(userId);
-        if (userMapper.checkSchoolDistinct(userAddFavoriteSchoolDTO) != 0) {
-            throw new ReAdditionException(UserErrorConstant.RE_ADDITION);
-        }
-        userMapper.addFavoriteSchool(userAddFavoriteSchoolDTO);
-    }
+
 
     @Override
     public void addFavoriteMajor(UserAddFavoriteMajorDTO userAddFavoriteMajorDTO) {

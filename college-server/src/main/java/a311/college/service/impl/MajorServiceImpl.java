@@ -1,5 +1,6 @@
 package a311.college.service.impl;
 
+import a311.college.constant.user.UserErrorConstant;
 import a311.college.dto.major.MajorDTO;
 import a311.college.dto.query.major.MajorPageQueryDTO;
 import a311.college.dto.query.major.ProfessionalClassQueryDTO;
@@ -7,9 +8,11 @@ import a311.college.dto.query.major.SubjectCategoryQueryDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.major.ProfessionalClass;
 import a311.college.entity.major.SubjectCategory;
+import a311.college.exception.ReAdditionException;
 import a311.college.mapper.major.MajorMapper;
 import a311.college.result.PageResult;
 import a311.college.service.MajorService;
+import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.major.DetailMajorVO;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.RandomUtil;
@@ -122,6 +125,21 @@ public class MajorServiceImpl implements MajorService {
         detailMajorVO.setSatisfaction(satisfaction);
         detailMajorVO.setEmploymentRate(employmentRate);
         return detailMajorVO;
+    }
+
+    /**
+     * 用户收藏专业
+     *
+     * @param majorDTO 专业DTO
+     */
+    @Override
+    public void addFavoriteMajor(MajorDTO majorDTO) {
+        long userId = ThreadLocalUtil.getCurrentId();
+        majorDTO.setUserId(userId);
+        if (majorMapper.checkMajorDistinct(majorDTO) != 0) {
+            throw new ReAdditionException(UserErrorConstant.RE_ADDITION);
+        }
+        majorMapper.addFavoriteMajor(majorDTO);
     }
 
 

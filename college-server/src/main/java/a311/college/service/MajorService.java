@@ -4,6 +4,7 @@ import a311.college.dto.major.MajorDTO;
 import a311.college.dto.query.major.MajorPageQueryDTO;
 import a311.college.dto.query.major.ProfessionalClassQueryDTO;
 import a311.college.dto.query.major.SubjectCategoryQueryDTO;
+import a311.college.dto.user.UserAddFavoriteMajorDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.major.ProfessionalClass;
 import a311.college.entity.major.SubjectCategory;
@@ -23,4 +24,7 @@ public interface MajorService {
     List<Major> searchMajorByName(String majorName);
 
     DetailMajorVO getDetailMajor(MajorDTO majorDTO);
+
+    void addFavoriteMajor(MajorDTO majorDTO);
+
 }

@@ -30,8 +30,6 @@ public interface UserService {
 
     UserVO selectById(Long id);
 
-    void addFavoriteMajor(UserAddFavoriteMajorDTO userAddFavoriteMajorDTO);
-
     List<BriefSchoolInfoVO> showFavorite();
 
     void update(UserDTO userDTO);

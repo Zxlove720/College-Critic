@@ -14,6 +14,7 @@ import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.DeepSeekService;
 import a311.college.service.MajorService;
+import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.ai.MajorAIMessageVO;
 import a311.college.vo.major.DetailMajorVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -122,6 +123,19 @@ public class MajorController {
         log.info("正在查询'{}'专业的详细信息", majorDTO.getMajorId());
         DetailMajorVO detailMajorVO = majorService.getDetailMajor(majorDTO);
         return Result.success(detailMajorVO);
+    }
+
+    /**
+     * 用户收藏专业
+     *
+     * @param majorDTO 专业DTO
+     */
+    @PostMapping("/addMajor")
+    @Operation(summary = "用户收藏专业")
+    public Result<Void> addFavoriteMajor(@RequestBody MajorDTO majorDTO) {
+        log.info("用户'{}'收藏了'{}'专业", ThreadLocalUtil.getCurrentId(), majorDTO.getMajorId());
+        majorService.addFavoriteMajor(majorDTO);
+        return Result.success();
     }
 
 }

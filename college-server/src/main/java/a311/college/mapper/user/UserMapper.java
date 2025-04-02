@@ -1,7 +1,6 @@
 package a311.college.mapper.user;
 
 import a311.college.annotation.AutoFill;
-import a311.college.dto.user.UserAddFavoriteSchoolDTO;
 import a311.college.entity.school.School;
 import a311.college.entity.user.User;
 import a311.college.enumeration.OperationType;

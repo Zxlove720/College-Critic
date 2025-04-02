@@ -295,13 +295,6 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectById(id);
     }
 
-
-
-    @Override
-    public void addFavoriteMajor(UserAddFavoriteMajorDTO userAddFavoriteMajorDTO) {
-
-    }
-
     /**
      * 展示用户收藏
      *

@@ -137,21 +137,6 @@ public class UserController {
         return Result.success(userService.selectById(userId));
     }
 
-
-
-    /**
-     * 用户收藏专业
-     *
-     * @param userAddFavoriteMajorDTO 用户专业收藏DTO
-     */
-    @PostMapping("/addMajor")
-    @Operation(summary = "用户收藏专业")
-    public Result<Void> addFavoriteMajor(@RequestBody UserAddFavoriteMajorDTO userAddFavoriteMajorDTO) {
-        log.info("用户'{}'收藏了'{}'专业", ThreadLocalUtil.getCurrentId(), userAddFavoriteMajorDTO.getMajorId());
-        userService.addFavoriteMajor(userAddFavoriteMajorDTO);
-        return Result.success();
-    }
-
     /**
      * 展示用户收藏
      *

@@ -16,4 +16,7 @@ public class MajorDTO {
     @Schema(description = "专业id")
     private Integer majorId;
 
+    @Schema(description = "用户id")
+    private Long userId;
+
 }

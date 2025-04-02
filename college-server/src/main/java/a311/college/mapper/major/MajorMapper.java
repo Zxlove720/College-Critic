@@ -1,5 +1,6 @@
 package a311.college.mapper.major;
 
+import a311.college.dto.major.MajorDTO;
 import a311.college.dto.query.major.MajorPageQueryDTO;
 import a311.college.dto.query.major.ProfessionalClassQueryDTO;
 import a311.college.dto.query.major.SubjectCategoryQueryDTO;
@@ -65,5 +66,22 @@ public interface MajorMapper {
      */
     @Select("select * from tb_major where major_id = #{majorId}")
     Major selectById(Integer majorId);
+
+    /**
+     * 判断该专业是否已经被收藏
+     *
+     * @param majorDTO 专业DTO
+     * @return int 收藏表中符合条件专业数量
+     */
+    @Select("select count(major_id) from tb_fav_major where user_id = #{userId} and major_id = #{majorId}")
+    int checkMajorDistinct(MajorDTO majorDTO);
+
+    /**
+     * 添加用户专业收藏
+     *
+     * @param majorDTO 专业DTO
+     */
+    @Select("insert into tb_fav_major (user_id, major_id) VALUES (#{userId}, #{majorId})")
+    void addFavoriteMajor(MajorDTO majorDTO);
 
 }

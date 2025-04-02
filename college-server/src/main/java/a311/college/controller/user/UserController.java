@@ -8,7 +8,6 @@ import a311.college.result.LoginResult;
 import a311.college.result.Result;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
-import a311.college.vo.school.SchoolVO;
 import a311.college.vo.user.UserVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -140,14 +139,25 @@ public class UserController {
     /**
      * 用户收藏学校
      *
-     * @param userAddFavoriteDTO 学校收藏DTO
+     * @param userAddFavoriteSchoolDTO 用户学校收藏DTO
      */
-    @PostMapping("/addFavorite")
+    @PostMapping("/addSchool")
     @Operation(summary = "用户收藏学校")
-    public Result<Void> addFavorite(@RequestBody UserAddFavoriteDTO userAddFavoriteDTO) {
-        log.info("用户'{}'收藏了'{}'学校", ThreadLocalUtil.getCurrentId(), userAddFavoriteDTO.getSchoolId());
-        userService.addFavorite(userAddFavoriteDTO);
+    public Result<Void> addFavoriteSchool(@RequestBody UserAddFavoriteSchoolDTO userAddFavoriteSchoolDTO) {
+        log.info("用户'{}'收藏了'{}'学校", ThreadLocalUtil.getCurrentId(), userAddFavoriteSchoolDTO.getSchoolId());
+        userService.addFavorite(userAddFavoriteSchoolDTO);
         return Result.success();
+    }
+
+    /**
+     * 用户收藏专业
+     *
+     * @param userAddFavoriteMajorDTO 用户专业收藏DTO
+     */
+    @PostMapping("/addMajor")
+    @Operation(summary = "用户收藏专业")
+    public Result<Void> addFavoriteMajor(@RequestBody UserAddFavoriteMajorDTO userAddFavoriteMajorDTO) {
+        return null;
     }
 
     /**

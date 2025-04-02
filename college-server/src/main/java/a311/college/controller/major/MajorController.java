@@ -108,6 +108,8 @@ public class MajorController {
         return Result.success(majorAIMessageVO);
     }
 
+
+
     /**
      * 查询专业具体信息
      *

@@ -15,6 +15,7 @@ import a311.college.regex.RegexUtils;
 import a311.college.result.LoginResult;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
+import a311.college.vo.school.BriefSchoolInfoVO;
 import a311.college.vo.user.UserVO;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
@@ -301,9 +302,8 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void addFavoriteSchool(UserAddFavoriteSchoolDTO userAddFavoriteSchoolDTO) {
-        String table = userMapper.selectFavoriteById(ThreadLocalUtil.getCurrentId());
-        table = table + "," + userAddFavoriteSchoolDTO.getSchoolId();
-        userMapper.addFavoriteTable(table, ThreadLocalUtil.getCurrentId());
+        userAddFavoriteSchoolDTO.setUserId(ThreadLocalUtil.getCurrentId());
+        userMapper.addFavoriteSchool(userAddFavoriteSchoolDTO);
     }
 
     @Override
@@ -314,18 +314,19 @@ public class UserServiceImpl implements UserService {
     /**
      * 展示用户收藏
      *
-     * @return List<SchoolVO>
+     * @return List<BriefSchoolInfoVO>
      */
     @Override
-    public List<School> showFavorite() {
-        Long id = ThreadLocalUtil.getCurrentId();
-        String favoriteTable = userMapper.selectFavoriteById(id);
-        String[] favorite = favoriteTable.split(",");
-        List<School> schoolList = new ArrayList<>();
-        for (String school : favorite) {
-            schoolList.add(schoolMapper.selectBySchoolId(Integer.parseInt(school)));
+    public List<BriefSchoolInfoVO> showFavorite() {
+        Long userId = ThreadLocalUtil.getCurrentId();
+        List<School> schoolList = userMapper.getUserFavoriteSchool(userId);
+        List<BriefSchoolInfoVO> result = new ArrayList<>();
+        for (School school : schoolList) {
+            BriefSchoolInfoVO briefSchoolInfoVO = new BriefSchoolInfoVO();
+            BeanUtil.copyProperties(school, briefSchoolInfoVO);
+            result.add(briefSchoolInfoVO);
         }
-        return schoolList;
+        return result;
     }
 
     /**

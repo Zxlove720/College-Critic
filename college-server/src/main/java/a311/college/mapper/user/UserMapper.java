@@ -1,6 +1,8 @@
 package a311.college.mapper.user;
 
 import a311.college.annotation.AutoFill;
+import a311.college.dto.user.UserAddFavoriteSchoolDTO;
+import a311.college.entity.school.School;
 import a311.college.entity.user.User;
 import a311.college.enumeration.OperationType;
 import a311.college.vo.user.UserVO;
@@ -73,20 +75,19 @@ public interface UserMapper {
     /**
      * 查询用户收藏表
      *
-     * @param id 用户id
+     * @param userId 用户id
      * @return 用户收藏表
      */
-    @Select("select favorite_table from tb_user where id = #{id}")
-    String selectFavoriteById(Long id);
+    @Select("select * from tb_school where school_id = (select tb_fav_school.school_id from tb_fav_school where user_id = #{userId})")
+    List<School> getUserFavoriteSchool(Long userId);
 
     /**
      * 根据用户id添加用户收藏
      *
-     * @param table 用户收藏表
-     * @param id 用户id
+     * @param userAddFavoriteSchoolDTO 用户收藏学校DTO
      */
-    @Select("update tb_user set favorite_table = #{table} where id = #{id}")
-    void addFavoriteTable(String table, long id);
+    @Select("insert into tb_fav_school (user_id, school_id) VALUES (#{userId}, #{schoolId})")
+    void addFavoriteSchool(UserAddFavoriteSchoolDTO userAddFavoriteSchoolDTO);
 
     /**
      * 根据用户id查询用户评论

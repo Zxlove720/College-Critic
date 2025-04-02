@@ -4,6 +4,7 @@ import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
 import a311.college.entity.school.School;
 import a311.college.result.LoginResult;
+import a311.college.vo.school.BriefSchoolInfoVO;
 import a311.college.vo.user.UserVO;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public interface UserService {
 
     void addFavoriteMajor(UserAddFavoriteMajorDTO userAddFavoriteMajorDTO);
 
-    List<School> showFavorite();
+    List<BriefSchoolInfoVO> showFavorite();
 
     void update(UserDTO userDTO);
 

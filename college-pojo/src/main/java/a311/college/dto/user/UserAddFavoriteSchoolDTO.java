@@ -18,4 +18,7 @@ public class UserAddFavoriteSchoolDTO {
     @Schema(description = "大学id")
     private String schoolId;
 
+    @Schema(description = "用户id")
+    private Long userId;
+
 }

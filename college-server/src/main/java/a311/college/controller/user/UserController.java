@@ -3,7 +3,6 @@ package a311.college.controller.user;
 import a311.college.constant.API.APIConstant;
 import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
-import a311.college.entity.school.School;
 import a311.college.result.LoginResult;
 import a311.college.result.Result;
 import a311.college.service.UserService;

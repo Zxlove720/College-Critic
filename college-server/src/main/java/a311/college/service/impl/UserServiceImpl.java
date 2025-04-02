@@ -5,16 +5,17 @@ import a311.college.constant.user.UserSubjectConstant;
 import a311.college.dto.login.UserLoginSymbolDTO;
 import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
+import a311.college.entity.major.Major;
 import a311.college.entity.school.School;
 import a311.college.entity.user.User;
 import a311.college.exception.*;
-import a311.college.mapper.school.SchoolMapper;
 import a311.college.mapper.user.UserMapper;
 import a311.college.constant.redis.UserRedisKey;
 import a311.college.regex.RegexUtils;
 import a311.college.result.LoginResult;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
+import a311.college.vo.major.BriefMajorVO;
 import a311.college.vo.school.BriefSchoolInfoVO;
 import a311.college.vo.user.UserVO;
 import cn.hutool.core.bean.BeanUtil;
@@ -41,12 +42,9 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
-    private final SchoolMapper schoolMapper;
-
     @Autowired
-    public UserServiceImpl(UserMapper userMapper, SchoolMapper schoolMapper) {
+    public UserServiceImpl(UserMapper userMapper) {
         this.userMapper = userMapper;
-        this.schoolMapper = schoolMapper;
     }
 
     @Resource
@@ -296,12 +294,12 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 展示用户收藏
+     * 展示用户收藏学校
      *
      * @return List<BriefSchoolInfoVO>
      */
     @Override
-    public List<BriefSchoolInfoVO> showFavorite() {
+    public List<BriefSchoolInfoVO> showFavoriteSchool() {
         Long userId = ThreadLocalUtil.getCurrentId();
         List<School> schoolList = userMapper.getUserFavoriteSchool(userId);
         List<BriefSchoolInfoVO> result = new ArrayList<>();
@@ -309,6 +307,24 @@ public class UserServiceImpl implements UserService {
             BriefSchoolInfoVO briefSchoolInfoVO = new BriefSchoolInfoVO();
             BeanUtil.copyProperties(school, briefSchoolInfoVO);
             result.add(briefSchoolInfoVO);
+        }
+        return result;
+    }
+
+    /**
+     * 展示用户收藏专业
+     *
+     * @return List<BriefMajorVO>
+     */
+    @Override
+    public List<BriefMajorVO> showFavoriteMajor() {
+        Long userId = ThreadLocalUtil.getCurrentId();
+        List<Major> majorList = userMapper.getUserFavoriteMajor(userId);
+        List<BriefMajorVO> result = new ArrayList<>();
+        for (Major major : majorList) {
+            BriefMajorVO briefMajorVO = new BriefMajorVO();
+            BeanUtil.copyProperties(major, briefMajorVO);
+            result.add(briefMajorVO);
         }
         return result;
     }

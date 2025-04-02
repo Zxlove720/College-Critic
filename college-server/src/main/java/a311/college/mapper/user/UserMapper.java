@@ -1,6 +1,7 @@
 package a311.college.mapper.user;
 
 import a311.college.annotation.AutoFill;
+import a311.college.entity.major.Major;
 import a311.college.entity.school.School;
 import a311.college.entity.user.User;
 import a311.college.enumeration.OperationType;
@@ -72,13 +73,22 @@ public interface UserMapper {
     void editPassword(String newPassword, String phone);
 
     /**
-     * 查询用户收藏表
+     * 查询用户收藏学校表
      *
      * @param userId 用户id
-     * @return 用户收藏表
+     * @return 用户收藏学校表
      */
     @Select("select * from tb_school where school_id = (select tb_fav_school.school_id from tb_fav_school where user_id = #{userId})")
     List<School> getUserFavoriteSchool(Long userId);
+
+    /**
+     * 查询用户收藏专业表
+     *
+     * @param userId 用户id
+     * @return 用户收藏专业表
+     */
+    @Select("select * from tb_major where major_id = (select tb_fav_major.major_id from tb_fav_major where user_id = #{userId})")
+    List<Major> getUserFavoriteMajor(Long userId);
 
 
 

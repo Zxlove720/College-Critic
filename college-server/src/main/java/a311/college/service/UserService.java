@@ -3,6 +3,7 @@ package a311.college.service;
 import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
 import a311.college.result.LoginResult;
+import a311.college.vo.major.BriefMajorVO;
 import a311.college.vo.school.BriefSchoolInfoVO;
 import a311.college.vo.user.UserVO;
 
@@ -29,7 +30,9 @@ public interface UserService {
 
     UserVO selectById(Long id);
 
-    List<BriefSchoolInfoVO> showFavorite();
+    List<BriefSchoolInfoVO> showFavoriteSchool();
+
+    List<BriefMajorVO> showFavoriteMajor();
 
     void update(UserDTO userDTO);
 

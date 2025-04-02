@@ -1,12 +1,16 @@
 package a311.college.controller.user;
 
 import a311.college.constant.API.APIConstant;
+import a311.college.dto.major.MajorDTO;
+import a311.college.dto.query.major.PageQueryDTO;
+import a311.college.dto.school.SchoolDTO;
 import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
 import a311.college.result.LoginResult;
 import a311.college.result.Result;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
+import a311.college.vo.major.BriefMajorVO;
 import a311.college.vo.school.BriefSchoolInfoVO;
 import a311.college.vo.user.UserVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -137,15 +141,47 @@ public class UserController {
     }
 
     /**
-     * 展示用户收藏
+     * 分页展示用户收藏学校
      *
      * @return Result<List<BriefSchoolInfoVO>>
      */
-    @PostMapping("/favorite")
-    @Operation(summary = "展示用户收藏")
-    public Result<List<BriefSchoolInfoVO>> showFavorite() {
-        log.info("展示用户'{}'收藏", ThreadLocalUtil.getCurrentId());
-        return Result.success(userService.showFavorite());
+    @PostMapping("/showSchool")
+    @Operation(summary = "展示用户收藏学校")
+    public Result<List<BriefSchoolInfoVO>> showSchool(@RequestBody PageQueryDTO pageQueryDTO) {
+        log.info("展示用户'{}'收藏学校", ThreadLocalUtil.getCurrentId());
+        return Result.success(userService.showFavoriteSchool());
+    }
+
+    /**
+     * 分页展示用户收藏专业
+     *
+     * @return Result<List<BriefSchoolInfoVO>>
+     */
+    @PostMapping("/showMajor")
+    @Operation(summary = "展示用户收藏专业")
+    public Result<List<BriefMajorVO>> showMajor(@RequestBody PageQueryDTO pageQueryDTO) {
+        log.info("展示用户'{}'收藏专业", ThreadLocalUtil.getCurrentId());
+        return Result.success(userService.showFavoriteMajor());
+    }
+
+    /**
+     * 用户取消收藏大学
+     *
+     * @param schoolDTO 大学DTO
+     */
+    @PostMapping("/deleteSchool")
+    public Result<Void> deleteFavoriteSchool(@RequestBody SchoolDTO schoolDTO) {
+        return null;
+    }
+
+    /**
+     * 用户取消收藏专业
+     *
+     * @param majorDTO 专业DTO
+     */
+    @PostMapping("/deleteMajor")
+    public Result<Void> deleteFavoriteMajor(@RequestBody MajorDTO majorDTO) {
+        return null;
     }
 
     /**

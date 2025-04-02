@@ -9,6 +9,7 @@ import a311.college.entity.school.SchoolMajor;
 import a311.college.enumeration.ProvinceEnum;
 import a311.college.vo.school.*;
 import a311.college.vo.major.MajorSimpleVO;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -146,11 +147,18 @@ public interface SchoolMapper {
     int checkSchoolDistinct(SchoolDTO schoolDTO);
 
     /**
-     * 根据用户id添加用户收藏
+     * 添加用户收藏
      *
-     * @param schoolDTO 用户收藏学校DTO
+     * @param schoolDTO 学校DTO
      */
     @Select("insert into tb_fav_school (user_id, school_id) VALUES (#{userId}, #{schoolId})")
     void addFavoriteSchool(SchoolDTO schoolDTO);
 
+    /**
+     * 删除用户收藏
+     *
+     * @param schoolDTO 学校DTO
+     */
+    @Delete("delete from tb_fav_school where user_id = #{userId} and school_id = #{schoolId}")
+    void deleteFavoriteSchool(SchoolDTO schoolDTO);
 }

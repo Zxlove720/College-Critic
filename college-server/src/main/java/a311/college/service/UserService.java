@@ -2,7 +2,6 @@ package a311.college.service;
 
 import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
-import a311.college.entity.school.School;
 import a311.college.result.LoginResult;
 import a311.college.vo.school.BriefSchoolInfoVO;
 import a311.college.vo.user.UserVO;

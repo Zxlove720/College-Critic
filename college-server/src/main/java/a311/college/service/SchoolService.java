@@ -40,6 +40,8 @@ public interface SchoolService {
 
     void addSchoolComment(AddSchoolCommentDTO addCommentDTO);
 
+    void deleteFavoriteSchool(SchoolDTO schoolDTO);
+
     List<CommentVO> showComment(SchoolDTO schoolDTO);
 
     List<BriefSchoolInfoVO> getHotSchool();
@@ -49,5 +51,4 @@ public interface SchoolService {
     List<HotMajorVO> getHotMajorProfessional();
 
     List<SchoolSceneryVO> getScenery();
-
 }

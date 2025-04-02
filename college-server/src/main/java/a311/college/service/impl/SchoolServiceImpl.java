@@ -218,6 +218,18 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
+     * 用户删除收藏
+     *
+     * @param schoolDTO 学校DTO
+     */
+    @Override
+    public void deleteFavoriteSchool(SchoolDTO schoolDTO) {
+        long userId = ThreadLocalUtil.getCurrentId();
+        schoolDTO.setUserId(userId);
+        schoolMapper.deleteFavoriteSchool(schoolDTO);
+    }
+
+    /**
      * 根据用户成绩查询大学
      *
      * @param gradeDTO 用户成绩DTO

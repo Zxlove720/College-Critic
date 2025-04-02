@@ -300,10 +300,15 @@ public class UserServiceImpl implements UserService {
      * @param userAddFavoriteSchoolDTO 学校收藏DTO
      */
     @Override
-    public void addFavorite(UserAddFavoriteSchoolDTO userAddFavoriteSchoolDTO) {
+    public void addFavoriteSchool(UserAddFavoriteSchoolDTO userAddFavoriteSchoolDTO) {
         String table = userMapper.selectFavoriteById(ThreadLocalUtil.getCurrentId());
         table = table + "," + userAddFavoriteSchoolDTO.getSchoolId();
         userMapper.addFavoriteTable(table, ThreadLocalUtil.getCurrentId());
+    }
+
+    @Override
+    public void addFavoriteMajor(UserAddFavoriteMajorDTO userAddFavoriteMajorDTO) {
+
     }
 
     /**

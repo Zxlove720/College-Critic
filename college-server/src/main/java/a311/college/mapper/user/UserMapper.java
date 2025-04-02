@@ -48,9 +48,9 @@ public interface UserMapper {
      */
     @AutoFill(OperationType.INSERT)
     @Insert("insert into tb_user(username, password, phone, email, head, year, province, pattern, subjects," +
-            " category, grade, ranking, city, favorite_table, college_table) values " +
+            " category, grade, ranking, city) values " +
             "(#{username}, #{password}, #{phone}, #{email}, #{head}, #{year}, #{province}, #{pattern}, #{subjects}," +
-            "#{category}, #{grade}, #{ranking}, #{city}, #{favoriteTable}, #{collegeTable})")
+            "#{category}, #{grade}, #{ranking}, #{city})")
     void register(User user);
 
     /**

@@ -145,7 +145,7 @@ public class UserController {
     @Operation(summary = "用户收藏学校")
     public Result<Void> addFavoriteSchool(@RequestBody UserAddFavoriteSchoolDTO userAddFavoriteSchoolDTO) {
         log.info("用户'{}'收藏了'{}'学校", ThreadLocalUtil.getCurrentId(), userAddFavoriteSchoolDTO.getSchoolId());
-        userService.addFavorite(userAddFavoriteSchoolDTO);
+        userService.addFavoriteSchool(userAddFavoriteSchoolDTO);
         return Result.success();
     }
 
@@ -157,7 +157,9 @@ public class UserController {
     @PostMapping("/addMajor")
     @Operation(summary = "用户收藏专业")
     public Result<Void> addFavoriteMajor(@RequestBody UserAddFavoriteMajorDTO userAddFavoriteMajorDTO) {
-        return null;
+        log.info("用户'{}'收藏了'{}'专业", ThreadLocalUtil.getCurrentId(), userAddFavoriteMajorDTO.getMajorId());
+        userService.addFavoriteMajor(userAddFavoriteMajorDTO);
+
     }
 
     /**

@@ -95,21 +95,28 @@ public class MajorServiceImpl implements MajorService {
      */
     @Override
     public DetailMajorVO getDetailMajor(MajorDTO majorDTO) {
+        // 1.根据id查询到对应专业
         Major major = majorMapper.selectById(majorDTO.getMajorId());
+        // 2.封装专业详情对象
         DetailMajorVO detailMajorVO = new DetailMajorVO();
         BeanUtil.copyProperties(major, detailMajorVO);
+        // 3.构造专业满意度集合
         List<Double> satisfaction = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
+            // 3.1设置随机满意度
             double randomSatisfaction = Math.round(RandomUtil.randomDouble(3.7, 5.0) * 10) / 10.0;
             satisfaction.add(randomSatisfaction);
         }
+        // 4.构造专业就业率集合
         List<String> employmentRate = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
+            // 4.1构造随机就业率集合
             int start = RandomUtil.randomInt(75, 81);
             int end = RandomUtil.randomInt(81, 93);
             String rate = start + "%" + "~" + end + "%";
             employmentRate.add(rate);
         }
+        // 5.返回专业详情对象
         detailMajorVO.setSatisfaction(satisfaction);
         detailMajorVO.setEmploymentRate(employmentRate);
         return detailMajorVO;

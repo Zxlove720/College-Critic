@@ -19,4 +19,6 @@ public class UserErrorConstant {
     public static final String ALREADY_EXISTS = "用户已存在-500";
 
     public static final String CODE_ERROR = "验证码错误-500";
+
+    public static final String RE_ADDITION = "重复添加-500";
 }

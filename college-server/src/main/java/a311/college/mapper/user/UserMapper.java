@@ -106,4 +106,7 @@ public interface UserMapper {
      */
     @Select(("select id from tb_user where username = #{username}"))
     User selectByUsername(String username);
+
+    @Select("select count(user_id) from tb_fav_school where user_id = #{userId} and school_id = #{schoolId}")
+    int checkSchoolDistinct(UserAddFavoriteSchoolDTO userAddFavoriteSchoolDTO);
 }

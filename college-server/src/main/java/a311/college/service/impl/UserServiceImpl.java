@@ -302,7 +302,12 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void addFavoriteSchool(UserAddFavoriteSchoolDTO userAddFavoriteSchoolDTO) {
-        userAddFavoriteSchoolDTO.setUserId(ThreadLocalUtil.getCurrentId());
+        long userId = ThreadLocalUtil.getCurrentId();
+        userAddFavoriteSchoolDTO.setUserId(userId);
+        int count = userMapper.checkSchoolDistinct(userAddFavoriteSchoolDTO);
+        if (userMapper.checkSchoolDistinct(userAddFavoriteSchoolDTO) != 0) {
+            throw new ReAdditionException(UserErrorConstant.RE_ADDITION);
+        }
         userMapper.addFavoriteSchool(userAddFavoriteSchoolDTO);
     }
 

@@ -226,12 +226,12 @@ public class UserController {
 
     /**
      * 查看用户评论
-     *
+     * @param pageQueryDTO 分页查询DTO
      * @return Result<List<String>> 评论列表
      */
     @PostMapping("/comment")
     @Operation(summary = "用户评论")
-    public Result<List<String>> showComment() {
+    public Result<List<String>> showComment(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("用户'{}'正在查看评论", ThreadLocalUtil.getCurrentId());
         return Result.success(userService.showComment());
     }

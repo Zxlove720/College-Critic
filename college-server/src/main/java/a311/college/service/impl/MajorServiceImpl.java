@@ -116,7 +116,9 @@ public class MajorServiceImpl implements MajorService {
             String rate = start + "%" + "~" + end + "%";
             employmentRate.add(rate);
         }
-        // 5.返回专业详情对象
+        // 5.构建人气值
+        detailMajorVO.setPopularity(String.valueOf(RandomUtil.randomInt(5000000, 10000000)));
+        // 6.返回专业详情对象
         detailMajorVO.setSatisfaction(satisfaction);
         detailMajorVO.setEmploymentRate(employmentRate);
         return detailMajorVO;

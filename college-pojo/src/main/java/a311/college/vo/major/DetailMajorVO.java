@@ -16,6 +16,9 @@ import java.util.List;
 @Schema(description = "专业详细信息VO")
 public class DetailMajorVO {
 
+    @Schema(description = "专业名称")
+    private String majorName;
+
     @Schema(description = "专业代码")
     private String majorCode;
 
@@ -33,6 +36,9 @@ public class DetailMajorVO {
 
     @Schema(description = "就业率")
     private List<String> employmentRate;
+
+    @Schema(description = "人气值")
+    private String popularity;
 
     @Schema(description = "男女比例")
     private String gender;

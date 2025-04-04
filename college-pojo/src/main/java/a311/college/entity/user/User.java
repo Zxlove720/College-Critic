@@ -10,8 +10,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.Year;
-import java.util.List;
+
 
 /**
  * 用户类
@@ -42,7 +41,7 @@ public class User implements Serializable {
     private String head;
 
     @Schema(description = "用户毕业年份")
-    private Year year;
+    private Integer year;
 
     @Schema(description = "用户所在省份")
     private ProvinceEnum province;

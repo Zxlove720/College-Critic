@@ -170,6 +170,7 @@ public class UserController {
      * @param schoolDTO 大学DTO
      */
     @PostMapping("/deleteSchool")
+    @Operation(summary = "用户取消收藏大学")
     public Result<Void> deleteFavoriteSchool(@RequestBody SchoolDTO schoolDTO) {
         return null;
     }
@@ -180,6 +181,7 @@ public class UserController {
      * @param majorDTO 专业DTO
      */
     @PostMapping("/deleteMajor")
+    @Operation(summary = "用户取消收藏专业")
     public Result<Void> deleteFavoriteMajor(@RequestBody MajorDTO majorDTO) {
         return null;
     }

@@ -323,7 +323,8 @@ public class UserServiceImpl implements UserService {
     public List<BriefMajorVO> showFavoriteMajor(PageQueryDTO pageQueryDTO) {
         Long userId = ThreadLocalUtil.getCurrentId();
         try (Page<Major> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
-            List<Major> majorList = userMapper.getUserFavoriteMajor(userId);
+            userMapper.getUserFavoriteMajor(userId);
+            List<Major> majorList = page.getResult();
             List<BriefMajorVO> result = new ArrayList<>();
             for (Major major : majorList) {
                 BriefMajorVO briefMajorVO = new BriefMajorVO();

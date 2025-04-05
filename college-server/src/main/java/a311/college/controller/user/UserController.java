@@ -161,7 +161,7 @@ public class UserController {
     @Operation(summary = "展示用户收藏专业")
     public Result<List<BriefMajorVO>> showMajor(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("展示用户'{}'收藏专业", ThreadLocalUtil.getCurrentId());
-        return Result.success(userService.showFavoriteMajor());
+        return Result.success(userService.showFavoriteMajor(pageQueryDTO));
     }
 
     /**

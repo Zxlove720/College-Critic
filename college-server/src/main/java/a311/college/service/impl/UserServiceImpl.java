@@ -3,6 +3,7 @@ package a311.college.service.impl;
 import a311.college.constant.user.UserErrorConstant;
 import a311.college.constant.user.UserSubjectConstant;
 import a311.college.dto.login.UserLoginSymbolDTO;
+import a311.college.dto.query.major.PageQueryDTO;
 import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
 import a311.college.entity.major.Major;
@@ -317,7 +318,7 @@ public class UserServiceImpl implements UserService {
      * @return List<BriefMajorVO>
      */
     @Override
-    public List<BriefMajorVO> showFavoriteMajor() {
+    public List<BriefMajorVO> showFavoriteMajor(PageQueryDTO pageQueryDTO) {
         Long userId = ThreadLocalUtil.getCurrentId();
         List<Major> majorList = userMapper.getUserFavoriteMajor(userId);
         List<BriefMajorVO> result = new ArrayList<>();

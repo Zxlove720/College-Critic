@@ -1,5 +1,6 @@
 package a311.college.service;
 
+import a311.college.dto.query.major.PageQueryDTO;
 import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
 import a311.college.result.LoginResult;
@@ -32,7 +33,7 @@ public interface UserService {
 
     List<BriefSchoolInfoVO> showFavoriteSchool();
 
-    List<BriefMajorVO> showFavoriteMajor();
+    List<BriefMajorVO> showFavoriteMajor(PageQueryDTO pageQueryDTO);
 
     void update(UserDTO userDTO);
 

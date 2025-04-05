@@ -332,8 +332,10 @@ public class UserServiceImpl implements UserService {
                 result.add(briefMajorVO);
             }
             return result;
+        } catch (Exception e) {
+            log.error("收藏专业分页查询失败，报错为：{}", e.getMessage());
+            return null;
         }
-
     }
 
     /**

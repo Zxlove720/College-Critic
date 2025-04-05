@@ -23,6 +23,8 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -320,14 +322,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<BriefMajorVO> showFavoriteMajor(PageQueryDTO pageQueryDTO) {
         Long userId = ThreadLocalUtil.getCurrentId();
-        List<Major> majorList = userMapper.getUserFavoriteMajor(userId);
-        List<BriefMajorVO> result = new ArrayList<>();
-        for (Major major : majorList) {
-            BriefMajorVO briefMajorVO = new BriefMajorVO();
-            BeanUtil.copyProperties(major, briefMajorVO);
-            result.add(briefMajorVO);
+        try (Page<Major> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
+            List<Major> majorList = userMapper.getUserFavoriteMajor(userId);
+            List<BriefMajorVO> result = new ArrayList<>();
+            for (Major major : majorList) {
+                BriefMajorVO briefMajorVO = new BriefMajorVO();
+                BeanUtil.copyProperties(major, briefMajorVO);
+                result.add(briefMajorVO);
+            }
+            return result;
         }
-        return result;
+
     }
 
     /**

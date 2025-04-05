@@ -14,6 +14,7 @@ import a311.college.mapper.user.UserMapper;
 import a311.college.constant.redis.UserRedisKey;
 import a311.college.regex.RegexUtils;
 import a311.college.result.LoginResult;
+import a311.college.result.PageResult;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.major.BriefMajorVO;
@@ -320,7 +321,7 @@ public class UserServiceImpl implements UserService {
      * @return List<BriefMajorVO>
      */
     @Override
-    public List<BriefMajorVO> showFavoriteMajor(PageQueryDTO pageQueryDTO) {
+    public PageResult<BriefMajorVO> showFavoriteMajor(PageQueryDTO pageQueryDTO) {
         Long userId = ThreadLocalUtil.getCurrentId();
         try (Page<Major> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
             userMapper.getUserFavoriteMajor(userId);
@@ -331,7 +332,7 @@ public class UserServiceImpl implements UserService {
                 BeanUtil.copyProperties(major, briefMajorVO);
                 result.add(briefMajorVO);
             }
-            return result;
+            return new PageResult<>(page.getTotal(), result);
         } catch (Exception e) {
             log.error("收藏专业分页查询失败，报错为：{}", e.getMessage());
             return null;

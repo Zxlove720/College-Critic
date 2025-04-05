@@ -15,8 +15,8 @@ import lombok.NoArgsConstructor;
 public class PageQueryDTO {
 
     @Schema(description = "查询页码")
-    private Integer page;
+    private Integer page = 1;
 
     @Schema(description = "每页大小")
-    private Integer pageSize;
+    private Integer pageSize = 10;
 }

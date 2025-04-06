@@ -32,7 +32,7 @@ public interface UserService {
 
     UserVO selectById(Long id);
 
-    List<BriefSchoolInfoVO> showFavoriteSchool();
+    List<BriefSchoolInfoVO> showFavoriteSchool(PageQueryDTO pageQueryDTO);
 
     PageResult<BriefMajorVO> showFavoriteMajor(PageQueryDTO pageQueryDTO);
 

@@ -303,7 +303,7 @@ public class UserServiceImpl implements UserService {
      * @return List<BriefSchoolInfoVO>
      */
     @Override
-    public List<BriefSchoolInfoVO> showFavoriteSchool() {
+    public List<BriefSchoolInfoVO> showFavoriteSchool(PageQueryDTO pageQueryDTO) {
         Long userId = ThreadLocalUtil.getCurrentId();
         List<School> schoolList = userMapper.getUserFavoriteSchool(userId);
         List<BriefSchoolInfoVO> result = new ArrayList<>();

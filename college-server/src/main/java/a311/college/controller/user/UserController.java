@@ -236,7 +236,7 @@ public class UserController {
     @Operation(summary = "用户评论")
     public Result<List<String>> showComment(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("用户'{}'正在查看评论", ThreadLocalUtil.getCurrentId());
-        return Result.success(userService.showComment());
+        return Result.success(userService.showComment(pageQueryDTO));
     }
 
 }

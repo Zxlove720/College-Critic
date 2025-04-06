@@ -383,7 +383,7 @@ public class UserServiceImpl implements UserService {
      * @return List<String> 用户评论列表
      */
     @Override
-    public List<String> showComment() {
+    public List<String> showComment(PageQueryDTO pageQueryDTO) {
         return userMapper.selectComment(ThreadLocalUtil.getCurrentId());
     }
 

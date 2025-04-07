@@ -74,7 +74,7 @@ public class UserController {
      * @return Integer 0该手机号不可用 1该手机号可用
      */
     @PostMapping("/checkPhone")
-    @Operation(summary = "用户名检查")
+    @Operation(summary = "手机号检查")
     public Result<Integer> checkPhone(@RequestBody UserPhoneCheckDTO userPhoneCheckDTO) {
         return Result.success(userService.checkPhone(userPhoneCheckDTO));
     }
@@ -96,7 +96,7 @@ public class UserController {
      * 用户发送验证码修改密码
      *
      * @param userCodeDTO 验证码DTO
-     * @return Result<String>
+     * @return Result<String> 验证码
      */
     @PostMapping("/editCode")
     @Operation(summary = "用户发送验证码修改密码")
@@ -191,6 +191,19 @@ public class UserController {
     }
 
     /**
+     * 分页查询用户评论
+     *
+     * @param pageQueryDTO 分页查询DTO
+     * @return Result<List < String>> 评论列表
+     */
+    @PostMapping("/comment")
+    @Operation(summary = "用户评论")
+    public Result<List<String>> showComment(@RequestBody PageQueryDTO pageQueryDTO) {
+        log.info("用户'{}'正在查看评论", ThreadLocalUtil.getCurrentId());
+        return Result.success(userService.showComment(pageQueryDTO));
+    }
+
+    /**
      * 用户修改信息
      *
      * @param userDTO 用户DTO
@@ -229,18 +242,4 @@ public class UserController {
         userService.deleteUser(userDeleteDTO);
         return Result.success();
     }
-
-    /**
-     * 查看用户评论
-     *
-     * @param pageQueryDTO 分页查询DTO
-     * @return Result<List < String>> 评论列表
-     */
-    @PostMapping("/comment")
-    @Operation(summary = "用户评论")
-    public Result<List<String>> showComment(@RequestBody PageQueryDTO pageQueryDTO) {
-        log.info("用户'{}'正在查看评论", ThreadLocalUtil.getCurrentId());
-        return Result.success(userService.showComment(pageQueryDTO));
-    }
-
 }

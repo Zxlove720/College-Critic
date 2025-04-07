@@ -181,7 +181,7 @@ public class SchoolServiceImpl implements SchoolService {
                     rank.append(split[1]).append(split[2]);
                 }
                 if (split.length > 3) {
-                    rank.append(split[3]).append(split[4]);
+                    rank.append(split[2]).append(split[3]);
                 }
                 briefSchoolInfoVO.setRankList(rank.toString());
             }

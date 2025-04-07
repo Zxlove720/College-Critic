@@ -169,7 +169,7 @@
                 s.school_name like concat('%', #{message}, '%')
             </if>
         </where>
-        order by score
-        limit 5
+        order by score desc
+        LIMIT 5
     </select>
 </mapper>

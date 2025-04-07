@@ -93,7 +93,7 @@ public class SchoolController {
      * @return Result<SearchVO>
      */
     @PostMapping("/searchList")
-    @Operation(summary = "用户搜索")
+    @Operation(summary = "搜索提示")
     public Result<SearchVO> search(@RequestBody UserSearchDTO userSearchDTO) {
         log.info("用户正在搜索：{}", userSearchDTO.getMessage());
         SearchVO searchVO = schoolService.search(userSearchDTO);
@@ -145,7 +145,7 @@ public class SchoolController {
      *
      * @param schoolDTO 大学DTO
      */
-    @PostMapping("/deleteFavorite")
+    @PostMapping("/deleteSchool")
     @Operation(summary = "用户删除收藏")
     public Result<Void> deleteFavoriteSchool(@RequestBody SchoolDTO schoolDTO) {
         log.info("用户'{}'删除收藏'{}'学校", ThreadLocalUtil.getCurrentId(), schoolDTO.getSchoolId());

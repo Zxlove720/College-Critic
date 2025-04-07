@@ -40,9 +40,10 @@ public class UserController {
 
     /**
      * 用户登录
+     * 用户的手机号 + 密码登录
      *
      * @param userLoginDTO 用户登录数据DTO
-     * @return Result<String>
+     * @return Result<LoginResult>
      */
     @PostMapping("/login")
     @Operation(summary = "用户登录")
@@ -54,6 +55,7 @@ public class UserController {
 
     /**
      * 用户名检查
+     * 注册时检查用户名是否可用
      *
      * @param userUsernameCheckDTO 用户名检查DTO
      * @return Integer 0该用户名不可用 1该用户名可用
@@ -66,6 +68,7 @@ public class UserController {
 
     /**
      * 手机号检查
+     * 注册时检查手机号是否可用
      *
      * @param userPhoneCheckDTO 手机号检查DTO
      * @return Integer 0该手机号不可用 1该手机号可用
@@ -144,7 +147,7 @@ public class UserController {
     /**
      * 分页展示用户收藏学校
      *
-     * @return Result<List<BriefSchoolInfoVO>>
+     * @return Result<List < BriefSchoolInfoVO>>
      */
     @PostMapping("/showSchool")
     @Operation(summary = "展示用户收藏学校")
@@ -156,7 +159,7 @@ public class UserController {
     /**
      * 分页展示用户收藏专业
      *
-     * @return Result<List<BriefSchoolInfoVO>>
+     * @return Result<List < BriefSchoolInfoVO>>
      */
     @PostMapping("/showMajor")
     @Operation(summary = "展示用户收藏专业")
@@ -229,8 +232,9 @@ public class UserController {
 
     /**
      * 查看用户评论
+     *
      * @param pageQueryDTO 分页查询DTO
-     * @return Result<List<String>> 评论列表
+     * @return Result<List < String>> 评论列表
      */
     @PostMapping("/comment")
     @Operation(summary = "用户评论")

@@ -270,12 +270,12 @@ public class UserServiceImpl implements UserService {
     /**
      * 用户登出
      *
-     * @param userLayoutDTO 登出DTO
      */
     @Override
-    public void layout(UserLayoutDTO userLayoutDTO) {
-        // 删除redis中的用户登录信息
-        stringRedisTemplate.delete(UserRedisKey.USER_KEY + userLayoutDTO.getPhone());
+    public void layout() {
+        String token = DigestUtil.md5Hex(UserRedisKey.USER_KEY_TOKEN + ThreadLocalUtil.getCurrentId() + ":" + UserRedisKey.SECRET);
+        String key = UserRedisKey.USER_KEY + token;
+        stringRedisTemplate.delete(key);
     }
 
     /**

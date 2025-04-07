@@ -28,7 +28,7 @@ public interface UserService {
 
     LoginResult editPassword(UserEditPasswordDTO userEditPasswordDTO);
 
-    void layout(UserLayoutDTO userLayoutDTO);
+    void layout();
 
     UserVO showMe(Long id);
 

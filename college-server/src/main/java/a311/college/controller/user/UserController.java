@@ -59,7 +59,7 @@ public class UserController {
      * @return Integer 0该用户名不可用 1该用户名可用
      */
     @PostMapping("/checkUsername")
-    @Operation(summary = "用户名检查")
+    @Operation(summary = "注册时检查用户名是否可用")
     public Result<Integer> checkUsername(@RequestBody UserUsernameCheckDTO userUsernameCheckDTO) {
         return Result.success(userService.checkUsername(userUsernameCheckDTO));
     }
@@ -72,7 +72,7 @@ public class UserController {
      * @return Integer 0该手机号不可用 1该手机号可用
      */
     @PostMapping("/checkPhone")
-    @Operation(summary = "手机号检查")
+    @Operation(summary = "注册时检查手机号是否可用")
     public Result<Integer> checkPhone(@RequestBody UserPhoneCheckDTO userPhoneCheckDTO) {
         return Result.success(userService.checkPhone(userPhoneCheckDTO));
     }
@@ -123,9 +123,9 @@ public class UserController {
      */
     @PostMapping("/layout")
     @Operation(summary = "用户登出")
-    public Result<Void> layout(@RequestBody UserLayoutDTO userLayoutDTO) {
+    public Result<Void> layout() {
         log.info("用户'{}'退出登录", ThreadLocalUtil.getCurrentId());
-        userService.layout(userLayoutDTO);
+        userService.layout();
         return Result.success();
     }
 
@@ -135,7 +135,7 @@ public class UserController {
      * @return Result<UserVO>
      */
     @PostMapping("/me")
-    @Operation(summary = "用户个人页面")
+    @Operation(summary = "查看用户个人主页")
     public Result<UserVO> me() {
         Long userId = ThreadLocalUtil.getCurrentId();
         log.info("用户'{}'正在查看个人页面", userId);
@@ -167,27 +167,27 @@ public class UserController {
     }
 
     /**
-     * 用户取消收藏学校
+     * 删除用户收藏学校
      *
      * @param schoolDTO 学校DTO
      */
     @PostMapping("/deleteSchool")
-    @Operation(summary = "用户取消收藏学校")
+    @Operation(summary = "删除用户收藏学校")
     public Result<Void> deleteFavoriteSchool(@RequestBody SchoolDTO schoolDTO) {
-        log.info("用户'{}'取消了'{}'学校收藏", schoolDTO.getUserId(), schoolDTO.getSchoolId());
+        log.info("用户'{}'删除了'{}'学校收藏", schoolDTO.getUserId(), schoolDTO.getSchoolId());
         userService.deleteSchool(schoolDTO);
         return Result.success();
     }
 
     /**
-     * 用户取消收藏专业
+     * 删除用户收藏专业
      *
      * @param majorDTO 专业DTO
      */
     @PostMapping("/deleteMajor")
-    @Operation(summary = "用户取消收藏专业")
+    @Operation(summary = "删除用户收藏专业")
     public Result<Void> deleteFavoriteMajor(@RequestBody MajorDTO majorDTO) {
-        log.info("用户'{}'取消了'{}'专业收藏", majorDTO.getUserId(), majorDTO.getMajorId());
+        log.info("用户'{}'删除了'{}'专业收藏", majorDTO.getUserId(), majorDTO.getMajorId());
         userService.deleteMajor(majorDTO);
         return Result.success();
     }
@@ -199,14 +199,14 @@ public class UserController {
      * @return Result<List < String>> 评论列表
      */
     @PostMapping("/comment")
-    @Operation(summary = "用户评论")
+    @Operation(summary = "分页查询用户评论")
     public Result<PageResult<String>> showComment(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("用户'{}'正在查看评论", ThreadLocalUtil.getCurrentId());
         return Result.success(userService.showComment(pageQueryDTO));
     }
 
     /**
-     * 用户修改信息
+     * 修改用户信息
      *
      * @param userDTO 用户DTO
      * @return Result<Void>

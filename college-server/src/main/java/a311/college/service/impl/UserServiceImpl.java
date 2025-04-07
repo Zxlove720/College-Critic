@@ -370,7 +370,7 @@ public class UserServiceImpl implements UserService {
             throw new PageQueryException(UserErrorConstant.USER_COMMENT_ERROR);
         }
     }
-    
+
     /**
      * 修改用户信息
      *

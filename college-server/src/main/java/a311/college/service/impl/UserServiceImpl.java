@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
      * @return Integer 0该用户名不可用 1该用户名可用
      */
     @Override
-    public Integer checkUser(UserUsernameCheckDTO userUsernameCheckDTO) {
+    public Integer checkUsername(UserUsernameCheckDTO userUsernameCheckDTO) {
         User user = userMapper.selectByUsername(userUsernameCheckDTO.getUsername());
         if (user != null) {
             // 该用户名已经存在，不能注册
@@ -295,7 +295,7 @@ public class UserServiceImpl implements UserService {
      * @return User
      */
     @Override
-    public UserVO selectById(Long id) {
+    public UserVO showMe(Long id) {
         return userMapper.selectById(id);
     }
 

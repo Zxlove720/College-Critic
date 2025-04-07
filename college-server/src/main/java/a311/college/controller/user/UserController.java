@@ -60,8 +60,8 @@ public class UserController {
      */
     @PostMapping("/checkUsername")
     @Operation(summary = "用户名检查")
-    public Result<Integer> checkUser(@RequestBody UserUsernameCheckDTO userUsernameCheckDTO) {
-        return Result.success(userService.checkUser(userUsernameCheckDTO));
+    public Result<Integer> checkUsername(@RequestBody UserUsernameCheckDTO userUsernameCheckDTO) {
+        return Result.success(userService.checkUsername(userUsernameCheckDTO));
     }
 
     /**
@@ -139,7 +139,7 @@ public class UserController {
     public Result<UserVO> me() {
         Long userId = ThreadLocalUtil.getCurrentId();
         log.info("用户'{}'正在查看个人页面", userId);
-        return Result.success(userService.selectById(userId));
+        return Result.success(userService.showMe(userId));
     }
 
     /**
@@ -244,4 +244,5 @@ public class UserController {
         userService.deleteUser(userDeleteDTO);
         return Result.success();
     }
+
 }

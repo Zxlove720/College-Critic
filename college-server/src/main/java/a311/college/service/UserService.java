@@ -18,7 +18,7 @@ public interface UserService {
 
     LoginResult login(UserLoginDTO userLoginDTO);
 
-    Integer checkUser(UserUsernameCheckDTO userUsernameCheckDTO);
+    Integer checkUsername(UserUsernameCheckDTO userUsernameCheckDTO);
 
     Integer checkPhone(UserPhoneCheckDTO userPhoneCheckDTO);
 
@@ -30,11 +30,17 @@ public interface UserService {
 
     void layout(UserLayoutDTO userLayoutDTO);
 
-    UserVO selectById(Long id);
+    UserVO showMe(Long id);
 
     PageResult<BriefSchoolInfoVO> showFavoriteSchool(PageQueryDTO pageQueryDTO);
 
     PageResult<BriefMajorVO> showFavoriteMajor(PageQueryDTO pageQueryDTO);
+
+    void deleteSchool(SchoolDTO schoolDTO);
+
+    void deleteMajor(MajorDTO majorDTO);
+
+    PageResult<String> showComment(PageQueryDTO pageQueryDTO);
 
     void update(UserDTO userDTO);
 
@@ -42,9 +48,4 @@ public interface UserService {
 
     void deleteUser(UserDeleteDTO userDeleteDTO);
 
-    PageResult<String> showComment(PageQueryDTO pageQueryDTO);
-
-    void deleteSchool(SchoolDTO schoolDTO);
-
-    void deleteMajor(MajorDTO majorDTO);
 }

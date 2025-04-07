@@ -308,8 +308,7 @@ public class UserServiceImpl implements UserService {
     public PageResult<BriefSchoolInfoVO> showFavoriteSchool(PageQueryDTO pageQueryDTO) {
         Long userId = ThreadLocalUtil.getCurrentId();
         try (Page<School> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
-            userMapper.getUserFavoriteSchool(userId);
-            List<School> schoolList = page.getResult();
+            List<School> schoolList = userMapper.getUserFavoriteSchool(userId);
             List<BriefSchoolInfoVO> result = new ArrayList<>();
             for (School school : schoolList) {
                 BriefSchoolInfoVO briefSchoolInfoVO = new BriefSchoolInfoVO();
@@ -332,8 +331,7 @@ public class UserServiceImpl implements UserService {
     public PageResult<BriefMajorVO> showFavoriteMajor(PageQueryDTO pageQueryDTO) {
         Long userId = ThreadLocalUtil.getCurrentId();
         try (Page<Major> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
-            userMapper.getUserFavoriteMajor(userId);
-            List<Major> majorList = page.getResult();
+            List<Major> majorList = userMapper.getUserFavoriteMajor(userId);
             List<BriefMajorVO> result = new ArrayList<>();
             for (Major major : majorList) {
                 BriefMajorVO briefMajorVO = new BriefMajorVO();
@@ -395,14 +393,24 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectComment(ThreadLocalUtil.getCurrentId());
     }
 
+    /**
+     * 用户取消收藏学校
+     *
+     * @param schoolDTO 学校DTO
+     */
     @Override
     public void deleteSchool(SchoolDTO schoolDTO) {
-
+        userMapper.deleteFavoriteSchool(schoolDTO);
     }
 
+    /**
+     * 用户取消收藏专业
+     *
+     * @param majorDTO 专业DTO
+     */
     @Override
     public void deleteMajor(MajorDTO majorDTO) {
-
+        userMapper.deleteFavoriteMajor(majorDTO);
     }
 
 }

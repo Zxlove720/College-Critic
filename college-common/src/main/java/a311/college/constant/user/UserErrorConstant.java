@@ -21,4 +21,8 @@ public class UserErrorConstant {
     public static final String CODE_ERROR = "验证码错误-500";
 
     public static final String RE_ADDITION = "重复添加-500";
+
+    public static final String USER_SCHOOL_ERROR = "用户收藏学校查询错误";
+
+    public static final String USER_MAJOR_ERROR = "用户收藏专业查询错误";
 }

@@ -303,22 +303,28 @@ public class UserServiceImpl implements UserService {
      * @return List<BriefSchoolInfoVO>
      */
     @Override
-    public List<BriefSchoolInfoVO> showFavoriteSchool(PageQueryDTO pageQueryDTO) {
+    public PageResult<BriefSchoolInfoVO> showFavoriteSchool(PageQueryDTO pageQueryDTO) {
         Long userId = ThreadLocalUtil.getCurrentId();
-        List<School> schoolList = userMapper.getUserFavoriteSchool(userId);
-        List<BriefSchoolInfoVO> result = new ArrayList<>();
-        for (School school : schoolList) {
-            BriefSchoolInfoVO briefSchoolInfoVO = new BriefSchoolInfoVO();
-            BeanUtil.copyProperties(school, briefSchoolInfoVO);
-            result.add(briefSchoolInfoVO);
+        try (Page<School> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
+            userMapper.getUserFavoriteSchool(userId);
+            List<School> schoolList = page.getResult();
+            List<BriefSchoolInfoVO> result = new ArrayList<>();
+            for (School school : schoolList) {
+                BriefSchoolInfoVO briefSchoolInfoVO = new BriefSchoolInfoVO();
+                BeanUtil.copyProperties(school, briefSchoolInfoVO);
+                result.add(briefSchoolInfoVO);
+            }
+            return new PageResult<>(page.getTotal(), result);
+        } catch (Exception e) {
+            log.error("用户收藏学校分页查询失败，报错为：{}", e.getMessage());
+            throw new PageQueryException(UserErrorConstant.USER_SCHOOL_ERROR);
         }
-        return result;
     }
 
     /**
      * 展示用户收藏专业
      *
-     * @return List<BriefMajorVO>
+     * @return PageResult<BriefMajorVO>
      */
     @Override
     public PageResult<BriefMajorVO> showFavoriteMajor(PageQueryDTO pageQueryDTO) {
@@ -334,8 +340,8 @@ public class UserServiceImpl implements UserService {
             }
             return new PageResult<>(page.getTotal(), result);
         } catch (Exception e) {
-            log.error("收藏专业分页查询失败，报错为：{}", e.getMessage());
-            return null;
+            log.error("用户收藏专业分页查询失败，报错为：{}", e.getMessage());
+            throw new PageQueryException(UserErrorConstant.USER_MAJOR_ERROR);
         }
     }
 

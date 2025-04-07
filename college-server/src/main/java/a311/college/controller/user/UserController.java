@@ -151,7 +151,7 @@ public class UserController {
      */
     @PostMapping("/showSchool")
     @Operation(summary = "展示用户收藏学校")
-    public Result<List<BriefSchoolInfoVO>> showSchool(@RequestBody PageQueryDTO pageQueryDTO) {
+    public Result<PageResult<BriefSchoolInfoVO>> showSchool(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("展示用户'{}'收藏学校", ThreadLocalUtil.getCurrentId());
         return Result.success(userService.showFavoriteSchool(pageQueryDTO));
     }

@@ -169,14 +169,16 @@ public class UserController {
     }
 
     /**
-     * 用户取消收藏大学
+     * 用户取消收藏学校
      *
-     * @param schoolDTO 大学DTO
+     * @param schoolDTO 学校DTO
      */
     @PostMapping("/deleteSchool")
-    @Operation(summary = "用户取消收藏大学")
+    @Operation(summary = "用户取消收藏学校")
     public Result<Void> deleteFavoriteSchool(@RequestBody SchoolDTO schoolDTO) {
-        return null;
+        log.info("用户'{}'取消了'{}'学校收藏", schoolDTO.getUserId(), schoolDTO.getSchoolId());
+        userService.deleteSchool(schoolDTO);
+        return Result.success();
     }
 
     /**
@@ -187,7 +189,9 @@ public class UserController {
     @PostMapping("/deleteMajor")
     @Operation(summary = "用户取消收藏专业")
     public Result<Void> deleteFavoriteMajor(@RequestBody MajorDTO majorDTO) {
-        return null;
+        log.info("用户'{}'取消了'{}'专业收藏", majorDTO.getUserId(), majorDTO.getMajorId());
+        userService.deleteMajor(majorDTO);
+        return Result.success();
     }
 
     /**

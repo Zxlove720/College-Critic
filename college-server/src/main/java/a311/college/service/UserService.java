@@ -1,6 +1,8 @@
 package a311.college.service;
 
+import a311.college.dto.major.MajorDTO;
 import a311.college.dto.query.major.PageQueryDTO;
+import a311.college.dto.school.SchoolDTO;
 import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
 import a311.college.result.LoginResult;
@@ -44,4 +46,7 @@ public interface UserService {
 
     List<String> showComment(PageQueryDTO pageQueryDTO);
 
+    void deleteSchool(SchoolDTO schoolDTO);
+
+    void deleteMajor(MajorDTO majorDTO);
 }

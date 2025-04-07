@@ -20,8 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * 用户请求控制器
  */
@@ -202,7 +200,7 @@ public class UserController {
      */
     @PostMapping("/comment")
     @Operation(summary = "用户评论")
-    public Result<List<String>> showComment(@RequestBody PageQueryDTO pageQueryDTO) {
+    public Result<PageResult<String>> showComment(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("用户'{}'正在查看评论", ThreadLocalUtil.getCurrentId());
         return Result.success(userService.showComment(pageQueryDTO));
     }

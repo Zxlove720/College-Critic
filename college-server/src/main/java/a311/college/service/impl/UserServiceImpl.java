@@ -389,8 +389,14 @@ public class UserServiceImpl implements UserService {
      * @return List<String> 用户评论列表
      */
     @Override
-    public List<String> showComment(PageQueryDTO pageQueryDTO) {
-        return userMapper.selectComment(ThreadLocalUtil.getCurrentId());
+    public PageResult<String> showComment(PageQueryDTO pageQueryDTO) {
+        try (Page<String> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
+            List<String> commentList = userMapper.selectComment(ThreadLocalUtil.getCurrentId());
+            return new PageResult<>(page.getTotal(), commentList);
+        } catch (Exception e) {
+            log.error("用户评论分页查询失败，报错为：{}", e.getMessage());
+            throw new PageQueryException(UserErrorConstant.USER_COMMENT_ERROR);
+        }
     }
 
     /**

@@ -11,8 +11,6 @@ import a311.college.vo.major.BriefMajorVO;
 import a311.college.vo.school.BriefSchoolInfoVO;
 import a311.college.vo.user.UserVO;
 
-import java.util.List;
-
 /**
  * 用户相关服务
  */
@@ -44,7 +42,7 @@ public interface UserService {
 
     void deleteUser(UserDeleteDTO userDeleteDTO);
 
-    List<String> showComment(PageQueryDTO pageQueryDTO);
+    PageResult<String> showComment(PageQueryDTO pageQueryDTO);
 
     void deleteSchool(SchoolDTO schoolDTO);
 

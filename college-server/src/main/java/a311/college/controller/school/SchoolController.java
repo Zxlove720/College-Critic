@@ -192,13 +192,13 @@ public class SchoolController {
     }
 
     /**
-     * 获取用户评价
+     * 展示大学评论区
      *
      * @param schoolDTO 大学DTO
      * @return Result<List < CommentVO>>
      */
     @PostMapping("/showComment")
-    @Operation(summary = "获取用户评价")
+    @Operation(summary = "展示大学评论区")
     public Result<List<CommentVO>> showSchoolComment(@RequestBody SchoolDTO schoolDTO) {
         log.info("查看大学'{}'的评价", schoolDTO.getSchoolId());
         List<CommentVO> commentVOList = schoolService.showComment(schoolDTO);

@@ -148,7 +148,7 @@ public class UserController {
      * @return Result<List < BriefSchoolInfoVO>>
      */
     @PostMapping("/showSchool")
-    @Operation(summary = "展示用户收藏学校")
+    @Operation(summary = "分页展示用户收藏学校")
     public Result<PageResult<BriefSchoolInfoVO>> showSchool(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("展示用户'{}'收藏学校", ThreadLocalUtil.getCurrentId());
         return Result.success(userService.showFavoriteSchool(pageQueryDTO));
@@ -160,7 +160,7 @@ public class UserController {
      * @return Result<List < BriefSchoolInfoVO>>
      */
     @PostMapping("/showMajor")
-    @Operation(summary = "展示用户收藏专业")
+    @Operation(summary = "分页展示用户收藏专业")
     public Result<PageResult<BriefMajorVO>> showMajor(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("展示用户'{}'收藏专业", ThreadLocalUtil.getCurrentId());
         return Result.success(userService.showFavoriteMajor(pageQueryDTO));

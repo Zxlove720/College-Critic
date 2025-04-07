@@ -57,7 +57,8 @@ public class UserServiceImpl implements UserService {
     private StringRedisTemplate stringRedisTemplate;
 
     /**
-     * 用户登录：手机号 + 密码
+     * 用户登录
+     * 手机号 + 密码
      *
      * @param userLoginDTO 封装用户登录数据的DTO
      * @return LoginResult 登录返回结果
@@ -204,28 +205,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 发送验证码修改密码
-     *
-     * @param userCodeDTO 验证码DTO
-     * @return code 验证码
-     */
-    @Override
-    public String sendEditCode(UserCodeDTO userCodeDTO) {
-        return code(userCodeDTO.getPhone(), UserRedisKey.USER_EDIT_CODE_KEY);
-    }
-
-    /**
-     * 发送验证码进行注销
-     *
-     * @param userCodeDTO 验证码DTO
-     * @return code 验证码
-     */
-    @Override
-    public String sendDeleteCode(UserCodeDTO userCodeDTO) {
-        return code(userCodeDTO.getPhone(), UserRedisKey.USER_DELETE_CODE_KEY);
-    }
-
-    /**
      * 发送验证码
      *
      * @param phone  手机号
@@ -249,6 +228,17 @@ public class UserServiceImpl implements UserService {
         log.info(UserRedisKey.CODE_TIME_MESSAGE);
         // 6.响应结果
         return code;
+    }
+
+    /**
+     * 发送验证码修改密码
+     *
+     * @param userCodeDTO 验证码DTO
+     * @return code 验证码
+     */
+    @Override
+    public String sendEditCode(UserCodeDTO userCodeDTO) {
+        return code(userCodeDTO.getPhone(), UserRedisKey.USER_EDIT_CODE_KEY);
     }
 
     /**
@@ -289,7 +279,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 根据id查询用户
+     * 展示用户主页
      *
      * @param id 用户id
      * @return User
@@ -346,6 +336,42 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * 用户取消收藏学校
+     *
+     * @param schoolDTO 学校DTO
+     */
+    @Override
+    public void deleteSchool(SchoolDTO schoolDTO) {
+        userMapper.deleteFavoriteSchool(schoolDTO);
+    }
+
+    /**
+     * 用户取消收藏专业
+     *
+     * @param majorDTO 专业DTO
+     */
+    @Override
+    public void deleteMajor(MajorDTO majorDTO) {
+        userMapper.deleteFavoriteMajor(majorDTO);
+    }
+
+    /**
+     * 查看用户评论
+     *
+     * @return List<String> 用户评论列表
+     */
+    @Override
+    public PageResult<String> showComment(PageQueryDTO pageQueryDTO) {
+        try (Page<String> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
+            List<String> commentList = userMapper.selectComment(ThreadLocalUtil.getCurrentId());
+            return new PageResult<>(page.getTotal(), commentList);
+        } catch (Exception e) {
+            log.error("用户评论分页查询失败，报错为：{}", e.getMessage());
+            throw new PageQueryException(UserErrorConstant.USER_COMMENT_ERROR);
+        }
+    }
+    
+    /**
      * 修改用户信息
      *
      * @param userDTO 用户DTO
@@ -356,6 +382,17 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(userDTO, user);
         user.setId(ThreadLocalUtil.getCurrentId());
         userMapper.update(user);
+    }
+
+    /**
+     * 发送验证码进行注销
+     *
+     * @param userCodeDTO 验证码DTO
+     * @return code 验证码
+     */
+    @Override
+    public String sendDeleteCode(UserCodeDTO userCodeDTO) {
+        return code(userCodeDTO.getPhone(), UserRedisKey.USER_DELETE_CODE_KEY);
     }
 
     /**
@@ -381,42 +418,6 @@ public class UserServiceImpl implements UserService {
         userMapper.deleteById(id);
         // 4.在redis中删除用户的登录信息
         stringRedisTemplate.delete(UserRedisKey.USER_KEY + phone);
-    }
-
-    /**
-     * 查看用户评论
-     *
-     * @return List<String> 用户评论列表
-     */
-    @Override
-    public PageResult<String> showComment(PageQueryDTO pageQueryDTO) {
-        try (Page<String> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
-            List<String> commentList = userMapper.selectComment(ThreadLocalUtil.getCurrentId());
-            return new PageResult<>(page.getTotal(), commentList);
-        } catch (Exception e) {
-            log.error("用户评论分页查询失败，报错为：{}", e.getMessage());
-            throw new PageQueryException(UserErrorConstant.USER_COMMENT_ERROR);
-        }
-    }
-
-    /**
-     * 用户取消收藏学校
-     *
-     * @param schoolDTO 学校DTO
-     */
-    @Override
-    public void deleteSchool(SchoolDTO schoolDTO) {
-        userMapper.deleteFavoriteSchool(schoolDTO);
-    }
-
-    /**
-     * 用户取消收藏专业
-     *
-     * @param majorDTO 专业DTO
-     */
-    @Override
-    public void deleteMajor(MajorDTO majorDTO) {
-        userMapper.deleteFavoriteMajor(majorDTO);
     }
 
 }

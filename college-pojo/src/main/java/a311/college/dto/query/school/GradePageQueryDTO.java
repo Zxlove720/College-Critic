@@ -8,11 +8,17 @@ import lombok.Data;
  */
 @Data
 @Schema(description = "根据用户成绩查询大学DTO")
-public class UserGradeQueryDTO {
+public class GradePageQueryDTO {
 
     @Schema(description = "用户成绩")
     private Integer grade;
 
     @Schema(description = "用户省份")
     private String province;
+
+    @Schema(description = "查询页码")
+    private Integer page = 1;
+
+    @Schema(description = "每页大小")
+    private Integer pageSize = 10;
 }

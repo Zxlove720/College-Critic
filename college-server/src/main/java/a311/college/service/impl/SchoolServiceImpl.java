@@ -7,7 +7,7 @@ import a311.college.controller.school.constant.SchoolConstant;
 import a311.college.dto.query.school.SchoolCommentPageQueryDTO;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.school.*;
-import a311.college.dto.query.school.UserGradeQueryDTO;
+import a311.college.dto.query.school.GradePageQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.dto.user.UserSearchDTO;
 import a311.college.entity.school.School;
@@ -208,12 +208,18 @@ public class SchoolServiceImpl implements SchoolService {
     /**
      * 根据用户成绩查询大学
      *
-     * @param gradeDTO 用户成绩DTO
+     * @param gradePageQueryDTO 用户成绩DTO
      * @return List<School>
      */
     @Override
-    public List<School> getSchoolByGrade(UserGradeQueryDTO gradeDTO) {
-        return schoolMapper.selectByGrade(gradeDTO);
+    public PageResult<School> getSchoolByGrade(GradePageQueryDTO gradePageQueryDTO) {
+        try (Page<School> page = PageHelper.startPage(gradePageQueryDTO.getPage(), gradePageQueryDTO.getPageSize())) {
+            List<School> schoolList = schoolMapper.selectByGrade(gradePageQueryDTO);
+            return new PageResult<>(page.getTotal(), schoolList);
+        } catch (Exception e) {
+            log.error("按照成绩分页查询失败，错误信息：{}", e.getMessage());
+            throw new PageQueryException(SchoolErrorConstant.SCHOOL_GRADE_PAGE_QUERY_ERROR);
+        }
     }
 
 

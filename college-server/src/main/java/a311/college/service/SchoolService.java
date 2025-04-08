@@ -3,7 +3,7 @@ package a311.college.service;
 import a311.college.dto.query.school.SchoolCommentPageQueryDTO;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.school.*;
-import a311.college.dto.query.school.UserGradeQueryDTO;
+import a311.college.dto.query.school.GradePageQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.dto.user.UserSearchDTO;
 import a311.college.entity.school.School;
@@ -29,7 +29,7 @@ public interface SchoolService {
 
     SearchVO search(UserSearchDTO userSearchDTO);
 
-    List<School> getSchoolByGrade(UserGradeQueryDTO gradeDTO);
+    PageResult<School> getSchoolByGrade(GradePageQueryDTO gradePageQueryDTO);
 
     DetailedSchoolVO getDetailSchool(SchoolDTO schoolDTO);
 

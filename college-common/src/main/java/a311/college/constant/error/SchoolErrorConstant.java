@@ -13,4 +13,6 @@ public class SchoolErrorConstant {
 
     public static final String COMMENT_PAGE_QUERY_ERROR = "学校评论区分页查询失败";
 
+    public static final String SCHOOL_GRADE_PAGE_QUERY_ERROR = "按照成绩查询失败";
+
 }

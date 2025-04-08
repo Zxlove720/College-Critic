@@ -2,7 +2,7 @@ package a311.college.mapper.school;
 
 
 import a311.college.dto.school.*;
-import a311.college.dto.query.school.UserGradeQueryDTO;
+import a311.college.dto.query.school.GradePageQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
@@ -53,7 +53,7 @@ public interface SchoolMapper {
      *
      * @return List<DetailedSchoolVO>
      */
-    List<School> selectByGrade(UserGradeQueryDTO gradeDTO);
+    List<School> selectByGrade(GradePageQueryDTO gradeDTO);
 
     /**
      * 获取某一院校的历年分数线

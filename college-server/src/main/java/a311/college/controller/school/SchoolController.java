@@ -5,7 +5,7 @@ import a311.college.constant.API.APIConstant;
 import a311.college.dto.ai.SchoolAIRequestDTO;
 import a311.college.dto.query.school.SchoolCommentPageQueryDTO;
 import a311.college.dto.school.*;
-import a311.college.dto.query.school.UserGradeQueryDTO;
+import a311.college.dto.query.school.GradePageQueryDTO;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.dto.user.UserSearchDTO;
@@ -104,15 +104,15 @@ public class SchoolController {
     /**
      * 根据用户成绩查询大学
      *
-     * @param gradeDTO 成绩查询DTO
+     * @param gradePageQueryDTO 成绩分页查询DTO
      * @return List<School>
      */
     @PostMapping("grade")
     @Operation(summary = "根据用户成绩查询大学")
     // TODO查询十分缓慢
-    public Result<List<School>> getByUserScore(@RequestBody UserGradeQueryDTO gradeDTO) {
-        log.info("用户成绩为：{}", gradeDTO.getGrade());
-        return Result.success(schoolService.getSchoolByGrade(gradeDTO));
+    public Result<PageResult<School>> getByUserScore(@RequestBody GradePageQueryDTO gradePageQueryDTO) {
+        log.info("用户成绩为：{}", gradePageQueryDTO.getGrade());
+        return Result.success(schoolService.getSchoolByGrade(gradePageQueryDTO));
     }
 
     /**

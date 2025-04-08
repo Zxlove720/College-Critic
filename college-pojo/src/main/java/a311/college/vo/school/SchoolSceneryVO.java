@@ -17,9 +17,6 @@ public class SchoolSceneryVO {
     @Schema(description = "校园风光")
     private String image;
 
-    @Schema(description = "校徽")
-    private String schoolHead;
-
     @Schema(description = "学校名")
     private String schoolName;
 }

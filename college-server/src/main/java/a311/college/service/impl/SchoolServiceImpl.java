@@ -520,8 +520,7 @@ public class SchoolServiceImpl implements SchoolService {
      * @return List<SchoolSceneryVO>
      */
     @Override
-    // TODO获取校园风光返回
     public List<SchoolSceneryVO> getScenery() {
-        return null;
+        return schoolMapper.selectScenery();
     }
 }

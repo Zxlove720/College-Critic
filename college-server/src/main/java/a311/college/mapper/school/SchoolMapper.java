@@ -161,4 +161,8 @@ public interface SchoolMapper {
      */
     @Delete("delete from tb_fav_school where user_id = #{userId} and school_id = #{schoolId}")
     void deleteFavoriteSchool(SchoolDTO schoolDTO);
+
+    @Select("select * from tb_scenery")
+    List<SchoolSceneryVO> selectScenery();
+
 }

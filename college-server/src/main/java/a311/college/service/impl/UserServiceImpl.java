@@ -4,7 +4,7 @@ import a311.college.constant.user.UserErrorConstant;
 import a311.college.constant.user.UserSubjectConstant;
 import a311.college.dto.login.UserLoginSymbolDTO;
 import a311.college.dto.major.MajorDTO;
-import a311.college.dto.query.major.PageQueryDTO;
+import a311.college.dto.query.PageQueryDTO;
 import a311.college.dto.school.SchoolDTO;
 import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;

@@ -2,7 +2,7 @@ package a311.college.controller.user;
 
 import a311.college.constant.API.APIConstant;
 import a311.college.dto.major.MajorDTO;
-import a311.college.dto.query.major.PageQueryDTO;
+import a311.college.dto.query.PageQueryDTO;
 import a311.college.dto.school.SchoolDTO;
 import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;

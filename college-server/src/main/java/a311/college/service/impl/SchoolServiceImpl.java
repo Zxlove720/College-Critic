@@ -3,6 +3,7 @@ package a311.college.service.impl;
 import a311.college.constant.redis.SchoolRedisKey;
 import a311.college.constant.user.UserErrorConstant;
 import a311.college.controller.school.constant.SchoolConstant;
+import a311.college.dto.query.school.SchoolCommentPageQueryDTO;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
@@ -443,12 +444,12 @@ public class SchoolServiceImpl implements SchoolService {
     /**
      * 获取用户评价
      *
-     * @param schoolDTO 大学DTO
+     * @param schoolCommentPageQueryDTO 大学DTO
      * @return List<CommentVO>
      */
     @Override
-    public List<CommentVO> showComment(SchoolDTO schoolDTO) {
-        return schoolMapper.selectComment(schoolDTO.getSchoolId());
+    public PageResult<CommentVO> showComment(SchoolCommentPageQueryDTO schoolCommentPageQueryDTO) {
+        return null;
     }
 
     /**

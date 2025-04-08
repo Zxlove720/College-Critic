@@ -3,6 +3,7 @@ package a311.college.controller.school;
 
 import a311.college.constant.API.APIConstant;
 import a311.college.dto.ai.SchoolAIRequestDTO;
+import a311.college.dto.query.school.SchoolCommentPageQueryDTO;
 import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
@@ -194,14 +195,14 @@ public class SchoolController {
     /**
      * 分页展示大学评论区
      *
-     * @param schoolDTO 大学DTO
-     * @return Result<List < CommentVO>>
+     * @param schoolCommentPageQueryDTO 大学评论区分页查询DTO
+     * @return Result<PageResult<CommentVO>>
      */
     @PostMapping("/showComment")
     @Operation(summary = "分页展示大学评论区")
-    public Result<List<CommentVO>> pageQuerySchoolComment(@RequestBody SchoolDTO schoolDTO) {
-        log.info("查看大学'{}'的评价", schoolDTO.getSchoolId());
-        List<CommentVO> commentVOList = schoolService.showComment(schoolDTO);
+    public Result<PageResult<CommentVO>> pageQuerySchoolComment(@RequestBody SchoolCommentPageQueryDTO schoolCommentPageQueryDTO) {
+        log.info("查看大学'{}'的评价", schoolCommentPageQueryDTO.getSchoolId());
+        PageResult<CommentVO> commentVOList = schoolService.showComment(schoolCommentPageQueryDTO);
         return Result.success(commentVOList);
     }
 

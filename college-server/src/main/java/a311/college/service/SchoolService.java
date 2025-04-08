@@ -1,5 +1,6 @@
 package a311.college.service;
 
+import a311.college.dto.query.school.SchoolCommentPageQueryDTO;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.school.*;
 import a311.college.dto.query.school.UserGradeQueryDTO;
@@ -42,7 +43,7 @@ public interface SchoolService {
 
     void deleteFavoriteSchool(SchoolDTO schoolDTO);
 
-    List<CommentVO> showComment(SchoolDTO schoolDTO);
+    PageResult<CommentVO> showComment(SchoolCommentPageQueryDTO schoolCommentPageQueryDTO);
 
     List<BriefSchoolInfoVO> getHotSchool();
 

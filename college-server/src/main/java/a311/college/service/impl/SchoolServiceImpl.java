@@ -4,6 +4,7 @@ import a311.college.constant.error.SchoolErrorConstant;
 import a311.college.constant.redis.SchoolRedisKey;
 import a311.college.constant.user.UserErrorConstant;
 import a311.college.controller.school.constant.SchoolConstant;
+import a311.college.dto.query.PageQueryDTO;
 import a311.college.dto.query.school.SchoolCommentPageQueryDTO;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.school.*;
@@ -514,6 +515,18 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public List<HotMajorVO> getHotMajorProfessional() {
         return SchoolConstant.getHotProfessionalMajor();
+    }
+
+    @Override
+    public PageResult<BriefSchoolInfoVO> getClassicSchool(PageQueryDTO pageQueryDTO) {
+        try (Page<BriefSchoolInfoVO> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
+            schoolMapper.selectClassicSchool();
+            return new PageResult<>(page.getTotal(), page.getResult());
+        } catch (Exception e) {
+            log.error("双一流大学查询失败，错误信息为：{}", e.getMessage());
+            throw new PageQueryException(SchoolErrorConstant.CLASSIC_SCHOOL_PAGE_QUERY_ERROR);
+        }
+
     }
 
     /**

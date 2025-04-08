@@ -162,7 +162,11 @@ public interface SchoolMapper {
     @Delete("delete from tb_fav_school where user_id = #{userId} and school_id = #{schoolId}")
     void deleteFavoriteSchool(SchoolDTO schoolDTO);
 
+    @Select("select school_id, school_head, school_name, rank_list from tb_school where rank_list like '%双一流%'")
+    List<BriefSchoolInfoVO> selectClassicSchool();
+
     @Select("select * from tb_scenery")
     List<SchoolSceneryVO> selectScenery();
+
 
 }

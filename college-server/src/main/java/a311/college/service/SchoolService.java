@@ -1,5 +1,6 @@
 package a311.college.service;
 
+import a311.college.dto.query.PageQueryDTO;
 import a311.college.dto.query.school.SchoolCommentPageQueryDTO;
 import a311.college.dto.query.school.SchoolNameQueryDTO;
 import a311.college.dto.school.*;
@@ -51,5 +52,8 @@ public interface SchoolService {
 
     List<HotMajorVO> getHotMajorProfessional();
 
+    PageResult<BriefSchoolInfoVO> getClassicSchool(PageQueryDTO pageQueryDTO);
+
     List<SchoolSceneryVO> getScenery();
+
 }

@@ -1,5 +1,6 @@
 package a311.college.service.impl;
 
+import a311.college.constant.error.SchoolErrorConstant;
 import a311.college.constant.redis.SchoolRedisKey;
 import a311.college.constant.user.UserErrorConstant;
 import a311.college.controller.school.constant.SchoolConstant;
@@ -11,6 +12,7 @@ import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.dto.user.UserSearchDTO;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
+import a311.college.exception.PageQueryException;
 import a311.college.exception.ReAdditionException;
 import a311.college.mapper.major.MajorMapper;
 import a311.college.mapper.resource.ResourceMapper;
@@ -94,7 +96,7 @@ public class SchoolServiceImpl implements SchoolService {
             return new PageResult<>(total, result);
         } catch (Exception e) {
             log.error("大学信息分页查询失败，报错为：{}", e.getMessage());
-            return null;
+            throw new PageQueryException(SchoolErrorConstant.SCHOOL_PAGE_QUERY_ERROR);
         }
     }
 
@@ -449,7 +451,13 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public PageResult<CommentVO> showComment(SchoolCommentPageQueryDTO schoolCommentPageQueryDTO) {
-        return null;
+        try (Page<CommentVO> page = PageHelper.startPage(schoolCommentPageQueryDTO.getPage(), schoolCommentPageQueryDTO.getPageSize())) {
+            List<CommentVO> commentVOList = schoolMapper.selectComment(schoolCommentPageQueryDTO.getSchoolId());
+            return new PageResult<>(page.getTotal(), commentVOList);
+        } catch (Exception e) {
+            log.error("'{}'大学评论区查询失败，报错为：{}", schoolCommentPageQueryDTO.getSchoolId(), e.getMessage());
+            throw new PageQueryException(SchoolErrorConstant.COMMENT_PAGE_QUERY_ERROR);
+        }
     }
 
     /**

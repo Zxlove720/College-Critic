@@ -71,6 +71,7 @@
     <select id="selectByGrade" resultType="a311.college.entity.school.School">
         SELECT DISTINCT s.school_head,
                         s.school_name,
+                        s.school_province,
                         s.school_address,
                         s.rank_list,
                         s.score

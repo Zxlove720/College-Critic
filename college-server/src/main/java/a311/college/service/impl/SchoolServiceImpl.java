@@ -484,6 +484,7 @@ public class SchoolServiceImpl implements SchoolService {
                 briefSchoolInfoVO.setSchoolName(school.getSchoolName());
                 briefSchoolInfoVO.setSchoolHead(school.getSchoolHead());
                 briefSchoolInfoVO.setRankList(school.getRankList());
+                briefSchoolInfoVO.setSchoolAddress(school.getSchoolAddress());
                 briefSchoolInfoVOList.add(briefSchoolInfoVO);
             }
         } else {
@@ -495,6 +496,7 @@ public class SchoolServiceImpl implements SchoolService {
                 briefSchoolInfoVO.setSchoolName(school.getSchoolName());
                 briefSchoolInfoVO.setSchoolHead(school.getSchoolHead());
                 briefSchoolInfoVO.setRankList(school.getRankList().split(",")[1]);
+                briefSchoolInfoVO.setSchoolAddress(school.getSchoolAddress());
                 briefSchoolInfoVOList.add(briefSchoolInfoVO);
             }
         }

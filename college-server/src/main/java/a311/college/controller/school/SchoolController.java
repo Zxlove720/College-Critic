@@ -4,11 +4,8 @@ package a311.college.controller.school;
 import a311.college.constant.API.APIConstant;
 import a311.college.dto.ai.SchoolAIRequestDTO;
 import a311.college.dto.query.PageQueryDTO;
-import a311.college.dto.query.school.SchoolCommentPageQueryDTO;
+import a311.college.dto.query.school.*;
 import a311.college.dto.school.*;
-import a311.college.dto.query.school.GradePageQueryDTO;
-import a311.college.dto.query.school.SchoolNameQueryDTO;
-import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.dto.user.UserSearchDTO;
 import a311.college.vo.ai.SchoolAIMessageVO;
 import a311.college.entity.school.School;
@@ -205,6 +202,56 @@ public class SchoolController {
         log.info("查看大学'{}'的评价", schoolCommentPageQueryDTO.getSchoolId());
         PageResult<CommentVO> commentVOList = schoolService.showComment(schoolCommentPageQueryDTO);
         return Result.success(commentVOList);
+    }
+
+    /**
+     * 获取本省热门本科院校
+     *
+     * @param provinceQueryDTO 省份查询DTO
+     * @return Result<List<BriefSchoolInfoVO>>
+     */
+    @PostMapping("/hotSchool1")
+    @Operation(summary = "获取本省热门本科院校")
+    public Result<List<BriefSchoolInfoVO>> getSchool1(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
+        log.info("获取本省热门本科院校");
+        return null;
+    }
+
+    /**
+     * 获取本省热门专科院校
+     *
+     * @param provinceQueryDTO 省份查询DTO
+     * @return Result<List<BriefSchoolInfoVO>>
+     */
+    @PostMapping("/hotSchool2")
+    @Operation(summary = "获取本省热门专科院校")
+    public Result<List<BriefSchoolInfoVO>> getSchool2(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
+        log.info("获取本省专科院校");
+        return null;
+    }
+
+    /**
+     * 获取外省热门本科院校
+     *
+     * @return Result<List<BriefSchoolInfoVO>>
+     */
+    @PostMapping("/hotSchool3")
+    @Operation(summary = "获取外省热门本科院校")
+    public Result<List<BriefSchoolInfoVO>> getSchool3() {
+        log.info("获取外省热门本科院校");
+        return null;
+    }
+
+    /**
+     * 获取外省热门专科院校
+     *
+     * @return Result<List<BriefSchoolInfoVO>>
+     */
+    @PostMapping("/hotSchool4")
+    @Operation(summary = "获取外省热门专科院校")
+    public Result<List<BriefSchoolInfoVO>> getSchool4() {
+        log.info("获取外省热门专科院校");
+        return null;
     }
 
     /**

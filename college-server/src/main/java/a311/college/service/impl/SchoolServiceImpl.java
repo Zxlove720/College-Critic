@@ -143,7 +143,7 @@ public class SchoolServiceImpl implements SchoolService {
             return new PageResult<>(total, result);
         } catch (Exception e) {
             log.error("大学专业分页查询失败，报错为：{}", e.getMessage());
-            return null;
+            throw new PageQueryException(SchoolErrorConstant.SCHOOL_MAJOR_PAGE_QUERY_ERROR);
         }
     }
 
@@ -159,7 +159,7 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 用户搜索展示
+     * 用户搜索提示
      *
      * @param userSearchDTO 用户搜索DTO
      * @return SearchVO
@@ -206,33 +206,6 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 用户收藏大学
-     *
-     * @param schoolDTO 大学DTO
-     */
-    @Override
-    public void addFavoriteSchool(SchoolDTO schoolDTO) {
-        long userId = ThreadLocalUtil.getCurrentId();
-        schoolDTO.setUserId(userId);
-        if (schoolMapper.checkSchoolDistinct(schoolDTO) != 0) {
-            throw new ReAdditionException(UserErrorConstant.RE_ADDITION);
-        }
-        schoolMapper.addFavoriteSchool(schoolDTO);
-    }
-
-    /**
-     * 用户删除收藏
-     *
-     * @param schoolDTO 大学DTO
-     */
-    @Override
-    public void deleteFavoriteSchool(SchoolDTO schoolDTO) {
-        long userId = ThreadLocalUtil.getCurrentId();
-        schoolDTO.setUserId(userId);
-        schoolMapper.deleteFavoriteSchool(schoolDTO);
-    }
-
-    /**
      * 根据用户成绩查询大学
      *
      * @param gradeDTO 用户成绩DTO
@@ -242,6 +215,7 @@ public class SchoolServiceImpl implements SchoolService {
     public List<School> getSchoolByGrade(UserGradeQueryDTO gradeDTO) {
         return schoolMapper.selectByGrade(gradeDTO);
     }
+
 
     /**
      * 查询大学具体信息
@@ -350,6 +324,33 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
+     * 用户收藏大学
+     *
+     * @param schoolDTO 大学DTO
+     */
+    @Override
+    public void addFavoriteSchool(SchoolDTO schoolDTO) {
+        long userId = ThreadLocalUtil.getCurrentId();
+        schoolDTO.setUserId(userId);
+        if (schoolMapper.checkSchoolDistinct(schoolDTO) != 0) {
+            throw new ReAdditionException(UserErrorConstant.RE_ADDITION);
+        }
+        schoolMapper.addFavoriteSchool(schoolDTO);
+    }
+
+    /**
+     * 用户删除收藏
+     *
+     * @param schoolDTO 大学DTO
+     */
+    @Override
+    public void deleteFavoriteSchool(SchoolDTO schoolDTO) {
+        long userId = ThreadLocalUtil.getCurrentId();
+        schoolDTO.setUserId(userId);
+        schoolMapper.deleteFavoriteSchool(schoolDTO);
+    }
+
+    /**
      * 录取预测
      *
      * @param forecastDTO 录取预测DTO
@@ -444,7 +445,7 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 获取用户评价
+     * 分页查询用户评价
      *
      * @param schoolCommentPageQueryDTO 大学DTO
      * @return List<CommentVO>

@@ -35,13 +35,13 @@ public interface SchoolService {
 
     void addFavoriteSchool(SchoolDTO schoolDTO);
 
+    void deleteFavoriteSchool(SchoolDTO schoolDTO);
+
     ForecastVO forecast(ForecastDTO forecastDTO);
 
     List<YearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO);
 
     void addSchoolComment(AddSchoolCommentDTO addCommentDTO);
-
-    void deleteFavoriteSchool(SchoolDTO schoolDTO);
 
     PageResult<CommentVO> showComment(SchoolCommentPageQueryDTO schoolCommentPageQueryDTO);
 

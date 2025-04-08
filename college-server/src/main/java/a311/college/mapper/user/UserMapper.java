@@ -80,7 +80,7 @@ public interface UserMapper {
      * @param userId 用户id
      * @return 用户收藏学校表
      */
-    @Select("select * from tb_school where school_id = (select tb_fav_school.school_id from tb_fav_school where user_id = #{userId})")
+    @Select("select * from tb_school where school_id in (select tb_fav_school.school_id from tb_fav_school where user_id = #{userId})")
     List<School> getUserFavoriteSchool(Long userId);
 
     /**
@@ -89,7 +89,7 @@ public interface UserMapper {
      * @param userId 用户id
      * @return 用户收藏专业表
      */
-    @Select("select * from tb_major where major_id = (select tb_fav_major.major_id from tb_fav_major where user_id = #{userId})")
+    @Select("select * from tb_major where major_id in (select tb_fav_major.major_id from tb_fav_major where user_id = #{userId})")
     List<Major> getUserFavoriteMajor(Long userId);
 
 

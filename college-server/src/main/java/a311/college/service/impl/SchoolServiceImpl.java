@@ -38,6 +38,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * 大学相关服务实现类
@@ -73,13 +74,13 @@ public class SchoolServiceImpl implements SchoolService {
      * @return PageResult<DetailedSchoolVO>
      */
     @Override
-    //TODO该方法的缓存部分有大问题，缓存的数据不支持分页
     public PageResult<School> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO) {
         String key = SchoolRedisKey.SCHOOL_CACHE_KEY + schoolPageQueryDTO.getProvince() + ":";
-        List<School> range = redisTemplate.opsForList().range(key, 0, -1);
-        if (range != null && !range.isEmpty()) {
+        List<School> schoolCache = redisTemplate.opsForList().range(key, 0, -1);
+        if (schoolCache != null && !schoolCache.isEmpty()) {
             log.info("缓存命中");
-            return new PageResult<>((long) range.size(), range);
+            List<School> filterCache = filterSchools(schoolCache, schoolPageQueryDTO);
+            return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
         }
         log.info("缓存未命中，开启分页查询");
         try (Page<School> page = PageHelper.startPage(schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize())) {
@@ -99,6 +100,24 @@ public class SchoolServiceImpl implements SchoolService {
             throw new PageQueryException(SchoolErrorConstant.SCHOOL_PAGE_QUERY_ERROR);
         }
     }
+
+    private PageResult<School> manualPage(List<School> filterCache, Integer page, Integer pageSize) {
+        int total = filterCache.size();
+        int start = (page - 1) * pageSize;
+        if (start >= total) return new PageResult<>((long) total, Collections.emptyList());
+        int end = Math.min(start + pageSize, total);
+        List<School> pageData = filterCache.subList(start, end);
+        return new PageResult<>((long) total, pageData);
+    }
+
+    private List<School> filterSchools(List<School> schoolCache, SchoolPageQueryDTO schoolPageQueryDTO) {
+        return schoolCache.stream()
+                .filter(s -> schoolPageQueryDTO.getSchoolName() == null || s.getSchoolName().contains(schoolPageQueryDTO.getSchoolName()))
+                .filter(s -> schoolPageQueryDTO.getRankList() == null || schoolPageQueryDTO.getRankList().toString().contains(s.getRankList()))
+                .filter(s -> schoolPageQueryDTO.getProvince() == null || s.getSchoolProvince().getName().contains(schoolPageQueryDTO.getProvince()))
+                .collect(Collectors.toList());
+    }
+
 
     /**
      * 大学信息缓存预热
@@ -473,34 +492,8 @@ public class SchoolServiceImpl implements SchoolService {
      * @return List<BriefSchoolInfoVO>
      */
     @Override
-    public List<BriefSchoolInfoVO> getHotSchool() {
-        UserVO user = userMapper.selectById(ThreadLocalUtil.getCurrentId());
-        List<BriefSchoolInfoVO> briefSchoolInfoVOList = new ArrayList<>();
-        if (user != null) {
-            List<School> schoolList = schoolMapper.selectByProvince(user.getProvince());
-            for (School school : schoolList) {
-                school.setRankList(school.getRankList().split(",")[1]);
-                BriefSchoolInfoVO briefSchoolInfoVO = new BriefSchoolInfoVO();
-                briefSchoolInfoVO.setSchoolName(school.getSchoolName());
-                briefSchoolInfoVO.setSchoolHead(school.getSchoolHead());
-                briefSchoolInfoVO.setRankList(school.getRankList());
-                briefSchoolInfoVO.setSchoolAddress(school.getSchoolAddress());
-                briefSchoolInfoVOList.add(briefSchoolInfoVO);
-            }
-        } else {
-            // 用户没有登录，展示默认的大学
-            List<String> hotSchoolList = SchoolConstant.getHotSchoolList();
-            for (String hotSchool : hotSchoolList) {
-                School school = schoolMapper.selectBySchoolName(hotSchool);
-                BriefSchoolInfoVO briefSchoolInfoVO = new BriefSchoolInfoVO();
-                briefSchoolInfoVO.setSchoolName(school.getSchoolName());
-                briefSchoolInfoVO.setSchoolHead(school.getSchoolHead());
-                briefSchoolInfoVO.setRankList(school.getRankList().split(",")[1]);
-                briefSchoolInfoVO.setSchoolAddress(school.getSchoolAddress());
-                briefSchoolInfoVOList.add(briefSchoolInfoVO);
-            }
-        }
-        return briefSchoolInfoVOList;
+    public List<HotSchoolVO> getHotSchool() {
+        return SchoolConstant.getHotSchool();
     }
 
     /**

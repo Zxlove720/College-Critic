@@ -45,7 +45,7 @@ public interface SchoolService {
 
     PageResult<CommentVO> showComment(SchoolCommentPageQueryDTO schoolCommentPageQueryDTO);
 
-    List<BriefSchoolInfoVO> getHotSchool();
+    List<HotSchoolVO> getHotSchool();
 
     List<HotMajorVO> getHotMajor();
 

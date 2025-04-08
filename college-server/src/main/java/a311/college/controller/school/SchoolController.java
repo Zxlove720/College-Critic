@@ -213,9 +213,9 @@ public class SchoolController {
      */
     @PostMapping("/hotSchool")
     @Operation(summary = "获取热门院校")
-    public Result<List<BriefSchoolInfoVO>> hotSchool() {
+    public Result<List<HotSchoolVO>> hotSchool() {
         log.info("获取热门院校");
-        List<BriefSchoolInfoVO> schoolSimpleVOList = schoolService.getHotSchool();
+        List<HotSchoolVO> schoolSimpleVOList = schoolService.getHotSchool();
         return Result.success(schoolSimpleVOList);
     }
 

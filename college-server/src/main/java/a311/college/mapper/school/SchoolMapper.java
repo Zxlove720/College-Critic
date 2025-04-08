@@ -116,10 +116,10 @@ public interface SchoolMapper {
     /**
      * 专业分页查询
      *
-     * @param schoolMajorPageDTO 学校专业查询DTO
+     * @param schoolMajorPageQueryDTO 学校专业查询DTO
      * @return SchoolMajor 学校专业实体对象
      */
-    List<SchoolMajor> pageQuerySchoolMajor(SchoolMajorPageDTO schoolMajorPageDTO);
+    List<SchoolMajor> pageQuerySchoolMajor(SchoolMajorPageQueryDTO schoolMajorPageQueryDTO);
 
     /**
      * 查询学校评价

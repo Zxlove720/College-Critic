@@ -63,14 +63,14 @@ public class SchoolController {
     /**
      * 大学专业分页查询
      *
-     * @param schoolMajorPageDTO 大学专业分页查询DTO
+     * @param schoolMajorPageQueryDTO 大学专业分页查询DTO
      * @return Result<PageResult < SchoolMajor>>
      */
     @PostMapping("/majors")
     @Operation(summary = "大学专业分页查询")
-    public Result<PageResult<SchoolMajor>> schoolMajorPageSelect(@RequestBody SchoolMajorPageDTO schoolMajorPageDTO) {
-        log.info("大学专业分页查询...查询参数为：第{}页，每页{}条", schoolMajorPageDTO.getPage(), schoolMajorPageDTO.getPageSize());
-        PageResult<SchoolMajor> pageResult = schoolService.pageSelectMajor(schoolMajorPageDTO);
+    public Result<PageResult<SchoolMajor>> schoolMajorPageSelect(@RequestBody SchoolMajorPageQueryDTO schoolMajorPageQueryDTO) {
+        log.info("大学专业分页查询...查询参数为：第{}页，每页{}条", schoolMajorPageQueryDTO.getPage(), schoolMajorPageQueryDTO.getPageSize());
+        PageResult<SchoolMajor> pageResult = schoolService.pageSelectMajor(schoolMajorPageQueryDTO);
         return Result.success(pageResult);
     }
 
@@ -87,7 +87,7 @@ public class SchoolController {
     }
 
     /**
-     * 用户搜索
+     * 搜索提示
      *
      * @param userSearchDTO 用户搜索DTO
      * @return Result<SearchVO>
@@ -192,14 +192,14 @@ public class SchoolController {
     }
 
     /**
-     * 展示大学评论区
+     * 分页展示大学评论区
      *
      * @param schoolDTO 大学DTO
      * @return Result<List < CommentVO>>
      */
     @PostMapping("/showComment")
-    @Operation(summary = "展示大学评论区")
-    public Result<List<CommentVO>> showSchoolComment(@RequestBody SchoolDTO schoolDTO) {
+    @Operation(summary = "分页展示大学评论区")
+    public Result<List<CommentVO>> pageQuerySchoolComment(@RequestBody SchoolDTO schoolDTO) {
         log.info("查看大学'{}'的评价", schoolDTO.getSchoolId());
         List<CommentVO> commentVOList = schoolService.showComment(schoolDTO);
         return Result.success(commentVOList);

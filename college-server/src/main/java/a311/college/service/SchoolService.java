@@ -20,7 +20,7 @@ public interface SchoolService {
 
     PageResult<School> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO);
 
-    PageResult<SchoolMajor> pageSelectMajor(SchoolMajorPageDTO schoolMajorPageDTO);
+    PageResult<SchoolMajor> pageSelectMajor(SchoolMajorPageQueryDTO schoolMajorPageQueryDTO);
 
     void cacheSchool();
 

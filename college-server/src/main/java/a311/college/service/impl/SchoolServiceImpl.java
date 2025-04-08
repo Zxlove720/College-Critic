@@ -128,13 +128,13 @@ public class SchoolServiceImpl implements SchoolService {
     /**
      * 大学专业分页查询
      *
-     * @param schoolMajorPageDTO 大学专业分页查询DTO
+     * @param schoolMajorPageQueryDTO 大学专业分页查询DTO
      * @return PageResult<SchoolMajor>
      */
     @Override
-    public PageResult<SchoolMajor> pageSelectMajor(SchoolMajorPageDTO schoolMajorPageDTO) {
-        try (Page<SchoolMajor> page = PageHelper.startPage(schoolMajorPageDTO.getPage(), schoolMajorPageDTO.getPageSize())) {
-            schoolMapper.pageQuerySchoolMajor(schoolMajorPageDTO);
+    public PageResult<SchoolMajor> pageSelectMajor(SchoolMajorPageQueryDTO schoolMajorPageQueryDTO) {
+        try (Page<SchoolMajor> page = PageHelper.startPage(schoolMajorPageQueryDTO.getPage(), schoolMajorPageQueryDTO.getPageSize())) {
+            schoolMapper.pageQuerySchoolMajor(schoolMajorPageQueryDTO);
             long total = page.getTotal();
             List<SchoolMajor> result = page.getResult();
             return new PageResult<>(total, result);

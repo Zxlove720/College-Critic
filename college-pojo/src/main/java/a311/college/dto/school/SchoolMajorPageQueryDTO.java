@@ -7,7 +7,7 @@ import lombok.Data;
  * 大学专业分页查询DTO
  */
 @Data
-public class SchoolMajorPageDTO {
+public class SchoolMajorPageQueryDTO {
 
     @Schema(description = "大学id")
     private Integer schoolId;

@@ -208,19 +208,6 @@ public class SchoolController {
     }
 
     /**
-     * 获取热门院校排行榜
-     *
-     * @return Result<List < BriefSchoolInfoVO>>
-     */
-    @PostMapping("/hotSchool")
-    @Operation(summary = "获取热门院校排行榜")
-    public Result<List<HotSchoolVO>> hotSchool() {
-        log.info("获取热门院校");
-        List<HotSchoolVO> schoolSimpleVOList = schoolService.getHotSchool();
-        return Result.success(schoolSimpleVOList);
-    }
-
-    /**
      * 获取热门专业（本科）
      *
      * @return Result<List < HotMajorVO>>
@@ -257,6 +244,19 @@ public class SchoolController {
     public Result<PageResult<BriefSchoolInfoVO>> classicSchool(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("分页查询双一流高校");
         return Result.success(schoolService.getClassicSchool(pageQueryDTO));
+    }
+
+    /**
+     * 获取热门院校排行榜
+     *
+     * @return Result<List < BriefSchoolInfoVO>>
+     */
+    @PostMapping("/hotSchool")
+    @Operation(summary = "获取热门院校排行榜")
+    public Result<List<HotSchoolVO>> hotSchool() {
+        log.info("获取热门院校");
+        List<HotSchoolVO> schoolSimpleVOList = schoolService.getHotSchool();
+        return Result.success(schoolSimpleVOList);
     }
 
     /**

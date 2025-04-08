@@ -18,7 +18,6 @@ import a311.college.exception.ReAdditionException;
 import a311.college.mapper.major.MajorMapper;
 import a311.college.mapper.resource.ResourceMapper;
 import a311.college.mapper.school.SchoolMapper;
-import a311.college.mapper.user.UserMapper;
 import a311.college.result.PageResult;
 import a311.college.service.SchoolService;
 import a311.college.thread.ThreadLocalUtil;
@@ -26,7 +25,6 @@ import a311.college.vo.major.BriefMajorVO;
 import a311.college.vo.major.HotMajorVO;
 import a311.college.vo.major.MajorSimpleVO;
 import a311.college.vo.school.*;
-import a311.college.vo.user.UserVO;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.github.pagehelper.Page;
@@ -50,18 +48,14 @@ public class SchoolServiceImpl implements SchoolService {
 
     private final SchoolMapper schoolMapper;
 
-    private final UserMapper userMapper;
-
     private final ResourceMapper resourceMapper;
 
     private final MajorMapper majorMapper;
 
     @Autowired
-    public SchoolServiceImpl(SchoolMapper schoolMapper, ResourceMapper resourceMapper,
-                             UserMapper userMapper, MajorMapper majorMapper) {
+    public SchoolServiceImpl(SchoolMapper schoolMapper, ResourceMapper resourceMapper, MajorMapper majorMapper) {
         this.schoolMapper = schoolMapper;
         this.resourceMapper = resourceMapper;
-        this.userMapper = userMapper;
         this.majorMapper = majorMapper;
     }
 
@@ -488,16 +482,6 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 获取热门院校
-     *
-     * @return List<BriefSchoolInfoVO>
-     */
-    @Override
-    public List<HotSchoolVO> getHotSchool() {
-        return SchoolConstant.getHotSchool();
-    }
-
-    /**
      * 获取热门专业（本科）
      *
      * @return List<HotMajorVO>
@@ -517,6 +501,12 @@ public class SchoolServiceImpl implements SchoolService {
         return SchoolConstant.getHotProfessionalMajor();
     }
 
+    /**
+     * 分页查询双一流学校
+     *
+     * @param pageQueryDTO 分页查询DTO
+     * @return PageResult<BriefSchoolInfoVO>
+     */
     @Override
     public PageResult<BriefSchoolInfoVO> getClassicSchool(PageQueryDTO pageQueryDTO) {
         try (Page<BriefSchoolInfoVO> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
@@ -527,6 +517,16 @@ public class SchoolServiceImpl implements SchoolService {
             throw new PageQueryException(SchoolErrorConstant.CLASSIC_SCHOOL_PAGE_QUERY_ERROR);
         }
 
+    }
+
+    /**
+     * 获取热门院校
+     *
+     * @return List<BriefSchoolInfoVO>
+     */
+    @Override
+    public List<HotSchoolVO> getHotSchool() {
+        return SchoolConstant.getHotSchool();
     }
 
     /**

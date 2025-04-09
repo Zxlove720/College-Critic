@@ -135,7 +135,7 @@ public interface SchoolMapper {
      * @param message 搜索信息
      * @return BriefSchoolInfoVO 简略学校信息
      */
-    List<BriefSchoolInfoVO> searchSchool(String message);
+    List<SchoolVO> searchSchool(String message);
 
     /**
      * 判断该学校是否已经被收藏

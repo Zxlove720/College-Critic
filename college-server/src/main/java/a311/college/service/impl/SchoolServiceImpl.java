@@ -195,18 +195,18 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public SearchVO search(UserSearchDTO userSearchDTO) {
         // 1.用户搜索，先返回学校信息
-        List<BriefSchoolInfoVO> briefSchoolInfoVOList = schoolMapper.searchSchool(userSearchDTO.getMessage());
+        List<SchoolVO> schoolVOList = schoolMapper.searchSchool(userSearchDTO.getMessage());
         // 2.用户搜索，再返回专业信息
         List<BriefMajorVO> briefMajorVOList = majorMapper.searchMajor(userSearchDTO.getMessage());
         // 3.若无匹配的学校（用户输入错误）
-        if (briefSchoolInfoVOList == null || briefSchoolInfoVOList.isEmpty()) {
+        if (schoolVOList == null || schoolVOList.isEmpty()) {
             log.info("用户'{}'，没有搜索到学校信息，返回默认学校信息", ThreadLocalUtil.getCurrentId());
             // 3.1返回固定的学校信息
-            briefSchoolInfoVOList = SchoolConstant.getSchool();
+            schoolVOList = SchoolConstant.getSchool();
         } else {
             // 3.2成功匹配到学校数据，对其进行处理
-            for (BriefSchoolInfoVO briefSchoolInfoVO : briefSchoolInfoVOList) {
-                String[] split = briefSchoolInfoVO.getRankList().split(",");
+            for (SchoolVO SchoolInfoVO : schoolVOList) {
+                String[] split = SchoolInfoVO.getRankList().split(",");
                 StringBuilder rank = new StringBuilder(split[0]);
                 if (split.length == 3) {
                     rank.append(split[1]).append(split[2]);
@@ -214,7 +214,7 @@ public class SchoolServiceImpl implements SchoolService {
                 if (split.length > 3) {
                     rank.append(split[2]).append(split[3]);
                 }
-                briefSchoolInfoVO.setRankList(rank.toString());
+                SchoolInfoVO.setRankList(rank.toString());
             }
         }
         // 4.若无匹配的专业（用户输入错误）
@@ -230,7 +230,7 @@ public class SchoolServiceImpl implements SchoolService {
                 briefMajorVO.setInformation(briefMajorVO.getGender() + "," + briefMajorVO.getAvgSalary());
             }
         }
-        return new SearchVO(briefSchoolInfoVOList, briefMajorVOList);
+        return new SearchVO(schoolVOList, briefMajorVOList);
     }
 
     /**

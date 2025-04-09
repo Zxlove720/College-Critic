@@ -8,7 +8,7 @@ import a311.college.dto.login.UserLoginDTO;
 import a311.college.result.LoginResult;
 import a311.college.result.PageResult;
 import a311.college.vo.major.BriefMajorVO;
-import a311.college.vo.school.BriefSchoolInfoVO;
+import a311.college.vo.school.SchoolVO;
 import a311.college.vo.user.UserVO;
 
 /**
@@ -32,7 +32,7 @@ public interface UserService {
 
     UserVO showMe(Long id);
 
-    PageResult<BriefSchoolInfoVO> showFavoriteSchool(PageQueryDTO pageQueryDTO);
+    PageResult<SchoolVO> showFavoriteSchool(PageQueryDTO pageQueryDTO);
 
     PageResult<BriefMajorVO> showFavoriteMajor(PageQueryDTO pageQueryDTO);
 

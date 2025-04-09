@@ -12,7 +12,7 @@ import a311.college.result.Result;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.major.BriefMajorVO;
-import a311.college.vo.school.BriefSchoolInfoVO;
+import a311.college.vo.school.SchoolVO;
 import a311.college.vo.user.UserVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -149,7 +149,7 @@ public class UserController {
      */
     @PostMapping("/showSchool")
     @Operation(summary = "分页展示用户收藏学校")
-    public Result<PageResult<BriefSchoolInfoVO>> showSchool(@RequestBody PageQueryDTO pageQueryDTO) {
+    public Result<PageResult<SchoolVO>> showSchool(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("展示用户'{}'收藏学校", ThreadLocalUtil.getCurrentId());
         return Result.success(userService.showFavoriteSchool(pageQueryDTO));
     }

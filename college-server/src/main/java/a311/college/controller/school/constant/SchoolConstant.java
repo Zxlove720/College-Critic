@@ -2,8 +2,8 @@ package a311.college.controller.school.constant;
 
 import a311.college.vo.major.BriefMajorVO;
 import a311.college.vo.major.HotMajorVO;
-import a311.college.vo.school.BriefSchoolInfoVO;
 import a311.college.vo.school.HotSchoolVO;
+import a311.college.vo.school.SchoolVO;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,14 +45,14 @@ public class SchoolConstant {
      *
      * @return List<BriefSchoolInfoVO>
      */
-    public static List<BriefSchoolInfoVO> getSchool() {
-        List<BriefSchoolInfoVO> briefSchoolInfoVOList = new ArrayList<>();
-        briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/31.jpg", "北京大学", "985,211,双一流", "北京市海淀区"));
-        briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/140.jpg", "清华大学", "985,211,双一流", "北京市海淀区"));
-        briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/114.jpg", "浙江大学", "985,211,双一流", "浙江杭州市"));
-        briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/132.jpg", "复旦大学", "985,211,双一流", "上海市杨浦区"));
-        briefSchoolInfoVOList.add(new BriefSchoolInfoVO("https://static-data.gaokao.cn/upload/logo/42.jpg", "武汉大学", "985,211,双一流", "湖北武汉市"));
-        return briefSchoolInfoVOList;
+    public static List<SchoolVO> getSchool() {
+        List<SchoolVO> schoolVOList = new ArrayList<>();
+        schoolVOList.add(new SchoolVO(31, "https://static-data.gaokao.cn/upload/logo/31.jpg", "北京大学", null, "北京市海淀区", "985,211,双一流"));
+        schoolVOList.add(new SchoolVO(140, "https://static-data.gaokao.cn/upload/logo/140.jpg", "清华大学", null, "北京市海淀区", "985,211,双一流"));
+        schoolVOList.add(new SchoolVO(114, "https://static-data.gaokao.cn/upload/logo/114.jpg", "浙江大学", null, "浙江杭州市", "985,211,双一流"));
+        schoolVOList.add(new SchoolVO(132, "https://static-data.gaokao.cn/upload/logo/132.jpg", "复旦大学", null, "上海市杨浦区", "985,211,双一流"));
+        schoolVOList.add(new SchoolVO(42, "https://static-data.gaokao.cn/upload/logo/42.jpg", "武汉大学", null, "湖北武汉市", "985,211,双一流"));
+        return schoolVOList;
     }
 
     /**
@@ -73,7 +73,7 @@ public class SchoolConstant {
     public static List<String> getHotSchoolList() {
         List<String> hotSchoolList = new ArrayList<>();
         Collections.addAll(hotSchoolList, "清华大学", "浙江大学", "四川大学", "中国科学技术大学", "中山大学", "哈尔滨工业大学",
-                    "武汉大学", "厦门大学", "西安交通大学", "重庆文理学院");
+                "武汉大学", "厦门大学", "西安交通大学", "重庆文理学院");
         return hotSchoolList;
     }
 
@@ -91,8 +91,6 @@ public class SchoolConstant {
         hotSchoolVOList.add(new HotSchoolVO(661, "https://static-data.gaokao.cn/upload/logo/661.jpg", "电子科技大学", 2334));
         return hotSchoolVOList;
     }
-
-
 
 
 }

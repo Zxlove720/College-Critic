@@ -163,7 +163,7 @@
           and u.id = c.user_id
     </select>
 
-    <select id="searchSchool" resultType="a311.college.vo.school.BriefSchoolInfoVO">
+    <select id="searchSchool" resultType="a311.college.vo.school.SchoolVO">
         select school_head, school_name, rank_list, school_address from tb_school as s
         <where>
             <if test="message != null and message != ''">

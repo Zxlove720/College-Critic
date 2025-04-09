@@ -8,7 +8,6 @@ import a311.college.dto.query.school.*;
 import a311.college.dto.school.*;
 import a311.college.dto.user.UserSearchDTO;
 import a311.college.vo.ai.SchoolAIMessageVO;
-import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.result.PageResult;
 import a311.college.result.Result;

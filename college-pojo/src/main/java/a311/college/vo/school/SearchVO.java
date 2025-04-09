@@ -18,7 +18,7 @@ import java.util.List;
 public class SearchVO {
 
     @Schema(description = "学校简略信息")
-    private List<BriefSchoolInfoVO> briefSchoolInfoVOList;
+    private List<SchoolVO> schoolVOList;
 
     @Schema(description = "专业简略信息")
     private List<BriefMajorVO> briefMajorVO;

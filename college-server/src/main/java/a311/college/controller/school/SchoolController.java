@@ -318,7 +318,6 @@ public class SchoolController {
         return Result.success(schoolService.getBasicSchool());
     }
 
-
     /**
      * 获取首页校园风光
      *

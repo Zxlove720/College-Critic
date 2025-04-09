@@ -1,11 +1,8 @@
 package a311.college.service;
 
 import a311.college.dto.query.PageQueryDTO;
-import a311.college.dto.query.school.SchoolCommentPageQueryDTO;
-import a311.college.dto.query.school.SchoolNameQueryDTO;
+import a311.college.dto.query.school.*;
 import a311.college.dto.school.*;
-import a311.college.dto.query.school.GradePageQueryDTO;
-import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.dto.user.UserSearchDTO;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.result.PageResult;
@@ -55,4 +52,11 @@ public interface SchoolService {
 
     List<SchoolSceneryVO> getScenery();
 
+    List<SchoolVO> getSchool1(ProvinceQueryDTO provinceQueryDTO);
+
+    List<SchoolVO> getSchool2(ProvinceQueryDTO provinceQueryDTO);
+
+    List<SchoolVO> getSchool3(ProvinceQueryDTO provinceQueryDTO);
+
+    List<SchoolVO> getSchool4(ProvinceQueryDTO provinceQueryDTO);
 }

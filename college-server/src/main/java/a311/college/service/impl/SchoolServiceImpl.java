@@ -5,11 +5,8 @@ import a311.college.constant.redis.SchoolRedisKey;
 import a311.college.constant.user.UserErrorConstant;
 import a311.college.controller.school.constant.SchoolConstant;
 import a311.college.dto.query.PageQueryDTO;
-import a311.college.dto.query.school.SchoolCommentPageQueryDTO;
-import a311.college.dto.query.school.SchoolNameQueryDTO;
+import a311.college.dto.query.school.*;
 import a311.college.dto.school.*;
-import a311.college.dto.query.school.GradePageQueryDTO;
-import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.dto.user.UserSearchDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.school.School;
@@ -550,5 +547,25 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public List<SchoolSceneryVO> getScenery() {
         return schoolMapper.selectScenery();
+    }
+
+    @Override
+    public List<SchoolVO> getSchool1(ProvinceQueryDTO provinceQueryDTO) {
+        return schoolMapper.selectByProvince(provinceQueryDTO.getProvince());
+    }
+
+    @Override
+    public List<SchoolVO> getSchool2(ProvinceQueryDTO provinceQueryDTO) {
+        return schoolMapper.selectByProvinceProfessional(provinceQueryDTO.getProvince());
+    }
+
+    @Override
+    public List<SchoolVO> getSchool3(ProvinceQueryDTO provinceQueryDTO) {
+        return schoolMapper.selectWithoutProvince(provinceQueryDTO.getProvince());
+    }
+
+    @Override
+    public List<SchoolVO> getSchool4(ProvinceQueryDTO provinceQueryDTO) {
+        return schoolMapper.selectWithoutProvinceProfessional(provinceQueryDTO.getProvince());
     }
 }

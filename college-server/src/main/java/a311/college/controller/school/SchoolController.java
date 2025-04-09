@@ -212,7 +212,7 @@ public class SchoolController {
     @Operation(summary = "获取本省热门本科院校")
     public Result<List<SchoolVO>> getSchool1(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
         log.info("获取本省热门本科院校");
-        return null;
+        return Result.success(schoolService.getSchool1(provinceQueryDTO));
     }
 
     /**
@@ -225,7 +225,7 @@ public class SchoolController {
     @Operation(summary = "获取本省热门专科院校")
     public Result<List<SchoolVO>> getSchool2(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
         log.info("获取本省热门专科院校");
-        return null;
+        return Result.success(schoolService.getSchool2(provinceQueryDTO));
     }
 
     /**
@@ -238,7 +238,7 @@ public class SchoolController {
     @Operation(summary = "获取外省热门本科院校")
     public Result<List<SchoolVO>> getSchool3(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
         log.info("获取外省热门本科院校");
-        return null;
+        return Result.success(schoolService.getSchool3(provinceQueryDTO));
     }
 
     /**
@@ -251,7 +251,7 @@ public class SchoolController {
     @Operation(summary = "获取外省热门专科院校")
     public Result<List<SchoolVO>> getSchool4(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
         log.info("获取外省热门专科院校");
-        return null;
+        return Result.success(schoolService.getSchool4(provinceQueryDTO));
     }
 
     /**
@@ -296,7 +296,7 @@ public class SchoolController {
     /**
      * 获取热门院校排行榜
      *
-     * @return Result<List<SchoolVO>>
+     * @return Result<List < SchoolVO>>
      */
     @PostMapping("/hotSchool")
     @Operation(summary = "获取热门院校排行榜")

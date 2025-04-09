@@ -492,6 +492,50 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
+     * 获取本省热门本科院校
+     *
+     * @param provinceQueryDTO 省份查询DTO
+     * @return List<SchoolVO>
+     */
+    @Override
+    public List<SchoolVO> getSchool1(ProvinceQueryDTO provinceQueryDTO) {
+        return schoolMapper.selectByProvince(provinceQueryDTO.getProvince());
+    }
+
+    /**
+     * 获取本省热门专科院校
+     *
+     * @param provinceQueryDTO 省份查询DTO
+     * @return List<SchoolVO>
+     */
+    @Override
+    public List<SchoolVO> getSchool2(ProvinceQueryDTO provinceQueryDTO) {
+        return schoolMapper.selectByProvinceProfessional(provinceQueryDTO.getProvince());
+    }
+
+    /**
+     * 获取外省热门本科院校
+     *
+     * @param provinceQueryDTO 省份查询DTO
+     * @return List<SchoolVO>
+     */
+    @Override
+    public List<SchoolVO> getSchool3(ProvinceQueryDTO provinceQueryDTO) {
+        return schoolMapper.selectWithoutProvince(provinceQueryDTO.getProvince());
+    }
+
+    /**
+     * 获取外省热门专科院校
+     *
+     * @param provinceQueryDTO 省份查询DTO
+     * @return List<SchoolVO>
+     */
+    @Override
+    public List<SchoolVO> getSchool4(ProvinceQueryDTO provinceQueryDTO) {
+        return schoolMapper.selectWithoutProvinceProfessional(provinceQueryDTO.getProvince());
+    }
+
+    /**
      * 获取热门专业（本科）
      *
      * @return List<HotMajorVO>
@@ -549,23 +593,4 @@ public class SchoolServiceImpl implements SchoolService {
         return schoolMapper.selectScenery();
     }
 
-    @Override
-    public List<SchoolVO> getSchool1(ProvinceQueryDTO provinceQueryDTO) {
-        return schoolMapper.selectByProvince(provinceQueryDTO.getProvince());
-    }
-
-    @Override
-    public List<SchoolVO> getSchool2(ProvinceQueryDTO provinceQueryDTO) {
-        return schoolMapper.selectByProvinceProfessional(provinceQueryDTO.getProvince());
-    }
-
-    @Override
-    public List<SchoolVO> getSchool3(ProvinceQueryDTO provinceQueryDTO) {
-        return schoolMapper.selectWithoutProvince(provinceQueryDTO.getProvince());
-    }
-
-    @Override
-    public List<SchoolVO> getSchool4(ProvinceQueryDTO provinceQueryDTO) {
-        return schoolMapper.selectWithoutProvinceProfessional(provinceQueryDTO.getProvince());
-    }
 }

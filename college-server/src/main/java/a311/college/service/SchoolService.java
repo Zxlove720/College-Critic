@@ -42,6 +42,14 @@ public interface SchoolService {
 
     PageResult<CommentVO> showComment(SchoolCommentPageQueryDTO schoolCommentPageQueryDTO);
 
+    List<SchoolVO> getSchool1(ProvinceQueryDTO provinceQueryDTO);
+
+    List<SchoolVO> getSchool2(ProvinceQueryDTO provinceQueryDTO);
+
+    List<SchoolVO> getSchool3(ProvinceQueryDTO provinceQueryDTO);
+
+    List<SchoolVO> getSchool4(ProvinceQueryDTO provinceQueryDTO);
+
     List<HotMajorVO> getHotMajor();
 
     List<HotMajorVO> getHotMajorProfessional();
@@ -52,11 +60,4 @@ public interface SchoolService {
 
     List<SchoolSceneryVO> getScenery();
 
-    List<SchoolVO> getSchool1(ProvinceQueryDTO provinceQueryDTO);
-
-    List<SchoolVO> getSchool2(ProvinceQueryDTO provinceQueryDTO);
-
-    List<SchoolVO> getSchool3(ProvinceQueryDTO provinceQueryDTO);
-
-    List<SchoolVO> getSchool4(ProvinceQueryDTO provinceQueryDTO);
 }

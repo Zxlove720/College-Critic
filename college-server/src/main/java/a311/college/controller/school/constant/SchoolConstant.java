@@ -1,7 +1,6 @@
 package a311.college.controller.school.constant;
 
 import a311.college.entity.major.Major;
-import a311.college.vo.major.BriefMajorVO;
 import a311.college.vo.major.HotMajorVO;
 import a311.college.vo.school.HotSchoolVO;
 import a311.college.vo.school.SchoolVO;

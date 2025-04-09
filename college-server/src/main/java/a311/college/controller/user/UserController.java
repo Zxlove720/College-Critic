@@ -6,12 +6,12 @@ import a311.college.dto.query.PageQueryDTO;
 import a311.college.dto.school.SchoolDTO;
 import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
+import a311.college.entity.major.Major;
 import a311.college.result.LoginResult;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
-import a311.college.vo.major.BriefMajorVO;
 import a311.college.vo.school.SchoolVO;
 import a311.college.vo.user.UserVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -161,7 +161,7 @@ public class UserController {
      */
     @PostMapping("/showMajor")
     @Operation(summary = "分页展示用户收藏专业")
-    public Result<PageResult<BriefMajorVO>> showMajor(@RequestBody PageQueryDTO pageQueryDTO) {
+    public Result<PageResult<Major>> showMajor(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("展示用户'{}'收藏专业", ThreadLocalUtil.getCurrentId());
         return Result.success(userService.showFavoriteMajor(pageQueryDTO));
     }

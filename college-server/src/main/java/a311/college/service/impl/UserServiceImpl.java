@@ -19,7 +19,6 @@ import a311.college.result.LoginResult;
 import a311.college.result.PageResult;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
-import a311.college.vo.major.BriefMajorVO;
 import a311.college.vo.school.SchoolVO;
 import a311.college.vo.user.UserVO;
 import cn.hutool.core.bean.BeanUtil;
@@ -315,20 +314,14 @@ public class UserServiceImpl implements UserService {
     /**
      * 展示用户收藏专业
      *
-     * @return PageResult<BriefMajorVO>
+     * @return PageResult<Major>
      */
     @Override
-    public PageResult<BriefMajorVO> showFavoriteMajor(PageQueryDTO pageQueryDTO) {
+    public PageResult<Major> showFavoriteMajor(PageQueryDTO pageQueryDTO) {
         Long userId = ThreadLocalUtil.getCurrentId();
         try (Page<Major> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
             List<Major> majorList = userMapper.getUserFavoriteMajor(userId);
-            List<BriefMajorVO> result = new ArrayList<>();
-            for (Major major : majorList) {
-                BriefMajorVO briefMajorVO = new BriefMajorVO();
-                BeanUtil.copyProperties(major, briefMajorVO);
-                result.add(briefMajorVO);
-            }
-            return new PageResult<>(page.getTotal(), result);
+            return new PageResult<>(page.getTotal(), majorList);
         } catch (Exception e) {
             log.error("用户收藏专业分页查询失败，报错为：{}", e.getMessage());
             throw new PageQueryException(UserErrorConstant.USER_MAJOR_ERROR);

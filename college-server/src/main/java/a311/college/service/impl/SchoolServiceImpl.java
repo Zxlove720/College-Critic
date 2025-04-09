@@ -438,17 +438,25 @@ public class SchoolServiceImpl implements SchoolService {
             // 2.9将有分类的专业加入到SchoolMajorVOList中返回
             if (schoolMajorVO.getCategory() != null) {
                 schoolMajorVOList.add(schoolMajorVO);
+            } else {
+                schoolMajorVO.setCategory(3);
+                schoolMajorVOList.add(schoolMajorVO);
             }
         }
         // 3.构建ForecastVO结果
         ForecastVO forecastVO = new ForecastVO();
         // 3.1封装可选专业
-        forecastVO.setSelectableMajor(schoolMajorList.size());
+        forecastVO.setSelectableMajor(minimum + stable + rush);
         // 3.2封装专业列表
         forecastVO.setMajorForecastList(schoolMajorVOList);
         // 3.3计算录取概率
         double chance = (stable + minimum + 0.2 * rush) / schoolMajorList.size();
-        forecastVO.setChance((int) Math.round(chance * 100));
+        int forecast =  (int)Math.round(chance * 100);
+        forecastVO.setChance(forecast == 0 ? 1 : forecast);
+        // 3.4封装不同策略的专业个数
+        forecastVO.setMinimum(minimum);
+        forecastVO.setStable(stable);
+        forecastVO.setRush(rush);
         return forecastVO;
     }
 

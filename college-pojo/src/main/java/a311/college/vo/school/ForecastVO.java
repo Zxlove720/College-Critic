@@ -19,6 +19,15 @@ public class ForecastVO {
     @Schema(description = "可选专业个数")
     private Integer selectableMajor;
 
+    @Schema(description = "保底专业个数")
+    private Integer minimum;
+
+    @Schema(description = "稳定专业个数")
+    private Integer stable;
+
+    @Schema(description = "可冲专业个数")
+    private Integer rush;
+
     @Schema(description = "录取概率")
     private Integer chance;
 

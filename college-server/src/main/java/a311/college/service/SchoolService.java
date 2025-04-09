@@ -56,6 +56,8 @@ public interface SchoolService {
 
     List<SchoolVO> getHotSchool();
 
+    List<SchoolVO> getBasicSchool();
+
     List<SchoolSceneryVO> getScenery();
 
 }

@@ -294,6 +294,19 @@ public class SchoolController {
     }
 
     /**
+     * 获取强基计划学校
+     *
+     * @return Result<List<SchoolVO>>
+     */
+    @PostMapping("/basic")
+    @Operation(summary = "获取强基计划学校")
+    public Result<List<SchoolVO>> basicsSchool() {
+        log.info("获取强基计划学校");
+        return Result.success(schoolService.getBasicSchool());
+    }
+
+
+    /**
      * 获取首页校园风光
      *
      * @return Result<List < SchoolSceneryVO>>

@@ -6,7 +6,6 @@ import a311.college.dto.query.school.GradePageQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
-import a311.college.enumeration.ProvinceEnum;
 import a311.college.vo.school.*;
 import a311.college.vo.major.MajorSimpleVO;
 import org.apache.ibatis.annotations.Delete;
@@ -171,9 +170,6 @@ public interface SchoolMapper {
     @Delete("delete from tb_fav_school where user_id = #{userId} and school_id = #{schoolId}")
     void deleteFavoriteSchool(SchoolDTO schoolDTO);
 
-    @Select("select school_id, school_head, school_name, rank_list from tb_school where rank_list like '%双一流%'")
-    List<SchoolVO> selectClassicSchool();
-
     @Select("select * from tb_scenery")
     List<SchoolSceneryVO> selectScenery();
 
@@ -182,4 +178,8 @@ public interface SchoolMapper {
 
     @Select("select * from tb_school where school_province != #{province} and rank_list like '%专科%' order by score desc limit 9")
     List<SchoolVO> selectWithoutProvinceProfessional(String province);
+
+    @Select("select school_head, school_name from tb_school where rank_list like '%强基计划%'")
+    List<SchoolVO> selectBasicSchool();
+
 }

@@ -565,6 +565,16 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
+     * 获取强基计划学校
+     *
+     * @return List<SchoolVO>
+     */
+    @Override
+    public List<SchoolVO> getBasicSchool() {
+        return schoolMapper.selectBasicSchool();
+    }
+
+    /**
      * 首页获取校园风光
      *
      * @return List<SchoolSceneryVO>

@@ -96,6 +96,14 @@ public class SchoolServiceImpl implements SchoolService {
         }
     }
 
+    /**
+     * 人工分页
+     *
+     * @param filterCache 过滤后的学校缓存
+     * @param page        查询页码
+     * @param pageSize    每页大小
+     * @return PageResult<SchoolVO>
+     */
     private PageResult<SchoolVO> manualPage(List<SchoolVO> filterCache, Integer page, Integer pageSize) {
         int total = filterCache.size();
         int start = (page - 1) * pageSize;
@@ -105,6 +113,13 @@ public class SchoolServiceImpl implements SchoolService {
         return new PageResult<>((long) total, pageData);
     }
 
+    /**
+     * 从缓存中过滤学校
+     *
+     * @param schoolCache        学校缓存
+     * @param schoolPageQueryDTO 学校分页查询DTO
+     * @return List<SchoolVO>
+     */
     private List<SchoolVO> filterSchools(List<SchoolVO> schoolCache, SchoolPageQueryDTO schoolPageQueryDTO) {
         return schoolCache.stream()
                 .filter(s -> schoolPageQueryDTO.getSchoolName() == null || s.getSchoolName().contains(schoolPageQueryDTO.getSchoolName()))
@@ -112,7 +127,6 @@ public class SchoolServiceImpl implements SchoolService {
                 .filter(s -> schoolPageQueryDTO.getProvince() == null || s.getSchoolProvince().getName().contains(schoolPageQueryDTO.getProvince()))
                 .collect(Collectors.toList());
     }
-
 
     /**
      * 大学信息缓存预热

@@ -54,8 +54,6 @@ public interface SchoolService {
 
     List<HotMajorVO> getHotMajorProfessional();
 
-    PageResult<SchoolVO> getClassicSchool(PageQueryDTO pageQueryDTO);
-
     List<SchoolVO> getHotSchool();
 
     List<SchoolSceneryVO> getScenery();

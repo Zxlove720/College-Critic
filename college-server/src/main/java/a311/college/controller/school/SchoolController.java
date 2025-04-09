@@ -281,19 +281,6 @@ public class SchoolController {
     }
 
     /**
-     * 分页查询双一流高校
-     *
-     * @param pageQueryDTO 分页查询DTO
-     * @return Result<PageResult < BriefSchoolInfoVO>>
-     */
-    @PostMapping("/classic")
-    @Operation(summary = "分页查询双一流高校")
-    public Result<PageResult<SchoolVO>> classicSchool(@RequestBody PageQueryDTO pageQueryDTO) {
-        log.info("分页查询双一流高校");
-        return Result.success(schoolService.getClassicSchool(pageQueryDTO));
-    }
-
-    /**
      * 获取热门院校排行榜
      *
      * @return Result<List < SchoolVO>>

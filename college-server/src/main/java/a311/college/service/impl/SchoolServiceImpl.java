@@ -133,10 +133,10 @@ public class SchoolServiceImpl implements SchoolService {
      * 添加热点地区的大学到缓存
      */
     public void cacheSchool() {
-        // 定义热点地区列表
+        // 0. 定义热点地区列表
         List<String> hotAreas = Arrays.asList("北京", "上海", "广东", "重庆", "天津", "浙江", "江苏", "陕西", "四川", "湖北");
         for (String area : hotAreas) {
-            // 统一键名格式
+            // 0.1 统一键名格式
             String key = SchoolRedisKey.SCHOOL_CACHE_KEY + area + ":";
             try {
                 // 1. 查询数据库
@@ -181,7 +181,7 @@ public class SchoolServiceImpl implements SchoolService {
      * @param schoolNameQueryDTO@return List<SchoolVO>
      */
     @Override
-    public List<School> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO) {
+    public List<SchoolVO> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO) {
         // 1.根据大学名模糊查询大学
         return schoolMapper.searchBySchoolName(schoolNameQueryDTO.getSchoolName());
     }
@@ -240,9 +240,9 @@ public class SchoolServiceImpl implements SchoolService {
      * @return List<School>
      */
     @Override
-    public PageResult<School> getSchoolByGrade(GradePageQueryDTO gradePageQueryDTO) {
-        try (Page<School> page = PageHelper.startPage(gradePageQueryDTO.getPage(), gradePageQueryDTO.getPageSize())) {
-            List<School> schoolList = schoolMapper.selectByGrade(gradePageQueryDTO);
+    public PageResult<SchoolVO> getSchoolByGrade(GradePageQueryDTO gradePageQueryDTO) {
+        try (Page<SchoolVO> page = PageHelper.startPage(gradePageQueryDTO.getPage(), gradePageQueryDTO.getPageSize())) {
+            List<SchoolVO> schoolList = schoolMapper.selectByGrade(gradePageQueryDTO);
             return new PageResult<>(page.getTotal(), schoolList);
         } catch (Exception e) {
             log.error("按照成绩分页查询失败，错误信息：{}", e.getMessage());
@@ -522,8 +522,8 @@ public class SchoolServiceImpl implements SchoolService {
      * @return PageResult<BriefSchoolInfoVO>
      */
     @Override
-    public PageResult<School> getClassicSchool(PageQueryDTO pageQueryDTO) {
-        try (Page<School> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
+    public PageResult<SchoolVO> getClassicSchool(PageQueryDTO pageQueryDTO) {
+        try (Page<SchoolVO> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
             schoolMapper.selectClassicSchool();
             return new PageResult<>(page.getTotal(), page.getResult());
         } catch (Exception e) {

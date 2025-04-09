@@ -32,7 +32,7 @@
         order by score desc, length(rank_list) desc
     </select>
 
-    <select id="searchBySchoolName" resultType="a311.college.entity.school.School">
+    <select id="searchBySchoolName" resultType="a311.college.vo.school.SchoolVO">
         select s.school_id,
                s.school_head,
                s.school_name,
@@ -68,7 +68,7 @@
     </select>
 
 
-    <select id="selectByGrade" resultType="a311.college.entity.school.School">
+    <select id="selectByGrade" resultType="a311.college.vo.school.SchoolVO">
         SELECT DISTINCT s.school_head,
                         s.school_name,
                         s.school_province,

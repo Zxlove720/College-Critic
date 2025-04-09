@@ -46,14 +46,14 @@ public interface SchoolMapper {
      * @param schoolName 学校名
      * @return List<SchoolVO>
      */
-    List<School> searchBySchoolName(String schoolName);
+    List<SchoolVO> searchBySchoolName(String schoolName);
 
     /**
      * 根据成绩查询大学
      *
      * @return List<DetailedSchoolVO>
      */
-    List<School> selectByGrade(GradePageQueryDTO gradeDTO);
+    List<SchoolVO> selectByGrade(GradePageQueryDTO gradeDTO);
 
     /**
      * 获取某一院校的历年分数线
@@ -163,7 +163,7 @@ public interface SchoolMapper {
     void deleteFavoriteSchool(SchoolDTO schoolDTO);
 
     @Select("select school_id, school_head, school_name, rank_list from tb_school where rank_list like '%双一流%'")
-    List<BriefSchoolInfoVO> selectClassicSchool();
+    List<SchoolVO> selectClassicSchool();
 
     @Select("select * from tb_scenery")
     List<SchoolSceneryVO> selectScenery();

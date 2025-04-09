@@ -81,7 +81,7 @@ public class SchoolController {
      */
     @PostMapping("/search")
     @Operation(summary = "根据学校名搜索大学")
-    public Result<List<School>> searchSchool(@RequestBody SchoolNameQueryDTO schoolNameQueryDTO) {
+    public Result<List<SchoolVO>> searchSchool(@RequestBody SchoolNameQueryDTO schoolNameQueryDTO) {
         return Result.success(schoolService.searchSchool(schoolNameQueryDTO));
     }
 
@@ -108,7 +108,7 @@ public class SchoolController {
     @PostMapping("grade")
     @Operation(summary = "根据用户成绩查询大学")
     // TODO查询十分缓慢
-    public Result<PageResult<School>> getByUserScore(@RequestBody GradePageQueryDTO gradePageQueryDTO) {
+    public Result<PageResult<SchoolVO>> getByUserScore(@RequestBody GradePageQueryDTO gradePageQueryDTO) {
         log.info("用户成绩为：{}", gradePageQueryDTO.getGrade());
         return Result.success(schoolService.getSchoolByGrade(gradePageQueryDTO));
     }
@@ -194,7 +194,7 @@ public class SchoolController {
      * 分页展示大学评论区
      *
      * @param schoolCommentPageQueryDTO 大学评论区分页查询DTO
-     * @return Result<PageResult<CommentVO>>
+     * @return Result<PageResult < CommentVO>>
      */
     @PostMapping("/showComment")
     @Operation(summary = "分页展示大学评论区")
@@ -208,11 +208,11 @@ public class SchoolController {
      * 获取本省热门本科院校
      *
      * @param provinceQueryDTO 省份查询DTO
-     * @return Result<List<BriefSchoolInfoVO>>
+     * @return Result<List < SchoolVO>>
      */
     @PostMapping("/hotSchool1")
     @Operation(summary = "获取本省热门本科院校")
-    public Result<List<BriefSchoolInfoVO>> getSchool1(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
+    public Result<List<SchoolVO>> getSchool1(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
         log.info("获取本省热门本科院校");
         return null;
     }
@@ -221,11 +221,11 @@ public class SchoolController {
      * 获取本省热门专科院校
      *
      * @param provinceQueryDTO 省份查询DTO
-     * @return Result<List<BriefSchoolInfoVO>>
+     * @return Result<List < SchoolVO>>
      */
     @PostMapping("/hotSchool2")
     @Operation(summary = "获取本省热门专科院校")
-    public Result<List<BriefSchoolInfoVO>> getSchool2(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
+    public Result<List<SchoolVO>> getSchool2(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
         log.info("获取本省热门专科院校");
         return null;
     }
@@ -233,11 +233,11 @@ public class SchoolController {
     /**
      * 获取外省热门本科院校
      *
-     * @return Result<List<BriefSchoolInfoVO>>
+     * @return Result<List < SchoolVO>>
      */
     @PostMapping("/hotSchool3")
     @Operation(summary = "获取外省热门本科院校")
-    public Result<List<BriefSchoolInfoVO>> getSchool3() {
+    public Result<List<SchoolVO>> getSchool3() {
         log.info("获取外省热门本科院校");
         return null;
     }
@@ -245,11 +245,11 @@ public class SchoolController {
     /**
      * 获取外省热门专科院校
      *
-     * @return Result<List<BriefSchoolInfoVO>>
+     * @return Result<List < SchoolVO>>
      */
     @PostMapping("/hotSchool4")
     @Operation(summary = "获取外省热门专科院校")
-    public Result<List<BriefSchoolInfoVO>> getSchool4() {
+    public Result<List<SchoolVO>> getSchool4() {
         log.info("获取外省热门专科院校");
         return null;
     }
@@ -284,11 +284,11 @@ public class SchoolController {
      * 分页查询双一流高校
      *
      * @param pageQueryDTO 分页查询DTO
-     * @return Result<PageResult<BriefSchoolInfoVO>>
+     * @return Result<PageResult < BriefSchoolInfoVO>>
      */
     @PostMapping("/classic")
     @Operation(summary = "分页查询双一流高校")
-    public Result<PageResult<School>> classicSchool(@RequestBody PageQueryDTO pageQueryDTO) {
+    public Result<PageResult<SchoolVO>> classicSchool(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("分页查询双一流高校");
         return Result.success(schoolService.getClassicSchool(pageQueryDTO));
     }

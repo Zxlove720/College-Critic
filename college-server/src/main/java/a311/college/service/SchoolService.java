@@ -7,7 +7,6 @@ import a311.college.dto.school.*;
 import a311.college.dto.query.school.GradePageQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.dto.user.UserSearchDTO;
-import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.result.PageResult;
 import a311.college.vo.major.HotMajorVO;
@@ -26,11 +25,11 @@ public interface SchoolService {
 
     void cacheSchool();
 
-    List<School> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO);
+    List<SchoolVO> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO);
 
     SearchVO search(UserSearchDTO userSearchDTO);
 
-    PageResult<School> getSchoolByGrade(GradePageQueryDTO gradePageQueryDTO);
+    PageResult<SchoolVO> getSchoolByGrade(GradePageQueryDTO gradePageQueryDTO);
 
     DetailedSchoolVO getDetailSchool(SchoolDTO schoolDTO);
 
@@ -50,7 +49,7 @@ public interface SchoolService {
 
     List<HotMajorVO> getHotMajorProfessional();
 
-    PageResult<School> getClassicSchool(PageQueryDTO pageQueryDTO);
+    PageResult<SchoolVO> getClassicSchool(PageQueryDTO pageQueryDTO);
 
     List<HotSchoolVO> getHotSchool();
 

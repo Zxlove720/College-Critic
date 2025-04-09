@@ -27,7 +27,7 @@ public class School implements Serializable {
     private String schoolName;
 
     @Schema(description = "所在省份")
-    private ProvinceEnum schoolProvince;
+    private String schoolProvince;
 
     @Schema(description = "具体地址")
     private String schoolAddress;

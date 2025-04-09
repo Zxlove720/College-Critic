@@ -35,6 +35,7 @@
 
     <select id="searchMajor" resultType="a311.college.entity.major.Major">
         select
+            m.major_id,
             m.major_name,
             m.gender,
             m.avg_salary

@@ -120,7 +120,7 @@ public class SchoolServiceImpl implements SchoolService {
         return schoolCache.stream()
                 .filter(s -> schoolPageQueryDTO.getSchoolName() == null || s.getSchoolName().contains(schoolPageQueryDTO.getSchoolName()))
                 .filter(s -> schoolPageQueryDTO.getRankList() == null || schoolPageQueryDTO.getRankList().toString().contains(s.getRankList()))
-                .filter(s -> schoolPageQueryDTO.getProvince() == null || s.getSchoolProvince().getName().contains(schoolPageQueryDTO.getProvince()))
+                .filter(s -> schoolPageQueryDTO.getProvince() == null || s.getSchoolProvince().contains(schoolPageQueryDTO.getProvince()))
                 .collect(Collectors.toList());
     }
 
@@ -205,10 +205,10 @@ public class SchoolServiceImpl implements SchoolService {
                 String[] split = school.getRankList().split(",");
                 StringBuilder rank = new StringBuilder(split[0]);
                 if (split.length == 3) {
-                    rank.append(split[1]).append(split[2]);
+                    rank.append(",").append(split[1]).append(",").append(split[2]);
                 }
                 if (split.length > 3) {
-                    rank.append(split[2]).append(split[3]);
+                    rank.append(",").append(split[2]).append(",").append(split[3]);
                 }
                 school.setRankList(rank.toString());
             }

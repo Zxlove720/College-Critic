@@ -12,7 +12,6 @@
         school_province,
         school_address,
         rank_list,
-        score
         from tb_school
         <where>
             <if test="schoolName != null and schoolName != ''">
@@ -36,10 +35,8 @@
         select s.school_id,
                s.school_head,
                s.school_name,
-               s.school_province,
                s.school_address,
-               s.rank_list,
-               s.score
+               s.rank_list
         from tb_school as s
         where school_name like concat('%', #{schoolName}, '%')
         order by score desc, length(rank_list) desc
@@ -164,7 +161,7 @@
     </select>
 
     <select id="searchSchool" resultType="a311.college.entity.school.School">
-        select school_head, school_name, rank_list, school_address from tb_school as s
+        select school_id, school_name, school_province, rank_list from tb_school as s
         <where>
             <if test="message != null and message != ''">
                 s.school_name like concat('%', #{message}, '%')

@@ -182,6 +182,6 @@ public interface SchoolMapper {
     @Select("select school_id, school_head, school_name from tb_school where rank_list like '%强基计划%'")
     List<School> selectBasicSchool();
 
-    @Select("select school_id, school_head, school_name, rank_list from tb_school where score <= #{score} order by score desc limit 5")
+    @Select("select school_id, school_head, school_name, rank_list from tb_school where score < #{score} order by score desc limit 5")
     List<School> selectCloseSchool(Integer score);
 }

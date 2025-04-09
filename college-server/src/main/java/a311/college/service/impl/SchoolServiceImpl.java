@@ -174,7 +174,8 @@ public class SchoolServiceImpl implements SchoolService {
     /**
      * 根据学校名搜索大学
      *
-     * @param schoolNameQueryDTO@return List<SchoolVO>
+     * @param schoolNameQueryDTO 学校名查询DTO
+     * @return List<SchoolVO>
      */
     @Override
     public List<School> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO) {
@@ -244,7 +245,6 @@ public class SchoolServiceImpl implements SchoolService {
             throw new PageQueryException(SchoolErrorConstant.SCHOOL_GRADE_PAGE_QUERY_ERROR);
         }
     }
-
 
     /**
      * 查询大学具体信息

@@ -53,7 +53,7 @@ public class SchoolController {
      */
     @PostMapping("/page")
     @Operation(summary = "大学分页查询")
-    public Result<PageResult<School>> schoolPageSelect(@RequestBody SchoolPageQueryDTO schoolPageQueryDTO) {
+    public Result<PageResult<SchoolVO>> schoolPageSelect(@RequestBody SchoolPageQueryDTO schoolPageQueryDTO) {
         log.info("大学分页查询...查询参数为：第{}页，每页{}条", schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
         PageResult<School> pageResult = schoolService.pageSelect(schoolPageQueryDTO);
         return Result.success(pageResult);
@@ -288,7 +288,7 @@ public class SchoolController {
      */
     @PostMapping("/classic")
     @Operation(summary = "分页查询双一流高校")
-    public Result<PageResult<BriefSchoolInfoVO>> classicSchool(@RequestBody PageQueryDTO pageQueryDTO) {
+    public Result<PageResult<School>> classicSchool(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("分页查询双一流高校");
         return Result.success(schoolService.getClassicSchool(pageQueryDTO));
     }

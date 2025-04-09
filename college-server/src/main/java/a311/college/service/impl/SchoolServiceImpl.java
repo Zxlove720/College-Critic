@@ -60,7 +60,7 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Resource
-    private RedisTemplate<String, School> redisTemplate;
+    private RedisTemplate<String, SchoolVO> redisTemplate;
 
     /**
      * 大学信息分页查询
@@ -69,21 +69,21 @@ public class SchoolServiceImpl implements SchoolService {
      * @return PageResult<DetailedSchoolVO>
      */
     @Override
-    public PageResult<School> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO) {
+    public PageResult<SchoolVO> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO) {
         String key = SchoolRedisKey.SCHOOL_CACHE_KEY + schoolPageQueryDTO.getProvince() + ":";
-        List<School> schoolCache = redisTemplate.opsForList().range(key, 0, -1);
+        List<SchoolVO> schoolCache = redisTemplate.opsForList().range(key, 0, -1);
         if (schoolCache != null && !schoolCache.isEmpty()) {
             log.info("缓存命中");
-            List<School> filterCache = filterSchools(schoolCache, schoolPageQueryDTO);
+            List<SchoolVO> filterCache = filterSchools(schoolCache, schoolPageQueryDTO);
             return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
         }
         log.info("缓存未命中，开启分页查询");
-        try (Page<School> page = PageHelper.startPage(schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize())) {
+        try (Page<SchoolVO> page = PageHelper.startPage(schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize())) {
             schoolMapper.pageQuery(schoolPageQueryDTO);
             // 获取总记录数
             long total = page.getTotal();
             // 获取总记录
-            List<School> result = page.getResult();
+            List<SchoolVO> result = page.getResult();
             if (!result.isEmpty()) {
                 // 将其添加到缓存
                 redisTemplate.opsForList().rightPushAll(key, result);
@@ -96,16 +96,16 @@ public class SchoolServiceImpl implements SchoolService {
         }
     }
 
-    private PageResult<School> manualPage(List<School> filterCache, Integer page, Integer pageSize) {
+    private PageResult<SchoolVO> manualPage(List<SchoolVO> filterCache, Integer page, Integer pageSize) {
         int total = filterCache.size();
         int start = (page - 1) * pageSize;
         if (start >= total) return new PageResult<>((long) total, Collections.emptyList());
         int end = Math.min(start + pageSize, total);
-        List<School> pageData = filterCache.subList(start, end);
+        List<SchoolVO> pageData = filterCache.subList(start, end);
         return new PageResult<>((long) total, pageData);
     }
 
-    private List<School> filterSchools(List<School> schoolCache, SchoolPageQueryDTO schoolPageQueryDTO) {
+    private List<SchoolVO> filterSchools(List<SchoolVO> schoolCache, SchoolPageQueryDTO schoolPageQueryDTO) {
         return schoolCache.stream()
                 .filter(s -> schoolPageQueryDTO.getSchoolName() == null || s.getSchoolName().contains(schoolPageQueryDTO.getSchoolName()))
                 .filter(s -> schoolPageQueryDTO.getRankList() == null || schoolPageQueryDTO.getRankList().toString().contains(s.getRankList()))
@@ -126,7 +126,7 @@ public class SchoolServiceImpl implements SchoolService {
             String key = SchoolRedisKey.SCHOOL_CACHE_KEY + area + ":";
             try {
                 // 1. 查询数据库
-                List<School> school = schoolMapper.selectByAddress(area);
+                List<SchoolVO> school = schoolMapper.selectByAddress(area);
                 // 2. 删除旧缓存（避免残留旧数据）
                 redisTemplate.delete(key);
                 // 3. 批量插入新数据（使用rightPushAll）
@@ -508,8 +508,8 @@ public class SchoolServiceImpl implements SchoolService {
      * @return PageResult<BriefSchoolInfoVO>
      */
     @Override
-    public PageResult<BriefSchoolInfoVO> getClassicSchool(PageQueryDTO pageQueryDTO) {
-        try (Page<BriefSchoolInfoVO> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
+    public PageResult<School> getClassicSchool(PageQueryDTO pageQueryDTO) {
+        try (Page<School> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
             schoolMapper.selectClassicSchool();
             return new PageResult<>(page.getTotal(), page.getResult());
         } catch (Exception e) {

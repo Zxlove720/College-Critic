@@ -20,7 +20,7 @@ import java.util.List;
  */
 public interface SchoolService {
 
-    PageResult<School> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO);
+    PageResult<SchoolVO> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO);
 
     PageResult<SchoolMajor> pageSelectMajor(SchoolMajorPageQueryDTO schoolMajorPageQueryDTO);
 
@@ -50,7 +50,7 @@ public interface SchoolService {
 
     List<HotMajorVO> getHotMajorProfessional();
 
-    PageResult<BriefSchoolInfoVO> getClassicSchool(PageQueryDTO pageQueryDTO);
+    PageResult<School> getClassicSchool(PageQueryDTO pageQueryDTO);
 
     List<HotSchoolVO> getHotSchool();
 

@@ -28,7 +28,7 @@ public interface SchoolMapper {
      * @param schoolPageQueryDTO 大学分页查询DTO
      * @return Page<DetailedSchoolVO>
      */
-    List<School> pageQuery(SchoolPageQueryDTO schoolPageQueryDTO);
+    List<SchoolVO> pageQuery(SchoolPageQueryDTO schoolPageQueryDTO);
 
     /**
      * 根据省份查询大学
@@ -38,7 +38,7 @@ public interface SchoolMapper {
      */
     @Select("select school_id, school_head, school_name, school_province, school_address, rank_list, score from tb_school " +
             "where school_province = #{province} order by score desc, length(rank_list) desc")
-    List<School> selectByAddress(String province);
+    List<SchoolVO> selectByAddress(String province);
 
     /**
      * 根据学校名搜索大学

@@ -56,7 +56,7 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Resource
-    private RedisTemplate<String, SchoolVO> redisTemplate;
+    private RedisTemplate<String, School> redisTemplate;
 
     /**
      * 大学信息分页查询
@@ -65,21 +65,21 @@ public class SchoolServiceImpl implements SchoolService {
      * @return PageResult<DetailedSchoolVO>
      */
     @Override
-    public PageResult<SchoolVO> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO) {
+    public PageResult<School> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO) {
         String key = SchoolRedisKey.SCHOOL_CACHE_KEY + schoolPageQueryDTO.getProvince() + ":";
-        List<SchoolVO> schoolCache = redisTemplate.opsForList().range(key, 0, -1);
+        List<School> schoolCache = redisTemplate.opsForList().range(key, 0, -1);
         if (schoolCache != null && !schoolCache.isEmpty()) {
             log.info("缓存命中");
-            List<SchoolVO> filterCache = filterSchools(schoolCache, schoolPageQueryDTO);
+            List<School> filterCache = filterSchools(schoolCache, schoolPageQueryDTO);
             return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
         }
         log.info("缓存未命中，开启分页查询");
-        try (Page<SchoolVO> page = PageHelper.startPage(schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize())) {
+        try (Page<School> page = PageHelper.startPage(schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize())) {
             schoolMapper.pageQuery(schoolPageQueryDTO);
             // 获取总记录数
             long total = page.getTotal();
             // 获取总记录
-            List<SchoolVO> result = page.getResult();
+            List<School> result = page.getResult();
             if (!result.isEmpty()) {
                 // 将其添加到缓存
                 redisTemplate.opsForList().rightPushAll(key, result);
@@ -100,12 +100,12 @@ public class SchoolServiceImpl implements SchoolService {
      * @param pageSize    每页大小
      * @return PageResult<SchoolVO>
      */
-    private PageResult<SchoolVO> manualPage(List<SchoolVO> filterCache, Integer page, Integer pageSize) {
+    private PageResult<School> manualPage(List<School> filterCache, Integer page, Integer pageSize) {
         int total = filterCache.size();
         int start = (page - 1) * pageSize;
         if (start >= total) return new PageResult<>((long) total, Collections.emptyList());
         int end = Math.min(start + pageSize, total);
-        List<SchoolVO> pageData = filterCache.subList(start, end);
+        List<School> pageData = filterCache.subList(start, end);
         return new PageResult<>((long) total, pageData);
     }
 
@@ -116,7 +116,7 @@ public class SchoolServiceImpl implements SchoolService {
      * @param schoolPageQueryDTO 学校分页查询DTO
      * @return List<SchoolVO>
      */
-    private List<SchoolVO> filterSchools(List<SchoolVO> schoolCache, SchoolPageQueryDTO schoolPageQueryDTO) {
+    private List<School> filterSchools(List<School> schoolCache, SchoolPageQueryDTO schoolPageQueryDTO) {
         return schoolCache.stream()
                 .filter(s -> schoolPageQueryDTO.getSchoolName() == null || s.getSchoolName().contains(schoolPageQueryDTO.getSchoolName()))
                 .filter(s -> schoolPageQueryDTO.getRankList() == null || schoolPageQueryDTO.getRankList().toString().contains(s.getRankList()))
@@ -136,7 +136,7 @@ public class SchoolServiceImpl implements SchoolService {
             String key = SchoolRedisKey.SCHOOL_CACHE_KEY + area + ":";
             try {
                 // 1. 查询数据库
-                List<SchoolVO> school = schoolMapper.selectByAddress(area);
+                List<School> school = schoolMapper.selectByAddress(area);
                 // 2. 删除旧缓存（避免残留旧数据）
                 redisTemplate.delete(key);
                 // 3. 批量插入新数据（使用rightPushAll）
@@ -177,7 +177,7 @@ public class SchoolServiceImpl implements SchoolService {
      * @param schoolNameQueryDTO@return List<SchoolVO>
      */
     @Override
-    public List<SchoolVO> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO) {
+    public List<School> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO) {
         // 1.根据大学名模糊查询大学
         return schoolMapper.searchBySchoolName(schoolNameQueryDTO.getSchoolName());
     }
@@ -191,18 +191,18 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public SearchVO search(UserSearchDTO userSearchDTO) {
         // 1.用户搜索，先返回学校信息
-        List<SchoolVO> schoolVOList = schoolMapper.searchSchool(userSearchDTO.getMessage());
+        List<School> schoolList = schoolMapper.searchSchool(userSearchDTO.getMessage());
         // 2.用户搜索，再返回专业信息
         List<Major> majorList = majorMapper.searchMajor(userSearchDTO.getMessage());
         // 3.若无匹配的学校（用户输入错误）
-        if (schoolVOList == null || schoolVOList.isEmpty()) {
+        if (schoolList == null || schoolList.isEmpty()) {
             log.info("用户'{}'，没有搜索到学校信息，返回默认学校信息", ThreadLocalUtil.getCurrentId());
             // 3.1返回固定的学校信息
-            schoolVOList = SchoolConstant.getSchool();
+            schoolList = SchoolConstant.getSchool();
         } else {
             // 3.2成功匹配到学校数据，对其进行处理
-            for (SchoolVO SchoolInfoVO : schoolVOList) {
-                String[] split = SchoolInfoVO.getRankList().split(",");
+            for (School school : schoolList) {
+                String[] split = school.getRankList().split(",");
                 StringBuilder rank = new StringBuilder(split[0]);
                 if (split.length == 3) {
                     rank.append(split[1]).append(split[2]);
@@ -210,7 +210,7 @@ public class SchoolServiceImpl implements SchoolService {
                 if (split.length > 3) {
                     rank.append(split[2]).append(split[3]);
                 }
-                SchoolInfoVO.setRankList(rank.toString());
+                school.setRankList(rank.toString());
             }
         }
         // 4.若无匹配的专业（用户输入错误）
@@ -225,7 +225,7 @@ public class SchoolServiceImpl implements SchoolService {
                 major.setAvgSalary(major.getAvgSalary() == 0 ? null : major.getAvgSalary());
             }
         }
-        return new SearchVO(schoolVOList, majorList);
+        return new SearchVO(schoolList, majorList);
     }
 
     /**
@@ -235,9 +235,9 @@ public class SchoolServiceImpl implements SchoolService {
      * @return List<School>
      */
     @Override
-    public PageResult<SchoolVO> getSchoolByGrade(GradePageQueryDTO gradePageQueryDTO) {
-        try (Page<SchoolVO> page = PageHelper.startPage(gradePageQueryDTO.getPage(), gradePageQueryDTO.getPageSize())) {
-            List<SchoolVO> schoolList = schoolMapper.selectByGrade(gradePageQueryDTO);
+    public PageResult<School> getSchoolByGrade(GradePageQueryDTO gradePageQueryDTO) {
+        try (Page<School> page = PageHelper.startPage(gradePageQueryDTO.getPage(), gradePageQueryDTO.getPageSize())) {
+            List<School> schoolList = schoolMapper.selectByGrade(gradePageQueryDTO);
             return new PageResult<>(page.getTotal(), schoolList);
         } catch (Exception e) {
             log.error("按照成绩分页查询失败，错误信息：{}", e.getMessage());
@@ -497,7 +497,7 @@ public class SchoolServiceImpl implements SchoolService {
      * @return List<SchoolVO>
      */
     @Override
-    public List<SchoolVO> getSchool1(ProvinceQueryDTO provinceQueryDTO) {
+    public List<School> getSchool1(ProvinceQueryDTO provinceQueryDTO) {
         return schoolMapper.selectByProvince(provinceQueryDTO.getProvince());
     }
 
@@ -508,7 +508,7 @@ public class SchoolServiceImpl implements SchoolService {
      * @return List<SchoolVO>
      */
     @Override
-    public List<SchoolVO> getSchool2(ProvinceQueryDTO provinceQueryDTO) {
+    public List<School> getSchool2(ProvinceQueryDTO provinceQueryDTO) {
         return schoolMapper.selectByProvinceProfessional(provinceQueryDTO.getProvince());
     }
 
@@ -519,7 +519,7 @@ public class SchoolServiceImpl implements SchoolService {
      * @return List<SchoolVO>
      */
     @Override
-    public List<SchoolVO> getSchool3(ProvinceQueryDTO provinceQueryDTO) {
+    public List<School> getSchool3(ProvinceQueryDTO provinceQueryDTO) {
         return schoolMapper.selectWithoutProvince(provinceQueryDTO.getProvince());
     }
 
@@ -530,7 +530,7 @@ public class SchoolServiceImpl implements SchoolService {
      * @return List<SchoolVO>
      */
     @Override
-    public List<SchoolVO> getSchool4(ProvinceQueryDTO provinceQueryDTO) {
+    public List<School> getSchool4(ProvinceQueryDTO provinceQueryDTO) {
         return schoolMapper.selectWithoutProvinceProfessional(provinceQueryDTO.getProvince());
     }
 
@@ -560,7 +560,7 @@ public class SchoolServiceImpl implements SchoolService {
      * @return List<SchoolVO>
      */
     @Override
-    public List<SchoolVO> getHotSchool() {
+    public List<School> getHotSchool() {
         return SchoolConstant.getHotSchool();
     }
 
@@ -570,7 +570,7 @@ public class SchoolServiceImpl implements SchoolService {
      * @return List<SchoolVO>
      */
     @Override
-    public List<SchoolVO> getBasicSchool() {
+    public List<School> getBasicSchool() {
         return schoolMapper.selectBasicSchool();
     }
 
@@ -582,6 +582,18 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public List<SchoolSceneryVO> getScenery() {
         return schoolMapper.selectScenery();
+    }
+
+    @Override
+    public List<School> getCloseSchool(SchoolDTO schoolDTO) {
+        School school = schoolMapper.selectBySchoolId(schoolDTO.getSchoolId());
+        Integer score = school.getScore();
+        List<School> schoolVOList = schoolMapper.selectCloseSchool(score);
+        for (School closeSchool : schoolVOList) {
+            String[] split = closeSchool.getRankList().split(",");
+            closeSchool.setRankList(split[0] + "," + split[1] + "," + split[2]);
+        }
+        return schoolVOList;
     }
 
 }

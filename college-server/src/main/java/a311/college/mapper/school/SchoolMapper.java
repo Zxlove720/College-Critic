@@ -27,7 +27,7 @@ public interface SchoolMapper {
      * @param schoolPageQueryDTO 大学分页查询DTO
      * @return Page<DetailedSchoolVO>
      */
-    List<SchoolVO> pageQuery(SchoolPageQueryDTO schoolPageQueryDTO);
+    List<School> pageQuery(SchoolPageQueryDTO schoolPageQueryDTO);
 
     /**
      * 根据省份查询大学
@@ -37,7 +37,7 @@ public interface SchoolMapper {
      */
     @Select("select school_id, school_head, school_name, school_province, school_address, rank_list, score from tb_school " +
             "where school_province = #{province} order by score desc, length(rank_list) desc")
-    List<SchoolVO> selectByAddress(String province);
+    List<School> selectByAddress(String province);
 
     /**
      * 根据学校名搜索大学
@@ -45,14 +45,14 @@ public interface SchoolMapper {
      * @param schoolName 学校名
      * @return List<SchoolVO>
      */
-    List<SchoolVO> searchBySchoolName(String schoolName);
+    List<School> searchBySchoolName(String schoolName);
 
     /**
      * 根据成绩查询大学
      *
      * @return List<DetailedSchoolVO>
      */
-    List<SchoolVO> selectByGrade(GradePageQueryDTO gradeDTO);
+    List<School> selectByGrade(GradePageQueryDTO gradeDTO);
 
     /**
      * 获取某一院校的历年分数线
@@ -101,7 +101,7 @@ public interface SchoolMapper {
      * @return List<SchoolVO>
      */
     @Select("select * from tb_school where school_province = #{province} and rank_list like '%本科%' order by score desc limit 9")
-    List<SchoolVO> selectByProvince(String province);
+    List<School> selectByProvince(String province);
 
     /**
      * 根据省份查询专科学校
@@ -110,7 +110,7 @@ public interface SchoolMapper {
      * @return List<SchoolVO>
      */
     @Select("select * from tb_school where school_province = #{province} and rank_list like '%专科%' order by score desc limit 9")
-    List<SchoolVO> selectByProvinceProfessional(String province);
+    List<School> selectByProvinceProfessional(String province);
 
     /**
      * 根据学校名查询学校
@@ -143,7 +143,7 @@ public interface SchoolMapper {
      * @param message 搜索信息
      * @return BriefSchoolInfoVO 简略学校信息
      */
-    List<SchoolVO> searchSchool(String message);
+    List<School> searchSchool(String message);
 
     /**
      * 判断该学校是否已经被收藏
@@ -174,12 +174,14 @@ public interface SchoolMapper {
     List<SchoolSceneryVO> selectScenery();
 
     @Select("select * from tb_school where school_province != #{province} and rank_list like '%本科%' order by score desc limit 9")
-    List<SchoolVO> selectWithoutProvince(String province);
+    List<School> selectWithoutProvince(String province);
 
     @Select("select * from tb_school where school_province != #{province} and rank_list like '%专科%' order by score desc limit 9")
-    List<SchoolVO> selectWithoutProvinceProfessional(String province);
+    List<School> selectWithoutProvinceProfessional(String province);
 
-    @Select("select school_head, school_name from tb_school where rank_list like '%强基计划%'")
-    List<SchoolVO> selectBasicSchool();
+    @Select("select school_id, school_head, school_name from tb_school where rank_list like '%强基计划%'")
+    List<School> selectBasicSchool();
 
+    @Select("select school_id, school_head, school_name, rank_list from tb_school where score <= #{score} order by score desc limit 5")
+    List<School> selectCloseSchool(Integer score);
 }

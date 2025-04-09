@@ -4,7 +4,7 @@
 <mapper namespace="a311.college.mapper.school.SchoolMapper">
 
     <!-- 大学信息分页查询 -->
-    <select id="pageQuery" resultType="a311.college.vo.school.SchoolVO">
+    <select id="pageQuery" resultType="a311.college.entity.school.School">
         select
         school_id,
         school_head,
@@ -32,7 +32,7 @@
         order by score desc, length(rank_list) desc
     </select>
 
-    <select id="searchBySchoolName" resultType="a311.college.vo.school.SchoolVO">
+    <select id="searchBySchoolName" resultType="a311.college.entity.school.School">
         select s.school_id,
                s.school_head,
                s.school_name,
@@ -68,7 +68,7 @@
     </select>
 
 
-    <select id="selectByGrade" resultType="a311.college.vo.school.SchoolVO">
+    <select id="selectByGrade" resultType="a311.college.entity.school.School">
         SELECT DISTINCT s.school_head,
                         s.school_name,
                         s.school_province,
@@ -163,7 +163,7 @@
           and u.id = c.user_id
     </select>
 
-    <select id="searchSchool" resultType="a311.college.vo.school.SchoolVO">
+    <select id="searchSchool" resultType="a311.college.entity.school.School">
         select school_head, school_name, rank_list, school_address from tb_school as s
         <where>
             <if test="message != null and message != ''">

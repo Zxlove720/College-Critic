@@ -1,9 +1,9 @@
 package a311.college.service;
 
-import a311.college.dto.query.PageQueryDTO;
 import a311.college.dto.query.school.*;
 import a311.college.dto.school.*;
 import a311.college.dto.user.UserSearchDTO;
+import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.result.PageResult;
 import a311.college.vo.major.HotMajorVO;
@@ -16,17 +16,17 @@ import java.util.List;
  */
 public interface SchoolService {
 
-    PageResult<SchoolVO> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO);
+    PageResult<School> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO);
 
     PageResult<SchoolMajor> pageSelectMajor(SchoolMajorPageQueryDTO schoolMajorPageQueryDTO);
 
     void cacheSchool();
 
-    List<SchoolVO> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO);
+    List<School> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO);
 
     SearchVO search(UserSearchDTO userSearchDTO);
 
-    PageResult<SchoolVO> getSchoolByGrade(GradePageQueryDTO gradePageQueryDTO);
+    PageResult<School> getSchoolByGrade(GradePageQueryDTO gradePageQueryDTO);
 
     DetailedSchoolVO getDetailSchool(SchoolDTO schoolDTO);
 
@@ -42,22 +42,23 @@ public interface SchoolService {
 
     PageResult<CommentVO> showComment(SchoolCommentPageQueryDTO schoolCommentPageQueryDTO);
 
-    List<SchoolVO> getSchool1(ProvinceQueryDTO provinceQueryDTO);
+    List<School> getSchool1(ProvinceQueryDTO provinceQueryDTO);
 
-    List<SchoolVO> getSchool2(ProvinceQueryDTO provinceQueryDTO);
+    List<School> getSchool2(ProvinceQueryDTO provinceQueryDTO);
 
-    List<SchoolVO> getSchool3(ProvinceQueryDTO provinceQueryDTO);
+    List<School> getSchool3(ProvinceQueryDTO provinceQueryDTO);
 
-    List<SchoolVO> getSchool4(ProvinceQueryDTO provinceQueryDTO);
+    List<School> getSchool4(ProvinceQueryDTO provinceQueryDTO);
 
     List<HotMajorVO> getHotMajor();
 
     List<HotMajorVO> getHotMajorProfessional();
 
-    List<SchoolVO> getHotSchool();
+    List<School> getHotSchool();
 
-    List<SchoolVO> getBasicSchool();
+    List<School> getBasicSchool();
 
     List<SchoolSceneryVO> getScenery();
 
+    List<School> getCloseSchool(SchoolDTO schoolDTO);
 }

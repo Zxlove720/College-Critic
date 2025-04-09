@@ -344,4 +344,5 @@ public class SchoolController {
         SchoolAIMessageVO schoolAIMessageVO = deepSeekService.schoolInformation(schoolAIRequestDTO);
         return Result.success(schoolAIMessageVO);
     }
+
 }

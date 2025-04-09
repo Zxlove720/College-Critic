@@ -55,7 +55,7 @@ public class SchoolController {
     @Operation(summary = "大学分页查询")
     public Result<PageResult<SchoolVO>> schoolPageSelect(@RequestBody SchoolPageQueryDTO schoolPageQueryDTO) {
         log.info("大学分页查询...查询参数为：第{}页，每页{}条", schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
-        PageResult<School> pageResult = schoolService.pageSelect(schoolPageQueryDTO);
+        PageResult<SchoolVO> pageResult = schoolService.pageSelect(schoolPageQueryDTO);
         return Result.success(pageResult);
     }
 

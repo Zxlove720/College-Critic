@@ -535,10 +535,10 @@ public class SchoolServiceImpl implements SchoolService {
     /**
      * 获取热门院校
      *
-     * @return List<BriefSchoolInfoVO>
+     * @return List<SchoolVO>
      */
     @Override
-    public List<HotSchoolVO> getHotSchool() {
+    public List<SchoolVO> getHotSchool() {
         return SchoolConstant.getHotSchool();
     }
 

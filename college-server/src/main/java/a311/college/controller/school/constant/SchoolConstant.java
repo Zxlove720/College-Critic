@@ -2,7 +2,6 @@ package a311.college.controller.school.constant;
 
 import a311.college.entity.major.Major;
 import a311.college.vo.major.HotMajorVO;
-import a311.college.vo.school.HotSchoolVO;
 import a311.college.vo.school.SchoolVO;
 
 import java.util.ArrayList;
@@ -77,19 +76,19 @@ public class SchoolConstant {
         return hotSchoolList;
     }
 
-    public static List<HotSchoolVO> getHotSchool() {
-        List<HotSchoolVO> hotSchoolVOList = new ArrayList<>();
-        hotSchoolVOList.add(new HotSchoolVO(102, "https://static-data.gaokao.cn/upload/logo/102.jpg", "厦门大学", 4421));
-        hotSchoolVOList.add(new HotSchoolVO(99, "https://static-data.gaokao.cn/upload/logo/99.jpg", "四川大学", 3633));
-        hotSchoolVOList.add(new HotSchoolVO(42, "https://static-data.gaokao.cn/upload/logo/42.jpg", "武汉大学", 2941));
-        hotSchoolVOList.add(new HotSchoolVO(104, "https://static-data.gaokao.cn/upload/logo/104.jpg", "中山大学", 2831));
-        hotSchoolVOList.add(new HotSchoolVO(140, "https://static-data.gaokao.cn/upload/logo/140.jpg", "清华大学", 2560));
-        hotSchoolVOList.add(new HotSchoolVO(123, "https://static-data.gaokao.cn/upload/logo/123.jpg", "中南大学", 2521));
-        hotSchoolVOList.add(new HotSchoolVO(111, "https://static-data.gaokao.cn/upload/logo/111.jpg", "南京大学", 2511));
-        hotSchoolVOList.add(new HotSchoolVO(934, "https://static-data.gaokao.cn/upload/logo/934.jpg", "西南大学", 2490));
-        hotSchoolVOList.add(new HotSchoolVO(31, "https://static-data.gaokao.cn/upload/logo/31.jpg", "北京大学", 2440));
-        hotSchoolVOList.add(new HotSchoolVO(661, "https://static-data.gaokao.cn/upload/logo/661.jpg", "电子科技大学", 2334));
-        return hotSchoolVOList;
+    public static List<SchoolVO> getHotSchool() {
+        List<SchoolVO> schoolVOList = new ArrayList<>();
+        schoolVOList.add(new SchoolVO(102, "https://static-data.gaokao.cn/upload/logo/102.jpg", "厦门大学", null, null, null));
+        schoolVOList.add(new SchoolVO(99, "https://static-data.gaokao.cn/upload/logo/99.jpg", "四川大学", null, null, null));
+        schoolVOList.add(new SchoolVO(42, "https://static-data.gaokao.cn/upload/logo/42.jpg", "武汉大学", null, null, null));
+        schoolVOList.add(new SchoolVO(104, "https://static-data.gaokao.cn/upload/logo/104.jpg", "中山大学", null, null, null));
+        schoolVOList.add(new SchoolVO(140, "https://static-data.gaokao.cn/upload/logo/140.jpg", "清华大学", null, null, null));
+        schoolVOList.add(new SchoolVO(123, "https://static-data.gaokao.cn/upload/logo/123.jpg", "中南大学", null, null, null));
+        schoolVOList.add(new SchoolVO(111, "https://static-data.gaokao.cn/upload/logo/111.jpg", "南京大学", null, null, null));
+        schoolVOList.add(new SchoolVO(934, "https://static-data.gaokao.cn/upload/logo/934.jpg", "西南大学", null, null, null));
+        schoolVOList.add(new SchoolVO(31, "https://static-data.gaokao.cn/upload/logo/31.jpg", "北京大学", null, null, null));
+        schoolVOList.add(new SchoolVO(661, "https://static-data.gaokao.cn/upload/logo/661.jpg", "电子科技大学", null, null, null));
+        return schoolVOList;
     }
 
 

@@ -106,7 +106,6 @@ public class SchoolController {
      */
     @PostMapping("grade")
     @Operation(summary = "根据用户成绩查询大学")
-    // TODO查询十分缓慢
     public Result<PageResult<SchoolVO>> getByUserScore(@RequestBody GradePageQueryDTO gradePageQueryDTO) {
         log.info("用户成绩为：{}", gradePageQueryDTO.getGrade());
         return Result.success(schoolService.getSchoolByGrade(gradePageQueryDTO));
@@ -232,11 +231,12 @@ public class SchoolController {
     /**
      * 获取外省热门本科院校
      *
+     * @param provinceQueryDTO 省份查询DTO
      * @return Result<List < SchoolVO>>
      */
     @PostMapping("/hotSchool3")
     @Operation(summary = "获取外省热门本科院校")
-    public Result<List<SchoolVO>> getSchool3() {
+    public Result<List<SchoolVO>> getSchool3(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
         log.info("获取外省热门本科院校");
         return null;
     }
@@ -244,11 +244,12 @@ public class SchoolController {
     /**
      * 获取外省热门专科院校
      *
+     * @param provinceQueryDTO 省份查询DTO
      * @return Result<List < SchoolVO>>
      */
     @PostMapping("/hotSchool4")
     @Operation(summary = "获取外省热门专科院校")
-    public Result<List<SchoolVO>> getSchool4() {
+    public Result<List<SchoolVO>> getSchool4(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
         log.info("获取外省热门专科院校");
         return null;
     }
@@ -295,13 +296,13 @@ public class SchoolController {
     /**
      * 获取热门院校排行榜
      *
-     * @return Result<List < BriefSchoolInfoVO>>
+     * @return Result<List<SchoolVO>>
      */
     @PostMapping("/hotSchool")
     @Operation(summary = "获取热门院校排行榜")
-    public Result<List<HotSchoolVO>> hotSchool() {
+    public Result<List<SchoolVO>> hotSchool() {
         log.info("获取热门院校");
-        List<HotSchoolVO> schoolSimpleVOList = schoolService.getHotSchool();
+        List<SchoolVO> schoolSimpleVOList = schoolService.getHotSchool();
         return Result.success(schoolSimpleVOList);
     }
 

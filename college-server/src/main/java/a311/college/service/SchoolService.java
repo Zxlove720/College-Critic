@@ -51,7 +51,7 @@ public interface SchoolService {
 
     PageResult<SchoolVO> getClassicSchool(PageQueryDTO pageQueryDTO);
 
-    List<HotSchoolVO> getHotSchool();
+    List<SchoolVO> getHotSchool();
 
     List<SchoolSceneryVO> getScenery();
 

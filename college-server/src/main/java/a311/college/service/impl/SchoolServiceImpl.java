@@ -120,7 +120,7 @@ public class SchoolServiceImpl implements SchoolService {
         return schoolCache.stream()
                 .filter(s -> schoolPageQueryDTO.getSchoolName() == null || s.getSchoolName().contains(schoolPageQueryDTO.getSchoolName()))
                 .filter(s -> schoolPageQueryDTO.getRankList() == null || schoolPageQueryDTO.getRankList().toString().contains(s.getRankList()))
-                .filter(s -> schoolPageQueryDTO.getProvince() == null || s.getSchoolProvince().contains(schoolPageQueryDTO.getProvince()))
+                .filter(s -> schoolPageQueryDTO.getProvince() == null || s.getSchoolProvince().getName().contains(schoolPageQueryDTO.getProvince()))
                 .collect(Collectors.toList());
     }
 

@@ -11,6 +11,7 @@ import a311.college.dto.school.*;
 import a311.college.dto.query.school.GradePageQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.dto.user.UserSearchDTO;
+import a311.college.entity.major.Major;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.exception.PageQueryException;
@@ -21,7 +22,6 @@ import a311.college.mapper.school.SchoolMapper;
 import a311.college.result.PageResult;
 import a311.college.service.SchoolService;
 import a311.college.thread.ThreadLocalUtil;
-import a311.college.vo.major.BriefMajorVO;
 import a311.college.vo.major.HotMajorVO;
 import a311.college.vo.major.MajorSimpleVO;
 import a311.college.vo.school.*;
@@ -197,7 +197,7 @@ public class SchoolServiceImpl implements SchoolService {
         // 1.用户搜索，先返回学校信息
         List<SchoolVO> schoolVOList = schoolMapper.searchSchool(userSearchDTO.getMessage());
         // 2.用户搜索，再返回专业信息
-        List<BriefMajorVO> briefMajorVOList = majorMapper.searchMajor(userSearchDTO.getMessage());
+        List<Major> majorList = majorMapper.searchMajor(userSearchDTO.getMessage());
         // 3.若无匹配的学校（用户输入错误）
         if (schoolVOList == null || schoolVOList.isEmpty()) {
             log.info("用户'{}'，没有搜索到学校信息，返回默认学校信息", ThreadLocalUtil.getCurrentId());
@@ -218,19 +218,18 @@ public class SchoolServiceImpl implements SchoolService {
             }
         }
         // 4.若无匹配的专业（用户输入错误）
-        if (briefMajorVOList == null || briefMajorVOList.isEmpty()) {
+        if (majorList == null || majorList.isEmpty()) {
             log.info("用户'{}'，没有搜索到专业信息，返回默认专业信息", ThreadLocalUtil.getCurrentId());
             // 4.1返回固定的专业信息
-            briefMajorVOList = SchoolConstant.getMajor();
+            majorList = SchoolConstant.getMajor();
         } else {
             // 4.2成功匹配到专业数据，对其进行处理
-            for (BriefMajorVO briefMajorVO : briefMajorVOList) {
-                briefMajorVO.setGender(briefMajorVO.getGender().equals("--") ? null : briefMajorVO.getGender());
-                briefMajorVO.setAvgSalary(briefMajorVO.getAvgSalary().equals("0") ? null : briefMajorVO.getAvgSalary());
-                briefMajorVO.setInformation(briefMajorVO.getGender() + "," + briefMajorVO.getAvgSalary());
+            for (Major major : majorList) {
+                major.setGender(major.getGender().equals("--") ? null : major.getGender());
+                major.setAvgSalary(major.getAvgSalary() == 0 ? null : major.getAvgSalary());
             }
         }
-        return new SearchVO(schoolVOList, briefMajorVOList);
+        return new SearchVO(schoolVOList, majorList);
     }
 
     /**

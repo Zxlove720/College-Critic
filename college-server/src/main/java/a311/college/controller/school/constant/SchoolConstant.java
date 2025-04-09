@@ -1,5 +1,6 @@
 package a311.college.controller.school.constant;
 
+import a311.college.entity.major.Major;
 import a311.college.vo.major.BriefMajorVO;
 import a311.college.vo.major.HotMajorVO;
 import a311.college.vo.school.HotSchoolVO;
@@ -43,7 +44,7 @@ public class SchoolConstant {
     /**
      * 获取默认学校
      *
-     * @return List<BriefSchoolInfoVO>
+     * @return List<SchoolVO>
      */
     public static List<SchoolVO> getSchool() {
         List<SchoolVO> schoolVOList = new ArrayList<>();
@@ -58,16 +59,16 @@ public class SchoolConstant {
     /**
      * 获取默认专业
      *
-     * @return List<BriefMajorVO>
+     * @return List<Major>
      */
-    public static List<BriefMajorVO> getMajor() {
-        List<BriefMajorVO> briefMajorVOList = new ArrayList<>();
-        briefMajorVOList.add(new BriefMajorVO("计算机科学与技术", "66:34", "14200", "66:34,14200"));
-        briefMajorVOList.add(new BriefMajorVO("人工智能", "70:30", "17200", "66:34,17200"));
-        briefMajorVOList.add(new BriefMajorVO("电子信息工程", "73:27", "12900", "73:27,12900"));
-        briefMajorVOList.add(new BriefMajorVO("汉语言文学", "16:84", "10900", "16:84,10900"));
-        briefMajorVOList.add(new BriefMajorVO("临床医学", "44:56", "13000", "44:56,13000"));
-        return briefMajorVOList;
+    public static List<Major> getMajor() {
+        List<Major> majorList = new ArrayList<>();
+        majorList.add(new Major(1, "计算机科学与技术", null, null, null, "66:34", 14200));
+        majorList.add(new Major(21, "人工智能", null, null, null, "70:30", 17200));
+        majorList.add(new Major(19, "电子信息工程", null, null, null, "73:27", 12900));
+        majorList.add(new Major(366, "汉语言文学", null, null, null, "16:84", 10900));
+        majorList.add(new Major(274, "临床医学", null, null, null, "44:56", 13000));
+        return majorList;
     }
 
     public static List<String> getHotSchoolList() {

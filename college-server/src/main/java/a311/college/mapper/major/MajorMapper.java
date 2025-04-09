@@ -58,7 +58,7 @@ public interface MajorMapper {
      * @param message 搜索信息
      * @return List<BriefMajorVO>
      */
-    List<BriefMajorVO> searchMajor(String message);
+    List<Major> searchMajor(String message);
 
     /**
      * 根据id查询专业

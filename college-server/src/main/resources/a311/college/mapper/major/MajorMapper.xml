@@ -33,7 +33,7 @@
         where m.major_name like concat('%', #{majorName}, '%')
     </select>
 
-    <select id="searchMajor" resultType="a311.college.vo.major.BriefMajorVO">
+    <select id="searchMajor" resultType="a311.college.entity.major.Major">
         select
             m.major_name,
             m.gender,

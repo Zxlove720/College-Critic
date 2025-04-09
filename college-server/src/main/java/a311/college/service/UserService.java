@@ -6,9 +6,9 @@ import a311.college.dto.school.SchoolDTO;
 import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
 import a311.college.entity.major.Major;
+import a311.college.entity.school.School;
 import a311.college.result.LoginResult;
 import a311.college.result.PageResult;
-import a311.college.vo.school.SchoolVO;
 import a311.college.vo.user.UserVO;
 
 /**
@@ -32,7 +32,7 @@ public interface UserService {
 
     UserVO showMe(Long id);
 
-    PageResult<SchoolVO> showFavoriteSchool(PageQueryDTO pageQueryDTO);
+    PageResult<School> showFavoriteSchool(PageQueryDTO pageQueryDTO);
 
     PageResult<Major> showFavoriteMajor(PageQueryDTO pageQueryDTO);
 

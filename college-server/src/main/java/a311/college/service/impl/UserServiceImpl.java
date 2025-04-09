@@ -19,7 +19,6 @@ import a311.college.result.LoginResult;
 import a311.college.result.PageResult;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
-import a311.college.vo.school.SchoolVO;
 import a311.college.vo.user.UserVO;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
@@ -294,17 +293,11 @@ public class UserServiceImpl implements UserService {
      * @return List<BriefSchoolInfoVO>
      */
     @Override
-    public PageResult<SchoolVO> showFavoriteSchool(PageQueryDTO pageQueryDTO) {
+    public PageResult<School> showFavoriteSchool(PageQueryDTO pageQueryDTO) {
         Long userId = ThreadLocalUtil.getCurrentId();
         try (Page<School> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
             List<School> schoolList = userMapper.getUserFavoriteSchool(userId);
-            List<SchoolVO> result = new ArrayList<>();
-            for (School school : schoolList) {
-                SchoolVO schoolVO = new SchoolVO();
-                BeanUtil.copyProperties(school, schoolVO);
-                result.add(schoolVO);
-            }
-            return new PageResult<>(page.getTotal(), result);
+            return new PageResult<>(page.getTotal(), schoolList);
         } catch (Exception e) {
             log.error("用户收藏学校分页查询失败，报错为：{}", e.getMessage());
             throw new PageQueryException(UserErrorConstant.USER_SCHOOL_ERROR);

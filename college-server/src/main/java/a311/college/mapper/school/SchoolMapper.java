@@ -184,4 +184,5 @@ public interface SchoolMapper {
 
     @Select("select school_id, school_head, school_name, rank_list from tb_school where score < #{score} order by score desc limit 5")
     List<School> selectCloseSchool(Integer score);
+
 }

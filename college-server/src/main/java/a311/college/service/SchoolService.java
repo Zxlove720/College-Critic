@@ -6,6 +6,7 @@ import a311.college.dto.user.UserSearchDTO;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.result.PageResult;
+import a311.college.result.Result;
 import a311.college.vo.major.HotMajorVO;
 import a311.college.vo.school.*;
 
@@ -61,4 +62,5 @@ public interface SchoolService {
     List<SchoolSceneryVO> getScenery();
 
     List<School> getCloseSchool(SchoolDTO schoolDTO);
+
 }

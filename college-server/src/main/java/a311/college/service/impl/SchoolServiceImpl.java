@@ -505,9 +505,13 @@ public class SchoolServiceImpl implements SchoolService {
      * @return List<SchoolVO>
      */
     @Override
-    public List<School> getSchool1(ProvinceQueryDTO provinceQueryDTO) {
-//        schoolMapper.selectBestSchool(provinceQueryDTO.getProvince().getBestSchool());
-        return schoolMapper.selectByProvince(provinceQueryDTO.getProvince().getName());
+    public List<SchoolSceneryVO> getSchool1(ProvinceQueryDTO provinceQueryDTO) {
+        // 1.先精确查询到本省最好的学校
+        SchoolSceneryVO bestSchool =  schoolMapper.selectBestSchool(provinceQueryDTO.getProvince().getBestSchool());
+        // 2.再查询其他学校
+        List<SchoolSceneryVO> schoolSceneryVOList = schoolMapper.selectByProvince(provinceQueryDTO.getProvince().getName());
+        schoolSceneryVOList.add(bestSchool);
+        return schoolSceneryVOList;
     }
 
     /**

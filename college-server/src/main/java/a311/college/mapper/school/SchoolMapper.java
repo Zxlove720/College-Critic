@@ -98,7 +98,7 @@ public interface SchoolMapper {
      * @return List<SchoolVO>
      */
     @Select("select * from tb_school where school_province = #{province} and rank_list like '%本科%' order by score desc limit 9")
-    List<School> selectByProvince(String province);
+    List<SchoolSceneryVO> selectByProvince(String province);
 
     /**
      * 根据省份查询专科学校
@@ -179,4 +179,6 @@ public interface SchoolMapper {
     @Select("select school_id, school_head, school_name, rank_list from tb_school where score < #{score} order by score desc limit 5")
     List<School> selectCloseSchool(Integer score);
 
+    @Select("select * from tb_scenery where school_name = #{bestSchool}")
+    SchoolSceneryVO selectBestSchool(String bestSchool);
 }

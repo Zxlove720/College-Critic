@@ -223,7 +223,7 @@ public class SchoolController {
      */
     @PostMapping("/hotSchool1")
     @Operation(summary = "获取本省热门本科院校")
-    public Result<List<School>> getSchool1(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
+    public Result<List<SchoolSceneryVO>> getSchool1(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
         log.info("获取本省热门本科院校");
         return Result.success(schoolService.getSchool1(provinceQueryDTO));
     }

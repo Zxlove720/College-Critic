@@ -8,9 +8,6 @@
             <if test="username != null and username !=''">
                 username = #{username},
             </if>
-            <if test="email != null and email != ''">
-                email = #{email},
-            </if>
             <if test="head != null">
                 head = #{head},
             </if>
@@ -20,14 +17,8 @@
             <if test="province != null">
                 province = #{province},
             </if>
-            <if test="pattern != null">
-                pattern = #{pattern},
-            </if>
             <if test="subjects != null">
                 subjects = #{subjects},
-            </if>
-            <if test="category != null">
-                category = #{category},
             </if>
             <if test="grade != null">
                 grade = #{grade},

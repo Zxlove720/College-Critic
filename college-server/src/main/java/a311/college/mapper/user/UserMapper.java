@@ -51,10 +51,10 @@ public interface UserMapper {
      * @param user User实体对象
      */
     @AutoFill(OperationType.INSERT)
-    @Insert("insert into tb_user(username, password, phone, email, head, year, province, pattern, subjects," +
-            " category, grade, ranking, city) values " +
-            "(#{username}, #{password}, #{phone}, #{email}, #{head}, #{year}, #{province}, #{pattern}, #{subjects}," +
-            "#{category}, #{grade}, #{ranking}, #{city})")
+    @Insert("insert into tb_user(username, password, phone, head, year, province, subjects," +
+            "  grade, ranking, city) values " +
+            "(#{username}, #{password}, #{phone}, #{head}, #{year}, #{province}, #{subjects}," +
+            " #{grade}, #{ranking}, #{city})")
     void register(User user);
 
     /**
@@ -91,8 +91,6 @@ public interface UserMapper {
      */
     @Select("select * from tb_major where major_id in (select tb_fav_major.major_id from tb_fav_major where user_id = #{userId})")
     List<Major> getUserFavoriteMajor(Long userId);
-
-
 
     /**
      * 根据用户id查询用户评论

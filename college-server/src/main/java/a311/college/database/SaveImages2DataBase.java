@@ -42,14 +42,6 @@ public class SaveImages2DataBase {
                 preparedStatement.setString(1, filePath);
                 preparedStatement.executeUpdate();
                 connection.close();
-
-                Connection connection2 = DriverManager.getConnection("jdbc:mysql://8.137.37.221/college",
-                        "root",
-                        "123456");
-                PreparedStatement preparedStatement2 = connection2.prepareStatement(sql);
-                preparedStatement2.setString(1, filePath);
-                preparedStatement2.executeUpdate();
-                connection2.close();
             }
         }
     }

@@ -236,7 +236,7 @@ public class SchoolController {
      */
     @PostMapping("/hotSchool2")
     @Operation(summary = "获取本省热门专科院校")
-    public Result<List<School>> getSchool2(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
+    public Result<List<SchoolSceneryVO>> getSchool2(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
         log.info("获取本省热门专科院校");
         return Result.success(schoolService.getSchool2(provinceQueryDTO));
     }
@@ -249,7 +249,7 @@ public class SchoolController {
      */
     @PostMapping("/hotSchool3")
     @Operation(summary = "获取外省热门本科院校")
-    public Result<List<School>> getSchool3(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
+    public Result<List<SchoolSceneryVO>> getSchool3(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
         log.info("获取外省热门本科院校");
         return Result.success(schoolService.getSchool3(provinceQueryDTO));
     }
@@ -262,7 +262,7 @@ public class SchoolController {
      */
     @PostMapping("/hotSchool4")
     @Operation(summary = "获取外省热门专科院校")
-    public Result<List<School>> getSchool4(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
+    public Result<List<SchoolSceneryVO>> getSchool4(@RequestBody ProvinceQueryDTO provinceQueryDTO) {
         log.info("获取外省热门专科院校");
         return Result.success(schoolService.getSchool4(provinceQueryDTO));
     }

@@ -107,7 +107,7 @@ public interface SchoolMapper {
      * @return List<SchoolVO>
      */
     @Select("select * from tb_school where school_province = #{province} and rank_list like '%专科%' order by score desc limit 9")
-    List<School> selectByProvinceProfessional(String province);
+    List<SchoolSceneryVO> selectByProvinceProfessional(String province);
 
     /**
      * 根据学校名查询学校
@@ -168,10 +168,10 @@ public interface SchoolMapper {
     void deleteFavoriteSchool(SchoolDTO schoolDTO);
 
     @Select("select * from tb_school where school_province != #{province} and rank_list like '%本科%' order by score desc limit 9")
-    List<School> selectWithoutProvince(String province);
+    List<SchoolSceneryVO> selectWithoutProvince(String province);
 
     @Select("select * from tb_school where school_province != #{province} and rank_list like '%专科%' order by score desc limit 9")
-    List<School> selectWithoutProvinceProfessional(String province);
+    List<SchoolSceneryVO> selectWithoutProvinceProfessional(String province);
 
     @Select("select school_id, school_head, school_name from tb_school where rank_list like '%强基计划%'")
     List<School> selectBasicSchool();
@@ -179,6 +179,12 @@ public interface SchoolMapper {
     @Select("select school_id, school_head, school_name, rank_list from tb_school where score < #{score} order by score desc limit 5")
     List<School> selectCloseSchool(Integer score);
 
-    @Select("select * from tb_scenery where school_name = #{bestSchool}")
-    SchoolSceneryVO selectBestSchool(String bestSchool);
+    @Select("select * from tb_scenery where school_name = #{schoolName}")
+    SchoolSceneryVO selectUniqueSchool(String schoolName);
+
+    @Select("select * from tb_scenery where rank_list like '%本科%' and school_name != #{province}")
+    SchoolSceneryVO selectOtherProvinceSchool(String province);
+
+    @Select("select * from tb_scenery where rank_list like '%专科%' and school_name != #{province}")
+    SchoolSceneryVO selectOtherProvinceProfessional(String province);
 }

@@ -44,11 +44,11 @@ public interface SchoolService {
 
     List<SchoolSceneryVO> getSchool1(ProvinceQueryDTO provinceQueryDTO);
 
-    List<School> getSchool2(ProvinceQueryDTO provinceQueryDTO);
+    List<SchoolSceneryVO> getSchool2(ProvinceQueryDTO provinceQueryDTO);
 
-    List<School> getSchool3(ProvinceQueryDTO provinceQueryDTO);
+    List<SchoolSceneryVO> getSchool3(ProvinceQueryDTO provinceQueryDTO);
 
-    List<School> getSchool4(ProvinceQueryDTO provinceQueryDTO);
+    List<SchoolSceneryVO> getSchool4(ProvinceQueryDTO provinceQueryDTO);
 
     List<HotMajorVO> getHotMajor();
 

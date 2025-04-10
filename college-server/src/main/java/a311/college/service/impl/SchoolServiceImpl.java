@@ -539,7 +539,7 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public List<SchoolSceneryVO> getSchool3(ProvinceQueryDTO provinceQueryDTO) {
         // 1.先精确查询到外省最好的本科
-        SchoolSceneryVO bestSchool =  schoolMapper.selectOtherProvinceSchool(provinceQueryDTO.getProvince().getName());
+        SchoolSceneryVO bestSchool =  schoolMapper.selectOtherProvinceSchool(provinceQueryDTO.getProvince().getBestSchool());
         // 2.再查询其他学校
         List<SchoolSceneryVO> schoolSceneryVOList = schoolMapper.selectWithoutProvince(provinceQueryDTO.getProvince().getName());
         schoolSceneryVOList.add(bestSchool);
@@ -555,7 +555,7 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public List<SchoolSceneryVO> getSchool4(ProvinceQueryDTO provinceQueryDTO) {
         // 1.先精确查询到外省最好的专科
-        SchoolSceneryVO bestSchool =  schoolMapper.selectOtherProvinceProfessional(provinceQueryDTO.getProvince().getName());
+        SchoolSceneryVO bestSchool =  schoolMapper.selectOtherProvinceProfessional(provinceQueryDTO.getProvince().getBestProfessional());
         // 2.再查询其他学校
         List<SchoolSceneryVO> schoolSceneryVOList = schoolMapper.selectWithoutProvinceProfessional(provinceQueryDTO.getProvince().getName());
         schoolSceneryVOList.add(bestSchool);

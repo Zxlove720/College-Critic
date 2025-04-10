@@ -182,9 +182,9 @@ public interface SchoolMapper {
     @Select("select * from tb_scenery where school_name = #{schoolName}")
     SchoolSceneryVO selectUniqueSchool(String schoolName);
 
-    @Select("select * from tb_scenery where rank_list like '%本科%' and school_name != #{province}")
-    SchoolSceneryVO selectOtherProvinceSchool(String province);
+    @Select("select * from tb_scenery where rank_list like '%985%' and school_name != #{schoolName} limit 1")
+    SchoolSceneryVO selectOtherProvinceSchool(String schoolName);
 
-    @Select("select * from tb_scenery where rank_list like '%专科%' and school_name != #{province}")
-    SchoolSceneryVO selectOtherProvinceProfessional(String province);
+    @Select("select * from tb_scenery where rank_list like '%专科%' and school_name != #{schoolName} limit 1")
+    SchoolSceneryVO selectOtherProvinceProfessional(String schoolName);
 }

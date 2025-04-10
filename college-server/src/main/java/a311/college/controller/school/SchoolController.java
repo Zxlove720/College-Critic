@@ -319,19 +319,6 @@ public class SchoolController {
     }
 
     /**
-     * 获取首页校园风光
-     *
-     * @return Result<List < SchoolSceneryVO>>
-     */
-    @PostMapping("/scenery")
-    @Operation(summary = "获取首页校园风光")
-    public Result<List<SchoolSceneryVO>> getSchoolScenery() {
-        log.info("获取校园风光");
-        List<SchoolSceneryVO> schoolSceneryVOList = schoolService.getScenery();
-        return Result.success(schoolSceneryVOList);
-    }
-
-    /**
      * 请求AI获取学校信息
      *
      * @param schoolAIRequestDTO 大学AI请求 DTO

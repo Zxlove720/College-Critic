@@ -59,8 +59,6 @@ public interface SchoolService {
 
     List<School> getBasicSchool();
 
-    List<SchoolSceneryVO> getScenery();
-
     List<School> getCloseSchool(SchoolDTO schoolDTO);
 
 }

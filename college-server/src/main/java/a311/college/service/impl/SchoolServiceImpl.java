@@ -10,14 +10,12 @@ import a311.college.dto.user.UserSearchDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
-import a311.college.enumeration.ProvinceEnum;
 import a311.college.exception.PageQueryException;
 import a311.college.exception.ReAdditionException;
 import a311.college.mapper.major.MajorMapper;
 import a311.college.mapper.resource.ResourceMapper;
 import a311.college.mapper.school.SchoolMapper;
 import a311.college.result.PageResult;
-import a311.college.result.Result;
 import a311.college.service.SchoolService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.major.HotMajorVO;
@@ -582,16 +580,6 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public List<School> getBasicSchool() {
         return schoolMapper.selectBasicSchool();
-    }
-
-    /**
-     * 首页获取校园风光
-     *
-     * @return List<SchoolSceneryVO>
-     */
-    @Override
-    public List<SchoolSceneryVO> getScenery() {
-        return schoolMapper.selectScenery();
     }
 
     @Override

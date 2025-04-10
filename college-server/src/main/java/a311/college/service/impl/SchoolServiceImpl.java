@@ -506,7 +506,8 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public List<School> getSchool1(ProvinceQueryDTO provinceQueryDTO) {
-        return schoolMapper.selectByProvince(provinceQueryDTO.getProvince());
+//        schoolMapper.selectBestSchool(provinceQueryDTO.getProvince().getBestSchool());
+        return schoolMapper.selectByProvince(provinceQueryDTO.getProvince().getName());
     }
 
     /**
@@ -517,7 +518,7 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public List<School> getSchool2(ProvinceQueryDTO provinceQueryDTO) {
-        return schoolMapper.selectByProvinceProfessional(provinceQueryDTO.getProvince());
+        return schoolMapper.selectByProvinceProfessional(provinceQueryDTO.getProvince().getName());
     }
 
     /**
@@ -528,7 +529,7 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public List<School> getSchool3(ProvinceQueryDTO provinceQueryDTO) {
-        return schoolMapper.selectWithoutProvince(provinceQueryDTO.getProvince());
+        return schoolMapper.selectWithoutProvince(provinceQueryDTO.getProvince().getBestSchool());
     }
 
     /**
@@ -539,7 +540,7 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public List<School> getSchool4(ProvinceQueryDTO provinceQueryDTO) {
-        return schoolMapper.selectWithoutProvinceProfessional(provinceQueryDTO.getProvince());
+        return schoolMapper.selectWithoutProvinceProfessional(provinceQueryDTO.getProvince().getBestSchool());
     }
 
     /**

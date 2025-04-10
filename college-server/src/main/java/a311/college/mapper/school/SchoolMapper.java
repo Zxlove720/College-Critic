@@ -8,10 +8,7 @@ import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.vo.school.*;
 import a311.college.vo.major.MajorSimpleVO;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -169,9 +166,6 @@ public interface SchoolMapper {
      */
     @Delete("delete from tb_fav_school where user_id = #{userId} and school_id = #{schoolId}")
     void deleteFavoriteSchool(SchoolDTO schoolDTO);
-
-    @Select("select * from tb_scenery")
-    List<SchoolSceneryVO> selectScenery();
 
     @Select("select * from tb_school where school_province != #{province} and rank_list like '%本科%' order by score desc limit 9")
     List<School> selectWithoutProvince(String province);

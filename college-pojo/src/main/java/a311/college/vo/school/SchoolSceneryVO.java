@@ -14,9 +14,16 @@ import lombok.NoArgsConstructor;
 @Schema(description = "首页校园风光展示VO")
 public class SchoolSceneryVO {
 
-    @Schema(description = "校园风光")
-    private String image;
+    @Schema(description = "学校id")
+    private Integer schoolId;
 
     @Schema(description = "学校名")
     private String schoolName;
+
+    @Schema(description = "等级列表")
+    private String rankList;
+
+    @Schema(description = "校园风光")
+    private String image;
+
 }

@@ -46,11 +46,11 @@ public class SchoolConstant {
      */
     public static List<School> getSchool() {
         List<School> schoolVOList = new ArrayList<>();
-        schoolVOList.add(new School(31, null, "北京大学", "北京", null, "985,211,双一流", null));
-        schoolVOList.add(new School(140, null, "清华大学", "北京", null, "985,211,双一流", null));
-        schoolVOList.add(new School(114, null, "浙江大学", "浙江", null, "985,211,双一流", null));
-        schoolVOList.add(new School(132, null, "复旦大学", "上海", null, "985,211,双一流", null));
-        schoolVOList.add(new School(42, null, "武汉大学", "湖北", null, "985,211,双一流", null));
+        schoolVOList.add(new School(31, null, "北京大学", null, null, "985,211,双一流", null));
+        schoolVOList.add(new School(140, null, "清华大学", null, null, "985,211,双一流", null));
+        schoolVOList.add(new School(114, null, "浙江大学", null, null, "985,211,双一流", null));
+        schoolVOList.add(new School(132, null, "复旦大学", null, null, "985,211,双一流", null));
+        schoolVOList.add(new School(42, null, "武汉大学", null, null, "985,211,双一流", null));
         return schoolVOList;
     }
 

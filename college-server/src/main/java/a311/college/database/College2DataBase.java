@@ -27,7 +27,8 @@ import java.util.regex.Pattern;
 public class College2DataBase {
 
     public static void main(String[] args) {
-        saveSchoolData2DB();
+//        saveSchoolData2DB();
+        saveSchoolInfo();
     }
 
     private static void saveSchoolData2DB() {
@@ -107,6 +108,39 @@ public class College2DataBase {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    private static void saveSchoolInfo() {
+        ObjectMapper mapper = new ObjectMapper();
+        File dir = new File(SchoolDataFilePath.COLLEGE_INFO_PATH);
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            try {
+                SchoolInfo schoolInfo = mapper.readValue(file, SchoolInfo.class);
+                Connection connection = DriverManager.getConnection(DataBaseConnectionConstant.URL, DataBaseConnectionConstant.USERNAME, DataBaseConnectionConstant.PASSWORD);
+                String sql = "update tb_school set rank_item = ?, rank_info = ?, website = ?, phone_number = ?, email = ? where school_name = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                List<String> strings = schoolInfo.getRankingInfo().get(0);
+                strings.remove(strings.size() - 1);
+                String string = strings.toString().replaceAll("\\[", "");
+                String string1 = string.replaceAll("]", "").replaceAll(" ", "");
+                preparedStatement.setString(1, string1);
+                List<String> strings1 = schoolInfo.getRankingInfo().get(1);
+                strings1.remove(strings1.size() - 1);
+                String string2 = strings1.toString().replaceAll("\\[", "").replaceAll("]", "").replaceAll(" ", "");
+                preparedStatement.setString(2, string2);
+                preparedStatement.setString(3, schoolInfo.getOfficialWebsite());
+                preparedStatement.setString(4, schoolInfo.getSchoolPhoneNumber());
+                preparedStatement.setString(5, schoolInfo.getSchoolMailbox());
+                preparedStatement.setString(6, schoolInfo.getSchoolName());
+                preparedStatement.executeUpdate();
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println();
     }
 
 

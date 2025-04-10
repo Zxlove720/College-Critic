@@ -1,7 +1,6 @@
 package a311.college.service.impl;
 
 import a311.college.constant.user.UserErrorConstant;
-import a311.college.constant.user.UserSubjectConstant;
 import a311.college.dto.login.UserLoginSymbolDTO;
 import a311.college.dto.major.MajorDTO;
 import a311.college.dto.query.PageQueryDTO;
@@ -185,18 +184,7 @@ public class UserServiceImpl implements UserService {
         BeanUtil.copyProperties(userDTO, user);
         // 1.2将用户密码进行MD5加密
         user.setPassword(DigestUtil.md5Hex(user.getPassword().getBytes()));
-        // 2.判断用户的高考模模式
-        if (user.getPattern().equals(0)) {
-            // 2.1用户为老高考，需要确定用户的文理分科
-            if (user.getCategory().equals(1)) {
-                // 2.2用户为理科，为其添加选科
-                user.setSubjects(UserSubjectConstant.SCIENCE);
-            } else {
-                // 2.3用户为文科，为其添加选科
-                user.setSubjects(UserSubjectConstant.ART);
-            }
-        }
-        // 3.为新用户初始化收藏表和志愿表
+        // 2.为新用户初始化收藏表和志愿表
         user.setFavoriteTable("");
         user.setCollegeTable("");
         userMapper.register(user);

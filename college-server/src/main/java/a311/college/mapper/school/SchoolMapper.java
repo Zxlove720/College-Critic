@@ -2,7 +2,6 @@ package a311.college.mapper.school;
 
 
 import a311.college.dto.school.*;
-import a311.college.dto.query.school.GradePageQueryDTO;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
@@ -61,6 +60,15 @@ public interface SchoolMapper {
     List<School> searchSchool(String message);
 
     /**
+     * 查询学校具体信息
+     *
+     * @param schoolId 学校id
+     * @return DetailedSchoolVO 学校具体信息VO
+     */
+    @Select("select * from tb_school where school_id = #{schoolId}")
+    DetailedSchoolVO selectDetailBySchoolId(int schoolId);
+
+    /**
      * 获取某一院校的历年分数线
      *
      * @return Result<YearScoreVO>
@@ -75,9 +83,6 @@ public interface SchoolMapper {
      */
     @Select("select * from tb_school where school_id = #{schoolId}")
     School selectBySchoolId(int schoolId);
-
-    @Select("select * from tb_school where school_id = #{schoolId}")
-    DetailedSchoolVO selectDetailBySchoolId(int schoolId);
 
     /**
      * 查询该学校开设专业

@@ -50,8 +50,8 @@ public class SchoolController {
      * @param schoolPageQueryDTO 大学分页查询DTO
      * @return Result<PageResult<School>>
      */
-    @PostMapping("/page")
-    @Operation(summary = "大学分页查询")
+    @PostMapping("/schools")
+    @Operation(summary = "学校分页查询")
     public Result<PageResult<School>> schoolPageSelect(@RequestBody SchoolPageQueryDTO schoolPageQueryDTO) {
         log.info("大学分页查询...查询参数为：第{}页，每页{}条", schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
         PageResult<School> pageResult = schoolService.pageSelect(schoolPageQueryDTO);
@@ -65,7 +65,7 @@ public class SchoolController {
      * @return Result<PageResult < SchoolMajor>>
      */
     @PostMapping("/majors")
-    @Operation(summary = "大学专业分页查询")
+    @Operation(summary = "学校专业分页查询")
     public Result<PageResult<SchoolMajor>> schoolMajorPageSelect(@RequestBody SchoolMajorPageQueryDTO schoolMajorPageQueryDTO) {
         log.info("大学专业分页查询...查询参数为：第{}页，每页{}条", schoolMajorPageQueryDTO.getPage(), schoolMajorPageQueryDTO.getPageSize());
         PageResult<SchoolMajor> pageResult = schoolService.pageSelectMajor(schoolMajorPageQueryDTO);
@@ -73,7 +73,7 @@ public class SchoolController {
     }
 
     /**
-     * 根据学校名搜索大学
+     * 根据学校名搜索学校
      *
      * @param schoolNameQueryDTO 学校名DTO
      * @return Result<List < SchoolVO>>

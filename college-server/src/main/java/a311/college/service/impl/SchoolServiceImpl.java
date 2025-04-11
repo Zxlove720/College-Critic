@@ -176,10 +176,10 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 根据学校名搜索大学
+     * 根据学校名搜索学校
      *
-     * @param schoolNameQueryDTO 学校名查询DTO
-     * @return List<SchoolVO>
+     * @param schoolNameQueryDTO 学校名搜索DTO
+     * @return List<School>
      */
     @Override
     public List<School> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO) {

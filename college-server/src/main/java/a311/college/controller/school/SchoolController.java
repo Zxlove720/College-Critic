@@ -59,9 +59,9 @@ public class SchoolController {
     }
 
     /**
-     * 大学专业分页查询
+     * 学校专业分页查询
      *
-     * @param schoolMajorPageQueryDTO 大学专业分页查询DTO
+     * @param schoolMajorPageQueryDTO 学校专业分页查询DTO
      * @return Result<PageResult < SchoolMajor>>
      */
     @PostMapping("/majors")

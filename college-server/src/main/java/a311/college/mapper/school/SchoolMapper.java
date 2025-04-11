@@ -24,7 +24,7 @@ public interface SchoolMapper {
      * @param schoolPageQueryDTO 学校分页查询DTO
      * @return List<School>
      */
-    List<School> pageQuery(SchoolPageQueryDTO schoolPageQueryDTO);
+    List<School> schoolPageQuery(SchoolPageQueryDTO schoolPageQueryDTO);
 
     /**
      * 根据省份查询学校
@@ -35,6 +35,14 @@ public interface SchoolMapper {
     @Select("select school_id, school_head, school_name, school_province, school_address, rank_list from tb_school " +
             "where school_province = #{province} order by score desc, length(rank_list) desc")
     List<School> selectSchoolByProvince(String province);
+
+    /**
+     * 专业分页查询
+     *
+     * @param schoolMajorPageQueryDTO 学校专业查询DTO
+     * @return List<SchoolMajor> 学校专业实体对象
+     */
+    List<SchoolMajor> schoolMajorPageQuery(SchoolMajorPageQueryDTO schoolMajorPageQueryDTO);
 
     /**
      * 根据学校名搜索大学
@@ -108,23 +116,6 @@ public interface SchoolMapper {
      */
     @Select("select * from tb_school where school_province = #{province} and rank_list like '%专科%' order by score desc limit 9")
     List<SchoolSceneryVO> selectByProvinceProfessional(String province);
-
-    /**
-     * 根据学校名查询学校
-     *
-     * @param schoolName 学校名
-     * @return School 学校实体对象
-     */
-    @Select("select * from tb_school where school_name = #{schoolName}")
-    School selectBySchoolName(String schoolName);
-
-    /**
-     * 专业分页查询
-     *
-     * @param schoolMajorPageQueryDTO 学校专业查询DTO
-     * @return SchoolMajor 学校专业实体对象
-     */
-    List<SchoolMajor> pageQuerySchoolMajor(SchoolMajorPageQueryDTO schoolMajorPageQueryDTO);
 
     /**
      * 查询学校评价

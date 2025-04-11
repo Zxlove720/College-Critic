@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * 大学专业类
+ * 学校专业类
  */
 @Data
 @NoArgsConstructor

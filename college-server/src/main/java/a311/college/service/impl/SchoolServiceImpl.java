@@ -80,7 +80,7 @@ public class SchoolServiceImpl implements SchoolService {
         // 3.缓存未命中，进行分页查询查询数据
         log.info("缓存未命中，开启分页查询");
         try (Page<School> page = PageHelper.startPage(schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize())) {
-            schoolMapper.pageQuery(schoolPageQueryDTO);
+            schoolMapper.schoolPageQuery(schoolPageQueryDTO);
             // 3.1获取总记录条数
             long total = page.getTotal();
             // 3.2获取总记录并返回
@@ -157,15 +157,15 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 大学专业分页查询
+     * 学校专业分页查询
      *
-     * @param schoolMajorPageQueryDTO 大学专业分页查询DTO
+     * @param schoolMajorPageQueryDTO 学校专业分页查询DTO
      * @return PageResult<SchoolMajor>
      */
     @Override
     public PageResult<SchoolMajor> pageSelectMajor(SchoolMajorPageQueryDTO schoolMajorPageQueryDTO) {
         try (Page<SchoolMajor> page = PageHelper.startPage(schoolMajorPageQueryDTO.getPage(), schoolMajorPageQueryDTO.getPageSize())) {
-            schoolMapper.pageQuerySchoolMajor(schoolMajorPageQueryDTO);
+            schoolMapper.schoolMajorPageQuery(schoolMajorPageQueryDTO);
             long total = page.getTotal();
             List<SchoolMajor> result = page.getResult();
             return new PageResult<>(total, result);

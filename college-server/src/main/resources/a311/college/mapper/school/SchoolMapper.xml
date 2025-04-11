@@ -4,7 +4,7 @@
 <mapper namespace="a311.college.mapper.school.SchoolMapper">
 
     <!-- 学校信息分页查询 -->
-    <select id="pageQuery" resultType="a311.college.entity.school.School">
+    <select id="schoolPageQuery" resultType="a311.college.entity.school.School">
         select
         school_id,
         school_head,
@@ -141,7 +141,7 @@
         order by sc.min_ranking
     </select>
 
-    <select id="pageQuerySchoolMajor" resultType="a311.college.entity.school.SchoolMajor">
+    <select id="schoolMajorPageQuery" resultType="a311.college.entity.school.SchoolMajor">
         select sc.major_name, b.batch_name, sc.first_choice, sc.other_choice, sc.special, sc.min_score, sc.min_ranking
         FROM tb_school AS s
                  JOIN tb_province as p ON s.school_id = p.school_id

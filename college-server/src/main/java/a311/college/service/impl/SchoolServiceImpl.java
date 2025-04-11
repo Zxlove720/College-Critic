@@ -237,18 +237,25 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 查询大学具体信息
+     * 查询学校具体信息
      *
-     * @param schoolDTO 大学查询DTO
-     * @return DetailedSchoolVO 大学具体信息
+     * @param schoolDTO 学校查询DTO
+     * @return DetailedSchoolVO 学校具体信息
      */
     @Override
     public DetailedSchoolVO getDetailSchool(SchoolDTO schoolDTO) {
-        // 1.获取大学信息
-        School school = schoolMapper.selectBySchoolId(schoolDTO.getSchoolId());
-        // 2.封装大学详细信息
-        DetailedSchoolVO detailedSchoolVO = new DetailedSchoolVO();
-        BeanUtil.copyProperties(school, detailedSchoolVO);
+        // 1.获取学校信息
+        DetailedSchoolVO detailedSchoolVO = schoolMapper.selectDetailBySchoolId(schoolDTO.getSchoolId());
+        // 2.处理学校排名信息
+        String rankItem = detailedSchoolVO.getRankItem();
+        String rankInfo = detailedSchoolVO.getRankInfo();
+        Map<String, String> rank = new HashMap<>();
+        String[] splitRankItem = rankItem.split(",");
+        String[] splitRankInfo = rankInfo.split(",");
+        for (int i = 0; i < splitRankItem.length; i++) {
+            rank.put(splitRankItem[i], splitRankInfo[i]);
+        }
+        detailedSchoolVO.setRank(rank);
         // 3.返回随机校园风光
         // 3.1获取所有照片
         List<String> imageList = resourceMapper.getAllImages();
@@ -261,10 +268,10 @@ public class SchoolServiceImpl implements SchoolService {
         // 3.3返回随机6张校园风光
         detailedSchoolVO.setImages(images);
         // 4.随机校园配置
-        if (school.getScore() > 60) {
+        if (detailedSchoolVO.getScore() > 60) {
             // 4.1该学校属于好学校
             detailedSchoolVO.setEquipment(highScoreSchool());
-        } else if (school.getRankList().contains("民办")) {
+        } else if (detailedSchoolVO.getRankList().contains("民办")) {
             // 4.2该学校属于有钱的学校
             detailedSchoolVO.setEquipment(richSchool());
         } else {
@@ -273,7 +280,7 @@ public class SchoolServiceImpl implements SchoolService {
         }
         // 5.为该学校封装展示专业
         // 5.1获取专业
-        List<MajorSimpleVO> majorSimpleVOList = schoolMapper.selectMajor(school.getSchoolId());
+        List<MajorSimpleVO> majorSimpleVOList = schoolMapper.selectMajor(detailedSchoolVO.getSchoolId());
         // 5.2调整专业格式
         for (MajorSimpleVO majorSimpleVO : majorSimpleVOList) {
             majorSimpleVO.setMajorName(majorSimpleVO.getMajorName());

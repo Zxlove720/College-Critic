@@ -76,6 +76,9 @@ public interface SchoolMapper {
     @Select("select * from tb_school where school_id = #{schoolId}")
     School selectBySchoolId(int schoolId);
 
+    @Select("select * from tb_school where school_id = #{schoolId}")
+    DetailedSchoolVO selectDetailBySchoolId(int schoolId);
+
     /**
      * 查询该学校开设专业
      *

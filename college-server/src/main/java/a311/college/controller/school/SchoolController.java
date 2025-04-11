@@ -105,7 +105,7 @@ public class SchoolController {
      * @return DetailedSchoolVO 学校具体信息VO
      */
     @PostMapping("/detail")
-    @Operation(summary = "查询学校具体信息")
+    @Operation(summary = "根据学校id查询学校具体信息")
     public Result<DetailedSchoolVO> getDetailSchool(@RequestBody SchoolDTO schoolDTO) {
         DetailedSchoolVO detailedSchoolVO = schoolService.getDetailSchool(schoolDTO);
         return Result.success(detailedSchoolVO);

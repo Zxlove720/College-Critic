@@ -21,7 +21,7 @@ import java.util.Map;
 public class DetailedSchoolVO implements Serializable {
 
     @Schema(description = "大学id")
-    private String schoolId;
+    private Integer schoolId;
 
     @Schema(description = "大学校徽")
     private String schoolHead;
@@ -38,8 +38,17 @@ public class DetailedSchoolVO implements Serializable {
     @Schema(description = "大学等级标签列表")
     private String rankList;
 
+    @Schema(description = "学校综合得分")
+    private Integer score;
+
+    @Schema(description = "排名项目")
+    private String rankItem;
+
+    @Schema(description = "排名信息")
+    private String rankInfo;
+
     @Schema(description = "大学具体排名")
-    private Map<String, String> rankInfo;
+    private Map<String, String> rank;
 
     @Schema(description = "大学官方网站")
     private String website;

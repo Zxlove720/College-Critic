@@ -48,7 +48,7 @@ public class SchoolController {
      * 大学信息分页查询
      *
      * @param schoolPageQueryDTO 大学分页查询DTO
-     * @return Result<PageResult < School>>
+     * @return Result<PageResult<School>>
      */
     @PostMapping("/page")
     @Operation(summary = "大学分页查询")

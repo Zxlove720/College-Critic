@@ -32,11 +32,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
- * 大学相关服务实现类
+ * 学校相关服务实现类
  */
 @Slf4j
 @Service
@@ -59,32 +58,33 @@ public class SchoolServiceImpl implements SchoolService {
     private RedisTemplate<String, School> redisTemplate;
 
     /**
-     * 大学信息分页查询
+     * 学校信息分页查询
      *
-     * @param schoolPageQueryDTO 大学分页查询DTO
+     * @param schoolPageQueryDTO 学校分页查询DTO
      * @return PageResult<DetailedSchoolVO>
      */
     @Override
     public PageResult<School> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO) {
+        // 先从缓存中进行读取，看缓存中是否有需要的数据
+        // 1.封装key
         String key = SchoolRedisKey.SCHOOL_CACHE_KEY + schoolPageQueryDTO.getProvince() + ":";
         List<School> schoolCache = redisTemplate.opsForList().range(key, 0, -1);
         if (schoolCache != null && !schoolCache.isEmpty()) {
+            // 2.成功从缓存中获取数据
             log.info("缓存命中");
+            // 2.1根据查询条件进行过滤
             List<School> filterCache = filterSchools(schoolCache, schoolPageQueryDTO);
+            // 2.2手动进行分页并返回
             return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
         }
+        // 3.缓存未命中，进行分页查询查询数据
         log.info("缓存未命中，开启分页查询");
         try (Page<School> page = PageHelper.startPage(schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize())) {
             schoolMapper.pageQuery(schoolPageQueryDTO);
-            // 获取总记录数
+            // 3.1获取总记录条数
             long total = page.getTotal();
-            // 获取总记录
+            // 3.2获取总记录并返回
             List<School> result = page.getResult();
-            if (!result.isEmpty()) {
-                // 将其添加到缓存
-                redisTemplate.opsForList().rightPushAll(key, result);
-                redisTemplate.expire(key, SchoolRedisKey.SCHOOL_CACHE_TTL, TimeUnit.SECONDS);
-            }
             return new PageResult<>(total, result);
         } catch (Exception e) {
             log.error("大学信息分页查询失败，报错为：{}", e.getMessage());

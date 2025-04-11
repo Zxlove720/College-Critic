@@ -12,6 +12,9 @@ public class SchoolMajorPageQueryDTO {
     @Schema(description = "大学id")
     private Integer schoolId;
 
+    @Schema(description = "首选科目")
+    private String firstChoice;
+
     @Schema(description = "查询页码")
     private Integer page;
 

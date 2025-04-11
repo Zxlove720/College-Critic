@@ -42,7 +42,7 @@
         order by score desc, length(rank_list) desc
     </select>
 
-    <select id="selectScoreByYear" resultType="a311.college.vo.school.YearScoreVO">
+    <select id="selectScoreLineByYear" resultType="a311.college.vo.school.YearScoreVO">
         select distinct y.year,
                         b.batch_name,
                         sc.min_score,
@@ -121,7 +121,7 @@
         LIMIT 5;
     </select>
 
-    <select id="selectAllMajor" resultType="a311.college.entity.school.SchoolMajor">
+    <select id="selectAllSchoolMajor" resultType="a311.college.entity.school.SchoolMajor">
         select distinct sc.major_name,
                         sc.first_choice,
                         sc.other_choice,

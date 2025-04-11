@@ -408,7 +408,7 @@ public class SchoolServiceImpl implements SchoolService {
         int rush = 0;
         // 2.处理专业信息
         // 2.1获得专业信息
-        List<SchoolMajor> schoolMajorList = schoolMapper.selectAllMajor(forecastDTO);
+        List<SchoolMajor> schoolMajorList = schoolMapper.selectAllSchoolMajor(forecastDTO);
         // 2.2将SchoolMajor对象封装为SchoolMajorVO对象返回
         List<SchoolMajorVO> schoolMajorVOList = new ArrayList<>();
         for (SchoolMajor schoolMajor : schoolMajorList) {
@@ -483,7 +483,7 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public List<YearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO) {
-        return schoolMapper.selectScoreByYear(yearScoreDTO);
+        return schoolMapper.selectScoreLineByYear(yearScoreDTO);
     }
 
     /**

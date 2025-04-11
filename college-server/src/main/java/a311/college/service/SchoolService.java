@@ -32,6 +32,8 @@ public interface SchoolService {
 
     void deleteFavoriteSchool(SchoolDTO schoolDTO);
 
+    List<School> getCloseSchool(SchoolDTO schoolDTO);
+
     ForecastVO forecast(ForecastDTO forecastDTO);
 
     List<YearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO);
@@ -55,7 +57,5 @@ public interface SchoolService {
     List<School> getHotSchool();
 
     List<School> getBasicSchool();
-
-    List<School> getCloseSchool(SchoolDTO schoolDTO);
 
 }

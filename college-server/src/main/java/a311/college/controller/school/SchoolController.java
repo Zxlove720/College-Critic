@@ -112,9 +112,9 @@ public class SchoolController {
     }
 
     /**
-     * 用户收藏大学
+     * 用户收藏学校
      *
-     * @param schoolDTO 大学DTO
+     * @param schoolDTO 学校DTO
      */
     @PostMapping("/addSchool")
     @Operation(summary = "用户收藏学校")
@@ -138,13 +138,13 @@ public class SchoolController {
     }
 
     /**
-     * 获取分数相近学校
+     * 根据学校分数获取分数相近学校
      *
      * @param schoolDTO 学校DTO
-     * @return Result<List<SchoolVO>>
+     * @return Result<List<School>>
      */
     @PostMapping("/close")
-    @Operation(summary = "获取分数相近学校")
+    @Operation(summary = "根据学校分数获取分数相近学校")
     public Result<List<School>> scoreCloseSchool(@RequestBody SchoolDTO schoolDTO) {
         log.info("用户'{}'获取和'{}'学校分数相近的学校", schoolDTO.getUserId(), schoolDTO.getSchoolId());
         return Result.success(schoolService.getCloseSchool(schoolDTO));

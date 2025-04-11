@@ -69,6 +69,32 @@ public interface SchoolMapper {
     DetailedSchoolVO selectDetailBySchoolId(int schoolId);
 
     /**
+     * 判断该学校是否已经被收藏
+     *
+     * @param schoolDTO 大学查询DTO
+     * @return int 收藏表中符合条件学校数量
+     */
+    @Select("select count(school_id) from tb_fav_school where user_id = #{userId} and school_id = #{schoolId}")
+    int checkSchoolDistinct(SchoolDTO schoolDTO);
+
+    /**
+     * 添加用户收藏
+     *
+     * @param schoolDTO 学校DTO
+     */
+    @Select("insert into tb_fav_school (user_id, school_id) VALUES (#{userId}, #{schoolId})")
+    void addFavoriteSchool(SchoolDTO schoolDTO);
+
+    /**
+     * 根据学校分数获取分数相近学校
+     *
+     * @param score 学校分数
+     * @return List<School>
+     */
+    @Select("select school_id, school_head, school_name, rank_list from tb_school where score < #{score} order by score desc limit 5")
+    List<School> selectCloseSchool(Integer score);
+
+    /**
      * 获取某一院校的历年分数线
      *
      * @return Result<YearScoreVO>
@@ -134,25 +160,6 @@ public interface SchoolMapper {
      */
     List<CommentVO> selectComment(int schoolId);
 
-
-
-    /**
-     * 判断该学校是否已经被收藏
-     *
-     * @param schoolDTO 大学查询DTO
-     * @return int 收藏表中符合条件学校数量
-     */
-    @Select("select count(school_id) from tb_fav_school where user_id = #{userId} and school_id = #{schoolId}")
-    int checkSchoolDistinct(SchoolDTO schoolDTO);
-
-    /**
-     * 添加用户收藏
-     *
-     * @param schoolDTO 学校DTO
-     */
-    @Select("insert into tb_fav_school (user_id, school_id) VALUES (#{userId}, #{schoolId})")
-    void addFavoriteSchool(SchoolDTO schoolDTO);
-
     /**
      * 删除用户收藏
      *
@@ -169,9 +176,6 @@ public interface SchoolMapper {
 
     @Select("select school_id, school_head, school_name from tb_school where rank_list like '%强基计划%'")
     List<School> selectBasicSchool();
-
-    @Select("select school_id, school_head, school_name, rank_list from tb_school where score < #{score} order by score desc limit 5")
-    List<School> selectCloseSchool(Integer score);
 
     @Select("select * from tb_scenery where school_name = #{schoolName}")
     SchoolSceneryVO selectUniqueSchool(String schoolName);

@@ -350,9 +350,9 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 用户收藏大学
+     * 用户收藏学校
      *
-     * @param schoolDTO 大学DTO
+     * @param schoolDTO 学校DTO
      */
     @Override
     public void addFavoriteSchool(SchoolDTO schoolDTO) {
@@ -367,13 +367,31 @@ public class SchoolServiceImpl implements SchoolService {
     /**
      * 用户删除收藏
      *
-     * @param schoolDTO 大学DTO
+     * @param schoolDTO 学校DTO
      */
     @Override
     public void deleteFavoriteSchool(SchoolDTO schoolDTO) {
         long userId = ThreadLocalUtil.getCurrentId();
         schoolDTO.setUserId(userId);
         schoolMapper.deleteFavoriteSchool(schoolDTO);
+    }
+
+    /**
+     * 根据学校分数获取分数相近学校
+     *
+     * @param schoolDTO 学校DTO
+     * @return List<School>
+     */
+    @Override
+    public List<School> getCloseSchool(SchoolDTO schoolDTO) {
+        School school = schoolMapper.selectBySchoolId(schoolDTO.getSchoolId());
+        Integer score = school.getScore();
+        List<School> schoolVOList = schoolMapper.selectCloseSchool(score);
+        for (School closeSchool : schoolVOList) {
+            String[] split = closeSchool.getRankList().split(",");
+            closeSchool.setRankList(split[0] + "," + split[1] + "," + split[2]);
+        }
+        return schoolVOList;
     }
 
     /**
@@ -599,16 +617,6 @@ public class SchoolServiceImpl implements SchoolService {
         return schoolMapper.selectBasicSchool();
     }
 
-    @Override
-    public List<School> getCloseSchool(SchoolDTO schoolDTO) {
-        School school = schoolMapper.selectBySchoolId(schoolDTO.getSchoolId());
-        Integer score = school.getScore();
-        List<School> schoolVOList = schoolMapper.selectCloseSchool(score);
-        for (School closeSchool : schoolVOList) {
-            String[] split = closeSchool.getRankList().split(",");
-            closeSchool.setRankList(split[0] + "," + split[1] + "," + split[2]);
-        }
-        return schoolVOList;
-    }
+
 
 }

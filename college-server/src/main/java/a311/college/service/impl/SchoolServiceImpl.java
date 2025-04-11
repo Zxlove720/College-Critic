@@ -502,7 +502,7 @@ public class SchoolServiceImpl implements SchoolService {
      * 获取本省热门本科院校
      *
      * @param provinceQueryDTO 省份查询DTO
-     * @return List<SchoolVO>
+     * @return List<SchoolSceneryVO>
      */
     @Override
     public List<SchoolSceneryVO> getSchool1(ProvinceQueryDTO provinceQueryDTO) {
@@ -518,15 +518,15 @@ public class SchoolServiceImpl implements SchoolService {
      * 获取本省热门专科院校
      *
      * @param provinceQueryDTO 省份查询DTO
-     * @return List<SchoolVO>
+     * @return List<SchoolSceneryVO>
      */
     @Override
     public List<SchoolSceneryVO> getSchool2(ProvinceQueryDTO provinceQueryDTO) {
         // 1.先精确查询到本省最好的专科
-        SchoolSceneryVO bestSchool =  schoolMapper.selectUniqueSchool(provinceQueryDTO.getProvince().getBestProfessional());
+        SchoolSceneryVO bestProfessional =  schoolMapper.selectUniqueSchool(provinceQueryDTO.getProvince().getBestProfessional());
         // 2.再查询其他学校
         List<SchoolSceneryVO> schoolSceneryVOList = schoolMapper.selectByProvinceProfessional(provinceQueryDTO.getProvince().getName());
-        schoolSceneryVOList.add(bestSchool);
+        schoolSceneryVOList.add(bestProfessional);
         return schoolSceneryVOList;
     }
 
@@ -534,7 +534,7 @@ public class SchoolServiceImpl implements SchoolService {
      * 获取外省热门本科院校
      *
      * @param provinceQueryDTO 省份查询DTO
-     * @return List<SchoolVO>
+     * @return List<SchoolSceneryVO>
      */
     @Override
     public List<SchoolSceneryVO> getSchool3(ProvinceQueryDTO provinceQueryDTO) {
@@ -550,15 +550,15 @@ public class SchoolServiceImpl implements SchoolService {
      * 获取外省热门专科院校
      *
      * @param provinceQueryDTO 省份查询DTO
-     * @return List<SchoolVO>
+     * @return List<SchoolSceneryVO>
      */
     @Override
     public List<SchoolSceneryVO> getSchool4(ProvinceQueryDTO provinceQueryDTO) {
         // 1.先精确查询到外省最好的专科
-        SchoolSceneryVO bestSchool =  schoolMapper.selectOtherProvinceProfessional(provinceQueryDTO.getProvince().getBestProfessional());
+        SchoolSceneryVO bestProfessional =  schoolMapper.selectOtherProvinceProfessional(provinceQueryDTO.getProvince().getBestProfessional());
         // 2.再查询其他学校
         List<SchoolSceneryVO> schoolSceneryVOList = schoolMapper.selectWithoutProvinceProfessional(provinceQueryDTO.getProvince().getName());
-        schoolSceneryVOList.add(bestSchool);
+        schoolSceneryVOList.add(bestProfessional);
         return schoolSceneryVOList;
     }
 

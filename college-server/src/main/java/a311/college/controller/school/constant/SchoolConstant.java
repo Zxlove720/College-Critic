@@ -2,6 +2,7 @@ package a311.college.controller.school.constant;
 
 import a311.college.entity.major.Major;
 import a311.college.entity.school.School;
+import a311.college.enumeration.ProvinceEnum;
 import a311.college.vo.major.HotMajorVO;
 
 import java.util.ArrayList;
@@ -46,11 +47,11 @@ public class SchoolConstant {
      */
     public static List<School> getSchool() {
         List<School> schoolVOList = new ArrayList<>();
-        schoolVOList.add(new School(31, null, "北京大学", null, null, "985,211,双一流", null));
-        schoolVOList.add(new School(140, null, "清华大学", null, null, "985,211,双一流", null));
-        schoolVOList.add(new School(114, null, "浙江大学", null, null, "985,211,双一流", null));
-        schoolVOList.add(new School(132, null, "复旦大学", null, null, "985,211,双一流", null));
-        schoolVOList.add(new School(42, null, "武汉大学", null, null, "985,211,双一流", null));
+        schoolVOList.add(new School(31, null, "北京大学", ProvinceEnum.getProvince("北京"), null, "985,211,双一流", null));
+        schoolVOList.add(new School(140, null, "清华大学", ProvinceEnum.getProvince("北京"), null, "985,211,双一流", null));
+        schoolVOList.add(new School(114, null, "浙江大学", ProvinceEnum.getProvince("浙江"), null, "985,211,双一流", null));
+        schoolVOList.add(new School(132, null, "复旦大学", ProvinceEnum.getProvince("上海"), null, "985,211,双一流", null));
+        schoolVOList.add(new School(42, null, "武汉大学", ProvinceEnum.getProvince("武汉"), null, "985,211,双一流", null));
         return schoolVOList;
     }
 
@@ -67,13 +68,6 @@ public class SchoolConstant {
         majorList.add(new Major(366, "汉语言文学", null, null, null, "16:84", 10900));
         majorList.add(new Major(274, "临床医学", null, null, null, "44:56", 13000));
         return majorList;
-    }
-
-    public static List<String> getHotSchoolList() {
-        List<String> hotSchoolList = new ArrayList<>();
-        Collections.addAll(hotSchoolList, "清华大学", "浙江大学", "四川大学", "中国科学技术大学", "中山大学", "哈尔滨工业大学",
-                "武汉大学", "厦门大学", "西安交通大学", "重庆文理学院");
-        return hotSchoolList;
     }
 
     public static List<School> getHotSchool() {

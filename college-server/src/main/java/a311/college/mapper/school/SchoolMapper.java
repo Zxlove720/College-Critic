@@ -22,7 +22,7 @@ public interface SchoolMapper {
      * 学校信息分页查询
      *
      * @param schoolPageQueryDTO 学校分页查询DTO
-     * @return List<School>
+     * @return List<School> 学校实体对象
      */
     List<School> schoolPageQuery(SchoolPageQueryDTO schoolPageQueryDTO);
 
@@ -30,7 +30,7 @@ public interface SchoolMapper {
      * 根据省份查询学校
      *
      * @param province 省份名
-     * @return List<DetailedSchoolVO>
+     * @return List<School> 学校实体对象
      */
     @Select("select school_id, school_head, school_name, school_province, school_address, rank_list from tb_school " +
             "where school_province = #{province} order by score desc, length(rank_list) desc")
@@ -48,16 +48,17 @@ public interface SchoolMapper {
      * 根据学校名搜索大学
      *
      * @param schoolName 学校名
-     * @return List<SchoolVO>
+     * @return List<School> 学校实体对象
      */
-    List<School> searchBySchoolName(String schoolName);
+    List<School> selectSchoolBySchoolName(String schoolName);
 
     /**
-     * 根据成绩查询大学
+     * 根据用户搜索内容搜索学校（搜索提示）
      *
-     * @return List<DetailedSchoolVO>
+     * @param message 搜索内容
+     * @return List<School>
      */
-    List<School> selectByGrade(GradePageQueryDTO gradeDTO);
+    List<School> searchSchool(String message);
 
     /**
      * 获取某一院校的历年分数线
@@ -125,13 +126,7 @@ public interface SchoolMapper {
      */
     List<CommentVO> selectComment(int schoolId);
 
-    /**
-     * 学校搜索
-     *
-     * @param message 搜索信息
-     * @return BriefSchoolInfoVO 简略学校信息
-     */
-    List<School> searchSchool(String message);
+
 
     /**
      * 判断该学校是否已经被收藏

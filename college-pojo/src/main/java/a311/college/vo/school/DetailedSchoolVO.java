@@ -38,6 +38,18 @@ public class DetailedSchoolVO implements Serializable {
     @Schema(description = "大学等级标签列表")
     private String rankList;
 
+    @Schema(description = "大学具体排名")
+    private Map<String, String> rankInfo;
+
+    @Schema(description = "大学官方网站")
+    private String website;
+
+    @Schema(description = "大学官方电话")
+    private String phoneNumber;
+
+    @Schema(description = "大学官方邮箱")
+    private String email;
+
     @Schema(description = "校园风光")
     private List<String> images;
 

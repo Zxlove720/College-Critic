@@ -51,10 +51,10 @@ public interface MajorMapper {
     List<Major> searchMajorByName(String majorName);
 
     /**
-     * 专业搜索提示
+     * 根据用户搜索内容搜索专业（搜索提示）
      *
-     * @param message 搜索信息
-     * @return List<BriefMajorVO>
+     * @param message 搜索内容
+     * @return List<Major>
      */
     List<Major> searchMajor(String message);
 

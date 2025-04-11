@@ -51,7 +51,7 @@ public class SchoolController {
      * @return Result<PageResult<School>>
      */
     @PostMapping("/schools")
-    @Operation(summary = "学校分页查询")
+    @Operation(summary = "学校列表分页查询")
     public Result<PageResult<School>> schoolPageSelect(@RequestBody SchoolPageQueryDTO schoolPageQueryDTO) {
         log.info("大学分页查询...查询参数为：第{}页，每页{}条", schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
         PageResult<School> pageResult = schoolService.pageSelect(schoolPageQueryDTO);
@@ -85,40 +85,27 @@ public class SchoolController {
     }
 
     /**
-     * 搜索提示
+     * 根据用户搜索内容进行搜索提示
      *
      * @param userSearchDTO 用户搜索DTO
      * @return Result<SearchVO>
      */
     @PostMapping("/searchList")
-    @Operation(summary = "搜索提示")
-    public Result<SearchVO> search(@RequestBody UserSearchDTO userSearchDTO) {
+    @Operation(summary = "根据用户搜索内容进行搜索提示")
+    public Result<SearchVO> searchList(@RequestBody UserSearchDTO userSearchDTO) {
         log.info("用户正在搜索：{}", userSearchDTO.getMessage());
-        SearchVO searchVO = schoolService.search(userSearchDTO);
+        SearchVO searchVO = schoolService.searchList(userSearchDTO);
         return Result.success(searchVO);
     }
 
     /**
-     * 根据用户成绩查询大学
+     * 查询学校具体信息
      *
-     * @param gradePageQueryDTO 成绩分页查询DTO
-     * @return List<School>
+     * @param schoolDTO 学校DTO
+     * @return DetailedSchoolVO 学校具体信息VO
      */
-    @PostMapping("grade")
-    @Operation(summary = "根据用户成绩查询大学")
-    public Result<PageResult<School>> getByUserScore(@RequestBody GradePageQueryDTO gradePageQueryDTO) {
-        log.info("用户成绩为：{}", gradePageQueryDTO.getGrade());
-        return Result.success(schoolService.getSchoolByGrade(gradePageQueryDTO));
-    }
-
-    /**
-     * 查询大学具体信息
-     *
-     * @param schoolDTO 大学查询DTO
-     * @return DetailedSchoolVO 大学具体信息
-     */
-    @PostMapping("/school")
-    @Operation(summary = "查询大学具体信息")
+    @PostMapping("/detail")
+    @Operation(summary = "查询学校具体信息")
     public Result<DetailedSchoolVO> getDetailSchool(@RequestBody SchoolDTO schoolDTO) {
         DetailedSchoolVO detailedSchoolVO = schoolService.getDetailSchool(schoolDTO);
         return Result.success(detailedSchoolVO);

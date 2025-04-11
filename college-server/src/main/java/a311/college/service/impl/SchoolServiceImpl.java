@@ -183,8 +183,8 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public List<School> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO) {
-        // 1.根据大学名模糊查询大学
-        return schoolMapper.searchBySchoolName(schoolNameQueryDTO.getSchoolName());
+        // 根据大学名模糊搜索学校
+        return schoolMapper.selectSchoolBySchoolName(schoolNameQueryDTO.getSchoolName());
     }
 
     /**
@@ -194,14 +194,16 @@ public class SchoolServiceImpl implements SchoolService {
      * @return SearchVO
      */
     @Override
-    public SearchVO search(UserSearchDTO userSearchDTO) {
-        // 1.用户搜索，先返回学校信息
-        List<School> schoolList = schoolMapper.searchSchool(userSearchDTO.getMessage());
-        // 2.用户搜索，再返回专业信息
-        List<Major> majorList = majorMapper.searchMajor(userSearchDTO.getMessage());
-        // 3.若无匹配的学校（用户输入错误）
+    public SearchVO searchList(UserSearchDTO userSearchDTO) {
+        // 获取用户搜索内容
+        String message = userSearchDTO.getMessage();
+        // 1.根据用户搜索内容搜索学校
+        List<School> schoolList = schoolMapper.searchSchool(message);
+        // 2.根据用户搜索内容搜索专业
+        List<Major> majorList = majorMapper.searchMajor(message);
+        // 3.没有匹配搜索内容的学校
         if (schoolList == null || schoolList.isEmpty()) {
-            log.info("用户'{}'，没有搜索到学校信息，返回默认学校信息", ThreadLocalUtil.getCurrentId());
+            log.info("用户没有搜索到学校信息，返回默认学校信息");
             // 3.1返回固定的学校信息
             schoolList = SchoolConstant.getSchool();
         } else {
@@ -218,9 +220,9 @@ public class SchoolServiceImpl implements SchoolService {
                 school.setRankList(rank.toString());
             }
         }
-        // 4.若无匹配的专业（用户输入错误）
+        // 4.没有匹配搜索内容的专业
         if (majorList == null || majorList.isEmpty()) {
-            log.info("用户'{}'，没有搜索到专业信息，返回默认专业信息", ThreadLocalUtil.getCurrentId());
+            log.info("用户没有搜索到专业信息，返回默认专业信息");
             // 4.1返回固定的专业信息
             majorList = SchoolConstant.getMajor();
         } else {
@@ -230,24 +232,8 @@ public class SchoolServiceImpl implements SchoolService {
                 major.setAvgSalary(major.getAvgSalary() == 0 ? null : major.getAvgSalary());
             }
         }
+        // 返回搜索结果
         return new SearchVO(schoolList, majorList);
-    }
-
-    /**
-     * 根据用户成绩查询大学
-     *
-     * @param gradePageQueryDTO 用户成绩DTO
-     * @return List<School>
-     */
-    @Override
-    public PageResult<School> getSchoolByGrade(GradePageQueryDTO gradePageQueryDTO) {
-        try (Page<School> page = PageHelper.startPage(gradePageQueryDTO.getPage(), gradePageQueryDTO.getPageSize())) {
-            List<School> schoolList = schoolMapper.selectByGrade(gradePageQueryDTO);
-            return new PageResult<>(page.getTotal(), schoolList);
-        } catch (Exception e) {
-            log.error("按照成绩分页查询失败，错误信息：{}", e.getMessage());
-            throw new PageQueryException(SchoolErrorConstant.SCHOOL_GRADE_PAGE_QUERY_ERROR);
-        }
     }
 
     /**

@@ -31,7 +31,7 @@
         order by score desc, length(rank_list) desc
     </select>
 
-    <select id="searchBySchoolName" resultType="a311.college.entity.school.School">
+    <select id="selectSchoolBySchoolName" resultType="a311.college.entity.school.School">
         select s.school_id,
                s.school_head,
                s.school_name,

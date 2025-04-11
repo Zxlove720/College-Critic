@@ -24,9 +24,7 @@ public interface SchoolService {
 
     List<School> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO);
 
-    SearchVO search(UserSearchDTO userSearchDTO);
-
-    PageResult<School> getSchoolByGrade(GradePageQueryDTO gradePageQueryDTO);
+    SearchVO searchList(UserSearchDTO userSearchDTO);
 
     DetailedSchoolVO getDetailSchool(SchoolDTO schoolDTO);
 

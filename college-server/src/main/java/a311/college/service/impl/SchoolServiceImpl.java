@@ -476,7 +476,7 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 获取某一院校的历年分数线
+     * 获取某学校的历年分数线
      *
      * @param yearScoreDTO 分数线查询DTO
      * @return YearScoreVO
@@ -489,11 +489,11 @@ public class SchoolServiceImpl implements SchoolService {
     /**
      * 用户评价大学
      *
-     * @param addCommentDTO 用户评价DTO
+     * @param addSchoolCommentDTO 用户评价DTO
      */
     @Override
-    public void addSchoolComment(AddSchoolCommentDTO addCommentDTO) {
-        schoolMapper.addComment(addCommentDTO);
+    public void addSchoolComment(AddSchoolCommentDTO addSchoolCommentDTO) {
+        schoolMapper.addComment(addSchoolCommentDTO);
     }
 
     /**

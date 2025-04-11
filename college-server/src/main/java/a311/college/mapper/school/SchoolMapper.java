@@ -103,11 +103,19 @@ public interface SchoolMapper {
     List<SchoolMajor> selectAllSchoolMajor(ForecastDTO forecastDTO);
 
     /**
-     * 获取某一院校的历年分数线
+     * 获取某学校的历年分数线
      *
-     * @return Result<YearScoreVO>
+     * @return List<YearScoreVO>
      */
     List<YearScoreVO> selectScoreLineByYear(YearScoreQueryDTO yearScoreDTO);
+
+    /**
+     * 添加用户评价
+     *
+     * @param addCommentDTO 用户评价DTO
+     */
+    @Insert("insert tb_comment set user_id = #{userId}, school_id = #{schoolId}, comment = #{comment}")
+    void addComment(AddSchoolCommentDTO addCommentDTO);
 
     /**
      * 根据大学id查询大学
@@ -125,14 +133,6 @@ public interface SchoolMapper {
      * @return List<MajorSimpleVO>
      */
     List<MajorSimpleVO> selectMajor(int schoolId);
-
-    /**
-     * 添加用户评价
-     *
-     * @param addCommentDTO 用户评价DTO
-     */
-    @Insert("insert tb_comment set user_id = #{userId}, school_id = #{schoolId}, comment = #{comment}")
-    void addComment(AddSchoolCommentDTO addCommentDTO);
 
     /**
      * 根据省份查询本科学校

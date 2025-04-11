@@ -164,27 +164,28 @@ public class SchoolController {
     }
 
     /**
-     * 获取某一院校的历年分数线
+     * 获取某学校的历年分数线
      *
      * @param yearScoreDTO 分数线查询DTO
      * @return List<YearScoreVO>
      */
     @PostMapping("/scoreLine")
-    @Operation(summary = "获取某院校的历年分数线")
+    @Operation(summary = "获取某学校的历年分数线")
     public Result<List<YearScoreVO>> getScoreLine(@RequestBody YearScoreQueryDTO yearScoreDTO) {
         return Result.success(schoolService.scoreLineByYear(yearScoreDTO));
     }
 
     /**
-     * 用户评价大学
+     * 用户评价学校
      *
-     * @param addCommentDTO 评价DTO
+     * @param addSchoolCommentDTO 用户评价学校DTO
      */
+    //TODO建议给评论加上评论时间
     @PostMapping("/comment")
-    @Operation(summary = "用户评价大学")
-    public Result<Void> addSchoolComment(@RequestBody AddSchoolCommentDTO addCommentDTO) {
-        log.info("用户'{}'发表对于'{}'大学的评论", ThreadLocalUtil.getCurrentId(), addCommentDTO.getSchoolId());
-        schoolService.addSchoolComment(addCommentDTO);
+    @Operation(summary = "用户评价学校")
+    public Result<Void> addSchoolComment(@RequestBody AddSchoolCommentDTO addSchoolCommentDTO) {
+        log.info("用户'{}'发表对于'{}'大学的评论", ThreadLocalUtil.getCurrentId(), addSchoolCommentDTO.getSchoolId());
+        schoolService.addSchoolComment(addSchoolCommentDTO);
         return Result.success();
     }
 

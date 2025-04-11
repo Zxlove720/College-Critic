@@ -13,28 +13,28 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 /**
- * 大学相关Mapper
+ * 学校相关Mapper
  */
 @Mapper
 public interface SchoolMapper {
 
     /**
-     * 大学信息分页查询
+     * 学校信息分页查询
      *
-     * @param schoolPageQueryDTO 大学分页查询DTO
-     * @return Page<DetailedSchoolVO>
+     * @param schoolPageQueryDTO 学校分页查询DTO
+     * @return List<School>
      */
     List<School> pageQuery(SchoolPageQueryDTO schoolPageQueryDTO);
 
     /**
-     * 根据省份查询大学
+     * 根据省份查询学校
      *
-     * @param province 省份
+     * @param province 省份名
      * @return List<DetailedSchoolVO>
      */
     @Select("select school_id, school_head, school_name, school_province, school_address, rank_list from tb_school " +
             "where school_province = #{province} order by score desc, length(rank_list) desc")
-    List<School> selectByAddress(String province);
+    List<School> selectSchoolByProvince(String province);
 
     /**
      * 根据学校名搜索大学

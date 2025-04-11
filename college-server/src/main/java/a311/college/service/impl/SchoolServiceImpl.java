@@ -101,16 +101,20 @@ public class SchoolServiceImpl implements SchoolService {
      * @return PageResult<SchoolVO>
      */
     private PageResult<School> manualPage(List<School> filterCache, Integer page, Integer pageSize) {
+        // 1.获取记录总数
         int total = filterCache.size();
+        // 2.获取起始页码
         int start = (page - 1) * pageSize;
         if (start >= total) return new PageResult<>((long) total, Collections.emptyList());
+        // 3.获取结束页码
         int end = Math.min(start + pageSize, total);
+        // 4.分页并返回
         List<School> pageData = filterCache.subList(start, end);
         return new PageResult<>((long) total, pageData);
     }
 
     /**
-     * 从缓存中过滤学校
+     * 从缓存中过滤学校数据
      *
      * @param schoolCache        学校缓存
      * @param schoolPageQueryDTO 学校分页查询DTO
@@ -125,8 +129,8 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 大学信息缓存预热
-     * 添加热点地区的大学到缓存
+     * 学校信息缓存预热
+     * 添加热点地区的学校到缓存
      */
     public void cacheSchool() {
         // 0. 定义热点地区列表
@@ -136,7 +140,7 @@ public class SchoolServiceImpl implements SchoolService {
             String key = SchoolRedisKey.SCHOOL_CACHE_KEY + area + ":";
             try {
                 // 1. 查询数据库
-                List<School> school = schoolMapper.selectByAddress(area);
+                List<School> school = schoolMapper.selectSchoolByProvince(area);
                 // 2. 删除旧缓存（避免残留旧数据）
                 redisTemplate.delete(key);
                 // 3. 批量插入新数据（使用rightPushAll）

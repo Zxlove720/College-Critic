@@ -156,7 +156,10 @@ public interface SchoolMapper {
      * @param schoolName 学校名
      * @return SchoolSceneryVO
      */
-    @Select("select * from tb_scenery where school_name = #{schoolName}")
+    @Select("select s.school_id, s.school_name, s.school_head, s.rank_list, " +
+            "s.rank_item, s.rank_info, s.school_province, sc.image " +
+            "from tb_school as s left join tb_scenery as sc on s.school_id = sc.school_id " +
+            "where s.school_name = #{schoolName}")
     SchoolSceneryVO selectUniqueSchool(String schoolName);
 
     /**
@@ -165,8 +168,9 @@ public interface SchoolMapper {
      * @param province 省份
      * @return List<SchoolSceneryVO>
      */
-    @Select("select * from tb_school where school_province = #{province} and rank_list like '%本科%' order by score desc limit 9")
-    List<SchoolSceneryVO> selectSchoolByProvince(String province);
+    @Select("select * from tb_school where school_province = #{province} and " +
+            "rank_list like '%本科%' and school_name != #{bestSchool} order by score desc limit 6")
+    List<SchoolSceneryVO> selectSchoolByProvince(String province, String bestSchool);
 
     /**
      * 根据省份查询专科学校
@@ -223,4 +227,5 @@ public interface SchoolMapper {
     @Select("select school_id, school_head, school_name from tb_school where rank_list like '%强基计划%'")
     List<School> selectBasicSchool();
 
+    List<SchoolMajor> selectBestMajor(Integer schoolId);
 }

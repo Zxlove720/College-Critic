@@ -14,6 +14,11 @@ import java.util.List;
  */
 public class SchoolConstant {
 
+    /**
+     * 获取热门本科专业
+     *
+     * @return List<HotMajorVO>
+     */
     public static List<HotMajorVO> getHotMajor() {
         List<HotMajorVO> hotMajorVOList = new ArrayList<>();
         hotMajorVOList.add(new HotMajorVO("人工智能", "工学,计算机类", "清华大学", 140, 691));
@@ -29,6 +34,11 @@ public class SchoolConstant {
         return hotMajorVOList;
     }
 
+    /**
+     * 获取热门专科专业
+     *
+     * @return List<HotMajorVO>
+     */
     public static List<HotMajorVO> getHotProfessionalMajor() {
         List<HotMajorVO> hotMajorVOList = new ArrayList<>();
         hotMajorVOList.add(new HotMajorVO("护理", "医药卫生大类,护理类", "南昌职业大学", 909, 291));
@@ -41,7 +51,7 @@ public class SchoolConstant {
     }
 
     /**
-     * 获取默认学校
+     * 获取默认学校当搜索提示
      *
      * @return List<SchoolVO>
      */
@@ -56,7 +66,7 @@ public class SchoolConstant {
     }
 
     /**
-     * 获取默认专业
+     * 获取默认专业当搜索提示
      *
      * @return List<Major>
      */
@@ -70,6 +80,11 @@ public class SchoolConstant {
         return majorList;
     }
 
+    /**
+     * 获取热门大学排行榜
+     *
+     * @return List<School>
+     */
     public static List<School> getHotSchool() {
         List<School> schoolVOList = new ArrayList<>();
         schoolVOList.add(new School(102, "https://static-data.gaokao.cn/upload/logo/102.jpg", "厦门大学", null, null, null, null));
@@ -84,6 +99,5 @@ public class SchoolConstant {
         schoolVOList.add(new School(661, "https://static-data.gaokao.cn/upload/logo/661.jpg", "电子科技大学", null, null, null, null));
         return schoolVOList;
     }
-
 
 }

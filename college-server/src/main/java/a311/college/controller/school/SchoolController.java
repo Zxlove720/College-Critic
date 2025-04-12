@@ -285,7 +285,7 @@ public class SchoolController {
      *
      * @return Result<List < SchoolVO>>
      */
-    @PostMapping("/hotSchool")
+    @PostMapping("/hotRank")
     @Operation(summary = "获取热门院校排行榜")
     public Result<List<School>> hotSchool() {
         log.info("获取热门院校");

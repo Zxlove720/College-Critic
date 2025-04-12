@@ -97,7 +97,7 @@ public interface SchoolMapper {
      * 根据大学id查询大学
      *
      * @param schoolId 大学id
-     * @return SchoolVO
+     * @return School
      */
     @Select("select * from tb_school where school_id = #{schoolId}")
     School selectBySchoolId(int schoolId);
@@ -138,7 +138,7 @@ public interface SchoolMapper {
      * 查询学校评价
      *
      * @param schoolId 学校ID
-     * @return CommentVO实体对象
+     * @return List<CommentVO>
      */
     List<CommentVO> selectComment(int schoolId);
 
@@ -163,7 +163,7 @@ public interface SchoolMapper {
      * 根据省份查询本科学校
      *
      * @param province 省份
-     * @return List<SchoolVO>
+     * @return List<SchoolSceneryVO>
      */
     @Select("select * from tb_school where school_province = #{province} and rank_list like '%本科%' order by score desc limit 9")
     List<SchoolSceneryVO> selectSchoolByProvince(String province);
@@ -172,7 +172,7 @@ public interface SchoolMapper {
      * 根据省份查询专科学校
      *
      * @param province 省份
-     * @return List<SchoolVO>
+     * @return List<SchoolSceneryVO>
      */
     @Select("select * from tb_school where school_province = #{province} and rank_list like '%专科%' order by score desc limit 9")
     List<SchoolSceneryVO> selectProfessionalByProvince(String province);
@@ -218,7 +218,7 @@ public interface SchoolMapper {
     /**
      * 查询强基计划学校
      *
-     * @return School
+     * @return List<School>
      */
     @Select("select school_id, school_head, school_name from tb_school where rank_list like '%强基计划%'")
     List<School> selectBasicSchool();

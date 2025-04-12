@@ -141,7 +141,7 @@ public class SchoolServiceImpl implements SchoolService {
             String key = SchoolRedisKey.SCHOOL_CACHE_KEY + area + ":";
             try {
                 // 1. 查询数据库
-                List<School> school = schoolMapper.selectSchoolByProvince(area);
+                List<School> school = schoolMapper.selectAllSchoolByProvince(area);
                 // 2. 删除旧缓存（避免残留旧数据）
                 redisTemplate.delete(key);
                 // 3. 批量插入新数据（使用rightPushAll）
@@ -526,7 +526,7 @@ public class SchoolServiceImpl implements SchoolService {
         // 1.先精确查询到本省最好的学校
         SchoolSceneryVO bestSchool =  schoolMapper.selectUniqueSchool(provinceQueryDTO.getProvince().getBestSchool());
         // 2.再查询其他学校
-        List<SchoolSceneryVO> schoolSceneryVOList = schoolMapper.selectByProvince(provinceQueryDTO.getProvince().getName());
+        List<SchoolSceneryVO> schoolSceneryVOList = schoolMapper.selectSchoolByProvince(provinceQueryDTO.getProvince().getName());
         schoolSceneryVOList.add(bestSchool);
         return schoolSceneryVOList;
     }
@@ -542,7 +542,7 @@ public class SchoolServiceImpl implements SchoolService {
         // 1.先精确查询到本省最好的专科
         SchoolSceneryVO bestProfessional =  schoolMapper.selectUniqueSchool(provinceQueryDTO.getProvince().getBestProfessional());
         // 2.再查询其他学校
-        List<SchoolSceneryVO> schoolSceneryVOList = schoolMapper.selectByProvinceProfessional(provinceQueryDTO.getProvince().getName());
+        List<SchoolSceneryVO> schoolSceneryVOList = schoolMapper.selectProfessionalByProvince(provinceQueryDTO.getProvince().getName());
         schoolSceneryVOList.add(bestProfessional);
         return schoolSceneryVOList;
     }
@@ -556,9 +556,9 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public List<SchoolSceneryVO> getSchool3(ProvinceQueryDTO provinceQueryDTO) {
         // 1.先精确查询到外省最好的本科
-        SchoolSceneryVO bestSchool =  schoolMapper.selectOtherProvinceSchool(provinceQueryDTO.getProvince().getBestSchool());
+        SchoolSceneryVO bestSchool =  schoolMapper.selectSchoolOtherProvince(provinceQueryDTO.getProvince().getBestSchool());
         // 2.再查询其他学校
-        List<SchoolSceneryVO> schoolSceneryVOList = schoolMapper.selectWithoutProvince(provinceQueryDTO.getProvince().getName());
+        List<SchoolSceneryVO> schoolSceneryVOList = schoolMapper.selectWithoutProvince(provinceQueryDTO.getProvince().getName(), bestSchool.getSchoolName());
         schoolSceneryVOList.add(bestSchool);
         return schoolSceneryVOList;
     }
@@ -572,9 +572,9 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public List<SchoolSceneryVO> getSchool4(ProvinceQueryDTO provinceQueryDTO) {
         // 1.先精确查询到外省最好的专科
-        SchoolSceneryVO bestProfessional =  schoolMapper.selectOtherProvinceProfessional(provinceQueryDTO.getProvince().getBestProfessional());
+        SchoolSceneryVO bestProfessional =  schoolMapper.selectProfessionalOtherProvince(provinceQueryDTO.getProvince().getBestProfessional());
         // 2.再查询其他学校
-        List<SchoolSceneryVO> schoolSceneryVOList = schoolMapper.selectWithoutProvinceProfessional(provinceQueryDTO.getProvince().getName());
+        List<SchoolSceneryVO> schoolSceneryVOList = schoolMapper.selectWithoutProvinceProfessional(provinceQueryDTO.getProvince().getName(), bestProfessional.getSchoolName());
         schoolSceneryVOList.add(bestProfessional);
         return schoolSceneryVOList;
     }

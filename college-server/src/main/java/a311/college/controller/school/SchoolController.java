@@ -180,7 +180,6 @@ public class SchoolController {
      *
      * @param addSchoolCommentDTO 用户评价学校DTO
      */
-    //TODO建议给评论加上评论时间
     @PostMapping("/comment")
     @Operation(summary = "用户评价学校")
     public Result<Void> addSchoolComment(@RequestBody AddSchoolCommentDTO addSchoolCommentDTO) {

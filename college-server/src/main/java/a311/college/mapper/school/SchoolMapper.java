@@ -33,7 +33,7 @@ public interface SchoolMapper {
      */
     @Select("select school_id, school_head, school_name, school_province, school_address, rank_list from tb_school " +
             "where school_province = #{province} order by score desc, length(rank_list) desc")
-    List<School> selectSchoolByProvince(String province);
+    List<School> selectAllSchoolByProvince(String province);
 
     /**
      * 专业分页查询
@@ -86,6 +86,23 @@ public interface SchoolMapper {
     void addFavoriteSchool(SchoolDTO schoolDTO);
 
     /**
+     * 删除用户收藏
+     *
+     * @param schoolDTO 学校DTO
+     */
+    @Delete("delete from tb_fav_school where user_id = #{userId} and school_id = #{schoolId}")
+    void deleteFavoriteSchool(SchoolDTO schoolDTO);
+
+    /**
+     * 根据大学id查询大学
+     *
+     * @param schoolId 大学id
+     * @return SchoolVO
+     */
+    @Select("select * from tb_school where school_id = #{schoolId}")
+    School selectBySchoolId(int schoolId);
+
+    /**
      * 根据学校分数获取分数相近学校
      *
      * @param score 学校分数
@@ -118,13 +135,12 @@ public interface SchoolMapper {
     void addComment(AddSchoolCommentDTO addCommentDTO);
 
     /**
-     * 根据大学id查询大学
+     * 查询学校评价
      *
-     * @param schoolId 大学id
-     * @return SchoolVO
+     * @param schoolId 学校ID
+     * @return CommentVO实体对象
      */
-    @Select("select * from tb_school where school_id = #{schoolId}")
-    School selectBySchoolId(int schoolId);
+    List<CommentVO> selectComment(int schoolId);
 
     /**
      * 查询该学校开设专业
@@ -135,13 +151,22 @@ public interface SchoolMapper {
     List<MajorSimpleVO> selectMajor(int schoolId);
 
     /**
+     * 精确查询本省最好的学校
+     *
+     * @param schoolName 学校名
+     * @return SchoolSceneryVO
+     */
+    @Select("select * from tb_scenery where school_name = #{schoolName}")
+    SchoolSceneryVO selectUniqueSchool(String schoolName);
+
+    /**
      * 根据省份查询本科学校
      *
      * @param province 省份
      * @return List<SchoolVO>
      */
     @Select("select * from tb_school where school_province = #{province} and rank_list like '%本科%' order by score desc limit 9")
-    List<SchoolSceneryVO> selectByProvince(String province);
+    List<SchoolSceneryVO> selectSchoolByProvince(String province);
 
     /**
      * 根据省份查询专科学校
@@ -150,39 +175,52 @@ public interface SchoolMapper {
      * @return List<SchoolVO>
      */
     @Select("select * from tb_school where school_province = #{province} and rank_list like '%专科%' order by score desc limit 9")
-    List<SchoolSceneryVO> selectByProvinceProfessional(String province);
+    List<SchoolSceneryVO> selectProfessionalByProvince(String province);
 
     /**
-     * 查询学校评价
+     * 根据学校名查询外省本科学校
      *
-     * @param schoolId 学校ID
-     * @return CommentVO实体对象
+     * @param schoolName 学校名
+     * @return SchoolSceneryVO
      */
-    List<CommentVO> selectComment(int schoolId);
+    @Select("select * from tb_scenery where rank_list like '%985%' and school_name != #{schoolName} limit 1")
+    SchoolSceneryVO selectSchoolOtherProvince(String schoolName);
 
     /**
-     * 删除用户收藏
+     * 根据学校名查询外省专科学校
      *
-     * @param schoolDTO 学校DTO
+     * @param schoolName 学校名
+     * @return SchoolSceneryVO
      */
-    @Delete("delete from tb_fav_school where user_id = #{userId} and school_id = #{schoolId}")
-    void deleteFavoriteSchool(SchoolDTO schoolDTO);
+    @Select("select * from tb_scenery where rank_list like '%专科%' and school_name != #{schoolName} limit 1")
+    SchoolSceneryVO selectProfessionalOtherProvince(String schoolName);
 
-    @Select("select * from tb_school where school_province != #{province} and rank_list like '%本科%' order by score desc limit 9")
-    List<SchoolSceneryVO> selectWithoutProvince(String province);
+    /**
+     * 查询外省热门本科学校
+     *
+     * @param province   当前省份
+     * @param bestSchool 外省最好本科学校
+     * @return List<SchoolSceneryVO>
+     */
+    @Select("select * from tb_school where school_province != #{province} and school_name != #{bestSchool} and rank_list like '%本科%' order by score desc limit 9")
+    List<SchoolSceneryVO> selectWithoutProvince(String province, String bestSchool);
 
-    @Select("select * from tb_school where school_province != #{province} and rank_list like '%专科%' order by score desc limit 9")
-    List<SchoolSceneryVO> selectWithoutProvinceProfessional(String province);
+    /**
+     * 查询外省热门专科学校
+     *
+     * @param province   当前省份
+     * @param bestSchool 外省最好专科学校
+     * @return List<SchoolSceneryVO>
+     */
+    @Select("select * from tb_school where school_province != #{province} and school_name != #{bestSchool} and rank_list like '%专科%' order by score desc limit 9")
+    List<SchoolSceneryVO> selectWithoutProvinceProfessional(String province, String bestSchool);
 
+    /**
+     * 查询强基计划学校
+     *
+     * @return School
+     */
     @Select("select school_id, school_head, school_name from tb_school where rank_list like '%强基计划%'")
     List<School> selectBasicSchool();
 
-    @Select("select * from tb_scenery where school_name = #{schoolName}")
-    SchoolSceneryVO selectUniqueSchool(String schoolName);
-
-    @Select("select * from tb_scenery where rank_list like '%985%' and school_name != #{schoolName} limit 1")
-    SchoolSceneryVO selectOtherProvinceSchool(String schoolName);
-
-    @Select("select * from tb_scenery where rank_list like '%专科%' and school_name != #{schoolName} limit 1")
-    SchoolSceneryVO selectOtherProvinceProfessional(String schoolName);
 }

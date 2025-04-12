@@ -184,7 +184,7 @@ public interface SchoolMapper {
      * @return SchoolSceneryVO
      */
     @Select("select * from tb_scenery where rank_list like '%985%' and school_name != #{schoolName} limit 1")
-    SchoolSceneryVO selectSchoolOtherProvince(String schoolName);
+    SchoolSceneryVO selectOtherProvinceSchool(String schoolName);
 
     /**
      * 根据学校名查询外省专科学校
@@ -193,7 +193,7 @@ public interface SchoolMapper {
      * @return SchoolSceneryVO
      */
     @Select("select * from tb_scenery where rank_list like '%专科%' and school_name != #{schoolName} limit 1")
-    SchoolSceneryVO selectProfessionalOtherProvince(String schoolName);
+    SchoolSceneryVO selectOtherProvinceProfessional(String schoolName);
 
     /**
      * 查询外省热门本科学校

@@ -6,7 +6,6 @@ import a311.college.enumeration.ProvinceEnum;
 import a311.college.vo.major.HotMajorVO;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -85,7 +84,7 @@ public class SchoolConstant {
      *
      * @return List<School>
      */
-    public static List<School> getHotSchool() {
+    public static List<School> getHotRank() {
         List<School> schoolVOList = new ArrayList<>();
         schoolVOList.add(new School(102, "https://static-data.gaokao.cn/upload/logo/102.jpg", "厦门大学", null, null, null, null));
         schoolVOList.add(new School(99, "https://static-data.gaokao.cn/upload/logo/99.jpg", "四川大学", null, null, null, null));

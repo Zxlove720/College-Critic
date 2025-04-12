@@ -289,7 +289,7 @@ public class SchoolController {
     @Operation(summary = "获取热门院校排行榜")
     public Result<List<School>> hotSchool() {
         log.info("获取热门院校");
-        List<School> schoolSimpleVOList = schoolService.getHotSchool();
+        List<School> schoolSimpleVOList = schoolService.getHotRank();
         return Result.success(schoolSimpleVOList);
     }
 

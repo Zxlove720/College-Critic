@@ -54,7 +54,7 @@ public interface SchoolService {
 
     List<HotMajorVO> getHotMajorProfessional();
 
-    List<School> getHotSchool();
+    List<School> getHotRank();
 
     List<School> getBasicSchool();
 

@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -493,6 +494,7 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public void addSchoolComment(AddSchoolCommentDTO addSchoolCommentDTO) {
+        addSchoolCommentDTO.setTime(LocalDateTime.now());
         schoolMapper.addComment(addSchoolCommentDTO);
     }
 

@@ -31,6 +31,19 @@
         order by score desc, length(rank_list) desc
     </select>
 
+    <!-- 学校专业分页查询 -->
+    <select id="schoolMajorPageQuery" resultType="a311.college.entity.school.SchoolMajor">
+        select sc.major_name, b.batch_name, sc.first_choice, sc.other_choice, sc.special, sc.min_score, sc.min_ranking
+        FROM tb_school AS s
+                 JOIN tb_province as p ON s.school_id = p.school_id
+                 JOIN tb_year as y ON p.province_id = y.province_id
+                 JOIN tb_category as c ON y.year_id = c.year_id
+                 JOIN tb_batch as b ON c.category_id = b.category_id
+                 JOIN tb_score as sc ON b.batch_id = sc.batch_id
+        WHERE s.school_id = #{schoolId}
+    </select>
+
+    <!-- 根据学校名搜索大学 -->
     <select id="selectSchoolBySchoolName" resultType="a311.college.entity.school.School">
         select s.school_id,
                s.school_head,
@@ -42,6 +55,40 @@
         order by score desc, length(rank_list) desc
     </select>
 
+    <!-- 根据用户搜索内容搜索学校（搜索提示） -->
+    <select id="searchSchool" resultType="a311.college.entity.school.School">
+        select school_id, school_name, school_province, rank_list from tb_school as s
+        <where>
+            <if test="message != null and message != ''">
+                s.school_name like concat('%', #{message}, '%')
+            </if>
+        </where>
+        order by score desc
+        LIMIT 5
+    </select>
+
+    <!-- 查询某学校所有专业 -->
+    <select id="selectAllSchoolMajor" resultType="a311.college.entity.school.SchoolMajor">
+        select distinct sc.major_name,
+                        sc.first_choice,
+                        sc.other_choice,
+                        sc.special,
+                        sc.min_score,
+                        sc.min_ranking
+        FROM tb_school as s
+                 JOIN tb_province as p ON s.school_id = p.school_id
+                 JOIN tb_year as y ON p.province_id = y.province_id
+                 JOIN tb_category as c ON y.year_id = c.year_id
+                 JOIN tb_batch as b ON c.category_id = b.category_id
+                 JOIN tb_score as sc ON b.batch_id = sc.batch_id
+        where s.school_id = #{schoolId}
+          and p.province_name = #{province}
+          and sc.first_choice = #{subject}
+          and y.year = (SELECT MAX(year) FROM tb_year WHERE year &lt; YEAR(CURDATE()))
+        order by sc.min_ranking
+    </select>
+
+    <!-- 获取某学校的历年分数线 -->
     <select id="selectScoreLineByYear" resultType="a311.college.vo.school.YearScoreVO">
         select distinct y.year,
                         b.batch_name,
@@ -64,25 +111,16 @@
         LIMIT 5
     </select>
 
-
-    <select id="selectByGrade" resultType="a311.college.entity.school.School">
-        SELECT DISTINCT s.school_head,
-                        s.school_name,
-                        s.school_province,
-                        s.school_address,
-                        s.rank_list,
-                        s.score
-        FROM tb_school as s
-                 JOIN tb_province as p ON s.school_id = p.school_id
-                 JOIN tb_year as y ON p.province_id = y.province_id
-                 JOIN tb_category as c ON y.year_id = c.year_id
-                 JOIN tb_batch as b ON c.category_id = b.category_id
-                 JOIN tb_score as sc ON b.batch_id = sc.batch_id
-        WHERE sc.min_score &lt; #{grade}
-          and p.province_name = #{province}
-        ORDER BY score desc
+    <!-- 查询学校评价 -->
+    <select id="selectComment" resultType="a311.college.vo.school.CommentVO">
+        select u.username, u.head, c.comment, c.time
+        from tb_comment AS c,
+             tb_user AS u
+        where c.school_id = #{schoolId}
+          and u.id = c.user_id
     </select>
 
+    <!-- 查询该学校开设专业 -->
     <select id="selectMajor" resultType="a311.college.vo.major.MajorSimpleVO">
         SELECT category_name, major_name
         FROM (SELECT category_name,
@@ -121,53 +159,4 @@
         LIMIT 5;
     </select>
 
-    <select id="selectAllSchoolMajor" resultType="a311.college.entity.school.SchoolMajor">
-        select distinct sc.major_name,
-                        sc.first_choice,
-                        sc.other_choice,
-                        sc.special,
-                        sc.min_score,
-                        sc.min_ranking
-        FROM tb_school as s
-                 JOIN tb_province as p ON s.school_id = p.school_id
-                 JOIN tb_year as y ON p.province_id = y.province_id
-                 JOIN tb_category as c ON y.year_id = c.year_id
-                 JOIN tb_batch as b ON c.category_id = b.category_id
-                 JOIN tb_score as sc ON b.batch_id = sc.batch_id
-        where s.school_id = #{schoolId}
-          and p.province_name = #{province}
-          and sc.first_choice = #{subject}
-          and y.year = (SELECT MAX(year) FROM tb_year WHERE year &lt; YEAR(CURDATE()))
-        order by sc.min_ranking
-    </select>
-
-    <select id="schoolMajorPageQuery" resultType="a311.college.entity.school.SchoolMajor">
-        select sc.major_name, b.batch_name, sc.first_choice, sc.other_choice, sc.special, sc.min_score, sc.min_ranking
-        FROM tb_school AS s
-                 JOIN tb_province as p ON s.school_id = p.school_id
-                 JOIN tb_year as y ON p.province_id = y.province_id
-                 JOIN tb_category as c ON y.year_id = c.year_id
-                 JOIN tb_batch as b ON c.category_id = b.category_id
-                 JOIN tb_score as sc ON b.batch_id = sc.batch_id
-        WHERE s.school_id = #{schoolId}
-    </select>
-
-    <select id="selectComment" resultType="a311.college.vo.school.CommentVO">
-        select u.username, u.head, c.comment, c.time
-        from tb_comment AS c,
-             tb_user AS u
-        where c.school_id = #{schoolId}
-          and u.id = c.user_id
-    </select>
-
-    <select id="searchSchool" resultType="a311.college.entity.school.School">
-        select school_id, school_name, school_province, rank_list from tb_school as s
-        <where>
-            <if test="message != null and message != ''">
-                s.school_name like concat('%', #{message}, '%')
-            </if>
-        </where>
-        order by score desc
-        LIMIT 5
-    </select>
 </mapper>

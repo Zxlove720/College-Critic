@@ -236,4 +236,11 @@ public interface SchoolMapper {
     @Select("select school_id, school_head, school_name from tb_school where rank_list like '%强基计划%'")
     List<School> selectBasicSchool();
 
+    /**
+     * 查询开设某专业的学校
+     *
+     * @param majorName 专业名
+     * @return List<School>
+     */
+    List<School> selectMajorSchool(String majorName);
 }

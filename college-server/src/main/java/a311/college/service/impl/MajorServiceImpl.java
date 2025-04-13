@@ -8,8 +8,10 @@ import a311.college.dto.query.major.SubjectCategoryQueryDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.major.ProfessionalClass;
 import a311.college.entity.major.SubjectCategory;
+import a311.college.entity.school.School;
 import a311.college.exception.ReAdditionException;
 import a311.college.mapper.major.MajorMapper;
+import a311.college.mapper.school.SchoolMapper;
 import a311.college.result.PageResult;
 import a311.college.service.MajorService;
 import a311.college.thread.ThreadLocalUtil;
@@ -31,9 +33,12 @@ public class MajorServiceImpl implements MajorService {
 
     private final MajorMapper majorMapper;
 
+    private final SchoolMapper schoolMapper;
+
     @Autowired
-    public MajorServiceImpl(MajorMapper majorMapper) {
+    public MajorServiceImpl(MajorMapper majorMapper, SchoolMapper schoolMapper) {
         this.majorMapper = majorMapper;
+        this.schoolMapper = schoolMapper;
     }
 
     /**
@@ -152,6 +157,18 @@ public class MajorServiceImpl implements MajorService {
         long userId = ThreadLocalUtil.getCurrentId();
         majorDTO.setUserId(userId);
         majorMapper.deleteFavoriteMajor(majorDTO);
+    }
+
+    /**
+     * 查询某专业开设学校
+     *
+     * @param majorPageQueryDTO 专业分页查询DTO
+     * @return List<School>
+     */
+    @Override
+    public List<School> querySchools(MajorPageQueryDTO majorPageQueryDTO) {
+        Major major = majorMapper.selectById(majorPageQueryDTO.getMajorId());
+        return schoolMapper.selectMajorSchool(major.getMajorName());
     }
 
 

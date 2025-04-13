@@ -43,4 +43,7 @@ public class DetailMajorVO {
     @Schema(description = "男女比例")
     private String gender;
 
+    @Schema(description = "是否被收藏")
+    private Boolean favorite;
+
 }

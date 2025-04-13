@@ -10,6 +10,7 @@ import a311.college.dto.query.major.ProfessionalClassQueryDTO;
 import a311.college.dto.query.major.SubjectCategoryQueryDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.major.SubjectCategory;
+import a311.college.entity.school.School;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.DeepSeekService;
@@ -139,14 +140,28 @@ public class MajorController {
     /**
      * 用户删除收藏
      *
-     * @param majorDTO 大学DTO
+     * @param majorDTO 专业DTO
      */
     @PostMapping("/deleteFavorite")
-    @Operation(summary = "用户删除收藏")
+    @Operation(summary = "用户删除收藏专业")
     public Result<Void> deleteFavoriteSchool(@RequestBody MajorDTO majorDTO) {
-        log.info("用户'{}'删除收藏'{}'学校", ThreadLocalUtil.getCurrentId(), majorDTO.getMajorId());
+        log.info("用户'{}'删除收藏'{}'专业", ThreadLocalUtil.getCurrentId(), majorDTO.getMajorId());
         majorService.deleteFavoriteMajor(majorDTO);
         return Result.success();
+    }
+
+    /**
+     * 查询开设某专业的学校
+     *
+     * @param majorPageQueryDTO 专业分页查询DTO
+     * @return Result<List<School>>
+     */
+    @PostMapping("/schools")
+    @Operation(summary = "查询专业开设院校")
+    public Result<List<School>> pageQuerySchool(@RequestBody MajorPageQueryDTO majorPageQueryDTO) {
+        log.info("查询开设某专业的学校");
+        List<School> schoolList = majorService.querySchools(majorPageQueryDTO);
+        return Result.success(schoolList);
     }
 
 }

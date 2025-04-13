@@ -159,6 +159,7 @@
         LIMIT 5;
     </select>
 
+    <!-- 查询某学校最好的专业 -->
     <select id="selectBestMajor" resultType="a311.college.entity.school.SchoolMajor">
         select distinct
                        sc.major_name,

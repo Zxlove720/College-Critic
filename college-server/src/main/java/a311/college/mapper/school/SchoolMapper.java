@@ -220,6 +220,15 @@ public interface SchoolMapper {
     List<SchoolSceneryVO> selectWithoutProvinceProfessional(String province, String bestSchool);
 
     /**
+     * 查询某学校最好的专业
+     *
+     * @param schoolId 学校id
+     * @param provinceName 省份
+     * @return  List<SchoolMajor>
+     */
+    List<SchoolMajor> selectBestMajor(Integer schoolId, String provinceName);
+
+    /**
      * 查询强基计划学校
      *
      * @return List<School>
@@ -227,5 +236,4 @@ public interface SchoolMapper {
     @Select("select school_id, school_head, school_name from tb_school where rank_list like '%强基计划%'")
     List<School> selectBasicSchool();
 
-    List<SchoolMajor> selectBestMajor(Integer schoolId, String provinceName);
 }

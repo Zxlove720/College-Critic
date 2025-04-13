@@ -173,7 +173,7 @@
                  JOIN tb_category as c ON y.year_id = c.year_id
                  JOIN tb_batch as b ON c.category_id = b.category_id
                  JOIN tb_score as sc ON b.batch_id = sc.batch_id
-        where s.school_id = #{schoolId} order by sc.min_ranking limit 3
+        where s.school_id = #{schoolId} and p.province_name = #{provinceName} order by sc.min_score desc limit 3
     </select>
 
 </mapper>

@@ -29,5 +29,5 @@ public interface MajorService {
 
     void deleteFavoriteMajor(MajorDTO majorDTO);
 
-    List<School> querySchools(MajorPageQueryDTO majorPageQueryDTO);
+    PageResult<School> querySchools(MajorPageQueryDTO majorPageQueryDTO);
 }

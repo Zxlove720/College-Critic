@@ -181,17 +181,18 @@
 
     <!-- 查询开设某专业的学校 -->
     <select id="selectMajorSchool" resultType="a311.college.entity.school.School">
-        select
+        select distinct
             s.school_id,
             s.school_name,
-            s.rank_list
+            s.rank_list,
+            s.score
         from tb_school as s
                  JOIN tb_province as p ON s.school_id = p.school_id
                  JOIN tb_year as y ON p.province_id = y.province_id
                  JOIN tb_category as c ON y.year_id = c.year_id
                  JOIN tb_batch as b ON c.category_id = b.category_id
                  JOIN tb_score as sc ON b.batch_id = sc.batch_id
-        where sc.major_name = #{majorName} order by s.score desc;
+        where sc.major_name = #{majorName} order by s.score desc
     </select>
 
 </mapper>

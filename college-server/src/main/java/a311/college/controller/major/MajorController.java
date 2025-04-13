@@ -158,10 +158,9 @@ public class MajorController {
      */
     @PostMapping("/schools")
     @Operation(summary = "查询专业开设院校")
-    public Result<List<School>> pageQuerySchool(@RequestBody MajorPageQueryDTO majorPageQueryDTO) {
+    public Result<PageResult<School>> pageQuerySchool(@RequestBody MajorPageQueryDTO majorPageQueryDTO) {
         log.info("查询开设某专业的学校");
-        List<School> schoolList = majorService.querySchools(majorPageQueryDTO);
-        return Result.success(schoolList);
+        return Result.success(majorService.querySchools(majorPageQueryDTO));
     }
 
 }

@@ -166,9 +166,15 @@ public class MajorServiceImpl implements MajorService {
      * @return List<School>
      */
     @Override
-    public List<School> querySchools(MajorPageQueryDTO majorPageQueryDTO) {
+    public PageResult<School> querySchools(MajorPageQueryDTO majorPageQueryDTO) {
         Major major = majorMapper.selectById(majorPageQueryDTO.getMajorId());
-        return schoolMapper.selectMajorSchool(major.getMajorName());
+        try (Page<School> page = PageHelper.startPage(majorPageQueryDTO.getPage(), majorPageQueryDTO.getPageSize())) {
+            schoolMapper.selectMajorSchool(major.getMajorName());
+            return new PageResult<>(page.getTotal(), page.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

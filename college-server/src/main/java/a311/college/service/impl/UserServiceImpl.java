@@ -18,6 +18,7 @@ import a311.college.result.LoginResult;
 import a311.college.result.PageResult;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
+import a311.college.vo.school.CommentVO;
 import a311.college.vo.user.UserVO;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
@@ -335,12 +336,28 @@ public class UserServiceImpl implements UserService {
      * @return List<String> 用户评论列表
      */
     @Override
-    public PageResult<String> showComment(PageQueryDTO pageQueryDTO) {
-        try (Page<String> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
-            List<String> commentList = userMapper.selectComment(ThreadLocalUtil.getCurrentId());
+    public PageResult<CommentVO> showSchoolComment(PageQueryDTO pageQueryDTO) {
+        try (Page<CommentVO> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
+            List<CommentVO> commentList = userMapper.selectSchoolComment(ThreadLocalUtil.getCurrentId());
             return new PageResult<>(page.getTotal(), commentList);
         } catch (Exception e) {
-            log.error("用户评论分页查询失败，报错为：{}", e.getMessage());
+            log.error("用户学校评论分页查询失败，报错为：{}", e.getMessage());
+            throw new PageQueryException(UserErrorConstant.USER_COMMENT_ERROR);
+        }
+    }
+
+    /**
+     * 查看用户评论
+     *
+     * @return List<String> 用户评论列表
+     */
+    @Override
+    public PageResult<CommentVO> showMajorComment(PageQueryDTO pageQueryDTO) {
+        try (Page<CommentVO> page = PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize())) {
+            List<CommentVO> commentList = userMapper.selectMajorComment(ThreadLocalUtil.getCurrentId());
+            return new PageResult<>(page.getTotal(), commentList);
+        } catch (Exception e) {
+            log.error("用户专业评论分页查询失败，报错为：{}", e.getMessage());
             throw new PageQueryException(UserErrorConstant.USER_COMMENT_ERROR);
         }
     }

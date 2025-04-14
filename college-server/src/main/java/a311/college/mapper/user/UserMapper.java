@@ -7,6 +7,7 @@ import a311.college.entity.major.Major;
 import a311.college.entity.school.School;
 import a311.college.entity.user.User;
 import a311.college.enumeration.OperationType;
+import a311.college.vo.school.CommentVO;
 import a311.college.vo.user.UserVO;
 import org.apache.ibatis.annotations.*;
 
@@ -93,13 +94,22 @@ public interface UserMapper {
     List<Major> getUserFavoriteMajor(Long userId);
 
     /**
-     * 分页查询查询用户评论
+     * 分页查询用户学校评论
      *
      * @param id 用户id
-     * @return 用户评论
+     * @return List<CommentVO>
      */
-    @Select(("select comment from tb_comment where user_id = #{id}"))
-    List<String> selectComment(Long id);
+    @Select(("select comment_id, school_id, school_name, comment, time from tb_comment where user_id = #{id} and school_id is not null"))
+    List<CommentVO> selectSchoolComment(Long id);
+
+    /**
+     * 分页查询用户专业评论
+     *
+     * @param id 用户id
+     * @return List<CommentVO>
+     */
+    @Select(("select comment_id, major_id, major_name, comment, time from tb_comment where user_id = #{id} and major_id is not null"))
+    List<CommentVO> selectMajorComment(Long id);
 
     /**
      * 删除用户id
@@ -124,6 +134,7 @@ public interface UserMapper {
 
     @Delete("delete from tb_fav_major where user_id = #{userId} and major_id = #{majorId}")
     void deleteFavoriteMajor(MajorDTO majorDTO);
+
 
 
 }

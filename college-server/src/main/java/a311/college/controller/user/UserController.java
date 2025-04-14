@@ -13,6 +13,7 @@ import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
+import a311.college.vo.school.CommentVO;
 import a311.college.vo.user.UserVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -193,16 +194,29 @@ public class UserController {
     }
 
     /**
-     * 分页查询用户评论
+     * 分页查询用户学校评论
      *
      * @param pageQueryDTO 分页查询DTO
-     * @return Result<List < String>> 评论列表
+     * @return Result<PageResult<CommentVO>> 评论列表
      */
-    @PostMapping("/comment")
+    @PostMapping("/schoolComment")
     @Operation(summary = "分页查询用户评论")
-    public Result<PageResult<String>> showComment(@RequestBody PageQueryDTO pageQueryDTO) {
-        log.info("用户'{}'正在查看评论", ThreadLocalUtil.getCurrentId());
-        return Result.success(userService.showComment(pageQueryDTO));
+    public Result<PageResult<CommentVO>> showSchoolComment(@RequestBody PageQueryDTO pageQueryDTO) {
+        log.info("用户'{}'正在查看学校评论", ThreadLocalUtil.getCurrentId());
+        return Result.success(userService.showSchoolComment(pageQueryDTO));
+    }
+
+    /**
+     * 分页查询用户专业评论
+     *
+     * @param pageQueryDTO 分页查询DTO
+     * @return Result<PageResult<CommentVO>> 评论列表
+     */
+    @PostMapping("/majorComment")
+    @Operation(summary = "分页查询用户评论")
+    public Result<PageResult<CommentVO>> showMajorComment(@RequestBody PageQueryDTO pageQueryDTO) {
+        log.info("用户'{}'正在查看专业评论", ThreadLocalUtil.getCurrentId());
+        return Result.success(userService.showMajorComment(pageQueryDTO));
     }
 
     /**

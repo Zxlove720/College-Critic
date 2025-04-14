@@ -9,6 +9,7 @@ import a311.college.entity.major.Major;
 import a311.college.entity.school.School;
 import a311.college.result.LoginResult;
 import a311.college.result.PageResult;
+import a311.college.vo.school.CommentVO;
 import a311.college.vo.user.UserVO;
 
 /**
@@ -40,7 +41,9 @@ public interface UserService {
 
     void deleteMajor(MajorDTO majorDTO);
 
-    PageResult<String> showComment(PageQueryDTO pageQueryDTO);
+    PageResult<CommentVO> showSchoolComment(PageQueryDTO pageQueryDTO);
+
+    PageResult<CommentVO> showMajorComment(PageQueryDTO pageQueryDTO);
 
     void deleteComment(UserCommentDTO userCommentDTO);
 

@@ -9,6 +9,7 @@ import a311.college.entity.major.Major;
 import a311.college.entity.major.ProfessionalClass;
 import a311.college.entity.major.SubjectCategory;
 import a311.college.entity.school.School;
+import a311.college.exception.PageQueryException;
 import a311.college.exception.ReAdditionException;
 import a311.college.mapper.major.MajorMapper;
 import a311.college.mapper.school.SchoolMapper;
@@ -80,7 +81,7 @@ public class MajorServiceImpl implements MajorService {
             return new PageResult<>(total, result);
         } catch (Exception e) {
             log.error("专业分页查询失败，报错为：{}", e.getMessage());
-            return null;
+            throw new PageQueryException(e.getMessage());
         }
     }
 
@@ -172,8 +173,8 @@ public class MajorServiceImpl implements MajorService {
             schoolMapper.selectMajorSchool(major.getMajorName());
             return new PageResult<>(page.getTotal(), page.getResult());
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            log.error("学校分页查询失败，报错为：{}", e.getMessage());
+            throw new PageQueryException(e.getMessage());
         }
     }
 

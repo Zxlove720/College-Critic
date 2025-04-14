@@ -170,7 +170,7 @@ public class MajorController {
     @PostMapping("/comment")
     @Operation(summary = "用户评价专业")
     public Result<Void> comment(@RequestBody AddCommentDTO addCommentDTO) {
-        log.info("用户'{}'发表对于'{}'大学的评论", ThreadLocalUtil.getCurrentId(), addCommentDTO.getSchoolId());
+        log.info("用户'{}'发表对于'{}'专业的评论", ThreadLocalUtil.getCurrentId(), addCommentDTO.getMajorId());
         majorService.addMajorComment(addCommentDTO);
         return Result.success();
     }

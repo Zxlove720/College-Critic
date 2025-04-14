@@ -99,6 +99,7 @@ public interface MajorMapper {
      *
      * @param addCommentDTO 用户评价DTO
      */
-    @Insert("insert into tb_comment set user_id = #{userId}, major_id = #{majorId}, comment = #{comment}, time = #{localDateTime}")
+    @Insert("insert into tb_comment set user_id = #{userId}, major_id = #{majorId}, major_name = #{majorName}, " +
+            "comment = #{comment}, time = #{time}")
     void addComment(AddCommentDTO addCommentDTO);
 }

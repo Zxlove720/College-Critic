@@ -44,7 +44,7 @@ public class SchoolConstant {
         hotMajorVOList.add(new HotMajorVO("工业设计", "装备制造大类,机械设计类", "西安汽车职业大学", 2257, 383));
         hotMajorVOList.add(new HotMajorVO("学前教育", "教育与体育大类,教育类", "南昌职业大学", 909, 290));
         hotMajorVOList.add(new HotMajorVO("计算机网络技术", "电子与信息大类,计算机类", "深圳职业技术大学", 646, 504));
-        hotMajorVOList.add(new HotMajorVO("数字媒体技术", "文化艺术大类,艺术设计类", "上海工艺美术职业学院", 671, 664));
+        hotMajorVOList.add(new HotMajorVO("数字媒体技术", "文化艺术大类,艺术设计类", "上海工艺美术职业学院", 671, 240));
         hotMajorVOList.add(new HotMajorVO("钻探工程技术", "资源环境与安全大类,地质类", "湖南工程职业技术学院", 2003, 423));
         return hotMajorVOList;
     }

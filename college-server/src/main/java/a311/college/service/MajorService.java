@@ -35,5 +35,4 @@ public interface MajorService {
 
     void addMajorComment(AddCommentDTO addCommentDTO);
 
-    void addComment(AddCommentDTO addCommentDTO);
 }

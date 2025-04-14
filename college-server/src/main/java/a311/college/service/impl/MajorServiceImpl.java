@@ -38,13 +38,11 @@ public class MajorServiceImpl implements MajorService {
     private final MajorMapper majorMapper;
 
     private final SchoolMapper schoolMapper;
-    private final MajorService majorService;
 
     @Autowired
-    public MajorServiceImpl(MajorMapper majorMapper, SchoolMapper schoolMapper, MajorService majorService) {
+    public MajorServiceImpl(MajorMapper majorMapper, SchoolMapper schoolMapper) {
         this.majorMapper = majorMapper;
         this.schoolMapper = schoolMapper;
-        this.majorService = majorService;
     }
 
     /**
@@ -189,7 +187,9 @@ public class MajorServiceImpl implements MajorService {
      */
     @Override
     public void addMajorComment(AddCommentDTO addCommentDTO) {
+        addCommentDTO.setUserId(ThreadLocalUtil.getCurrentId());
         addCommentDTO.setTime(LocalDateTime.now());
+        addCommentDTO.setMajorName(majorMapper.selectById(addCommentDTO.getMajorId()).getMajorName());
         majorMapper.addComment(addCommentDTO);
     }
 

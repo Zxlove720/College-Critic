@@ -93,13 +93,21 @@ public interface UserMapper {
     List<Major> getUserFavoriteMajor(Long userId);
 
     /**
-     * 根据用户id查询用户评论
+     * 分页查询查询用户评论
      *
      * @param id 用户id
      * @return 用户评论
      */
     @Select(("select comment from tb_comment where user_id = #{id}"))
     List<String> selectComment(Long id);
+
+    /**
+     * 删除用户id
+     *
+     * @param commentId 评论id
+     */
+    @Delete("delete from tb_comment where comment_id = #{commentId}")
+    void deleteComment(Integer commentId);
 
     /**
      * 根据用户名查询用户
@@ -116,4 +124,6 @@ public interface UserMapper {
 
     @Delete("delete from tb_fav_major where user_id = #{userId} and major_id = #{majorId}")
     void deleteFavoriteMajor(MajorDTO majorDTO);
+
+
 }

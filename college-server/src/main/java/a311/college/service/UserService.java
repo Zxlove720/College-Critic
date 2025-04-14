@@ -42,6 +42,8 @@ public interface UserService {
 
     PageResult<String> showComment(PageQueryDTO pageQueryDTO);
 
+    void deleteComment(UserCommentDTO userCommentDTO);
+
     void update(UserDTO userDTO);
 
     String sendDeleteCode(UserCodeDTO userCodeDTO);

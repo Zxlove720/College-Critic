@@ -206,6 +206,20 @@ public class UserController {
     }
 
     /**
+     * 删除用户评论
+     *
+     * @param userCommentDTO 用户评论DTO
+     * @return Result<Void>
+     */
+    @PostMapping("/deleteComment")
+    @Operation(summary = "删除用户评论")
+    public Result<Void> deleteComment(@RequestBody UserCommentDTO userCommentDTO) {
+        userService.deleteComment(userCommentDTO);
+        return Result.success();
+    }
+
+
+    /**
      * 修改用户信息
      *
      * @param userDTO 用户DTO

@@ -132,7 +132,7 @@ public interface SchoolMapper {
      *
      * @param addCommentDTO 用户评价DTO
      */
-    @Insert("insert tb_comment set user_id = #{userId}, school_id = #{schoolId}, comment = #{comment}")
+    @Insert("insert tb_comment set user_id = #{userId}, school_id = #{schoolId}, comment = #{comment}, time = #{localDateTime}")
     void addComment(AddSchoolCommentDTO addCommentDTO);
 
     /**

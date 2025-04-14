@@ -5,6 +5,7 @@ import a311.college.dto.query.major.MajorPageQueryDTO;
 import a311.college.dto.query.major.MajorSchoolPageQueryDTO;
 import a311.college.dto.query.major.ProfessionalClassQueryDTO;
 import a311.college.dto.query.major.SubjectCategoryQueryDTO;
+import a311.college.dto.school.AddCommentDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.major.ProfessionalClass;
 import a311.college.entity.major.SubjectCategory;
@@ -31,4 +32,8 @@ public interface MajorService {
     void deleteFavoriteMajor(MajorDTO majorDTO);
 
     PageResult<School> querySchools(MajorSchoolPageQueryDTO majorSchoolPageQueryDTO);
+
+    void addMajorComment(AddCommentDTO addCommentDTO);
+
+    void addComment(AddCommentDTO addCommentDTO);
 }

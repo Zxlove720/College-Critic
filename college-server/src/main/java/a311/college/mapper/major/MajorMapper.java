@@ -4,10 +4,12 @@ import a311.college.dto.major.MajorDTO;
 import a311.college.dto.query.major.MajorPageQueryDTO;
 import a311.college.dto.query.major.ProfessionalClassQueryDTO;
 import a311.college.dto.query.major.SubjectCategoryQueryDTO;
+import a311.college.dto.school.AddCommentDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.major.ProfessionalClass;
 import a311.college.entity.major.SubjectCategory;
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -92,4 +94,11 @@ public interface MajorMapper {
     @Delete("delete from tb_fav_major where user_id = #{userId} and major_id = #{majorId}")
     void deleteFavoriteMajor(MajorDTO majorDTO);
 
+    /**
+     * 用户评价专业
+     *
+     * @param addCommentDTO 用户评价DTO
+     */
+    @Insert("insert into tb_comment set user_id = #{userId}, major_id = #{majorId}, comment = #{comment}, time = #{localDateTime}")
+    void addComment(AddCommentDTO addCommentDTO);
 }

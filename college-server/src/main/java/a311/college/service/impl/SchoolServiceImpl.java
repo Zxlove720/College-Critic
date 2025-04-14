@@ -490,12 +490,12 @@ public class SchoolServiceImpl implements SchoolService {
     /**
      * 用户评价大学
      *
-     * @param addSchoolCommentDTO 用户评价DTO
+     * @param addCommentDTO 用户评价DTO
      */
     @Override
-    public void addSchoolComment(AddSchoolCommentDTO addSchoolCommentDTO) {
-        addSchoolCommentDTO.setTime(LocalDateTime.now());
-        schoolMapper.addComment(addSchoolCommentDTO);
+    public void addSchoolComment(AddCommentDTO addCommentDTO) {
+        addCommentDTO.setTime(LocalDateTime.now());
+        schoolMapper.addComment(addCommentDTO);
     }
 
     /**

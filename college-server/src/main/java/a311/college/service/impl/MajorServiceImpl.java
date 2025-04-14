@@ -6,6 +6,7 @@ import a311.college.dto.query.major.MajorPageQueryDTO;
 import a311.college.dto.query.major.MajorSchoolPageQueryDTO;
 import a311.college.dto.query.major.ProfessionalClassQueryDTO;
 import a311.college.dto.query.major.SubjectCategoryQueryDTO;
+import a311.college.dto.school.AddCommentDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.major.ProfessionalClass;
 import a311.college.entity.major.SubjectCategory;
@@ -26,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,11 +38,13 @@ public class MajorServiceImpl implements MajorService {
     private final MajorMapper majorMapper;
 
     private final SchoolMapper schoolMapper;
+    private final MajorService majorService;
 
     @Autowired
-    public MajorServiceImpl(MajorMapper majorMapper, SchoolMapper schoolMapper) {
+    public MajorServiceImpl(MajorMapper majorMapper, SchoolMapper schoolMapper, MajorService majorService) {
         this.majorMapper = majorMapper;
         this.schoolMapper = schoolMapper;
+        this.majorService = majorService;
     }
 
     /**
@@ -176,6 +180,17 @@ public class MajorServiceImpl implements MajorService {
             log.error("学校分页查询失败，报错为：{}", e.getMessage());
             throw new PageQueryException(e.getMessage());
         }
+    }
+
+    /**
+     * 用户评价专业
+     *
+     * @param addCommentDTO 用户评价DTO
+     */
+    @Override
+    public void addMajorComment(AddCommentDTO addCommentDTO) {
+        addCommentDTO.setTime(LocalDateTime.now());
+        majorMapper.addComment(addCommentDTO);
     }
 
 

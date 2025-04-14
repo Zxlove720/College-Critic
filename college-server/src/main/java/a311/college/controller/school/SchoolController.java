@@ -178,13 +178,13 @@ public class SchoolController {
     /**
      * 用户评价学校
      *
-     * @param addSchoolCommentDTO 用户评价学校DTO
+     * @param addCommentDTO 用户评价DTO
      */
     @PostMapping("/comment")
     @Operation(summary = "用户评价学校")
-    public Result<Void> addSchoolComment(@RequestBody AddSchoolCommentDTO addSchoolCommentDTO) {
-        log.info("用户'{}'发表对于'{}'大学的评论", ThreadLocalUtil.getCurrentId(), addSchoolCommentDTO.getSchoolId());
-        schoolService.addSchoolComment(addSchoolCommentDTO);
+    public Result<Void> addSchoolComment(@RequestBody AddCommentDTO addCommentDTO) {
+        log.info("用户'{}'发表对于'{}'大学的评论", ThreadLocalUtil.getCurrentId(), addCommentDTO.getSchoolId());
+        schoolService.addSchoolComment(addCommentDTO);
         return Result.success();
     }
 

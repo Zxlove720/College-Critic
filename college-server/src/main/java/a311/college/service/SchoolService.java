@@ -38,7 +38,7 @@ public interface SchoolService {
 
     List<YearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO);
 
-    void addSchoolComment(AddSchoolCommentDTO addSchoolCommentDTO);
+    void addSchoolComment(AddCommentDTO addCommentDTO);
 
     PageResult<CommentVO> showComment(SchoolCommentPageQueryDTO schoolCommentPageQueryDTO);
 

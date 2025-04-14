@@ -1,11 +1,13 @@
 package a311.college.service.impl;
 
+import a311.college.constant.error.SchoolErrorConstant;
 import a311.college.constant.user.UserErrorConstant;
 import a311.college.dto.major.MajorDTO;
 import a311.college.dto.query.major.MajorPageQueryDTO;
 import a311.college.dto.query.major.MajorSchoolPageQueryDTO;
 import a311.college.dto.query.major.ProfessionalClassQueryDTO;
 import a311.college.dto.query.major.SubjectCategoryQueryDTO;
+import a311.college.dto.query.school.CommentPageQueryDTO;
 import a311.college.dto.school.AddCommentDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.major.ProfessionalClass;
@@ -19,6 +21,7 @@ import a311.college.result.PageResult;
 import a311.college.service.MajorService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.major.DetailMajorVO;
+import a311.college.vo.school.CommentVO;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.github.pagehelper.Page;
@@ -191,6 +194,23 @@ public class MajorServiceImpl implements MajorService {
         addCommentDTO.setTime(LocalDateTime.now());
         addCommentDTO.setMajorName(majorMapper.selectById(addCommentDTO.getMajorId()).getMajorName());
         majorMapper.addComment(addCommentDTO);
+    }
+
+    /**
+     * 分页查询用户评价
+     *
+     * @param commentPageQueryDTO 评论区分页查询DTO
+     * @return List<CommentVO>
+     */
+    @Override
+    public PageResult<CommentVO> showComment(CommentPageQueryDTO commentPageQueryDTO) {
+        try (Page<CommentVO> page = PageHelper.startPage(commentPageQueryDTO.getPage(), commentPageQueryDTO.getPageSize())) {
+            List<CommentVO> commentVOList = majorMapper.selectComment(commentPageQueryDTO.getMajorId());
+            return new PageResult<>(page.getTotal(), commentVOList);
+        } catch (Exception e) {
+            log.error("'{}'大学评论区查询失败，报错为：{}", commentPageQueryDTO.getMajorId(), e.getMessage());
+            throw new PageQueryException(SchoolErrorConstant.COMMENT_PAGE_QUERY_ERROR);
+        }
     }
 
 

@@ -5,9 +5,9 @@
     <select id="pageQueryMajors" resultType="a311.college.entity.major.Major">
         select m.major_id, m.major_name, m.major_code, m.major_year, m.degrees, m.gender, m.avg_salary
         from tb_academic_level as al
-                 join tb_subject_category as sc on al.academic_level_id = sc.academic_level_id
-                 join tb_professional_class as pc on sc.subject_category_id = pc.subject_category_id
-                 join tb_major as m on pc.professional_class_id = m.professional_class_id
+        join tb_subject_category as sc on al.academic_level_id = sc.academic_level_id
+        join tb_professional_class as pc on sc.subject_category_id = pc.subject_category_id
+        join tb_major as m on pc.professional_class_id = m.professional_class_id
         <where>
             <if test="academicLevelId != null">
                 and al.academic_level_id = #{academicLevelId}
@@ -22,30 +22,38 @@
     </select>
 
     <select id="searchMajorByName" resultType="a311.college.entity.major.Major">
-        select
-            m.major_id,
-            m.major_name,
-            m.major_code,
-            m.major_year,
-            m.degrees,
-            m.gender,
-            m.avg_salary
+        select m.major_id,
+               m.major_name,
+               m.major_code,
+               m.major_year,
+               m.degrees,
+               m.gender,
+               m.avg_salary
         from tb_major as m
         where m.major_name like concat('%', #{majorName}, '%')
     </select>
 
     <select id="searchMajor" resultType="a311.college.entity.major.Major">
         select
-            m.major_id,
-            m.major_name,
-            m.gender,
-            m.avg_salary
-            from tb_major as m
+        m.major_id,
+        m.major_name,
+        m.gender,
+        m.avg_salary
+        from tb_major as m
         <where>
             <if test="message != null and message != ''">
                 m.major_name like concat('%', #{message}, '%')
             </if>
         </where>
         limit 5
+    </select>
+
+    <!-- 查询专业评价 -->
+    <select id="selectComment" resultType="a311.college.vo.school.CommentVO">
+        select u.username, u.head, c.comment, c.time
+        from tb_comment AS c,
+             tb_user AS u
+        where c.major_id = #{majorId}
+          and u.id = c.user_id
     </select>
 </mapper>

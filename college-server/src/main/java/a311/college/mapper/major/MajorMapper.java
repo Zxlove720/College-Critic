@@ -8,6 +8,7 @@ import a311.college.dto.school.AddCommentDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.major.ProfessionalClass;
 import a311.college.entity.major.SubjectCategory;
+import a311.college.vo.school.CommentVO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -102,4 +103,6 @@ public interface MajorMapper {
     @Insert("insert into tb_comment set user_id = #{userId}, major_id = #{majorId}, major_name = #{majorName}, " +
             "comment = #{comment}, time = #{time}")
     void addComment(AddCommentDTO addCommentDTO);
+
+    List<CommentVO> selectComment(Integer majorId);
 }

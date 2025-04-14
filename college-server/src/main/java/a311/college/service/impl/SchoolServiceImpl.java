@@ -502,16 +502,16 @@ public class SchoolServiceImpl implements SchoolService {
     /**
      * 分页查询用户评价
      *
-     * @param schoolCommentPageQueryDTO 大学DTO
+     * @param commentPageQueryDTO 大学DTO
      * @return List<CommentVO>
      */
     @Override
-    public PageResult<CommentVO> showComment(SchoolCommentPageQueryDTO schoolCommentPageQueryDTO) {
-        try (Page<CommentVO> page = PageHelper.startPage(schoolCommentPageQueryDTO.getPage(), schoolCommentPageQueryDTO.getPageSize())) {
-            List<CommentVO> commentVOList = schoolMapper.selectComment(schoolCommentPageQueryDTO.getSchoolId());
+    public PageResult<CommentVO> showComment(CommentPageQueryDTO commentPageQueryDTO) {
+        try (Page<CommentVO> page = PageHelper.startPage(commentPageQueryDTO.getPage(), commentPageQueryDTO.getPageSize())) {
+            List<CommentVO> commentVOList = schoolMapper.selectComment(commentPageQueryDTO.getSchoolId());
             return new PageResult<>(page.getTotal(), commentVOList);
         } catch (Exception e) {
-            log.error("'{}'大学评论区查询失败，报错为：{}", schoolCommentPageQueryDTO.getSchoolId(), e.getMessage());
+            log.error("'{}'大学评论区查询失败，报错为：{}", commentPageQueryDTO.getSchoolId(), e.getMessage());
             throw new PageQueryException(SchoolErrorConstant.COMMENT_PAGE_QUERY_ERROR);
         }
     }

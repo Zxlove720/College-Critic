@@ -40,7 +40,7 @@ public interface SchoolService {
 
     void addSchoolComment(AddCommentDTO addCommentDTO);
 
-    PageResult<CommentVO> showComment(SchoolCommentPageQueryDTO schoolCommentPageQueryDTO);
+    PageResult<CommentVO> showComment(CommentPageQueryDTO commentPageQueryDTO);
 
     List<SchoolSceneryVO> getSchool1(ProvinceQueryDTO provinceQueryDTO);
 

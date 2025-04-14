@@ -345,6 +345,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * 删除用户评论
+     *
+     * @param userCommentDTO 用户评论DTO
+     */
     @Override
     public void deleteComment(UserCommentDTO userCommentDTO) {
         userMapper.deleteComment(userCommentDTO.getCommentId());

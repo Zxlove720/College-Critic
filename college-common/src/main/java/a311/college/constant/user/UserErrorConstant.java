@@ -27,4 +27,5 @@ public class UserErrorConstant {
     public static final String USER_MAJOR_ERROR = "用户收藏专业查询错误";
 
     public static final String USER_COMMENT_ERROR = "用户评论查询错误";
+
 }

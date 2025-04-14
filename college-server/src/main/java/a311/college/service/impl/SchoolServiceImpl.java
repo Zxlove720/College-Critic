@@ -495,6 +495,7 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public void addSchoolComment(AddCommentDTO addCommentDTO) {
         addCommentDTO.setTime(LocalDateTime.now());
+        addCommentDTO.setSchoolName(schoolMapper.selectBySchoolId(addCommentDTO.getSchoolId()).getSchoolName());
         schoolMapper.addComment(addCommentDTO);
     }
 

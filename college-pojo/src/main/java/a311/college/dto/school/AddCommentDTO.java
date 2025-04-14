@@ -18,8 +18,14 @@ public class AddCommentDTO {
     @Schema(description = "大学id")
     private Integer schoolId;
 
+    @Schema(description = "大学名称")
+    private String schoolName;
+
     @Schema(description = "专业id")
     private Integer majorId;
+
+    @Schema(description = "专业名称")
+    private String majorName;
 
     @Schema(description = "评论内容")
     private String comment;

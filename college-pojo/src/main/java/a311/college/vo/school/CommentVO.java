@@ -16,11 +16,26 @@ import java.time.LocalDateTime;
 @Schema(description = "大学评论")
 public class CommentVO {
 
+    @Schema(description = "评论id")
+    private Integer commentId;
+
     @Schema(description = "用户名")
     private String username;
 
     @Schema(description = "用户头像")
     private String head;
+
+    @Schema(description = "学校id")
+    private Integer schoolId;
+
+    @Schema(description = "学校名称")
+    private String schoolName;
+
+    @Schema(description = "专业id")
+    private Integer majorId;
+
+    @Schema(description = "专业名称")
+    private String majorName;
 
     @Schema(description = "用户评论")
     private String comment;

@@ -25,6 +25,7 @@
         select
             m.major_id,
             m.major_name,
+            m.major_code,
             m.major_year,
             m.degrees,
             m.gender,

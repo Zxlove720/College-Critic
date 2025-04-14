@@ -22,7 +22,7 @@ public interface MajorMapper {
      * @param subjectCategoryQueryDTO 学科门类查询DTO
      * @return List<SubjectCategory>
      */
-    @Select("select * from tb_subject_category where academic_level_id = #{academicId}")
+    @Select("select * from tb_subject_category where academic_level_id = #{academicLevelId}")
     List<SubjectCategory> selectSubjectCategory(SubjectCategoryQueryDTO subjectCategoryQueryDTO);
 
     /**

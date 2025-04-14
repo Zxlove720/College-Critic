@@ -16,8 +16,8 @@ import java.util.List;
 @Schema(description = "开设某专业学校分页查询DTO")
 public class MajorSchoolPageQueryDTO {
 
-    @Schema(description = "专业id")
-    private Integer majorId;
+    @Schema(description = "专业名称")
+    private String majorName;
 
     @Schema(description = "省份名")
     private String province;

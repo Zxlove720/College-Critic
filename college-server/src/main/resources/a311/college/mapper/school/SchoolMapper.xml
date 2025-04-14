@@ -183,8 +183,10 @@
     <select id="selectMajorSchool" resultType="a311.college.entity.school.School">
         select distinct
             s.school_id,
+            s.school_head,
             s.school_name,
             s.rank_list,
+            s.school_address,
             s.score
         from tb_school as s
                  JOIN tb_province as p ON s.school_id = p.school_id
@@ -192,7 +194,22 @@
                  JOIN tb_category as c ON y.year_id = c.year_id
                  JOIN tb_batch as b ON c.category_id = b.category_id
                  JOIN tb_score as sc ON b.batch_id = sc.batch_id
-        where sc.major_name = #{majorName} order by s.score desc
+        <where>
+            <if test="majorName = null and majorName != ''">
+                AND major_name = #{majorName}
+            </if>
+            <if test="province != null and province != ''">
+                AND school_province = #{province}
+            </if>
+            <if test="rankList != null and !rankList.isEmpty()">
+                AND (
+                <foreach collection="rankList" item="item" separator="AND">
+                    rank_list LIKE CONCAT('%', #{item}, '%')
+                </foreach>
+                )
+            </if>
+        </where>
+        order by s.score desc
     </select>
 
 </mapper>

@@ -169,9 +169,8 @@ public class MajorServiceImpl implements MajorService {
      */
     @Override
     public PageResult<School> querySchools(MajorSchoolPageQueryDTO majorSchoolPageQueryDTO) {
-        Major major = majorMapper.selectById(majorSchoolPageQueryDTO.getMajorId());
         try (Page<School> page = PageHelper.startPage(majorSchoolPageQueryDTO.getPage(), majorSchoolPageQueryDTO.getPageSize())) {
-            schoolMapper.selectMajorSchool(major.getMajorName());
+            schoolMapper.selectMajorSchool(majorSchoolPageQueryDTO);
             return new PageResult<>(page.getTotal(), page.getResult());
         } catch (Exception e) {
             log.error("学校分页查询失败，报错为：{}", e.getMessage());

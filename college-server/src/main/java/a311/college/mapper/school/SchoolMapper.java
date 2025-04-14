@@ -1,6 +1,7 @@
 package a311.college.mapper.school;
 
 
+import a311.college.dto.query.major.MajorSchoolPageQueryDTO;
 import a311.college.dto.school.*;
 import a311.college.dto.query.school.YearScoreQueryDTO;
 import a311.college.entity.school.School;
@@ -239,8 +240,8 @@ public interface SchoolMapper {
     /**
      * 查询开设某专业的学校
      *
-     * @param majorName 专业名
+     * @param majorSchoolPageQueryDTO 专业名
      * @return List<School>
      */
-    List<School> selectMajorSchool(String majorName);
+    List<School> selectMajorSchool(MajorSchoolPageQueryDTO majorSchoolPageQueryDTO);
 }

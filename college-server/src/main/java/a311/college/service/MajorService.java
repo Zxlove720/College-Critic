@@ -2,6 +2,7 @@ package a311.college.service;
 
 import a311.college.dto.major.MajorDTO;
 import a311.college.dto.query.major.MajorPageQueryDTO;
+import a311.college.dto.query.major.MajorSchoolPageQueryDTO;
 import a311.college.dto.query.major.ProfessionalClassQueryDTO;
 import a311.college.dto.query.major.SubjectCategoryQueryDTO;
 import a311.college.entity.major.Major;
@@ -29,5 +30,5 @@ public interface MajorService {
 
     void deleteFavoriteMajor(MajorDTO majorDTO);
 
-    PageResult<School> querySchools(MajorPageQueryDTO majorPageQueryDTO);
+    PageResult<School> querySchools(MajorSchoolPageQueryDTO majorSchoolPageQueryDTO);
 }

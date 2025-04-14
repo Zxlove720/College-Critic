@@ -3,6 +3,7 @@ package a311.college.service.impl;
 import a311.college.constant.user.UserErrorConstant;
 import a311.college.dto.major.MajorDTO;
 import a311.college.dto.query.major.MajorPageQueryDTO;
+import a311.college.dto.query.major.MajorSchoolPageQueryDTO;
 import a311.college.dto.query.major.ProfessionalClassQueryDTO;
 import a311.college.dto.query.major.SubjectCategoryQueryDTO;
 import a311.college.entity.major.Major;
@@ -163,13 +164,13 @@ public class MajorServiceImpl implements MajorService {
     /**
      * 查询某专业开设学校
      *
-     * @param majorPageQueryDTO 专业分页查询DTO
+     * @param majorSchoolPageQueryDTO 专业分页查询DTO
      * @return List<School>
      */
     @Override
-    public PageResult<School> querySchools(MajorPageQueryDTO majorPageQueryDTO) {
-        Major major = majorMapper.selectById(majorPageQueryDTO.getMajorId());
-        try (Page<School> page = PageHelper.startPage(majorPageQueryDTO.getPage(), majorPageQueryDTO.getPageSize())) {
+    public PageResult<School> querySchools(MajorSchoolPageQueryDTO majorSchoolPageQueryDTO) {
+        Major major = majorMapper.selectById(majorSchoolPageQueryDTO.getMajorId());
+        try (Page<School> page = PageHelper.startPage(majorSchoolPageQueryDTO.getPage(), majorSchoolPageQueryDTO.getPageSize())) {
             schoolMapper.selectMajorSchool(major.getMajorName());
             return new PageResult<>(page.getTotal(), page.getResult());
         } catch (Exception e) {

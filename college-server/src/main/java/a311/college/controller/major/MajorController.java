@@ -2,12 +2,9 @@ package a311.college.controller.major;
 
 import a311.college.constant.API.APIConstant;
 import a311.college.dto.major.MajorDTO;
+import a311.college.dto.query.major.*;
 import a311.college.entity.major.ProfessionalClass;
 import a311.college.dto.ai.MajorAIRequestDTO;
-import a311.college.dto.query.major.MajorPageQueryDTO;
-import a311.college.dto.query.major.MajorNameQueryDTO;
-import a311.college.dto.query.major.ProfessionalClassQueryDTO;
-import a311.college.dto.query.major.SubjectCategoryQueryDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.major.SubjectCategory;
 import a311.college.entity.school.School;
@@ -153,14 +150,14 @@ public class MajorController {
     /**
      * 查询开设某专业的学校
      *
-     * @param majorPageQueryDTO 专业分页查询DTO
+     * @param majorSchoolPageQueryDTO 开设某专业学校分页查询DTO
      * @return Result<List<School>>
      */
     @PostMapping("/schools")
     @Operation(summary = "查询专业开设院校")
-    public Result<PageResult<School>> pageQuerySchool(@RequestBody MajorPageQueryDTO majorPageQueryDTO) {
+    public Result<PageResult<School>> pageQuerySchool(@RequestBody MajorSchoolPageQueryDTO majorSchoolPageQueryDTO) {
         log.info("查询开设某专业的学校");
-        return Result.success(majorService.querySchools(majorPageQueryDTO));
+        return Result.success(majorService.querySchools(majorSchoolPageQueryDTO));
     }
 
 }

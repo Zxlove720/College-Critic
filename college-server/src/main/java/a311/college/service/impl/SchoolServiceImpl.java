@@ -480,10 +480,10 @@ public class SchoolServiceImpl implements SchoolService {
      * 获取某学校的历年分数线
      *
      * @param yearScoreDTO 分数线查询DTO
-     * @return YearScoreVO
+     * @return SchoolYearScoreVO
      */
     @Override
-    public List<YearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO) {
+    public List<SchoolYearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO) {
         return schoolMapper.selectScoreLineByYear(yearScoreDTO);
     }
 

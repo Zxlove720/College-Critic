@@ -36,7 +36,7 @@ public interface SchoolService {
 
     SchoolForecastVO forecast(ForecastDTO forecastDTO);
 
-    List<YearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO);
+    List<SchoolYearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO);
 
     void addSchoolComment(AddCommentDTO addCommentDTO);
 

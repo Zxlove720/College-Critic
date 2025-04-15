@@ -9,13 +9,13 @@ import java.io.Serializable;
 
 
 /**
- * 历年分数线VO
+ * 学校分数线VO
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "历年分数线VO")
-public class YearScoreVO implements Serializable {
+@Schema(description = "学校分数线VO")
+public class SchoolYearScoreVO implements Serializable {
 
     @Schema(description = "招生年份")
     private String year;
@@ -35,9 +35,4 @@ public class YearScoreVO implements Serializable {
     @Schema(description = "首选科目要求")
     private String firstChoice;
 
-    @Schema(description = "其他选科要求")
-    private String otherChoice;
-
-    @Schema(description = "特殊")
-    private String special;
 }

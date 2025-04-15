@@ -1,4 +1,4 @@
-package a311.college.vo.volunteer;
+package a311.college.vo.school;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -6,16 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 志愿类型
+ * 专业分数线VO
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "志愿类型")
-public class Volunteer {
-
-    @Schema(description = "所属类型")
-    private Integer category;
+@Schema(description = "专业分数线VO")
+public class MajorYearScoreVO {
 
     @Schema(description = "专业名称")
     private String majorName;
@@ -26,7 +23,10 @@ public class Volunteer {
     @Schema(description = "次选科目")
     private String otherChoice;
 
-    @Schema(description = "特殊要求")
-    private String special;
+    @Schema(description = "最低分")
+    private Integer minScore;
+
+    @Schema(description = "最低位次")
+    private Integer minRanking;
 
 }

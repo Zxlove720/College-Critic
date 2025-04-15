@@ -89,7 +89,7 @@
     </select>
 
     <!-- 获取某学校的历年分数线 -->
-    <select id="selectScoreLineByYear" resultType="a311.college.vo.school.YearScoreVO">
+    <select id="selectScoreLineByYear" resultType="a311.college.vo.school.SchoolYearScoreVO">
         select distinct y.year,
                         b.batch_name,
                         sc.min_score,

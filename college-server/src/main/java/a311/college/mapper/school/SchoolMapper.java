@@ -123,9 +123,9 @@ public interface SchoolMapper {
     /**
      * 获取某学校的历年分数线
      *
-     * @return List<YearScoreVO>
+     * @return List<SchoolYearScoreVO>
      */
-    List<YearScoreVO> selectScoreLineByYear(YearScoreQueryDTO yearScoreDTO);
+    List<SchoolYearScoreVO> selectScoreLineByYear(YearScoreQueryDTO yearScoreDTO);
 
     /**
      * 添加用户评价

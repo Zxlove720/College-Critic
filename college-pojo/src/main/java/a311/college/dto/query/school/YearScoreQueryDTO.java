@@ -17,6 +17,9 @@ public class YearScoreQueryDTO {
     @Schema(description = "招生省份")
     private String province;
 
+    @Schema(description = "首选科目")
+    private String firstChoice;
+
     @Schema(description = "招生年份")
     private Integer year;
 }

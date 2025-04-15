@@ -255,7 +255,6 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 用户登出
-     *
      */
     @Override
     public void layout() {
@@ -351,13 +350,44 @@ public class UserServiceImpl implements UserService {
         userMapper.deleteComment(userCommentDTO.getCommentId());
     }
 
+    /**
+     * 志愿展示
+     *
+     * @param userVolunteerPageDTO 用户志愿分页查询DTO
+     * @return PageResult<SchoolVolunteer>
+     */
     @Override
     public PageResult<SchoolVolunteer> showVolunteer(UserVolunteerPageDTO userVolunteerPageDTO) {
-        try (Page<School> page = PageHelper.startPage(userVolunteerPageDTO.getPage(), userVolunteerPageDTO.getPageSize())) {
-            userMapper.selectVolunteerSchool(userVolunteerPageDTO);
-
+        try (Page<SchoolVolunteer> page = PageHelper.startPage(userVolunteerPageDTO.getPage(), userVolunteerPageDTO.getPageSize())) {
+            List<SchoolVolunteer> list = userMapper.selectVolunteerSchool(userVolunteerPageDTO);
+            // 在内存中处理分类逻辑
+            list.forEach(school ->
+                    school.getVolunteerList().forEach(volunteer -> {
+                        Integer minScore = volunteer.getScoreLineList().get(0).getMinScore();
+                        volunteer.setCategory(calculateCategory(minScore, userVolunteerPageDTO.getGrade()));
+                    })
+            );
+            return new PageResult<>(page.getTotal(), list);
         }
-        return null;
+    }
+
+    /**
+     * 计算专业分类逻辑
+     *
+     * @param minScore 专业历年最低分
+     * @param grade    用户分数
+     * @return 0-保底 1-稳妥 2-冲刺
+     */
+    private int calculateCategory(int minScore, int grade) {
+        if (minScore <= grade + 10 && minScore >= grade - 10) {
+            return 1; // 稳
+        } else if (minScore > grade + 10 && minScore <= grade + 30) {
+            return 2; // 冲
+        } else if (minScore < grade - 10 && minScore >= grade - 30) {
+            return 0; // 保
+        }
+        // 超出30分范围的特殊情况（如需要可扩展）
+        return -1;
     }
 
     /**

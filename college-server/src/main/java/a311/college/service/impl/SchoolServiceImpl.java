@@ -441,7 +441,7 @@ public class SchoolServiceImpl implements SchoolService {
                     // 该专业为稳
                     schoolMajorVO.setCategory(1);
                     stable++;
-                } else if (majorScore > userGrade + 10 && majorScore <= userGrade + 20) {
+                } else if (majorScore > userGrade + 10 && majorScore <= userGrade + 30) {
                     // 该专业为冲
                     schoolMajorVO.setCategory(2);
                     rush++;

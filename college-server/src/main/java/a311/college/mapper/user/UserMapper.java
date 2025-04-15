@@ -10,6 +10,9 @@ import a311.college.entity.user.User;
 import a311.college.enumeration.OperationType;
 import a311.college.vo.school.CommentVO;
 import a311.college.vo.user.UserVO;
+import a311.college.vo.volunteer.SchoolVolunteer;
+import a311.college.vo.volunteer.ScoreLine;
+import a311.college.vo.volunteer.Volunteer;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -142,5 +145,6 @@ public interface UserMapper {
      * @param userVolunteerPageDTO 用户志愿分页查询DTO
      * @return List<School>
      */
-    List<School> selectVolunteerSchool(UserVolunteerPageDTO userVolunteerPageDTO);
+    List<SchoolVolunteer> selectVolunteerSchool(UserVolunteerPageDTO userVolunteerPageDTO);
+
 }

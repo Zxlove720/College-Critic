@@ -480,11 +480,28 @@ public class SchoolServiceImpl implements SchoolService {
      * 获取某学校的历年分数线
      *
      * @param yearScoreDTO 分数线查询DTO
-     * @return SchoolYearScoreVO
+     * @return List<SchoolYearScoreVO>
      */
     @Override
-    public List<SchoolYearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO) {
+    public List<SchoolYearScoreVO> schoolScoreLine(YearScoreQueryDTO yearScoreDTO) {
         return schoolMapper.selectScoreLineByYear(yearScoreDTO);
+    }
+
+    /**
+     * 获取某学校专业的历年分数线
+     *
+     * @param yearScoreQueryDTO 分数线查询DTO
+     * @return PageResult<MajorYearScoreVO>
+     */
+    @Override
+    public PageResult<MajorYearScoreVO> majorScoreLine(YearScoreQueryDTO yearScoreQueryDTO) {
+        try (Page<MajorYearScoreVO> page = PageHelper.startPage(yearScoreQueryDTO.getPage(), yearScoreQueryDTO.getPageSize())) {
+            schoolMapper.selectMajorScoreLine(yearScoreQueryDTO);
+            return new PageResult<>(page.getTotal(), page.getResult());
+        } catch (Exception e) {
+            log.error("查询专业分数线失败，报错为{}", e.getMessage());
+            throw new PageQueryException(e.getMessage());
+        }
     }
 
     /**

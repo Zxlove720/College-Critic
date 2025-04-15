@@ -167,16 +167,24 @@ public class SchoolController {
      * 获取某学校的历年分数线
      *
      * @param yearScoreQueryDTO 分数线查询DTO
-     * @return List<SchoolYearScoreVO>
+     * @return Result<List<SchoolYearScoreVO>>
      */
     @PostMapping("/schoolScoreLine")
     @Operation(summary = "获取某学校的历年分数线")
     public Result<List<SchoolYearScoreVO>> getSchoolScoreLine(@RequestBody YearScoreQueryDTO yearScoreQueryDTO) {
-        return Result.success(schoolService.scoreLineByYear(yearScoreQueryDTO));
+        return Result.success(schoolService.schoolScoreLine(yearScoreQueryDTO));
     }
 
+    /**
+     * 获取某学校的专业分数线
+     *
+     * @param yearScoreQueryDTO 分数线查询DTO
+     * @return Result<PageResult<MajorYearScoreVO>>
+     */
+    @PostMapping("/majorScoreLine")
+    @Operation(summary = "获取某学校的专业分数线")
     public Result<PageResult<MajorYearScoreVO>> getMajorScoreLine(@RequestBody YearScoreQueryDTO yearScoreQueryDTO) {
-        return Result.success();
+        return Result.success(schoolService.majorScoreLine(yearScoreQueryDTO));
     }
 
     /**

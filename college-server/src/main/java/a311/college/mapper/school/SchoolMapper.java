@@ -121,11 +121,20 @@ public interface SchoolMapper {
     List<SchoolMajor> selectAllSchoolMajor(ForecastDTO forecastDTO);
 
     /**
-     * 获取某学校的历年分数线
+     * 获取某学校历年分数线
      *
+     * @param yearScoreQueryDTO 分数线查询DTO
      * @return List<SchoolYearScoreVO>
      */
-    List<SchoolYearScoreVO> selectScoreLineByYear(YearScoreQueryDTO yearScoreDTO);
+    List<SchoolYearScoreVO> selectScoreLineByYear(YearScoreQueryDTO yearScoreQueryDTO);
+
+    /**
+     * 获取某学校专业分数线
+     *
+     * @param yearScoreQueryDTO 分数线查询DTO
+     * @return List<MajorYearScoreVO>
+     */
+    List<MajorYearScoreVO> selectMajorScoreLine(YearScoreQueryDTO yearScoreQueryDTO);
 
     /**
      * 添加用户评价
@@ -245,4 +254,5 @@ public interface SchoolMapper {
      * @return List<School>
      */
     List<School> selectMajorSchool(MajorSchoolPageQueryDTO majorSchoolPageQueryDTO);
+
 }

@@ -23,6 +23,12 @@ public class MajorYearScoreVO {
     @Schema(description = "次选科目")
     private String otherChoice;
 
+    @Schema(description = "特殊要求")
+    private String special;
+
+    @Schema(description = "批次名称")
+    private String batchName;
+
     @Schema(description = "最低分")
     private Integer minScore;
 

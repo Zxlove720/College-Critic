@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * 志愿类型
  */
@@ -28,5 +30,8 @@ public class Volunteer {
 
     @Schema(description = "特殊要求")
     private String special;
+
+    @Schema(description = "历年分数线")
+    private List<ScoreLine> scoreLineList;
 
 }

@@ -19,6 +19,7 @@ import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.school.CommentVO;
 import a311.college.vo.user.UserVO;
 import a311.college.vo.volunteer.SchoolVolunteer;
+import a311.college.vo.volunteer.ScoreLine;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.RandomUtil;
@@ -358,17 +359,42 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public PageResult<SchoolVolunteer> showVolunteer(UserVolunteerPageDTO userVolunteerPageDTO) {
-        try (Page<SchoolVolunteer> page = PageHelper.startPage(userVolunteerPageDTO.getPage(), userVolunteerPageDTO.getPageSize())) {
-            List<SchoolVolunteer> list = userMapper.selectVolunteerSchool(userVolunteerPageDTO);
-            // 在内存中处理分类逻辑
-            list.forEach(school ->
-                    school.getVolunteerList().forEach(volunteer -> {
-                        Integer minScore = volunteer.getScoreLineList().get(0).getMinScore();
-                        volunteer.setCategory(calculateCategory(minScore, userVolunteerPageDTO.getGrade()));
-                    })
-            );
-            return new PageResult<>(page.getTotal(), list);
-        }
+        List<SchoolVolunteer> schoolVolunteerList = userMapper.selectVolunteerSchool(userVolunteerPageDTO);
+        // 在内存中处理分类逻辑
+        schoolVolunteerList.forEach(school ->
+                school.getVolunteerList().forEach(volunteer -> {
+                    Integer minScore = volunteer.getScoreLineList().get(0).getMinScore();
+                    volunteer.setCategory(calculateCategory(minScore, userVolunteerPageDTO.getGrade()));
+                    List<ScoreLine> scoreLineList = volunteer.getScoreLineList();
+                    for (ScoreLine scoreLine : scoreLineList) {
+                        scoreLine.setScoreThanMe(userVolunteerPageDTO.getGrade() - scoreLine.getMinScore());
+                        scoreLine.setRankingThanMe(userVolunteerPageDTO.getRanking() - scoreLine.getMinRanking());
+                    }
+                })
+        );
+        return manualPage(schoolVolunteerList, userVolunteerPageDTO.getPage(), userVolunteerPageDTO.getPageSize());
+    }
+
+
+    /**
+     * 人工分页
+     *
+     * @param filterCache 过滤后的学校缓存
+     * @param page        查询页码
+     * @param pageSize    每页大小
+     * @return PageResult<SchoolVO>
+     */
+    private PageResult<SchoolVolunteer> manualPage(List<SchoolVolunteer> filterCache, Integer page, Integer pageSize) {
+        // 1.获取记录总数
+        int total = filterCache.size();
+        // 2.获取起始页码
+        int start = (page - 1) * pageSize;
+        if (start >= total) return new PageResult<>((long) total, Collections.emptyList());
+        // 3.获取结束页码
+        int end = Math.min(start + pageSize, total);
+        // 4.分页并返回
+        List<SchoolVolunteer> pageData = filterCache.subList(start, end);
+        return new PageResult<>((long) total, pageData);
     }
 
     /**
@@ -376,17 +402,20 @@ public class UserServiceImpl implements UserService {
      *
      * @param minScore 专业历年最低分
      * @param grade    用户分数
-     * @return 0-保底 1-稳妥 2-冲刺
+     * @return 0保底 1稳妥 2冲刺
      */
     private int calculateCategory(int minScore, int grade) {
         if (minScore <= grade + 10 && minScore >= grade - 10) {
-            return 1; // 稳
+            // 该专业为稳
+            return 1;
         } else if (minScore > grade + 10 && minScore <= grade + 30) {
-            return 2; // 冲
-        } else if (minScore < grade - 10 && minScore >= grade - 30) {
-            return 0; // 保
+            // 该专业为冲
+            return 2;
+        } else if (minScore < grade - 10 && minScore >= grade - 40) {
+            // 该专业为保
+            return 0;
         }
-        // 超出30分范围的特殊情况（如需要可扩展）
+        // 超出30分范围的特殊情况，不做处理
         return -1;
     }
 

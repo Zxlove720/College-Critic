@@ -48,9 +48,11 @@
                  JOIN tb_category c ON y.year_id = c.year_id
                  JOIN tb_batch b ON c.category_id = b.category_id
                  JOIN tb_score sc ON b.batch_id = sc.batch_id
-        WHERE sc.first_choice = #{firstChoice} and s.school_province = #{province}
-          AND sc.min_score &lt; (#{grade} + 40) and sc.min_score &gt; (#{grade} - 40)
-        order by s.score desc
+        WHERE sc.first_choice = #{firstChoice}
+          AND s.school_province = #{province}
+          AND sc.min_score &lt; (#{grade} + 30)
+          AND sc.min_score &gt; (#{grade} - 40)
+        ORDER BY s.score DESC
     </select>
 
     <!-- 结果映射 -->

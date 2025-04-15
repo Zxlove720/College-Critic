@@ -1,9 +1,7 @@
 package a311.college.controller.user;
 
 import a311.college.constant.API.APIConstant;
-import a311.college.dto.major.MajorDTO;
 import a311.college.dto.query.PageQueryDTO;
-import a311.college.dto.school.SchoolDTO;
 import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
 import a311.college.entity.major.Major;
@@ -165,32 +163,6 @@ public class UserController {
     public Result<PageResult<Major>> showMajor(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("展示用户'{}'收藏专业", ThreadLocalUtil.getCurrentId());
         return Result.success(userService.showFavoriteMajor(pageQueryDTO));
-    }
-
-    /**
-     * 删除用户收藏学校
-     *
-     * @param schoolDTO 学校DTO
-     */
-    @PostMapping("/deleteSchool")
-    @Operation(summary = "删除用户收藏学校")
-    public Result<Void> deleteFavoriteSchool(@RequestBody SchoolDTO schoolDTO) {
-        log.info("用户'{}'删除了'{}'学校收藏", schoolDTO.getUserId(), schoolDTO.getSchoolId());
-        userService.deleteSchool(schoolDTO);
-        return Result.success();
-    }
-
-    /**
-     * 删除用户收藏专业
-     *
-     * @param majorDTO 专业DTO
-     */
-    @PostMapping("/deleteMajor")
-    @Operation(summary = "删除用户收藏专业")
-    public Result<Void> deleteFavoriteMajor(@RequestBody MajorDTO majorDTO) {
-        log.info("用户'{}'删除了'{}'专业收藏", majorDTO.getUserId(), majorDTO.getMajorId());
-        userService.deleteMajor(majorDTO);
-        return Result.success();
     }
 
     /**

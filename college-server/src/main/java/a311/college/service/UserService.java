@@ -37,10 +37,6 @@ public interface UserService {
 
     PageResult<Major> showFavoriteMajor(PageQueryDTO pageQueryDTO);
 
-    void deleteSchool(SchoolDTO schoolDTO);
-
-    void deleteMajor(MajorDTO majorDTO);
-
     PageResult<CommentVO> showSchoolComment(PageQueryDTO pageQueryDTO);
 
     PageResult<CommentVO> showMajorComment(PageQueryDTO pageQueryDTO);

@@ -144,7 +144,7 @@ public class MajorController {
      */
     @PostMapping("/deleteFavorite")
     @Operation(summary = "用户删除收藏专业")
-    public Result<Void> deleteFavoriteSchool(@RequestBody MajorDTO majorDTO) {
+    public Result<Void> deleteFavoriteMajor(@RequestBody MajorDTO majorDTO) {
         log.info("用户'{}'删除收藏'{}'专业", ThreadLocalUtil.getCurrentId(), majorDTO.getMajorId());
         majorService.deleteFavoriteMajor(majorDTO);
         return Result.success();

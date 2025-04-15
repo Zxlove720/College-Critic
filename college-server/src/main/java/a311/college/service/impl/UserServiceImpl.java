@@ -311,26 +311,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 用户取消收藏学校
-     *
-     * @param schoolDTO 学校DTO
-     */
-    @Override
-    public void deleteSchool(SchoolDTO schoolDTO) {
-        userMapper.deleteFavoriteSchool(schoolDTO);
-    }
-
-    /**
-     * 用户取消收藏专业
-     *
-     * @param majorDTO 专业DTO
-     */
-    @Override
-    public void deleteMajor(MajorDTO majorDTO) {
-        userMapper.deleteFavoriteMajor(majorDTO);
-    }
-
-    /**
      * 查看用户评论
      *
      * @return List<String> 用户评论列表

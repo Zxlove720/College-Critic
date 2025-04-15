@@ -13,6 +13,7 @@ import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.school.CommentVO;
 import a311.college.vo.user.UserVO;
+import a311.college.vo.volunteer.SchoolVolunteer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -205,8 +206,10 @@ public class UserController {
     }
 
 
-    public Result<Void> tianbaoZhiyuan() {
-        return null;
+    @PostMapping("/showVolunteer")
+    @Operation(summary = "展示志愿")
+    public Result<PageResult<SchoolVolunteer>> showVolunteer(@RequestBody UserVolunteerPageDTO userVolunteerPageDTO) {
+        return Result.success(userService.showVolunteer(userVolunteerPageDTO));
     }
 
     /**

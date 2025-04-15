@@ -11,6 +11,7 @@ import a311.college.result.LoginResult;
 import a311.college.result.PageResult;
 import a311.college.vo.school.CommentVO;
 import a311.college.vo.user.UserVO;
+import a311.college.vo.volunteer.SchoolVolunteer;
 
 /**
  * 用户相关服务
@@ -43,10 +44,13 @@ public interface UserService {
 
     void deleteComment(UserCommentDTO userCommentDTO);
 
+    PageResult<SchoolVolunteer> showVolunteer(UserVolunteerPageDTO userVolunteerPageDTO);
+
     void update(UserDTO userDTO);
 
     String sendDeleteCode(UserCodeDTO userCodeDTO);
 
     void deleteUser(UserDeleteDTO userDeleteDTO);
+
 
 }

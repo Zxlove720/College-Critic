@@ -2,9 +2,7 @@ package a311.college.service.impl;
 
 import a311.college.constant.user.UserErrorConstant;
 import a311.college.dto.login.UserLoginSymbolDTO;
-import a311.college.dto.major.MajorDTO;
 import a311.college.dto.query.PageQueryDTO;
-import a311.college.dto.school.SchoolDTO;
 import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
 import a311.college.entity.major.Major;
@@ -20,6 +18,7 @@ import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.school.CommentVO;
 import a311.college.vo.user.UserVO;
+import a311.college.vo.volunteer.SchoolVolunteer;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.RandomUtil;
@@ -350,6 +349,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteComment(UserCommentDTO userCommentDTO) {
         userMapper.deleteComment(userCommentDTO.getCommentId());
+    }
+
+    @Override
+    public PageResult<SchoolVolunteer> showVolunteer(UserVolunteerPageDTO userVolunteerPageDTO) {
+        try (Page<School> page = PageHelper.startPage(userVolunteerPageDTO.getPage(), userVolunteerPageDTO.getPageSize())) {
+            userMapper.selectVolunteerSchool(userVolunteerPageDTO);
+
+        }
+        return null;
     }
 
     /**

@@ -29,4 +29,15 @@
         </set>
         where id = #{id}
     </update>
+
+    <select id="selectVolunteerSchool" resultType="a311.college.entity.school.School">
+        select s.school_id, s.school_name, s.school_province
+        from tb_school as s
+                 JOIN tb_province as p ON s.school_id = p.school_id
+                 JOIN tb_year as y ON p.province_id = y.province_id
+                 JOIN tb_category as c ON y.year_id = c.year_id
+                 JOIN tb_batch as b ON c.category_id = b.category_id
+                 JOIN tb_score as sc ON b.batch_id = sc.batch_id
+        where sc.first_choice = #{firstChoice}
+    </select>
 </mapper>

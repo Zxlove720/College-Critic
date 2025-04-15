@@ -1,0 +1,36 @@
+package a311.college.dto.user;
+
+import a311.college.enumeration.ProvinceEnum;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ * 用户志愿查询DTO
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Schema(description = "用户志愿查询DTO")
+public class UserVolunteerPageDTO {
+
+    @Schema(description = "用户所在省份")
+    private ProvinceEnum province;
+
+    @Schema(description = "首选科目")
+    private String firstChoice;
+
+    @Schema(description = "用户成绩")
+    private Integer grade;
+
+    @Schema(description = "用户位次")
+    private Integer ranking;
+
+    @Schema(description = "起始页码")
+    private Integer page;
+
+    @Schema(description = "每页大小")
+    private Integer pageSize;
+
+}

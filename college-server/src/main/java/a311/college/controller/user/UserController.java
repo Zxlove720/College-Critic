@@ -204,6 +204,11 @@ public class UserController {
         return Result.success();
     }
 
+
+    public Result<Void> tianbaoZhiyuan() {
+        return null;
+    }
+
     /**
      * 修改用户信息
      *

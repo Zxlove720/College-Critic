@@ -34,7 +34,7 @@ public interface SchoolService {
 
     List<School> getCloseSchool(SchoolDTO schoolDTO);
 
-    ForecastVO forecast(ForecastDTO forecastDTO);
+    SchoolForecastVO forecast(ForecastDTO forecastDTO);
 
     List<YearScoreVO> scoreLineByYear(YearScoreQueryDTO yearScoreDTO);
 

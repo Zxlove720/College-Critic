@@ -399,10 +399,10 @@ public class SchoolServiceImpl implements SchoolService {
      * 录取预测
      *
      * @param forecastDTO 录取预测DTO
-     * @return ForecastVO 录取预测VO
+     * @return SchoolForecastVO 录取预测VO
      */
     @Override
-    public ForecastVO forecast(ForecastDTO forecastDTO) {
+    public SchoolForecastVO forecast(ForecastDTO forecastDTO) {
         // 1.列出三种难度的专业
         int minimum = 0;
         int stable = 0;
@@ -460,20 +460,20 @@ public class SchoolServiceImpl implements SchoolService {
             }
         }
         // 3.构建ForecastVO结果
-        ForecastVO forecastVO = new ForecastVO();
+        SchoolForecastVO schoolForecastVO = new SchoolForecastVO();
         // 3.1封装可选专业
-        forecastVO.setSelectableMajor(minimum + stable + rush);
+        schoolForecastVO.setSelectableMajor(minimum + stable + rush);
         // 3.2封装专业列表
-        forecastVO.setMajorForecastList(schoolMajorVOList);
+        schoolForecastVO.setMajorForecastList(schoolMajorVOList);
         // 3.3计算录取概率
         double chance = (stable + minimum + 0.2 * rush) / schoolMajorList.size();
         int forecast = (int) Math.round(chance * 100);
-        forecastVO.setChance(forecast == 0 ? 1 : forecast);
+        schoolForecastVO.setChance(forecast == 0 ? 1 : forecast);
         // 3.4封装不同策略的专业个数
-        forecastVO.setMinimum(minimum);
-        forecastVO.setStable(stable);
-        forecastVO.setRush(rush);
-        return forecastVO;
+        schoolForecastVO.setMinimum(minimum);
+        schoolForecastVO.setStable(stable);
+        schoolForecastVO.setRush(rush);
+        return schoolForecastVO;
     }
 
     /**

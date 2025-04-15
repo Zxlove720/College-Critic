@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "录取概率VO")
-public class ForecastVO {
+public class SchoolForecastVO {
 
     @Schema(description = "可选专业个数")
     private Integer selectableMajor;

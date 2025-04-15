@@ -13,7 +13,10 @@ import lombok.NoArgsConstructor;
 public class ForecastDTO {
 
     @Schema(description = "学校id")
-    private String schoolId;
+    private Integer schoolId;
+
+    @Schema(description = "专业id")
+    private Integer majorId;
 
     @Schema(description = "用户所在省份")
     private ProvinceEnum province;

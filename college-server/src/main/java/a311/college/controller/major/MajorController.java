@@ -5,6 +5,7 @@ import a311.college.dto.major.MajorDTO;
 import a311.college.dto.query.major.*;
 import a311.college.dto.query.school.CommentPageQueryDTO;
 import a311.college.dto.school.AddCommentDTO;
+import a311.college.dto.school.ForecastDTO;
 import a311.college.entity.major.ProfessionalClass;
 import a311.college.dto.ai.MajorAIRequestDTO;
 import a311.college.entity.major.Major;
@@ -18,6 +19,7 @@ import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.ai.MajorAIMessageVO;
 import a311.college.vo.major.DetailMajorVO;
 import a311.college.vo.school.CommentVO;
+import a311.college.vo.volunteer.Volunteer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -161,6 +163,11 @@ public class MajorController {
     public Result<PageResult<School>> pageQuerySchool(@RequestBody MajorSchoolPageQueryDTO majorSchoolPageQueryDTO) {
         log.info("查询开设某专业的学校");
         return Result.success(majorService.querySchools(majorSchoolPageQueryDTO));
+    }
+
+
+    public Result<PageResult<Volunteer>> forecastMajor(@RequestBody ForecastDTO forecastDTO) {
+        return null;
     }
 
     /**

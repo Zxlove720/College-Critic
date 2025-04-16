@@ -44,14 +44,13 @@
                sc.min_ranking
         FROM tb_school s
                  JOIN tb_province p ON s.school_id = p.school_id
-                 JOIN tb_year y ON p.province_id = y.province_id
+                 JOIN tb_year y ON p.province_id = y.province_id -- 省份与年份关联
                  JOIN tb_category c ON y.year_id = c.year_id
                  JOIN tb_batch b ON c.category_id = b.category_id
                  JOIN tb_score sc ON b.batch_id = sc.batch_id
         WHERE sc.first_choice = #{firstChoice}
-          AND s.school_province = #{province}
-          AND sc.min_score &lt; (#{grade} + 30)
-          AND sc.min_score &gt; (#{grade} - 40)
+          AND p.province_name = #{province}
+          AND sc.min_ranking between #{ranking} - 15000 and #{ranking} + 15000
         ORDER BY s.score DESC
     </select>
 

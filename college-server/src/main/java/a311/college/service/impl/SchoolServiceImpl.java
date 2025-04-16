@@ -421,7 +421,7 @@ public class SchoolServiceImpl implements SchoolService {
             Integer userRanking = forecastDTO.getRanking();
             if (userRanking != null) {
                 int majorRanking = schoolMajor.getMinRanking();
-                if (majorRanking >= userRanking - 3000 && majorRanking <= userRanking + 4000) {
+                if (majorRanking >= userRanking - 3000 && majorRanking <= userRanking + 5000) {
                     // 2.6该专业为稳
                     schoolMajorVO.setCategory(1);
                     stable++;
@@ -429,7 +429,7 @@ public class SchoolServiceImpl implements SchoolService {
                     // 2.7该专业为冲
                     schoolMajorVO.setCategory(2);
                     rush++;
-                } else if (majorRanking > userRanking + 4000) {
+                } else if (majorRanking > userRanking + 5000) {
                     // 2.8该专业为保
                     schoolMajorVO.setCategory(0);
                     minimum++;

@@ -363,8 +363,8 @@ public class UserServiceImpl implements UserService {
         // 在内存中处理分类逻辑
         schoolVolunteerList.forEach(school ->
                 school.getVolunteerList().forEach(volunteer -> {
-                    Integer minScore = volunteer.getScoreLineList().get(0).getMinScore();
-                    volunteer.setCategory(calculateCategory(minScore, userVolunteerPageDTO.getGrade()));
+                    Integer minRanking = volunteer.getScoreLineList().get(0).getMinRanking();
+                    volunteer.setCategory(calculateCategory(minRanking, userVolunteerPageDTO.getRanking()));
                     List<ScoreLine> scoreLineList = volunteer.getScoreLineList();
                     for (ScoreLine scoreLine : scoreLineList) {
                         scoreLine.setScoreThanMe(userVolunteerPageDTO.getGrade() - scoreLine.getMinScore());
@@ -400,22 +400,21 @@ public class UserServiceImpl implements UserService {
     /**
      * 计算专业分类逻辑
      *
-     * @param minScore 专业历年最低分
-     * @param grade    用户分数
+     * @param minRanking 专业历年最低分
+     * @param ranking  用户分数
      * @return 0保底 1稳妥 2冲刺
      */
-    private int calculateCategory(int minScore, int grade) {
-        if (minScore <= grade + 10 && minScore >= grade - 10) {
+    private int calculateCategory(int minRanking, int ranking) {
+        if (minRanking >= ranking - 3000 && minRanking <= ranking + 5000) {
             // 该专业为稳
             return 1;
-        } else if (minScore > grade + 10 && minScore <= grade + 30) {
+        } else if (minRanking < ranking - 3000 && minRanking >= ranking - 5000) {
             // 该专业为冲
             return 2;
-        } else if (minScore < grade - 10 && minScore >= grade - 40) {
+        } else if (minRanking > ranking + 5000) {
             // 该专业为保
             return 0;
         }
-        // 超出30分范围的特殊情况，不做处理
         return -1;
     }
 

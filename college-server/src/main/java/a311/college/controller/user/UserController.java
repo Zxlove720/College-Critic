@@ -205,13 +205,6 @@ public class UserController {
         return Result.success();
     }
 
-
-    @PostMapping("/showVolunteer")
-    @Operation(summary = "展示志愿")
-    public Result<PageResult<SchoolVolunteer>> showVolunteer(@RequestBody UserVolunteerPageDTO userVolunteerPageDTO) {
-        return Result.success(userService.showVolunteer(userVolunteerPageDTO));
-    }
-
     /**
      * 修改用户信息
      *

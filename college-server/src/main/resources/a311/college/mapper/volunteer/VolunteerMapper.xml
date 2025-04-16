@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="a311.college.mapper.volunteer.VolunteerMapper">
+    <!-- 优化后的主查询SQL -->
+    <select id="selectVolunteerSchool" resultMap="schoolVolunteerMap">
+        SELECT s.school_id,
+        s.school_head,
+        s.school_name,
+        s.school_province,
+        sc.major_name,
+        sc.first_choice,
+        sc.other_choice,
+        sc.special,
+        sc.major_id,
+        y.year,
+        sc.min_score,
+        sc.min_ranking
+        FROM tb_school s
+        JOIN tb_province p ON s.school_id = p.school_id
+        JOIN tb_year y ON p.province_id = y.province_id -- 省份与年份关联
+        JOIN tb_category c ON y.year_id = c.year_id
+        JOIN tb_batch b ON c.category_id = b.category_id
+        JOIN tb_score sc ON b.batch_id = sc.batch_id
+        WHERE sc.first_choice = #{firstChoice}
+        AND p.province_name = #{province}
+        AND sc.min_ranking between #{ranking} - 7500 and #{ranking} + 10000
+        <if test="category == 1">
+            order by s.score desc
+        </if>
+        <if test="category == 2">
+            order by sc.min_score desc
+        </if>
+    </select>
+
+    <!-- 结果映射 -->
+    <resultMap id="schoolVolunteerMap" type="a311.college.vo.volunteer.SchoolVolunteer">
+        <id property="schoolId" column="school_id"/>
+        <result property="schoolName" column="school_name"/>
+        <result property="schoolHead" column="school_head"/>
+        <result property="schoolProvince" column="school_province"/>
+        <collection property="volunteerList" ofType="a311.college.vo.volunteer.Volunteer">
+            <result property="majorId" column="major_id"/>
+            <result property="majorName" column="major_name"/>
+            <result property="firstChoice" column="first_choice"/>
+            <result property="otherChoice" column="other_choice"/>
+            <result property="special" column="special"/>
+            <collection property="scoreLineList" ofType="a311.college.vo.volunteer.ScoreLine">
+                <result property="year" column="year"/>
+                <result property="minScore" column="min_score"/>
+                <result property="minRanking" column="min_ranking"/>
+            </collection>
+        </collection>
+    </resultMap>
+</mapper>

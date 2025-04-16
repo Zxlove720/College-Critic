@@ -1,8 +1,6 @@
 package a311.college.service;
 
-import a311.college.dto.major.MajorDTO;
 import a311.college.dto.query.PageQueryDTO;
-import a311.college.dto.school.SchoolDTO;
 import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
 import a311.college.entity.major.Major;
@@ -11,7 +9,6 @@ import a311.college.result.LoginResult;
 import a311.college.result.PageResult;
 import a311.college.vo.school.CommentVO;
 import a311.college.vo.user.UserVO;
-import a311.college.vo.volunteer.SchoolVolunteer;
 
 /**
  * 用户相关服务
@@ -43,8 +40,6 @@ public interface UserService {
     PageResult<CommentVO> showMajorComment(PageQueryDTO pageQueryDTO);
 
     void deleteComment(UserCommentDTO userCommentDTO);
-
-    PageResult<SchoolVolunteer> showVolunteer(UserVolunteerPageDTO userVolunteerPageDTO);
 
     void update(UserDTO userDTO);
 

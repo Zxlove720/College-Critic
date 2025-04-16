@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "用户志愿查询DTO")
-public class UserVolunteerPageDTO {
+public class VolunteerPageDTO {
 
     @Schema(description = "用户所在省份")
     private ProvinceEnum province;
@@ -31,9 +31,9 @@ public class UserVolunteerPageDTO {
     private Integer category;
 
     @Schema(description = "起始页码")
-    private Integer page;
+    private Integer page = 1;
 
     @Schema(description = "每页大小")
-    private Integer pageSize;
+    private Integer pageSize = 10;
 
 }

@@ -1,7 +1,7 @@
 package a311.college.mapper.user;
 
 import a311.college.annotation.AutoFill;
-import a311.college.dto.user.UserVolunteerPageDTO;
+import a311.college.dto.user.VolunteerPageDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.school.School;
 import a311.college.entity.user.User;
@@ -131,9 +131,9 @@ public interface UserMapper {
     /**
      * 查询志愿学校
      *
-     * @param userVolunteerPageDTO 用户志愿分页查询DTO
+     * @param volunteerPageDTO 用户志愿分页查询DTO
      * @return List<School>
      */
-    List<SchoolVolunteer> selectVolunteerSchool(UserVolunteerPageDTO userVolunteerPageDTO);
+    List<SchoolVolunteer> selectVolunteerSchool(VolunteerPageDTO volunteerPageDTO);
 
 }

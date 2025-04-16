@@ -1,6 +1,6 @@
 package a311.college.service.impl;
 
-import a311.college.dto.user.UserVolunteerPageDTO;
+import a311.college.dto.user.VolunteerPageDTO;
 import a311.college.mapper.volunteer.VolunteerMapper;
 import a311.college.result.PageResult;
 import a311.college.service.VolunteerService;
@@ -25,25 +25,25 @@ public class VolunteerServiceImpl implements VolunteerService {
     /**
      * 志愿展示
      *
-     * @param userVolunteerPageDTO 用户志愿分页查询DTO
+     * @param volunteerPageDTO 用户志愿分页查询DTO
      * @return PageResult<SchoolVolunteer>
      */
     @Override
-    public PageResult<SchoolVolunteer> showVolunteer(UserVolunteerPageDTO userVolunteerPageDTO) {
-        List<SchoolVolunteer> schoolVolunteerList = volunteerMapper.selectVolunteerSchool(userVolunteerPageDTO);
+    public PageResult<SchoolVolunteer> showVolunteer(VolunteerPageDTO volunteerPageDTO) {
+        List<SchoolVolunteer> schoolVolunteerList = volunteerMapper.selectVolunteerSchool(volunteerPageDTO);
         // 在内存中处理分类逻辑
         schoolVolunteerList.forEach(school ->
                 school.getVolunteerList().forEach(volunteer -> {
                     Integer minRanking = volunteer.getScoreLineList().get(0).getMinRanking();
-                    volunteer.setCategory(calculateCategory(minRanking, userVolunteerPageDTO.getRanking()));
+                    volunteer.setCategory(calculateCategory(minRanking, volunteerPageDTO.getRanking()));
                     List<ScoreLine> scoreLineList = volunteer.getScoreLineList();
                     for (ScoreLine scoreLine : scoreLineList) {
-                        scoreLine.setScoreThanMe(userVolunteerPageDTO.getGrade() - scoreLine.getMinScore());
-                        scoreLine.setRankingThanMe(userVolunteerPageDTO.getRanking() - scoreLine.getMinRanking());
+                        scoreLine.setScoreThanMe(volunteerPageDTO.getGrade() - scoreLine.getMinScore());
+                        scoreLine.setRankingThanMe(volunteerPageDTO.getRanking() - scoreLine.getMinRanking());
                     }
                 })
         );
-        return manualPage(schoolVolunteerList, userVolunteerPageDTO.getPage(), userVolunteerPageDTO.getPageSize());
+        return manualPage(schoolVolunteerList, volunteerPageDTO.getPage(), volunteerPageDTO.getPageSize());
     }
 
     /**

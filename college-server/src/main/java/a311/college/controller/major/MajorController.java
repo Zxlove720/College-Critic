@@ -88,18 +88,6 @@ public class MajorController {
     }
 
     /**
-     * 根据专业名搜索
-     *
-     * @return Result<List < MajorVO>>
-     */
-    @PostMapping("/major")
-    @Operation(summary = "专业名搜索")
-    public Result<List<Major>> searchMajorByName(@RequestBody MajorNameQueryDTO majorNameDTO) {
-        log.info("专业名搜索'{}'", majorNameDTO.getMajorName());
-        return Result.success(majorService.searchMajorByName(majorNameDTO.getMajorName()));
-    }
-
-    /**
      * 请求AI获取专业信息
      *
      * @return Result<MajorAIMessageVO>

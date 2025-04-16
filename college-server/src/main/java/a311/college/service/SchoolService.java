@@ -22,8 +22,6 @@ public interface SchoolService {
 
     void cacheSchool();
 
-    List<School> searchSchool(SchoolNameQueryDTO schoolNameQueryDTO);
-
     SearchVO searchList(UserSearchDTO userSearchDTO);
 
     DetailedSchoolVO getDetailSchool(SchoolDTO schoolDTO);

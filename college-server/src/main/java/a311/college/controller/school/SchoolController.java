@@ -50,7 +50,7 @@ public class SchoolController {
      * @param schoolPageQueryDTO 大学分页查询DTO
      * @return Result<PageResult<School>>
      */
-    @PostMapping("/schools")
+    @PostMapping("/page")
     @Operation(summary = "学校列表分页查询")
     public Result<PageResult<School>> schoolPageSelect(@RequestBody SchoolPageQueryDTO schoolPageQueryDTO) {
         log.info("大学分页查询...查询参数为：第{}页，每页{}条", schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
@@ -70,18 +70,6 @@ public class SchoolController {
         log.info("大学专业分页查询...查询参数为：第{}页，每页{}条", schoolMajorPageQueryDTO.getPage(), schoolMajorPageQueryDTO.getPageSize());
         PageResult<SchoolMajor> pageResult = schoolService.pageSelectMajor(schoolMajorPageQueryDTO);
         return Result.success(pageResult);
-    }
-
-    /**
-     * 根据学校名搜索学校
-     *
-     * @param schoolNameQueryDTO 学校名DTO
-     * @return Result<List < SchoolVO>>
-     */
-    @PostMapping("/search")
-    @Operation(summary = "根据学校名搜索大学")
-    public Result<List<School>> searchSchool(@RequestBody SchoolNameQueryDTO schoolNameQueryDTO) {
-        return Result.success(schoolService.searchSchool(schoolNameQueryDTO));
     }
 
     /**

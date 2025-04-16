@@ -25,8 +25,6 @@ public interface MajorService {
 
     PageResult<Major> majorPageQuery(MajorPageQueryDTO majorDTO);
 
-    List<Major> searchMajorByName(String majorName);
-
     DetailMajorVO getDetailMajor(MajorDTO majorDTO);
 
     void addFavoriteMajor(MajorDTO majorDTO);

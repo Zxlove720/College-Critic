@@ -92,17 +92,6 @@ public class MajorServiceImpl implements MajorService {
     }
 
     /**
-     * 根据专业名搜索专业
-     *
-     * @param majorName 专业名
-     * @return List<Major>
-     */
-    @Override
-    public List<Major> searchMajorByName(String majorName) {
-        return majorMapper.searchMajorByName(majorName);
-    }
-
-    /**
      * 查询专业具体信息
      *
      * @param majorDTO 专业DTO

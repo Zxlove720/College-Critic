@@ -23,6 +23,9 @@ public class MajorPageQueryDTO {
     @Schema(description = "专业id")
     private Integer majorId;
 
+    @Schema(description = "专业名称")
+    private String majorName;
+
     @Schema(description = "查询页码")
     private Integer page = 1;
 

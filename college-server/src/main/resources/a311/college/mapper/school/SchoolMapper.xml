@@ -11,7 +11,7 @@
         school_name,
         school_province,
         school_address,
-        rank_list,
+        rank_list
         from tb_school
         <where>
             <if test="schoolName != null and schoolName != ''">

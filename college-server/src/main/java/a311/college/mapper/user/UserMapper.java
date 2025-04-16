@@ -1,8 +1,6 @@
 package a311.college.mapper.user;
 
 import a311.college.annotation.AutoFill;
-import a311.college.dto.major.MajorDTO;
-import a311.college.dto.school.SchoolDTO;
 import a311.college.dto.user.UserVolunteerPageDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.school.School;
@@ -11,8 +9,6 @@ import a311.college.enumeration.OperationType;
 import a311.college.vo.school.CommentVO;
 import a311.college.vo.user.UserVO;
 import a311.college.vo.volunteer.SchoolVolunteer;
-import a311.college.vo.volunteer.ScoreLine;
-import a311.college.vo.volunteer.Volunteer;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -131,13 +127,6 @@ public interface UserMapper {
      */
     @Select("select id from tb_user where username = #{username}")
     User selectByUsername(String username);
-
-
-    @Delete("delete from tb_fav_school where user_id = #{userId} and school_id = #{schoolId}")
-    void deleteFavoriteSchool(SchoolDTO schoolDTO);
-
-    @Delete("delete from tb_fav_major where user_id = #{userId} and major_id = #{majorId}")
-    void deleteFavoriteMajor(MajorDTO majorDTO);
 
     /**
      * 查询志愿学校

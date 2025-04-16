@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/volunteers")
 public class VolunteerController {
 
-
     private final VolunteerService volunteerService;
 
     @Autowired
@@ -40,7 +39,13 @@ public class VolunteerController {
         return Result.success(volunteerService.showVolunteer(volunteerPageDTO));
     }
 
-
+    /**
+     * 添加志愿
+     *
+     * @param addVolunteerDTO 添加志愿DTO
+     */
+    @PostMapping("/addVolunteer")
+    @Operation(summary = "添加志愿")
     public Result<Void> addVolunteer(@RequestBody AddVolunteerDTO addVolunteerDTO) {
         volunteerService.addVolunteer(addVolunteerDTO);
         return null;

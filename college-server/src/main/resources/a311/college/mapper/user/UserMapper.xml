@@ -39,6 +39,7 @@
                sc.first_choice,
                sc.other_choice,
                sc.special,
+               sc.major_id,
                y.year,
                sc.min_score,
                sc.min_ranking
@@ -50,8 +51,8 @@
                  JOIN tb_score sc ON b.batch_id = sc.batch_id
         WHERE sc.first_choice = #{firstChoice}
           AND p.province_name = #{province}
-          AND sc.min_ranking between #{ranking} - 15000 and #{ranking} + 15000
-        ORDER BY s.score DESC
+          AND sc.min_ranking between #{ranking} - 7500 and #{ranking} + 15000
+        ORDER BY sc.min_score DESC
     </select>
 
     <!-- 结果映射 -->
@@ -60,7 +61,8 @@
         <result property="schoolName" column="school_name"/>
         <result property="schoolProvince" column="school_province"/>
         <collection property="volunteerList" ofType="a311.college.vo.volunteer.Volunteer">
-            <id property="majorName" column="major_name"/>
+            <result property="majorId" column="major_id"/>
+            <result property="majorName" column="major_name"/>
             <result property="firstChoice" column="first_choice"/>
             <result property="otherChoice" column="other_choice"/>
             <result property="special" column="special"/>

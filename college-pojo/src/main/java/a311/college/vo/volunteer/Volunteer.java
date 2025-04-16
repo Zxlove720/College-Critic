@@ -19,6 +19,9 @@ public class Volunteer {
     @Schema(description = "所属类型")
     private Integer category;
 
+    @Schema(description = "专业id")
+    private Integer majorId;
+
     @Schema(description = "专业名称")
     private String majorName;
 
@@ -30,6 +33,12 @@ public class Volunteer {
 
     @Schema(description = "特殊要求")
     private String special;
+
+    @Schema(description = "是否被收藏")
+    private Boolean isAdd = false;
+
+    @Schema(description = "志愿数")
+    private Integer count;
 
     @Schema(description = "历年分数线")
     private List<ScoreLine> scoreLineList;

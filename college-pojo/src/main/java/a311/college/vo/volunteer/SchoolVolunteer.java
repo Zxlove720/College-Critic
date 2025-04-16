@@ -19,6 +19,9 @@ public class SchoolVolunteer {
     @Schema(description = "学校id")
     private Integer schoolId;
 
+    @Schema(description = "学校校徽")
+    private String schoolHead;
+
     @Schema(description = "学校名称")
     private String schoolName;
 

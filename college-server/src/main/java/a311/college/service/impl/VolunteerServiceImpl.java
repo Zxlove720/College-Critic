@@ -97,6 +97,7 @@ public class VolunteerServiceImpl implements VolunteerService {
      */
     @Override
     public void addVolunteer(AddVolunteerDTO addVolunteerDTO) {
+
         SchoolMajor schoolMajor = volunteerMapper.selectSchoolMajorById(addVolunteerDTO.getMajorId());
 
     }

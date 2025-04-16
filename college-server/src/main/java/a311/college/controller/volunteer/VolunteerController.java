@@ -48,6 +48,6 @@ public class VolunteerController {
     @Operation(summary = "添加志愿")
     public Result<Void> addVolunteer(@RequestBody AddVolunteerDTO addVolunteerDTO) {
         volunteerService.addVolunteer(addVolunteerDTO);
-        return null;
+        return Result.success();
     }
 }

@@ -1,6 +1,7 @@
 package a311.college.controller.volunteer;
 
 import a311.college.dto.user.VolunteerPageDTO;
+import a311.college.dto.volunteer.AddVolunteerDTO;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.VolunteerService;
@@ -37,5 +38,11 @@ public class VolunteerController {
     @Operation(summary = "展示志愿")
     public Result<PageResult<SchoolVolunteer>> showVolunteer(@RequestBody VolunteerPageDTO volunteerPageDTO) {
         return Result.success(volunteerService.showVolunteer(volunteerPageDTO));
+    }
+
+
+    public Result<Void> addVolunteer(@RequestBody AddVolunteerDTO addVolunteerDTO) {
+        volunteerService.addVolunteer(addVolunteerDTO);
+        return null;
     }
 }

@@ -1,6 +1,8 @@
 package a311.college.service.impl;
 
 import a311.college.dto.user.VolunteerPageDTO;
+import a311.college.dto.volunteer.AddVolunteerDTO;
+import a311.college.entity.school.SchoolMajor;
 import a311.college.mapper.volunteer.VolunteerMapper;
 import a311.college.result.PageResult;
 import a311.college.service.VolunteerService;
@@ -86,5 +88,16 @@ public class VolunteerServiceImpl implements VolunteerService {
             return 0;
         }
         return -1;
+    }
+
+    /**
+     * 添加志愿
+     *
+     * @param addVolunteerDTO 添加志愿
+     */
+    @Override
+    public void addVolunteer(AddVolunteerDTO addVolunteerDTO) {
+        SchoolMajor schoolMajor = volunteerMapper.selectSchoolMajorById(addVolunteerDTO.getMajorId());
+
     }
 }

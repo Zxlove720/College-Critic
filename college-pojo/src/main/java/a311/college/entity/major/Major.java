@@ -16,6 +16,12 @@ import java.io.Serializable;
 @Schema(description = "专业实体类")
 public class Major implements Serializable {
 
+    @Schema(description = "学科门类")
+    private String subjectCategoryName;
+
+    @Schema(description = "专业类别")
+    private String professionalClassName;
+    
     @Schema(description = "专业id")
     private Integer majorId;
 

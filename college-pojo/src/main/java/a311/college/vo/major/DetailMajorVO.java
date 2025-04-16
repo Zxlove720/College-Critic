@@ -37,9 +37,6 @@ public class DetailMajorVO {
     @Schema(description = "就业率")
     private List<String> employmentRate;
 
-    @Schema(description = "人气值")
-    private String popularity;
-
     @Schema(description = "男女比例")
     private String gender;
 

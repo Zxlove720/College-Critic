@@ -75,11 +75,11 @@ public class SchoolConstant {
      */
     public static List<Major> getMajor() {
         List<Major> majorList = new ArrayList<>();
-        majorList.add(new Major(1, "计算机科学与技术", null, null, null, "66:34", 14200));
-        majorList.add(new Major(21, "人工智能", null, null, null, "70:30", 17200));
-        majorList.add(new Major(19, "电子信息工程", null, null, null, "73:27", 12900));
-        majorList.add(new Major(366, "汉语言文学", null, null, null, "16:84", 10900));
-        majorList.add(new Major(274, "临床医学", null, null, null, "44:56", 13000));
+        majorList.add(new Major("工学", "计算机类", 1, "计算机科学与技术", null, null, null, "66:34", 14200));
+        majorList.add(new Major("工学", "计算机类", 21, "人工智能", null, null, null, "70:30", 17200));
+        majorList.add(new Major("工学", "电子信息类", 19, "电子信息工程", null, null, null, "73:27", 12900));
+        majorList.add(new Major("文学", "中国语言文学类", 366, "汉语言文学", null, null, null, "16:84", 10900));
+        majorList.add(new Major("医学", "临床医学类", 274, "临床医学", null, null, null, "44:56", 13000));
         return majorList;
     }
 

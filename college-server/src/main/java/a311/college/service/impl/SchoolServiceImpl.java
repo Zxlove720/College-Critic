@@ -226,12 +226,6 @@ public class SchoolServiceImpl implements SchoolService {
             log.info("用户没有搜索到专业信息，返回默认专业信息");
             // 4.1返回固定的专业信息
             majorList = SchoolConstant.getMajor();
-        } else {
-            // 4.2成功匹配到专业数据，对其进行处理
-            for (Major major : majorList) {
-                major.setGender(major.getGender().equals("--") ? null : major.getGender());
-                major.setAvgSalary(major.getAvgSalary() == 0 ? null : major.getAvgSalary());
-            }
         }
         // 返回搜索结果
         return new SearchVO(schoolList, majorList);

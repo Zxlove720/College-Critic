@@ -27,6 +27,9 @@ public class UserVolunteerPageDTO {
     @Schema(description = "用户位次")
     private Integer ranking;
 
+    @Schema(description = "查询方式")
+    private Integer category;
+
     @Schema(description = "起始页码")
     private Integer page;
 

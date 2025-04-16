@@ -375,7 +375,6 @@ public class UserServiceImpl implements UserService {
         return manualPage(schoolVolunteerList, userVolunteerPageDTO.getPage(), userVolunteerPageDTO.getPageSize());
     }
 
-
     /**
      * 人工分页
      *
@@ -408,7 +407,7 @@ public class UserServiceImpl implements UserService {
         if (minRanking >= ranking - 3000 && minRanking <= ranking + 5000) {
             // 该专业为稳
             return 1;
-        } else if (minRanking < ranking - 3000 && minRanking >= ranking - 5000) {
+        } else if (minRanking < ranking - 3000 && minRanking >= ranking - 7500) {
             // 该专业为冲
             return 2;
         } else if (minRanking > ranking + 5000) {

@@ -33,6 +33,7 @@
     <!-- 优化后的主查询SQL -->
     <select id="selectVolunteerSchool" resultMap="schoolVolunteerMap">
         SELECT s.school_id,
+               s.school_head,
                s.school_name,
                s.school_province,
                sc.major_name,
@@ -51,14 +52,20 @@
                  JOIN tb_score sc ON b.batch_id = sc.batch_id
         WHERE sc.first_choice = #{firstChoice}
           AND p.province_name = #{province}
-          AND sc.min_ranking between #{ranking} - 7500 and #{ranking} + 15000
-        ORDER BY sc.min_score DESC
+          AND sc.min_ranking between #{ranking} - 7500 and #{ranking} + 10000
+        <if test="category == 1">
+            order by s.score desc
+        </if>
+        <if test="category == 2">
+            order by sc.min_score desc
+        </if>
     </select>
 
     <!-- 结果映射 -->
     <resultMap id="schoolVolunteerMap" type="a311.college.vo.volunteer.SchoolVolunteer">
         <id property="schoolId" column="school_id"/>
         <result property="schoolName" column="school_name"/>
+        <result property="schoolHead" column="school_head"/>
         <result property="schoolProvince" column="school_province"/>
         <collection property="volunteerList" ofType="a311.college.vo.volunteer.Volunteer">
             <result property="majorId" column="major_id"/>

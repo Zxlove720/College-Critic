@@ -29,5 +29,5 @@ public class SchoolVolunteer {
     private String schoolProvince;
 
     @Schema(description = "可报专业")
-    private List<Volunteer> volunteerList;
+    private List<VolunteerVO> volunteerVOList;
 }

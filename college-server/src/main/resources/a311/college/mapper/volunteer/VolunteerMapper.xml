@@ -32,6 +32,29 @@
             order by sc.min_score desc
         </if>
     </select>
+    
+    
+    <select id="selectSchoolMajorById" resultType="a311.college.entity.volunteer.Volunteer">
+        SELECT
+        s.school_id,
+        s.school_head,
+        s.school_name,
+        s.school_province,
+        sc.major_name,
+        sc.first_choice,
+        sc.other_choice,
+        sc.special,
+        sc.major_id,
+        y.year,
+        sc.min_score,
+        sc.min_ranking
+        FROM tb_school s
+        JOIN tb_province p ON s.school_id = p.school_id
+        JOIN tb_year y ON p.province_id = y.province_id
+        JOIN tb_category c ON y.year_id = c.year_id
+        JOIN tb_batch b ON c.category_id = b.category_id
+        JOIN tb_score sc ON b.batch_id = sc.batch_id
+    </select>
 
     <!-- 结果映射 -->
     <resultMap id="schoolVolunteerMap" type="a311.college.vo.volunteer.SchoolVolunteer">
@@ -39,7 +62,7 @@
         <result property="schoolName" column="school_name"/>
         <result property="schoolHead" column="school_head"/>
         <result property="schoolProvince" column="school_province"/>
-        <collection property="volunteerList" ofType="a311.college.vo.volunteer.Volunteer">
+        <collection property="volunteerList" ofType="a311.college.vo.volunteer.VolunteerVO">
             <result property="majorId" column="major_id"/>
             <result property="majorName" column="major_name"/>
             <result property="firstChoice" column="first_choice"/>

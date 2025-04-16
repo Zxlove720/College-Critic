@@ -23,6 +23,12 @@ public class Volunteer {
     @Schema(description = "所属类型")
     private Integer category;
 
+    @Schema(description = "学校id")
+    private String schoolId;
+
+    @Schema(description = "学校校徽")
+    private String schoolHead;
+
     @Schema(description = "学校名称")
     private String schoolName;
 

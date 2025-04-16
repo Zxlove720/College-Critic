@@ -19,7 +19,7 @@ import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.ai.MajorAIMessageVO;
 import a311.college.vo.major.DetailMajorVO;
 import a311.college.vo.school.CommentVO;
-import a311.college.vo.volunteer.Volunteer;
+import a311.college.vo.volunteer.VolunteerVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -154,7 +154,7 @@ public class MajorController {
     }
 
 
-    public Result<PageResult<Volunteer>> forecastMajor(@RequestBody ForecastDTO forecastDTO) {
+    public Result<PageResult<VolunteerVO>> forecastMajor(@RequestBody ForecastDTO forecastDTO) {
         return null;
     }
 

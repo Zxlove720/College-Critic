@@ -2,7 +2,7 @@ package a311.college.service.impl;
 
 import a311.college.dto.user.VolunteerPageDTO;
 import a311.college.dto.volunteer.AddVolunteerDTO;
-import a311.college.entity.school.SchoolMajor;
+import a311.college.entity.volunteer.Volunteer;
 import a311.college.mapper.volunteer.VolunteerMapper;
 import a311.college.result.PageResult;
 import a311.college.service.VolunteerService;
@@ -35,7 +35,7 @@ public class VolunteerServiceImpl implements VolunteerService {
         List<SchoolVolunteer> schoolVolunteerList = volunteerMapper.selectVolunteerSchool(volunteerPageDTO);
         // 在内存中处理分类逻辑
         schoolVolunteerList.forEach(school ->
-                school.getVolunteerList().forEach(volunteer -> {
+                school.getVolunteerVOList().forEach(volunteer -> {
                     Integer minRanking = volunteer.getScoreLineList().get(0).getMinRanking();
                     volunteer.setCategory(calculateCategory(minRanking, volunteerPageDTO.getRanking()));
                     List<ScoreLine> scoreLineList = volunteer.getScoreLineList();
@@ -98,7 +98,7 @@ public class VolunteerServiceImpl implements VolunteerService {
     @Override
     public void addVolunteer(AddVolunteerDTO addVolunteerDTO) {
 
-        SchoolMajor schoolMajor = volunteerMapper.selectSchoolMajorById(addVolunteerDTO.getMajorId());
+        Volunteer volunteer = volunteerMapper.selectSchoolMajorById(addVolunteerDTO.getMajorId());
 
     }
 }

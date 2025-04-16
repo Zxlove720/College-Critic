@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "志愿类型")
-public class Volunteer {
+public class VolunteerVO {
 
     @Schema(description = "所属类型")
     private Integer category;

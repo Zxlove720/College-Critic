@@ -42,5 +42,14 @@ public interface VolunteerMapper {
             "#{year}, #{minScore}, #{minRanking}, #{scoreThanMe}, #{rankingThanMe})")
     void addVolunteer(Volunteer volunteer);
 
+    /**
+     * 判断志愿是否被用户收藏
+     *
+     * @param majorId 专业id
+     * @param userId 用户id
+     */
+    @Select("select count from tb_volunteer where major_id = #{majorId} and user_id = #{userId}")
+    Integer checkVolunteer(int majorId, long userId);
+
 
 }

@@ -37,13 +37,21 @@ public class VolunteerServiceImpl implements VolunteerService {
         List<SchoolVolunteer> schoolVolunteerList = volunteerMapper.selectVolunteerSchool(volunteerPageDTO);
         // 在内存中处理分类逻辑
         schoolVolunteerList.forEach(school ->
-                school.getVolunteerVOList().forEach(volunteer -> {
-                    Integer minRanking = volunteer.getScoreLineList().get(0).getMinRanking();
-                    volunteer.setCategory(calculateCategory(minRanking, volunteerPageDTO.getRanking()));
-                    List<ScoreLine> scoreLineList = volunteer.getScoreLineList();
+                school.getVolunteerVOList().forEach(volunteerVO -> {
+                    Integer minRanking = volunteerVO.getScoreLineList().get(0).getMinRanking();
+                    volunteerVO.setCategory(calculateCategory(minRanking, volunteerPageDTO.getRanking()));
+                    List<ScoreLine> scoreLineList = volunteerVO.getScoreLineList();
                     for (ScoreLine scoreLine : scoreLineList) {
                         scoreLine.setScoreThanMe(volunteerPageDTO.getGrade() - scoreLine.getMinScore());
                         scoreLine.setRankingThanMe(volunteerPageDTO.getRanking() - scoreLine.getMinRanking());
+                    }
+                    Integer count = volunteerMapper.checkVolunteer(volunteerVO.getMajorId(), ThreadLocalUtil.getCurrentId());
+                    if (count == null) {
+                        volunteerVO.setCount(0);
+                        volunteerVO.setIsAdd(false);
+                    } else {
+                        volunteerVO.setCount(count);
+                        volunteerVO.setIsAdd(true);
                     }
                 })
         );

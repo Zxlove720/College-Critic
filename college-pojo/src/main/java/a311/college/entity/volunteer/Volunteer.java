@@ -18,7 +18,7 @@ public class Volunteer {
     private Integer volunteerId;
 
     @Schema(description = "用户id")
-    private Integer userId;
+    private Long userId;
 
     @Schema(description = "所属类型")
     private Integer category;
@@ -40,6 +40,9 @@ public class Volunteer {
 
     @Schema(description = "专业id")
     private Integer majorId;
+
+    @Schema(description = "专业名称")
+    private String majorName;
 
     @Schema(description = "首选科目")
     private String firstChoice;

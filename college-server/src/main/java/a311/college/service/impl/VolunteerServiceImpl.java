@@ -6,8 +6,10 @@ import a311.college.entity.volunteer.Volunteer;
 import a311.college.mapper.volunteer.VolunteerMapper;
 import a311.college.result.PageResult;
 import a311.college.service.VolunteerService;
+import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.volunteer.SchoolVolunteer;
 import a311.college.vo.volunteer.ScoreLine;
+import cn.hutool.core.bean.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -97,8 +99,9 @@ public class VolunteerServiceImpl implements VolunteerService {
      */
     @Override
     public void addVolunteer(AddVolunteerDTO addVolunteerDTO) {
-
         Volunteer volunteer = volunteerMapper.selectSchoolMajorById(addVolunteerDTO.getMajorId());
-
+        BeanUtil.copyProperties(addVolunteerDTO, volunteer);
+        volunteer.setUserId(ThreadLocalUtil.getCurrentId());
+        volunteerMapper.addVolunteer(volunteer);
     }
 }

@@ -40,14 +40,12 @@
         s.school_head,
         s.school_name,
         s.school_province,
+        s.rank_list,
+        sc.major_id,
         sc.major_name,
         sc.first_choice,
         sc.other_choice,
-        sc.special,
-        sc.major_id,
-        y.year,
-        sc.min_score,
-        sc.min_ranking
+        sc.special
         FROM tb_school s
         JOIN tb_province p ON s.school_id = p.school_id
         JOIN tb_year y ON p.province_id = y.province_id

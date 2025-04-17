@@ -64,9 +64,6 @@ public class User implements Serializable {
     @Schema(description = "志愿表")
     private String collegeTable;
 
-    @Schema(description = "用户状态")
-    private Integer status;   // 1 可用（默认） 0 不可用
-
     @Schema(description = "创建时间")
     private LocalDateTime createTime;
 

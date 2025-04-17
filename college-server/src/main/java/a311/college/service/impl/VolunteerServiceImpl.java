@@ -3,6 +3,8 @@ package a311.college.service.impl;
 import a311.college.dto.user.VolunteerPageDTO;
 import a311.college.dto.volunteer.AddVolunteerDTO;
 import a311.college.entity.volunteer.Volunteer;
+import a311.college.exception.ReAdditionException;
+import a311.college.exception.volunteer.VolunteerException;
 import a311.college.mapper.volunteer.VolunteerMapper;
 import a311.college.result.PageResult;
 import a311.college.service.VolunteerService;
@@ -11,12 +13,14 @@ import a311.college.vo.volunteer.SchoolVolunteer;
 import a311.college.vo.volunteer.ScoreLine;
 import a311.college.vo.volunteer.VolunteerVO;
 import cn.hutool.core.bean.BeanUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 @Service
 public class VolunteerServiceImpl implements VolunteerService {
 
@@ -99,6 +103,10 @@ public class VolunteerServiceImpl implements VolunteerService {
         return -1;
     }
 
+
+
+
+
     /**
      * 添加志愿
      *
@@ -106,18 +114,31 @@ public class VolunteerServiceImpl implements VolunteerService {
      */
     @Override
     public void addVolunteer(AddVolunteerDTO addVolunteerDTO) {
+        // 1.判断当前志愿表是否已被填满
+        Integer count = volunteerMapper.getCount(addVolunteerDTO.getTableId());
+        // 1.1此时说明该志愿表为空，将其设置为0
+        if (count == null) {
+            count = 0;
+        }
+        if (count > 96) {
+            // 1.2此时该志愿表已经填满，直接返回
+            log.error("该志愿表已满");
+            throw new VolunteerException("该志愿表已满，请选择其他志愿表");
+        }
+        // 2.准备添加志愿到志愿表中
         Integer majorId = addVolunteerDTO.getMajorId();
         Long userId = ThreadLocalUtil.getCurrentId();
+        // 2.1判断该志愿是否已经被添加到志愿表中
         if (volunteerMapper.checkVolunteer(majorId, userId) != null) {
-            // 该专业已经被添加过了，不允许添加
-            return;
+            // 2.2该志愿已经被添加过了，不允许添加
+            throw new ReAdditionException("重复添加");
         }
+        // 3.封装Volunteer实体类
         Volunteer volunteer = volunteerMapper.selectSchoolMajorById(majorId);
         BeanUtil.copyProperties(addVolunteerDTO, volunteer);
-        Integer tempCount = volunteerMapper.getCount(userId);
-        int count = tempCount == null ? 1: tempCount + 1;
         volunteer.setUserId(userId);
-        volunteer.setCount(count);
+        volunteer.setCount(count + 1);
+        // 4.添加volunteer
         volunteerMapper.addVolunteer(volunteer);
     }
 

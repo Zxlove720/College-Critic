@@ -27,17 +27,17 @@ public interface VolunteerMapper {
     Volunteer selectSchoolMajorById(Integer majorId);
 
 
-    @Select("select count from tb_volunteer where user_id = #{userId} order by count desc limit 1")
-    Integer getCount(Long userId);
+    @Select("select count from tb_volunteer where table_id = #{tableId} order by count desc limit 1")
+    Integer getCount(int tableId);
 
     /**
      * 添加志愿
      * @param volunteer 志愿实体
      */
-    @Insert("insert into tb_volunteer(user_id, category, school_id, school_head, school_name, " +
+    @Insert("insert into tb_volunteer(user_id, table_id, category, school_id, school_head, school_name, " +
             "school_province, rank_list, major_id, major_name, first_choice, other_choice, " +
             "special, count, year, min_score, min_ranking, scoreThanMe, rankingThanMe) values " +
-            "(#{userId}, #{category}, #{schoolId}, #{schoolHead}, #{schoolName}, #{schoolProvince}, " +
+            "(#{userId}, #{table_id}, #{category}, #{schoolId}, #{schoolHead}, #{schoolName}, #{schoolProvince}, " +
             "#{rankList}, #{majorId}, #{majorName}, #{firstChoice}, #{otherChoice}, #{special}, #{count}, " +
             "#{year}, #{minScore}, #{minRanking}, #{scoreThanMe}, #{rankingThanMe})")
     void addVolunteer(Volunteer volunteer);

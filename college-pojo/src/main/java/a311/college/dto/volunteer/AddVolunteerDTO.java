@@ -14,6 +14,9 @@ import lombok.NoArgsConstructor;
 @Schema(description = "添加志愿")
 public class AddVolunteerDTO {
 
+    @Schema(description = "志愿表id")
+    private Integer tableId;
+
     @Schema(description = "专业id")
     private Integer majorId;
 

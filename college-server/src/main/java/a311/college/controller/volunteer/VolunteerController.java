@@ -2,10 +2,12 @@ package a311.college.controller.volunteer;
 
 import a311.college.dto.user.VolunteerPageDTO;
 import a311.college.dto.volunteer.AddVolunteerDTO;
+import a311.college.entity.volunteer.Volunteer;
 import a311.college.entity.volunteer.VolunteerTable;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.VolunteerService;
+import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.volunteer.SchoolVolunteer;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 志愿控制器
@@ -84,7 +88,16 @@ public class VolunteerController {
         return Result.success();
     }
 
-
+    /**
+     * 查询用户创建的志愿表
+     *
+     * @param volunteerTable 志愿表实体对象
+     * @return Result<List<Volunteer>>
+     */
+    public Result<List<VolunteerTable>> showVolunteerTable(@RequestBody VolunteerTable volunteerTable) {
+        log.info("查询用户创建的志愿表");
+        return Result.success(volunteerService.selectTables(ThreadLocalUtil.getCurrentId()));
+    }
 
     /**
      * 添加志愿
@@ -96,5 +109,18 @@ public class VolunteerController {
     public Result<Void> addVolunteer(@RequestBody AddVolunteerDTO addVolunteerDTO) {
         volunteerService.addVolunteer(addVolunteerDTO);
         return Result.success();
+    }
+
+    /**
+     * 查询志愿表
+     *
+     * @param volunteerTable 志愿表
+     * @return Result<List<Volunteer>>
+     */
+    @PostMapping("/volunteers")
+    @Operation(summary = "查询志愿表")
+    public Result<List<Volunteer>> selectVolunteer(@RequestBody VolunteerTable volunteerTable) {
+        log.info("查询志愿表");
+        return Result.success(volunteerService.selectVolunteer(volunteerTable.getTableId()));
     }
 }

@@ -58,4 +58,10 @@ public interface VolunteerMapper {
 
     @Update("update tb_volunteer_table set table_name = #{tableName} where table_id = #{tableId}")
     void updateVolunteerTableName(VolunteerTable volunteerTable);
+
+    @Select("select * from tb_volunteer_table where user_id = #{userId}")
+    List<VolunteerTable> selectTables(Long userId);
+
+    @Select("select * from tb_volunteer where table_id = #{tableId} order by count")
+    List<Volunteer> selectVolunteers(Integer tableId);
 }

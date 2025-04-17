@@ -74,6 +74,12 @@ public class VolunteerServiceImpl implements VolunteerService {
         volunteerMapper.updateVolunteerTableName(volunteerTable);
     }
 
+    @Override
+    public List<VolunteerTable> selectTables(Long userId) {
+        return volunteerMapper.selectTables(userId);
+    }
+
+
     /**
      * 人工分页
      *
@@ -159,6 +165,11 @@ public class VolunteerServiceImpl implements VolunteerService {
         volunteer.setCount(count + 1);
         // 4.添加volunteer
         volunteerMapper.addVolunteer(volunteer);
+    }
+
+    @Override
+    public List<Volunteer> selectVolunteer(Integer tableId) {
+        return volunteerMapper.selectVolunteers(tableId);
     }
 
 }

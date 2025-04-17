@@ -21,6 +21,18 @@ public class SchoolPageQueryDTO {
     @Schema(description = "大学等级（类型）")
     private List<String> rankList;
 
+    @Schema(description = "最低分")
+    private Integer minScore;
+
+    @Schema(description = "最高分")
+    private Integer maxScore;
+
+    @Schema(description = "招生年份")
+    private Integer year;
+
+    @Schema(description = "首选科目")
+    private String firstChoice;
+
     @Schema(description = "查询页码")
     private Integer page = 1;
 

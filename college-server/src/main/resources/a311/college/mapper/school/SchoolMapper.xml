@@ -5,14 +5,23 @@
 
     <!-- 学校信息分页查询 -->
     <select id="schoolPageQuery" resultType="a311.college.entity.school.School">
-        select
-        school_id,
-        school_head,
-        school_name,
-        school_province,
-        school_address,
-        rank_list
-        from tb_school
+        SELECT
+        s.school_id,
+        s.school_head,
+        s.school_name,
+        s.school_province,
+        s.school_address,
+        s.rank_list,
+        MAX(s.score) AS score, -- 取最高分
+        sc.first_choice,
+        MAX(y.year) AS year, -- 取最新年份
+        MAX(sc.min_score) AS min_score -- 取最高分数
+        FROM tb_school AS s
+        JOIN tb_province as p ON s.school_id = p.school_id
+        JOIN tb_year as y ON p.province_id = y.province_id
+        JOIN tb_category as c ON y.year_id = c.year_id
+        JOIN tb_batch as b ON c.category_id = b.category_id
+        JOIN tb_score as sc ON b.batch_id = sc.batch_id
         <where>
             <if test="schoolName != null and schoolName != ''">
                 AND school_name LIKE CONCAT('%', #{schoolName}, '%')
@@ -27,8 +36,18 @@
                 </foreach>
                 )
             </if>
+            <if test="year != null">
+                and y.year = #{year}
+            </if>
+            <if test="firstChoice != null">
+                and sc.first_choice = #{firstChoice}
+            </if>
+            <if test="minScore != null and maxScore != null">
+                and sc.min_score between #{minScore} and #{maxScore}
+            </if>
         </where>
-        order by score desc, length(rank_list) desc
+        GROUP BY s.school_id
+        ORDER BY score desc
     </select>
 
     <!-- 学校专业分页查询 -->
@@ -41,6 +60,10 @@
                  JOIN tb_batch as b ON c.category_id = b.category_id
                  JOIN tb_score as sc ON b.batch_id = sc.batch_id
         WHERE s.school_id = #{schoolId}
+        <if test="firstChoice != null and firstChoice != ''">
+            and (sc.first_choice = #{firstChoice} or sc.first_choice = '不限')
+        </if>
+
     </select>
 
     <!-- 根据学校名搜索大学 -->
@@ -204,18 +227,18 @@
     <!-- 查询开设某专业的学校 -->
     <select id="selectMajorSchool" resultType="a311.college.entity.school.School">
         select distinct
-            s.school_id,
-            s.school_head,
-            s.school_name,
-            s.rank_list,
-            s.school_address,
-            s.score
+        s.school_id,
+        s.school_head,
+        s.school_name,
+        s.rank_list,
+        s.school_address,
+        s.score
         from tb_school as s
-                 JOIN tb_province as p ON s.school_id = p.school_id
-                 JOIN tb_year as y ON p.province_id = y.province_id
-                 JOIN tb_category as c ON y.year_id = c.year_id
-                 JOIN tb_batch as b ON c.category_id = b.category_id
-                 JOIN tb_score as sc ON b.batch_id = sc.batch_id
+        JOIN tb_province as p ON s.school_id = p.school_id
+        JOIN tb_year as y ON p.province_id = y.province_id
+        JOIN tb_category as c ON y.year_id = c.year_id
+        JOIN tb_batch as b ON c.category_id = b.category_id
+        JOIN tb_score as sc ON b.batch_id = sc.batch_id
         <where>
             <if test="majorName = null and majorName != ''">
                 AND major_name = #{majorName}

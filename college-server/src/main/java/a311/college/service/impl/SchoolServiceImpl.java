@@ -184,6 +184,9 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public SearchVO searchList(UserSearchDTO userSearchDTO) {
+        if (userSearchDTO.getMessage().isEmpty()) {
+            return null;
+        }
         // 获取用户搜索内容
         String message = userSearchDTO.getMessage();
         // 1.根据用户搜索内容搜索学校
@@ -194,7 +197,7 @@ public class SchoolServiceImpl implements SchoolService {
         if (schoolList == null || schoolList.isEmpty()) {
             log.info("用户没有搜索到学校信息，返回默认学校信息");
             // 3.1返回固定的学校信息
-            schoolList = SchoolConstant.getSchool();
+            return null;
         } else {
             // 3.2成功匹配到学校数据，对其进行处理
             for (School school : schoolList) {
@@ -213,7 +216,7 @@ public class SchoolServiceImpl implements SchoolService {
         if (majorList == null || majorList.isEmpty()) {
             log.info("用户没有搜索到专业信息，返回默认专业信息");
             // 4.1返回固定的专业信息
-            majorList = SchoolConstant.getMajor();
+            return null;
         }
         // 返回搜索结果
         return new SearchVO(schoolList, majorList);
@@ -493,6 +496,7 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public void addSchoolComment(AddCommentDTO addCommentDTO) {
+        addCommentDTO.setUserId(ThreadLocalUtil.getCurrentId());
         addCommentDTO.setTime(LocalDateTime.now());
         addCommentDTO.setSchoolName(schoolMapper.selectBySchoolId(addCommentDTO.getSchoolId()).getSchoolName());
         schoolMapper.addComment(addCommentDTO);

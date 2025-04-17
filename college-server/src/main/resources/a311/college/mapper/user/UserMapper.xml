@@ -30,4 +30,21 @@
         where id = #{id}
     </update>
 
+    <select id="getUserFavoriteMajor" resultType="a311.college.entity.major.Major">
+        select
+        sc.subject_category_name,
+        ps.professional_class_name,
+        m.major_id,
+        m.major_name,
+        m.major_code,
+        m.degrees,
+        m.gender,
+        m.avg_salary,
+        m.major_year
+        from tb_academic_level as al join tb_subject_category as sc on al.academic_level_id = sc.academic_level_id
+        join tb_professional_class as ps on sc.subject_category_id = ps.subject_category_id
+        join tb_major as m on ps.professional_class_id = m.professional_class_id
+        join tb_fav_major as fm on m.major_id = fm.major_id where fm.user_id = #{userId}
+    </select>
+
 </mapper>

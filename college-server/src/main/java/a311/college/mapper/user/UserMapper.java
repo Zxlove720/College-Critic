@@ -90,7 +90,6 @@ public interface UserMapper {
      * @param userId 用户id
      * @return 用户收藏专业表
      */
-    @Select("select * from tb_major where major_id in (select tb_fav_major.major_id from tb_fav_major where user_id = #{userId})")
     List<Major> getUserFavoriteMajor(Long userId);
 
     /**
@@ -127,13 +126,5 @@ public interface UserMapper {
      */
     @Select("select id from tb_user where username = #{username}")
     User selectByUsername(String username);
-
-    /**
-     * 查询志愿学校
-     *
-     * @param volunteerPageDTO 用户志愿分页查询DTO
-     * @return List<School>
-     */
-    List<SchoolVolunteer> selectVolunteerSchool(VolunteerPageDTO volunteerPageDTO);
 
 }

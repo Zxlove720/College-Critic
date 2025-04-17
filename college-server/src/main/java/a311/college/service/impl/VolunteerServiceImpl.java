@@ -9,6 +9,7 @@ import a311.college.service.VolunteerService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.volunteer.SchoolVolunteer;
 import a311.college.vo.volunteer.ScoreLine;
+import a311.college.vo.volunteer.VolunteerVO;
 import cn.hutool.core.bean.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,14 +46,6 @@ public class VolunteerServiceImpl implements VolunteerService {
                         scoreLine.setScoreThanMe(volunteerPageDTO.getGrade() - scoreLine.getMinScore());
                         scoreLine.setRankingThanMe(volunteerPageDTO.getRanking() - scoreLine.getMinRanking());
                     }
-                    Integer count = volunteerMapper.checkVolunteer(volunteerVO.getMajorId(), ThreadLocalUtil.getCurrentId());
-                    if (count == null) {
-                        volunteerVO.setCount(0);
-                        volunteerVO.setIsAdd(false);
-                    } else {
-                        volunteerVO.setCount(count);
-                        volunteerVO.setIsAdd(true);
-                    }
                 })
         );
         return manualPage(schoolVolunteerList, volunteerPageDTO.getPage(), volunteerPageDTO.getPageSize());
@@ -76,6 +69,12 @@ public class VolunteerServiceImpl implements VolunteerService {
         int end = Math.min(start + pageSize, total);
         // 4.分页并返回
         List<SchoolVolunteer> pageData = filterCache.subList(start, end);
+        for (SchoolVolunteer schoolVolunteer : pageData) {
+            for (VolunteerVO volunteerVO : schoolVolunteer.getVolunteerVOList()) {
+                volunteerVO.setIsAdd(volunteerMapper.checkVolunteer(volunteerVO.getMajorId(), ThreadLocalUtil.getCurrentId()) != null);
+            }
+
+        }
         return new PageResult<>((long) total, pageData);
     }
 
@@ -107,10 +106,15 @@ public class VolunteerServiceImpl implements VolunteerService {
      */
     @Override
     public void addVolunteer(AddVolunteerDTO addVolunteerDTO) {
-        Volunteer volunteer = volunteerMapper.selectSchoolMajorById(addVolunteerDTO.getMajorId());
-        BeanUtil.copyProperties(addVolunteerDTO, volunteer);
+        Integer majorId = addVolunteerDTO.getMajorId();
         Long userId = ThreadLocalUtil.getCurrentId();
-        Integer tempCount = volunteer.getCount();
+        if (volunteerMapper.checkVolunteer(majorId, userId) != null) {
+            // 该专业已经被添加过了，不允许添加
+            return;
+        }
+        Volunteer volunteer = volunteerMapper.selectSchoolMajorById(majorId);
+        BeanUtil.copyProperties(addVolunteerDTO, volunteer);
+        Integer tempCount = volunteerMapper.getCount(userId);
         int count = tempCount == null ? 1: tempCount + 1;
         volunteer.setUserId(userId);
         volunteer.setCount(count);

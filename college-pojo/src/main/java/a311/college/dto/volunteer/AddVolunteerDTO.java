@@ -20,9 +20,6 @@ public class AddVolunteerDTO {
     @Schema(description = "所属类型")
     private Integer category;
 
-    @Schema(description = "志愿数")
-    private Integer count;
-
     @Schema(description = "招生年份")
     private Integer year;
 

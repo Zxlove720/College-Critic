@@ -52,6 +52,7 @@
         JOIN tb_category c ON y.year_id = c.year_id
         JOIN tb_batch b ON c.category_id = b.category_id
         JOIN tb_score sc ON b.batch_id = sc.batch_id
+        where sc.major_id = #{majorId}
     </select>
 
     <!-- 结果映射 -->
@@ -60,7 +61,7 @@
         <result property="schoolName" column="school_name"/>
         <result property="schoolHead" column="school_head"/>
         <result property="schoolProvince" column="school_province"/>
-        <collection property="volunteerList" ofType="a311.college.vo.volunteer.VolunteerVO">
+        <collection property="volunteerVOList" ofType="a311.college.vo.volunteer.VolunteerVO">
             <result property="majorId" column="major_id"/>
             <result property="majorName" column="major_name"/>
             <result property="firstChoice" column="first_choice"/>

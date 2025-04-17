@@ -101,7 +101,12 @@ public class VolunteerServiceImpl implements VolunteerService {
     public void addVolunteer(AddVolunteerDTO addVolunteerDTO) {
         Volunteer volunteer = volunteerMapper.selectSchoolMajorById(addVolunteerDTO.getMajorId());
         BeanUtil.copyProperties(addVolunteerDTO, volunteer);
-        volunteer.setUserId(ThreadLocalUtil.getCurrentId());
+        Long userId = ThreadLocalUtil.getCurrentId();
+        Integer tempCount = volunteer.getCount();
+        int count = tempCount == null ? 1: tempCount + 1;
+        volunteer.setUserId(userId);
+        volunteer.setCount(count);
         volunteerMapper.addVolunteer(volunteer);
     }
+
 }

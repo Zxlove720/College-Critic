@@ -3,6 +3,7 @@ package a311.college.service.impl;
 import a311.college.dto.user.VolunteerPageDTO;
 import a311.college.dto.volunteer.AddVolunteerDTO;
 import a311.college.entity.volunteer.Volunteer;
+import a311.college.entity.volunteer.VolunteerTable;
 import a311.college.exception.ReAdditionException;
 import a311.college.exception.volunteer.VolunteerException;
 import a311.college.mapper.volunteer.VolunteerMapper;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,6 +55,13 @@ public class VolunteerServiceImpl implements VolunteerService {
                 })
         );
         return manualPage(schoolVolunteerList, volunteerPageDTO.getPage(), volunteerPageDTO.getPageSize());
+    }
+
+    @Override
+    public void createVolunteerTable(VolunteerTable volunteerTable) {
+        volunteerTable.setUserId(ThreadLocalUtil.getCurrentId());
+        volunteerTable.setCreateTime(LocalDateTime.now());
+        volunteerMapper.createVolunteerTable(volunteerTable);
     }
 
     /**

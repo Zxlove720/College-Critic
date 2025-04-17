@@ -8,6 +8,7 @@ import a311.college.result.Result;
 import a311.college.service.VolunteerService;
 import a311.college.vo.volunteer.SchoolVolunteer;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 志愿控制器
  */
+@Slf4j
 @RestController
 @RequestMapping("/volunteers")
 public class VolunteerController {
@@ -40,9 +42,18 @@ public class VolunteerController {
         return Result.success(volunteerService.showVolunteer(volunteerPageDTO));
     }
 
-
-    public Result<Void> createVolunteer(@RequestBody VolunteerTable volunteerTable) {
-        return null;
+    /**
+     * 创建志愿表
+     *
+     * @param volunteerTable 志愿表实体类
+     * @return Result<Void>
+     */
+    @PostMapping("/create")
+    @Operation(summary = "创建志愿表")
+    public Result<Void> createVolunteerTable(@RequestBody VolunteerTable volunteerTable) {
+        log.info("创建志愿表");
+        volunteerService.createVolunteerTable(volunteerTable);
+        return Result.success();
     }
 
 

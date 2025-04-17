@@ -2,6 +2,7 @@ package a311.college.mapper.volunteer;
 
 import a311.college.dto.user.VolunteerPageDTO;
 import a311.college.entity.volunteer.Volunteer;
+import a311.college.entity.volunteer.VolunteerTable;
 import a311.college.vo.volunteer.SchoolVolunteer;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -51,4 +52,6 @@ public interface VolunteerMapper {
     @Select("select count from tb_volunteer where major_id = #{majorId} and user_id = #{userId}")
     Integer checkVolunteer(int majorId, long userId);
 
+    @Insert("insert into tb_volunteer_table (user_id, table_name, create_time) VALUES (#{userId}, #{tableName}, #{createTime})")
+    void createVolunteerTable(VolunteerTable volunteerTable);
 }

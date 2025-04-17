@@ -20,6 +20,9 @@ public class Volunteer {
     @Schema(description = "用户id")
     private Long userId;
 
+    @Schema(description = "志愿表id")
+    private int tableId;
+
     @Schema(description = "所属类型")
     private Integer category;
 

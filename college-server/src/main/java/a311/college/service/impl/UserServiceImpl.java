@@ -81,12 +81,7 @@ public class UserServiceImpl implements UserService {
             // 3.3密码错误，登录失败
             throw new LoginFailedException(UserErrorConstant.PASSWORD_ERROR);
         }
-        // 3.4判断当前用户是否可用
-        if (user.getStatus().equals(UserErrorConstant.DISABLE)) {
-            // 3.5账号被锁定，登录失败
-            throw new LoginFailedException(UserErrorConstant.ACCOUNT_LOCKED);
-        }
-        // 4.用户正常，成功登录，返回登录成功结果
+        // 4.用户成功登录，返回登录成功结果
         return loginSuccessful(user);
     }
 

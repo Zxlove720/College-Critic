@@ -91,10 +91,11 @@ public class VolunteerController {
     /**
      * 查询用户创建的志愿表
      *
-     * @param volunteerTable 志愿表实体对象
      * @return Result<List<Volunteer>>
      */
-    public Result<List<VolunteerTable>> showVolunteerTable(@RequestBody VolunteerTable volunteerTable) {
+    @PostMapping("/showTables")
+    @Operation(summary = "查询用户创建的志愿表")
+    public Result<List<VolunteerTable>> showVolunteerTable() {
         log.info("查询用户创建的志愿表");
         return Result.success(volunteerService.selectTables(ThreadLocalUtil.getCurrentId()));
     }

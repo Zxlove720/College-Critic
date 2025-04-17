@@ -36,7 +36,7 @@ public interface VolunteerMapper {
     @Insert("insert into tb_volunteer(user_id, table_id, category, school_id, school_head, school_name, " +
             "school_province, rank_list, major_id, major_name, first_choice, other_choice, " +
             "special, count, year, min_score, min_ranking, scoreThanMe, rankingThanMe) values " +
-            "(#{userId}, #{table_id}, #{category}, #{schoolId}, #{schoolHead}, #{schoolName}, #{schoolProvince}, " +
+            "(#{userId}, #{tableId}, #{category}, #{schoolId}, #{schoolHead}, #{schoolName}, #{schoolProvince}, " +
             "#{rankList}, #{majorId}, #{majorName}, #{firstChoice}, #{otherChoice}, #{special}, #{count}, " +
             "#{year}, #{minScore}, #{minRanking}, #{scoreThanMe}, #{rankingThanMe})")
     void addVolunteer(Volunteer volunteer);

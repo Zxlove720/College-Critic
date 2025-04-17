@@ -12,6 +12,10 @@ public interface VolunteerService {
 
     void createVolunteerTable(VolunteerTable volunteerTable);
 
+    void deleteVolunteerTable(Integer tableId);
+
+    void updateVolunteerTableName(VolunteerTable volunteerTable);
+
     void addVolunteer(AddVolunteerDTO addVolunteerDTO);
 
 }

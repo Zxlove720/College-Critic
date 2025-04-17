@@ -64,6 +64,16 @@ public class VolunteerServiceImpl implements VolunteerService {
         volunteerMapper.createVolunteerTable(volunteerTable);
     }
 
+    @Override
+    public void deleteVolunteerTable(Integer tableId) {
+        volunteerMapper.deleteVolunteerTable(tableId);
+    }
+
+    @Override
+    public void updateVolunteerTableName(VolunteerTable volunteerTable) {
+        volunteerMapper.updateVolunteerTableName(volunteerTable);
+    }
+
     /**
      * 人工分页
      *

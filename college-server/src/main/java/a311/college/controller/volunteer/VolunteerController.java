@@ -56,6 +56,35 @@ public class VolunteerController {
         return Result.success();
     }
 
+    /**
+     * 删除志愿表
+     *
+     * @param volunteerTable 志愿表实体对象
+     * @return Result<Void>
+     */
+    @PostMapping("/delete")
+    @Operation(summary = "删除志愿表")
+    public Result<Void> deleteVolunteerTable(@RequestBody VolunteerTable volunteerTable) {
+        log.info("删除志愿表");
+        volunteerService.deleteVolunteerTable(volunteerTable.getTableId());
+        return Result.success();
+    }
+
+    /**
+     * 修改志愿表名字
+     *
+     * @param volunteerTable 志愿表实体对象
+     * @return Result<Void>
+     */
+    @PostMapping("/update")
+    @Operation(summary = "修改志愿表名字")
+    public Result<Void> updateVolunteerTableName(@RequestBody VolunteerTable volunteerTable) {
+        log.info("修改志愿表名字");
+        volunteerService.updateVolunteerTableName(volunteerTable);
+        return Result.success();
+    }
+
+
 
     /**
      * 添加志愿

@@ -1,14 +1,12 @@
 package a311.college.mapper.user;
 
 import a311.college.annotation.AutoFill;
-import a311.college.dto.user.VolunteerPageDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.school.School;
 import a311.college.entity.user.User;
 import a311.college.enumeration.OperationType;
 import a311.college.vo.school.CommentVO;
 import a311.college.vo.user.UserVO;
-import a311.college.vo.volunteer.SchoolVolunteer;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -52,9 +50,9 @@ public interface UserMapper {
      * @param user User实体对象
      */
     @AutoFill(OperationType.INSERT)
-    @Insert("insert into tb_user(username, password, phone, head, year, province, subjects," +
+    @Insert("insert into tb_user(username, password, phone, head, year, province, firstChoice, subjects," +
             "  grade, ranking, city) values " +
-            "(#{username}, #{password}, #{phone}, #{head}, #{year}, #{province}, #{subjects}," +
+            "(#{username}, #{password}, #{phone}, #{head}, #{year}, #{province}, #{firstChoice}, #{subjects}," +
             " #{grade}, #{ranking}, #{city})")
     void register(User user);
 

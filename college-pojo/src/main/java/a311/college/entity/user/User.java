@@ -46,6 +46,9 @@ public class User implements Serializable {
     @Schema(description = "用户所在省份")
     private ProvinceEnum province;
 
+    @Schema(description = "首选科目")
+    private String firstChoice;
+
     @Schema(description = "用户选科（新高考）")
     private String subjects;
 

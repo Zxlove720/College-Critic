@@ -178,9 +178,7 @@ public class UserServiceImpl implements UserService {
         BeanUtil.copyProperties(userDTO, user);
         // 1.2将用户密码进行MD5加密
         user.setPassword(DigestUtil.md5Hex(user.getPassword().getBytes()));
-        // 2.为新用户初始化收藏表和志愿表
-        user.setFavoriteTable("");
-        user.setCollegeTable("");
+        user.setFirstChoice(user.getSubjects().split(",")[0]);
         userMapper.register(user);
     }
 

@@ -58,15 +58,6 @@ public class User implements Serializable {
     @Schema(description = "用户位次")
     private Integer ranking;
 
-    @Schema(description = "用户意向城市")
-    private ProvinceEnum city;
-
-    @Schema(description = "收藏表")
-    private String favoriteTable;
-
-    @Schema(description = "志愿表")
-    private String collegeTable;
-
     @Schema(description = "创建时间")
     private LocalDateTime createTime;
 

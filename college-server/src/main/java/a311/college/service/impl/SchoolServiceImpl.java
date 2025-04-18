@@ -194,11 +194,8 @@ public class SchoolServiceImpl implements SchoolService {
         // 2.根据用户搜索内容搜索专业
         List<Major> majorList = majorMapper.searchMajor(message);
         // 3.没有匹配搜索内容的学校
-        if (schoolList == null || schoolList.isEmpty()) {
-            log.info("用户没有搜索到学校信息，返回默认学校信息");
-            // 3.1返回固定的学校信息
-            return new SearchVO();
-        } else {
+        if (schoolList != null) {
+            log.info("用户搜索到学校信息");
             // 3.2成功匹配到学校数据，对其进行处理
             for (School school : schoolList) {
                 String[] split = school.getRankList().split(",");
@@ -212,13 +209,7 @@ public class SchoolServiceImpl implements SchoolService {
                 school.setRankList(rank.toString());
             }
         }
-        // 4.没有匹配搜索内容的专业
-        if (majorList == null || majorList.isEmpty()) {
-            log.info("用户没有搜索到专业信息，返回默认专业信息");
-            // 4.1返回固定的专业信息
-            return new SearchVO();
-        }
-        // 返回搜索结果
+        // 4.返回搜索结果
         return new SearchVO(schoolList, majorList);
     }
 

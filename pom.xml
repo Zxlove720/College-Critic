@@ -34,6 +34,7 @@
         <pageHelper.version>2.1.0</pageHelper.version>
         <hutool.version>5.8.22</hutool.version>
         <okhttp.version>4.12.0</okhttp.version>
+        <apache.commons.math3.version>3.6.1</apache.commons.math3.version>
     </properties>
 
     <modules>
@@ -124,6 +125,12 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis.plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-math3</artifactId>
+                <version>${apache.commons.math3.version}</version>
             </dependency>
 
         </dependencies>

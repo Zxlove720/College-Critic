@@ -184,8 +184,8 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public SearchVO searchList(UserSearchDTO userSearchDTO) {
-        if (userSearchDTO.getMessage().isEmpty()) {
-            return null;
+        if (userSearchDTO.getMessage() == null) {
+            return new SearchVO();
         }
         // 获取用户搜索内容
         String message = userSearchDTO.getMessage();
@@ -197,7 +197,7 @@ public class SchoolServiceImpl implements SchoolService {
         if (schoolList == null || schoolList.isEmpty()) {
             log.info("用户没有搜索到学校信息，返回默认学校信息");
             // 3.1返回固定的学校信息
-            return null;
+            return new SearchVO();
         } else {
             // 3.2成功匹配到学校数据，对其进行处理
             for (School school : schoolList) {
@@ -216,7 +216,7 @@ public class SchoolServiceImpl implements SchoolService {
         if (majorList == null || majorList.isEmpty()) {
             log.info("用户没有搜索到专业信息，返回默认专业信息");
             // 4.1返回固定的专业信息
-            return null;
+            return new SearchVO();
         }
         // 返回搜索结果
         return new SearchVO(schoolList, majorList);
@@ -248,7 +248,7 @@ public class SchoolServiceImpl implements SchoolService {
         // 3.2从所有照片中随机选取6张
         List<String> images = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            int index = RandomUtil.randomInt(0, 250);
+            int index = RandomUtil.randomInt(0, 150);
             images.add(imageList.get(index));
         }
         // 3.3返回随机6张校园风光

@@ -17,7 +17,6 @@ import a311.college.result.PageResult;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.school.CommentVO;
-import a311.college.vo.user.UserVO;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.RandomUtil;
@@ -262,7 +261,7 @@ public class UserServiceImpl implements UserService {
      * @return User
      */
     @Override
-    public UserVO showMe(Long id) {
+    public User showMe(Long id) {
         return userMapper.selectById(id);
     }
 

@@ -6,7 +6,6 @@ import a311.college.entity.school.School;
 import a311.college.entity.user.User;
 import a311.college.enumeration.OperationType;
 import a311.college.vo.school.CommentVO;
-import a311.college.vo.user.UserVO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public interface UserMapper {
      * @return User实体对象
      */
     @Select("select * from tb_user where id = #{id}")
-    UserVO selectById(Long id);
+    User selectById(Long id);
 
     /**
      * 根据id删除用户

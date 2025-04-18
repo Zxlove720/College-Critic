@@ -6,13 +6,13 @@ import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.school.School;
+import a311.college.entity.user.User;
 import a311.college.result.LoginResult;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.UserService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.school.CommentVO;
-import a311.college.vo.user.UserVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -135,7 +135,7 @@ public class UserController {
      */
     @PostMapping("/me")
     @Operation(summary = "查看用户个人主页")
-    public Result<UserVO> me() {
+    public Result<User> me() {
         Long userId = ThreadLocalUtil.getCurrentId();
         log.info("用户'{}'正在查看个人页面", userId);
         return Result.success(userService.showMe(userId));

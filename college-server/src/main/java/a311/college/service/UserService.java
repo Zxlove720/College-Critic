@@ -5,10 +5,10 @@ import a311.college.dto.user.*;
 import a311.college.dto.login.UserLoginDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.school.School;
+import a311.college.entity.user.User;
 import a311.college.result.LoginResult;
 import a311.college.result.PageResult;
 import a311.college.vo.school.CommentVO;
-import a311.college.vo.user.UserVO;
 
 /**
  * 用户相关服务
@@ -29,7 +29,7 @@ public interface UserService {
 
     void layout();
 
-    UserVO showMe(Long id);
+    User showMe(Long id);
 
     PageResult<School> showFavoriteSchool(PageQueryDTO pageQueryDTO);
 

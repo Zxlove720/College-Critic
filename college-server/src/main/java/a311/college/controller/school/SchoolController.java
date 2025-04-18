@@ -48,7 +48,7 @@ public class SchoolController {
      * 大学信息分页查询
      *
      * @param schoolPageQueryDTO 大学分页查询DTO
-     * @return Result<PageResult<School>>
+     * @return Result<PageResult < School>>
      */
     @PostMapping("/page")
     @Operation(summary = "学校列表分页查询")
@@ -129,7 +129,7 @@ public class SchoolController {
      * 根据学校分数获取分数相近学校
      *
      * @param schoolDTO 学校DTO
-     * @return Result<List<School>>
+     * @return Result<List < School>>
      */
     @PostMapping("/close")
     @Operation(summary = "根据学校分数获取分数相近学校")
@@ -155,7 +155,7 @@ public class SchoolController {
      * 获取某学校的历年分数线
      *
      * @param yearScoreQueryDTO 分数线查询DTO
-     * @return Result<List<SchoolYearScoreVO>>
+     * @return Result<List < SchoolYearScoreVO>>
      */
     @PostMapping("/schoolScoreLine")
     @Operation(summary = "获取某学校的历年分数线")
@@ -167,7 +167,7 @@ public class SchoolController {
      * 获取某学校的专业分数线
      *
      * @param yearScoreQueryDTO 分数线查询DTO
-     * @return Result<PageResult<MajorYearScoreVO>>
+     * @return Result<PageResult < MajorYearScoreVO>>
      */
     @PostMapping("/majorScoreLine")
     @Operation(summary = "获取某学校的专业分数线")
@@ -206,7 +206,7 @@ public class SchoolController {
      * 获取本省热门本科院校
      *
      * @param provinceQueryDTO 省份查询DTO
-     * @return Result<List<SchoolSceneryVO>>
+     * @return Result<List < SchoolSceneryVO>>
      */
     @PostMapping("/hotSchool1")
     @Operation(summary = "获取本省热门本科院校")
@@ -219,7 +219,7 @@ public class SchoolController {
      * 获取本省热门专科院校
      *
      * @param provinceQueryDTO 省份查询DTO
-     * @return Result<List<SchoolSceneryVO>>
+     * @return Result<List < SchoolSceneryVO>>
      */
     @PostMapping("/hotSchool2")
     @Operation(summary = "获取本省热门专科院校")
@@ -232,7 +232,7 @@ public class SchoolController {
      * 获取外省热门本科院校
      *
      * @param provinceQueryDTO 省份查询DTO
-     * @return Result<List<SchoolSceneryVO>>
+     * @return Result<List < SchoolSceneryVO>>
      */
     @PostMapping("/hotSchool3")
     @Operation(summary = "获取外省热门本科院校")
@@ -245,7 +245,7 @@ public class SchoolController {
      * 获取外省热门专科院校
      *
      * @param provinceQueryDTO 省份查询DTO
-     * @return Result<List<SchoolSceneryVO>>
+     * @return Result<List < SchoolSceneryVO>>
      */
     @PostMapping("/hotSchool4")
     @Operation(summary = "获取外省热门专科院校")
@@ -257,7 +257,7 @@ public class SchoolController {
     /**
      * 获取热门专业（本科）
      *
-     * @return Result<List<HotMajorVO>>
+     * @return Result<List < HotMajorVO>>
      */
     @PostMapping("/hotMajor1")
     @Operation(summary = "获取热门专业（本科）")
@@ -270,7 +270,7 @@ public class SchoolController {
     /**
      * 获取热门专业（专科）
      *
-     * @return Result<List<HotMajorVO>>
+     * @return Result<List < HotMajorVO>>
      */
     @PostMapping("/hotMajor2")
     @Operation(summary = "获取热门专业（专科）")
@@ -296,7 +296,7 @@ public class SchoolController {
     /**
      * 获取强基计划学校
      *
-     * @return Result<List<SchoolVO>>
+     * @return Result<List < SchoolVO>>
      */
     @PostMapping("/basic")
     @Operation(summary = "获取强基计划学校")

@@ -122,9 +122,10 @@ public class SchoolServiceImpl implements SchoolService {
      * @return List<SchoolVO>
      */
     private List<School> filterSchools(List<School> schoolCache, SchoolPageQueryDTO schoolPageQueryDTO) {
+        String rankList = schoolPageQueryDTO.getRankList().toString().replaceAll("\\[", "").replaceAll("]", "");
         return schoolCache.stream()
                 .filter(s -> schoolPageQueryDTO.getSchoolName() == null || s.getSchoolName().contains(schoolPageQueryDTO.getSchoolName()))
-                .filter(s -> schoolPageQueryDTO.getRankList() == null || schoolPageQueryDTO.getRankList().toString().contains(s.getRankList()))
+                .filter(s -> schoolPageQueryDTO.getRankList() == null || s.getRankList().contains(rankList))
                 .filter(s -> schoolPageQueryDTO.getProvince() == null || s.getSchoolProvince().getName().contains(schoolPageQueryDTO.getProvince()))
                 .collect(Collectors.toList());
     }

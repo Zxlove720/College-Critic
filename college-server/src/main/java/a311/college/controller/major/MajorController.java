@@ -52,6 +52,7 @@ public class MajorController {
      * @return Result<List<SubjectCategory>>
      */
     @PostMapping("/subject")
+    @Operation(summary = "学科门类查询")
     public Result<List<SubjectCategory>> subjectCategoryQuery(@RequestBody SubjectCategoryQueryDTO subjectCategoryQueryDTO) {
         log.info("查询'{}'下的学科门类", subjectCategoryQueryDTO.getAcademicLevelId());
         List<SubjectCategory> subjectCategoryList = majorService.getSubjectCategory(subjectCategoryQueryDTO);

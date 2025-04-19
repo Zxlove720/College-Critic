@@ -240,8 +240,8 @@
         JOIN tb_batch as b ON c.category_id = b.category_id
         JOIN tb_score as sc ON b.batch_id = sc.batch_id
         <where>
-            <if test="majorName = null and majorName != ''">
-                AND major_name = #{majorName}
+            <if test="majorName != null and majorName != ''">
+                AND sc.major_name like concat('%', #{majorName}, '%')
             </if>
             <if test="province != null and province != ''">
                 AND school_province = #{province}

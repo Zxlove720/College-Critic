@@ -160,7 +160,7 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 缓存热点学校
+     * 缓存特殊学校
      */
     private void cacheHot() {
         try {
@@ -172,7 +172,9 @@ public class SchoolServiceImpl implements SchoolService {
                 }
             }
             addCache(schoolList, SchoolRedisKey.ARMY_CACHE_KEY);
+            log.info("军校缓存完成，一共{}所", schoolList.size());
             schoolList.clear();
+
             for (C9Enum c9 : C9Enum.values()) {
                 School school = schoolMapper.querySchoolName(c9.toString());
                 if (school != null) {
@@ -180,7 +182,9 @@ public class SchoolServiceImpl implements SchoolService {
                 }
             }
             addCache(schoolList, SchoolRedisKey.C9_CACHE_KEY);
+            log.info("C9高校缓存完成，一共{}所", schoolList.size());
             schoolList.clear();
+
             for (CenterEnum center : CenterEnum.values()) {
                 School school = schoolMapper.querySchoolName(center.toString());
                 if (school != null) {
@@ -188,7 +192,9 @@ public class SchoolServiceImpl implements SchoolService {
                 }
             }
             addCache(schoolList, SchoolRedisKey.CENTER_CACHE_KEY);
+            log.info("中央部委直属高校缓存完成，一共{}所", schoolList.size());
             schoolList.clear();
+
             for (Defense7Enum defense : Defense7Enum.values()) {
                 School school = schoolMapper.querySchoolName(defense.toString());
                 if (school != null) {
@@ -196,7 +202,9 @@ public class SchoolServiceImpl implements SchoolService {
                 }
             }
             addCache(schoolList, SchoolRedisKey.DEFENSE_CACHE_KEY);
+            log.info("国防7子缓存完成，一共{}所", schoolList.size());
             schoolList.clear();
+
             for (PoliceEnum police : PoliceEnum.values()) {
                 School school = schoolMapper.querySchoolName(police.toString());
                 if (school != null) {
@@ -204,13 +212,15 @@ public class SchoolServiceImpl implements SchoolService {
                 }
             }
             addCache(schoolList, SchoolRedisKey.POLICE_CACHE_KEY);
+            log.info("警校缓存完成，一共{}所", schoolList.size());
+
         } catch (Exception e) {
-            log.error("缓存预热失败: {}", e.getMessage());
+            log.error("特殊学校缓存预热失败: {}", e.getMessage());
         }
     }
 
     /**
-     * 缓存热门学校
+     * 缓存特殊学校
      *
      * @param schoolList 学校列表
      * @param key        键
@@ -220,9 +230,9 @@ public class SchoolServiceImpl implements SchoolService {
         // 3. 批量插入新数据（使用rightPushAll）
         if (!schoolList.isEmpty()) {
             redisTemplate.opsForList().rightPushAll(key, schoolList);
-            log.info("{}", schoolList.size());
+            log.info("{}缓存成功", key);
         } else {
-            log.warn("地区无数据，跳过缓存预热");
+            log.warn("没有该类型的特殊学校，缓存失败");
         }
     }
 

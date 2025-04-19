@@ -27,7 +27,7 @@ public class VolunteerPageDTO {
     @Schema(description = "用户位次")
     private Integer ranking;
 
-    @Schema(description = "查询方式")
+    @Schema(description = "查询方式（1为按学校、2为按专业）")
     private Integer category;
 
     @Schema(description = "起始页码")

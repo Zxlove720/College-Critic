@@ -1,8 +1,11 @@
 package a311.college.thread;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * ThreadLocal工具类
  */
+@Slf4j
 public class ThreadLocalUtil {
 
     public static ThreadLocal<Long> threadLocal = new ThreadLocal<>();

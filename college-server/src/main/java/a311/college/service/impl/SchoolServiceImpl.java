@@ -10,7 +10,7 @@ import a311.college.dto.user.UserSearchDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
-import a311.college.enumeration.school.ArmyEnum;
+import a311.college.enumeration.school.*;
 import a311.college.exception.PageQueryException;
 import a311.college.exception.ReAdditionException;
 import a311.college.mapper.major.MajorMapper;
@@ -164,15 +164,46 @@ public class SchoolServiceImpl implements SchoolService {
      */
     private void cacheHot() {
         try {
-            // 1.获取军校
-            List<School> armySchool = new ArrayList<>();
+            List<School> schoolList = new ArrayList<>();
             for (ArmyEnum army : ArmyEnum.values()) {
                 School school = schoolMapper.querySchoolName(army.toString());
                 if (school != null) {
-                    armySchool.add(school);
+                    schoolList.add(school);
                 }
             }
-            addCache(armySchool, SchoolRedisKey.ARMY_CACHE_KEY);
+            addCache(schoolList, SchoolRedisKey.ARMY_CACHE_KEY);
+            schoolList.clear();
+            for (C9Enum c9 : C9Enum.values()) {
+                School school = schoolMapper.querySchoolName(c9.toString());
+                if (school != null) {
+                    schoolList.add(school);
+                }
+            }
+            addCache(schoolList, SchoolRedisKey.C9_CACHE_KEY);
+            schoolList.clear();
+            for (CenterEnum center : CenterEnum.values()) {
+                School school = schoolMapper.querySchoolName(center.toString());
+                if (school != null) {
+                    schoolList.add(school);
+                }
+            }
+            addCache(schoolList, SchoolRedisKey.CENTER_CACHE_KEY);
+            schoolList.clear();
+            for (Defense7Enum defense : Defense7Enum.values()) {
+                School school = schoolMapper.querySchoolName(defense.toString());
+                if (school != null) {
+                    schoolList.add(school);
+                }
+            }
+            addCache(schoolList, SchoolRedisKey.DEFENSE_CACHE_KEY);
+            schoolList.clear();
+            for (PoliceEnum police : PoliceEnum.values()) {
+                School school = schoolMapper.querySchoolName(police.toString());
+                if (school != null) {
+                    schoolList.add(school);
+                }
+            }
+            addCache(schoolList, SchoolRedisKey.POLICE_CACHE_KEY);
         } catch (Exception e) {
             log.error("缓存预热失败: {}", e.getMessage());
         }

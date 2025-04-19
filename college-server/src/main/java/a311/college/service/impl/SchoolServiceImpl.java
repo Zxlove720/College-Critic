@@ -135,6 +135,7 @@ public class SchoolServiceImpl implements SchoolService {
      * 学校信息缓存预热
      * 添加热点地区的学校到缓存
      */
+    @Override
     public void cacheSchool() {
         // 0. 定义热点地区列表
         List<String> hotAreas = Arrays.asList("北京", "上海", "广东", "重庆", "天津", "浙江", "江苏", "陕西", "四川", "湖北");
@@ -162,7 +163,7 @@ public class SchoolServiceImpl implements SchoolService {
     /**
      * 缓存特殊学校
      */
-    private void cacheHot() {
+    public void cacheHot() {
         try {
             List<School> schoolList = new ArrayList<>();
             for (ArmyEnum army : ArmyEnum.values()) {

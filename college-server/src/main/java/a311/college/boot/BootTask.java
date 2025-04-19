@@ -24,6 +24,7 @@ public class BootTask implements ApplicationRunner {
     public void run(ApplicationArguments arguments) {
         try {
             collegeService.cacheSchool();
+            collegeService.cacheHot();
         } catch (Exception e) {
             System.out.println("缓存预热失败");
         }

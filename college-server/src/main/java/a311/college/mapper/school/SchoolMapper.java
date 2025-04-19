@@ -255,4 +255,6 @@ public interface SchoolMapper {
      */
     List<School> selectMajorSchool(MajorSchoolPageQueryDTO majorSchoolPageQueryDTO);
 
+    @Select("select * from tb_school where school_name = #{schoolName}")
+    School querySchoolName(String schoolName);
 }

@@ -10,6 +10,7 @@ import a311.college.dto.user.UserSearchDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
+import a311.college.enumeration.school.ArmyEnum;
 import a311.college.exception.PageQueryException;
 import a311.college.exception.ReAdditionException;
 import a311.college.mapper.major.MajorMapper;
@@ -158,11 +159,39 @@ public class SchoolServiceImpl implements SchoolService {
         }
     }
 
-
+    /**
+     * 缓存热点学校
+     */
     private void cacheHot() {
         try {
             // 1.获取军校
+            List<School> armySchool = new ArrayList<>();
+            for (ArmyEnum army : ArmyEnum.values()) {
+                School school = schoolMapper.querySchoolName(army.toString());
+                if (school != null) {
+                    armySchool.add(school);
+                }
+            }
+            addCache(armySchool, SchoolRedisKey.ARMY_CACHE_KEY);
+        } catch (Exception e) {
+            log.error("缓存预热失败: {}", e.getMessage());
+        }
+    }
 
+    /**
+     * 缓存热门学校
+     *
+     * @param schoolList 学校列表
+     * @param key        键
+     */
+    private void addCache(List<School> schoolList, String key) {
+        redisTemplate.delete(key);
+        // 3. 批量插入新数据（使用rightPushAll）
+        if (!schoolList.isEmpty()) {
+            redisTemplate.opsForList().rightPushAll(key, schoolList);
+            log.info("{}", schoolList.size());
+        } else {
+            log.warn("地区无数据，跳过缓存预热");
         }
     }
 

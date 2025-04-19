@@ -5,15 +5,14 @@
 
     <!-- 学校信息分页查询 -->
     <select id="schoolPageQuery" resultType="a311.college.entity.school.School">
-        SELECT
+        SELECT distinct
         s.school_id,
         s.school_head,
         s.school_name,
         s.school_province,
         s.school_address,
         s.rank_list,
-        MAX(s.score) AS score,
-        MAX(sc.min_score) AS min_score
+        s.score
         FROM tb_school AS s
         JOIN tb_province as p ON s.school_id = p.school_id
         JOIN tb_year as y ON p.province_id = y.province_id
@@ -21,9 +20,6 @@
         JOIN tb_batch as b ON c.category_id = b.category_id
         JOIN tb_score as sc ON b.batch_id = sc.batch_id
         <where>
-            <if test="schoolName != null and schoolName != ''">
-                AND s.school_name LIKE CONCAT('%', #{schoolName}, '%')
-            </if>
             <if test="province != null and province != ''">
                 AND s.school_province = #{province}
             </if>
@@ -35,8 +31,7 @@
                 )
             </if>
         </where>
-        GROUP BY s.school_id
-        ORDER BY score DESC
+        order by s.score desc
     </select>
 
     <!-- 学校专业分页查询 -->

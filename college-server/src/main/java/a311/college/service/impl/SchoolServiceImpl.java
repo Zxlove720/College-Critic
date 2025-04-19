@@ -67,33 +67,38 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public PageResult<School> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO) {
-        String rankList = schoolPageQueryDTO.getRankList().toString().
-                replaceAll("\\[", "").replaceAll("]", "");
-        if (rankList.contains("中央部委")) {
-            List<School> schoolCache = redisTemplate.opsForList().range(SchoolRedisKey.CENTER_CACHE_KEY, 0, -1);
-            if (schoolCache != null && !schoolCache.isEmpty()) {
-                log.info("缓存命中中央部委学校");
-                List<School> filterCache = filterHot(schoolCache, schoolPageQueryDTO);
-                return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
+        List<String> rank = schoolPageQueryDTO.getRankList();
+        String rankList = "";
+        if (rank != null) {
+            rankList = schoolPageQueryDTO.getRankList().toString().
+                    replaceAll("\\[", "").replaceAll("]", "");
+            if (rankList.contains("中央部委")) {
+                List<School> schoolCache = redisTemplate.opsForList().range(SchoolRedisKey.CENTER_CACHE_KEY, 0, -1);
+                if (schoolCache != null && !schoolCache.isEmpty()) {
+                    log.info("缓存命中中央部委学校");
+                    List<School> filterCache = filterHot(schoolCache, schoolPageQueryDTO);
+                    return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
+                }
             }
-        }
-        if (rankList.contains("C9联盟")) {
-            List<School> schoolCache = redisTemplate.opsForList().range(SchoolRedisKey.C9_CACHE_KEY, 0, -1);
-            if (schoolCache != null && !schoolCache.isEmpty()) {
-                log.info("缓存命中C9联盟");
-                List<School> filterCache = filterHot(schoolCache, schoolPageQueryDTO);
-                return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
+            if (rankList.contains("C9联盟")) {
+                List<School> schoolCache = redisTemplate.opsForList().range(SchoolRedisKey.C9_CACHE_KEY, 0, -1);
+                if (schoolCache != null && !schoolCache.isEmpty()) {
+                    log.info("缓存命中C9联盟");
+                    List<School> filterCache = filterHot(schoolCache, schoolPageQueryDTO);
+                    return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
+                }
             }
-        }
-        if (rankList.contains("国防七子")) {
-            List<School> schoolCache = redisTemplate.opsForList().range(SchoolRedisKey.DEFENSE_CACHE_KEY, 0, -1);
-            if (schoolCache != null && !schoolCache.isEmpty()) {
-                log.info("缓存命中国防七子");
-                List<School> filterCache = filterHot(schoolCache, schoolPageQueryDTO);
-                return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
+            if (rankList.contains("国防七子")) {
+                List<School> schoolCache = redisTemplate.opsForList().range(SchoolRedisKey.DEFENSE_CACHE_KEY, 0, -1);
+                if (schoolCache != null && !schoolCache.isEmpty()) {
+                    log.info("缓存命中国防七子");
+                    List<School> filterCache = filterHot(schoolCache, schoolPageQueryDTO);
+                    return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
+                }
             }
+            log.info("缓存没有命中特殊学校，查看缓存是否命中热点地区");
         }
-        log.info("缓存没有命中特殊学校，查看缓存是否命中热点地区");
+
         // 先从缓存中进行读取，看缓存中是否有需要的数据
         // 1.封装key
         String key = SchoolRedisKey.SCHOOL_CACHE_KEY + schoolPageQueryDTO.getProvince() + ":";

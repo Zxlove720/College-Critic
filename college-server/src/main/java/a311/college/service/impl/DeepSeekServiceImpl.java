@@ -114,9 +114,9 @@ public class DeepSeekServiceImpl implements DeepSeekService {
             // 5.4返回回答
             return new UserAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, answer);
         } catch (IOException e) {
-            log.info(DeepSeekConstant.REQUEST_ERROR_CONSTANT);
+            log.info(e.getMessage());
+            throw new DeepSeekAPIErrorException(DeepSeekConstant.RESPONSE_ERROR_CONSTANT);
         }
-        return new UserAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, "error");
     }
 
     /**

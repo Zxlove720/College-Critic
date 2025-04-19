@@ -73,7 +73,7 @@ public class SchoolServiceImpl implements SchoolService {
             List<School> schoolCache = redisTemplate.opsForList().range(SchoolRedisKey.CENTER_CACHE_KEY, 0, -1);
             if (schoolCache != null && !schoolCache.isEmpty()) {
                 log.info("缓存命中中央部委学校");
-                List<School> filterCache = filterSchools(schoolCache, schoolPageQueryDTO, rankList);
+                List<School> filterCache = filterHot(schoolCache, schoolPageQueryDTO);
                 return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
             }
         }
@@ -81,7 +81,7 @@ public class SchoolServiceImpl implements SchoolService {
             List<School> schoolCache = redisTemplate.opsForList().range(SchoolRedisKey.C9_CACHE_KEY, 0, -1);
             if (schoolCache != null && !schoolCache.isEmpty()) {
                 log.info("缓存命中C9联盟");
-                List<School> filterCache = filterSchools(schoolCache, schoolPageQueryDTO, rankList);
+                List<School> filterCache = filterHot(schoolCache, schoolPageQueryDTO);
                 return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
             }
         }
@@ -89,7 +89,7 @@ public class SchoolServiceImpl implements SchoolService {
             List<School> schoolCache = redisTemplate.opsForList().range(SchoolRedisKey.DEFENSE_CACHE_KEY, 0, -1);
             if (schoolCache != null && !schoolCache.isEmpty()) {
                 log.info("缓存命中国防七子");
-                List<School> filterCache = filterSchools(schoolCache, schoolPageQueryDTO, rankList);
+                List<School> filterCache = filterHot(schoolCache, schoolPageQueryDTO);
                 return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
             }
         }
@@ -152,6 +152,12 @@ public class SchoolServiceImpl implements SchoolService {
     private List<School> filterSchools(List<School> schoolCache, SchoolPageQueryDTO schoolPageQueryDTO, String rankList) {
         return schoolCache.stream()
                 .filter(s -> schoolPageQueryDTO.getRankList() == null || s.getRankList().contains(rankList))
+                .filter(s -> schoolPageQueryDTO.getProvince() == null || s.getSchoolProvince().getName().contains(schoolPageQueryDTO.getProvince()))
+                .collect(Collectors.toList());
+    }
+
+    private List<School> filterHot(List<School> schoolCache, SchoolPageQueryDTO schoolPageQueryDTO) {
+        return schoolCache.stream()
                 .filter(s -> schoolPageQueryDTO.getProvince() == null || s.getSchoolProvince().getName().contains(schoolPageQueryDTO.getProvince()))
                 .collect(Collectors.toList());
     }

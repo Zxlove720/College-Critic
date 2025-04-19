@@ -67,7 +67,6 @@ public interface MajorMapper {
      * @param majorId 专业id
      * @return Major 专业实体类
      */
-    @Select("select * from tb_major where major_id = #{majorId}")
     Major selectById(Integer majorId);
 
     /**

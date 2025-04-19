@@ -16,6 +16,12 @@ import java.util.List;
 @Schema(description = "专业详细信息VO")
 public class DetailMajorVO {
 
+    @Schema(description = "学科门类")
+    private String subjectCategoryName;
+
+    @Schema(description = "专业类别")
+    private String professionalClassName;
+
     @Schema(description = "专业名称")
     private String majorName;
 

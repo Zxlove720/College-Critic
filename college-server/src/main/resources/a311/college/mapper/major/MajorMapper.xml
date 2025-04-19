@@ -24,6 +24,16 @@
         </where>
     </select>
 
+    <select id="selectById" resultType="a311.college.entity.major.Major">
+        select sc.subject_category_name, pc.professional_class_name, m.major_id, m.major_name,
+               m.major_code, m.major_year, m.degrees, m.gender, m.avg_salary
+        from tb_academic_level as al
+        join tb_subject_category as sc on al.academic_level_id = sc.academic_level_id
+        join tb_professional_class as pc on sc.subject_category_id = pc.subject_category_id
+        join tb_major as m on pc.professional_class_id = m.professional_class_id
+        where m.major_id = #{majorId}
+    </select>
+
     <select id="searchMajorByName" resultType="a311.college.entity.major.Major">
         select m.major_id,
                m.major_name,

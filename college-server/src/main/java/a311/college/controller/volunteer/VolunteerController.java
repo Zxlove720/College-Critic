@@ -1,5 +1,6 @@
 package a311.college.controller.volunteer;
 
+import a311.college.constant.API.APIConstant;
 import a311.college.dto.user.VolunteerPageDTO;
 import a311.college.dto.volunteer.AddVolunteerDTO;
 import a311.college.entity.volunteer.Volunteer;
@@ -10,6 +11,7 @@ import a311.college.service.VolunteerService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.volunteer.SchoolVolunteer;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +27,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/volunteers")
+@Tag(name = APIConstant.VOLUNTEER_SERVICE)
 public class VolunteerController {
 
     private final VolunteerService volunteerService;

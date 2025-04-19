@@ -36,6 +36,11 @@ public class Knife4jConfig {
     }
 
     @Bean
+    public GroupedOpenApi volunteerApi() {
+        return createRestApi(APIConstant.VOLUNTEER_SERVICE, APIPathConstant.VOLUNTEER_PATH);
+    }
+
+    @Bean
     public GroupedOpenApi commonApi() {
         return createRestApi(APIConstant.COMMON_SERVICE, APIPathConstant.COMMON_SERVICE_PATH);
     }

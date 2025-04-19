@@ -13,6 +13,8 @@ public class APIPathConstant {
     public static final String MAJOR_PATH = "a311.college.controller.major";
     // DeepSeek服务接口路径
     public static final String DEEP_SEEK_PATH = "a311.college.controller.deepseek";
+    // 志愿服务接口路径
+    public static final String VOLUNTEER_PATH = "a311.college.controller.volunteer";
     // 通用服务接口路径
     public static final String COMMON_SERVICE_PATH = "a311.college.controller.common";
 }

@@ -77,14 +77,6 @@ public class SchoolServiceImpl implements SchoolService {
                 return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
             }
         }
-        if (rankList.contains("警校")) {
-            List<School> schoolCache = redisTemplate.opsForList().range(SchoolRedisKey.POLICE_CACHE_KEY, 0, -1);
-            if (schoolCache != null && !schoolCache.isEmpty()) {
-                log.info("缓存命中警校");
-                List<School> filterCache = filterSchools(schoolCache, schoolPageQueryDTO, rankList);
-                return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
-            }
-        }
         if (rankList.contains("C9联盟")) {
             List<School> schoolCache = redisTemplate.opsForList().range(SchoolRedisKey.C9_CACHE_KEY, 0, -1);
             if (schoolCache != null && !schoolCache.isEmpty()) {
@@ -97,14 +89,6 @@ public class SchoolServiceImpl implements SchoolService {
             List<School> schoolCache = redisTemplate.opsForList().range(SchoolRedisKey.DEFENSE_CACHE_KEY, 0, -1);
             if (schoolCache != null && !schoolCache.isEmpty()) {
                 log.info("缓存命中国防七子");
-                List<School> filterCache = filterSchools(schoolCache, schoolPageQueryDTO, rankList);
-                return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
-            }
-        }
-        if (rankList.contains("军校")) {
-            List<School> schoolCache = redisTemplate.opsForList().range(SchoolRedisKey.ARMY_CACHE_KEY, 0, -1);
-            if (schoolCache != null && !schoolCache.isEmpty()) {
-                log.info("缓存命中军校");
                 List<School> filterCache = filterSchools(schoolCache, schoolPageQueryDTO, rankList);
                 return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
             }
@@ -167,7 +151,6 @@ public class SchoolServiceImpl implements SchoolService {
      */
     private List<School> filterSchools(List<School> schoolCache, SchoolPageQueryDTO schoolPageQueryDTO, String rankList) {
         return schoolCache.stream()
-                .filter(s -> schoolPageQueryDTO.getSchoolName() == null || s.getSchoolName().contains(schoolPageQueryDTO.getSchoolName()))
                 .filter(s -> schoolPageQueryDTO.getRankList() == null || s.getRankList().contains(rankList))
                 .filter(s -> schoolPageQueryDTO.getProvince() == null || s.getSchoolProvince().getName().contains(schoolPageQueryDTO.getProvince()))
                 .collect(Collectors.toList());
@@ -208,16 +191,6 @@ public class SchoolServiceImpl implements SchoolService {
     public void cacheHot() {
         try {
             List<School> schoolList = new ArrayList<>();
-            for (ArmyEnum army : ArmyEnum.values()) {
-                School school = schoolMapper.querySchoolName(army.toString());
-                if (school != null) {
-                    schoolList.add(school);
-                }
-            }
-            addCache(schoolList, SchoolRedisKey.ARMY_CACHE_KEY);
-            log.info("军校缓存完成，一共{}所", schoolList.size());
-            schoolList.clear();
-
             for (C9Enum c9 : C9Enum.values()) {
                 School school = schoolMapper.querySchoolName(c9.toString());
                 if (school != null) {
@@ -247,15 +220,6 @@ public class SchoolServiceImpl implements SchoolService {
             addCache(schoolList, SchoolRedisKey.DEFENSE_CACHE_KEY);
             log.info("国防7子缓存完成，一共{}所", schoolList.size());
             schoolList.clear();
-
-            for (PoliceEnum police : PoliceEnum.values()) {
-                School school = schoolMapper.querySchoolName(police.toString());
-                if (school != null) {
-                    schoolList.add(school);
-                }
-            }
-            addCache(schoolList, SchoolRedisKey.POLICE_CACHE_KEY);
-            log.info("警校缓存完成，一共{}所", schoolList.size());
 
         } catch (Exception e) {
             log.error("特殊学校缓存预热失败: {}", e.getMessage());

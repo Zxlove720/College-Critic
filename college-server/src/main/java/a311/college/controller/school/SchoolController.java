@@ -87,6 +87,19 @@ public class SchoolController {
     }
 
     /**
+     * 用户搜索学校
+     *
+     * @param schoolPageQueryDTO 学校分页查询DTO
+     * @return Result<PageResult<School>>
+     */
+    @PostMapping("/search")
+    @Operation(summary = "用户搜索学校")
+    public Result<PageResult<School>> search(@RequestBody SchoolPageQueryDTO schoolPageQueryDTO) {
+        log.info("学校搜索...查询参数为：第{}页，每页{}条", schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
+        return Result.success(schoolService.search(schoolPageQueryDTO));
+    }
+
+    /**
      * 查询学校具体信息
      *
      * @param schoolDTO 学校DTO

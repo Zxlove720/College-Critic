@@ -214,6 +214,17 @@ public class SchoolServiceImpl implements SchoolService {
         return new SearchVO(schoolList, majorList);
     }
 
+    @Override
+    public PageResult<School> search(SchoolPageQueryDTO schoolPageQueryDTO) {
+        try (Page<School> page = PageHelper.startPage(schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize())) {
+            schoolMapper.selectSchoolBySchoolName(schoolPageQueryDTO.getSchoolName());
+            return new PageResult<>(page.getTotal(), page.getResult());
+        } catch (Exception e) {
+            log.error("分页查询失败");
+            throw new PageQueryException("分页查询失败");
+        }
+    }
+
     /**
      * 查询学校具体信息
      *

@@ -24,6 +24,8 @@ public interface SchoolService {
 
     SearchVO searchList(UserSearchDTO userSearchDTO);
 
+    PageResult<School> search(SchoolPageQueryDTO schoolPageQueryDTO);
+
     DetailedSchoolVO getDetailSchool(SchoolDTO schoolDTO);
 
     void addFavoriteSchool(SchoolDTO schoolDTO);

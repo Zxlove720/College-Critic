@@ -85,9 +85,31 @@ public class SchoolServiceImpl implements SchoolService {
                 return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
             }
         }
-
-        checkIsSpecial(schoolPageQueryDTO.getRankList());
-
+        if (rankList.contains("C9联盟")) {
+            List<School> schoolCache = redisTemplate.opsForList().range(SchoolRedisKey.C9_CACHE_KEY, 0, -1);
+            if (schoolCache != null && !schoolCache.isEmpty()) {
+                log.info("缓存命中C9联盟");
+                List<School> filterCache = filterSchools(schoolCache, schoolPageQueryDTO, rankList);
+                return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
+            }
+        }
+        if (rankList.contains("国防七子")) {
+            List<School> schoolCache = redisTemplate.opsForList().range(SchoolRedisKey.DEFENSE_CACHE_KEY, 0, -1);
+            if (schoolCache != null && !schoolCache.isEmpty()) {
+                log.info("缓存命中国防七子");
+                List<School> filterCache = filterSchools(schoolCache, schoolPageQueryDTO, rankList);
+                return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
+            }
+        }
+        if (rankList.contains("军校")) {
+            List<School> schoolCache = redisTemplate.opsForList().range(SchoolRedisKey.ARMY_CACHE_KEY, 0, -1);
+            if (schoolCache != null && !schoolCache.isEmpty()) {
+                log.info("缓存命中军校");
+                List<School> filterCache = filterSchools(schoolCache, schoolPageQueryDTO, rankList);
+                return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
+            }
+        }
+        log.info("缓存没有命中特殊学校，查看缓存是否命中热点地区");
         // 先从缓存中进行读取，看缓存中是否有需要的数据
         // 1.封装key
         String key = SchoolRedisKey.SCHOOL_CACHE_KEY + schoolPageQueryDTO.getProvince() + ":";
@@ -114,12 +136,6 @@ public class SchoolServiceImpl implements SchoolService {
             throw new PageQueryException(SchoolErrorConstant.SCHOOL_PAGE_QUERY_ERROR);
         }
     }
-
-
-    private void checkIsSpecial(List<String> rankList) {
-
-    }
-
 
     /**
      * 人工分页

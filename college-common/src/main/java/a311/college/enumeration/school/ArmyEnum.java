@@ -1,6 +1,6 @@
 package a311.college.enumeration.school;
 
-public enum Army {
+public enum ArmyEnum {
 
     // 陆军（10所）
     陆军工程大学,

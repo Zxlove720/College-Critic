@@ -1,6 +1,6 @@
 package a311.college.enumeration.school;
 
-public enum Police {
+public enum PoliceEnum {
     中国人民公安大学,
     中国人民警察大学,
     中国刑事警察学院,

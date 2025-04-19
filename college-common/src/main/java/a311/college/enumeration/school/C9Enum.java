@@ -1,6 +1,6 @@
 package a311.college.enumeration.school;
 
-public enum C9 {
+public enum C9Enum {
     清华大学,
     北京大学,
     浙江大学,

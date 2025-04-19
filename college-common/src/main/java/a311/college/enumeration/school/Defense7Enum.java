@@ -1,6 +1,6 @@
 package a311.college.enumeration.school;
 
-public enum Defense7 {
+public enum Defense7Enum {
     哈尔滨工业大学,
     哈尔滨工程大学,
     北京航空航天大学,

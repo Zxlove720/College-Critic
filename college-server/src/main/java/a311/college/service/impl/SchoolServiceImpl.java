@@ -158,6 +158,15 @@ public class SchoolServiceImpl implements SchoolService {
         }
     }
 
+
+    private void cacheHot() {
+        try {
+            // 1.获取军校
+
+        }
+    }
+
+
     /**
      * 学校专业分页查询
      *

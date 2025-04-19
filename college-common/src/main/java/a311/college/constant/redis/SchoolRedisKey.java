@@ -7,6 +7,18 @@ public class SchoolRedisKey {
     // 大学缓存
     public static final String SCHOOL_CACHE_KEY = "college:area:";
 
-    // 大学缓存过期时间
-    public static final long SCHOOL_CACHE_TTL = 300L;
+    // 军校缓存
+    public static final String ARMY_CACHE_KEY = "college:school:army:";
+
+    // C9缓存
+    public static final String C9_CACHE_KEY = "college:school:c9";
+
+    // 中央部委直属缓存
+    public static final String CENTER_CACHE_KEY = "college:school:center";
+
+    // 国防七子缓存
+    public static final String DEFENSE_CACHE_KEY = "college:school:defense";
+
+    // 警校缓存
+    public static final String POLICE_CACHE_KEY = "college:school:police";
 }

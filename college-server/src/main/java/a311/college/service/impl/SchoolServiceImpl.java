@@ -67,6 +67,27 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public PageResult<School> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO) {
+        String rankList = schoolPageQueryDTO.getRankList().toString().
+                replaceAll("\\[", "").replaceAll("]", "");
+        if (rankList.contains("中央部委")) {
+            List<School> schoolCache = redisTemplate.opsForList().range(SchoolRedisKey.CENTER_CACHE_KEY, 0, -1);
+            if (schoolCache != null && !schoolCache.isEmpty()) {
+                log.info("缓存命中中央部委学校");
+                List<School> filterCache = filterSchools(schoolCache, schoolPageQueryDTO, rankList);
+                return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
+            }
+        }
+        if (rankList.contains("警校")) {
+            List<School> schoolCache = redisTemplate.opsForList().range(SchoolRedisKey.POLICE_CACHE_KEY, 0, -1);
+            if (schoolCache != null && !schoolCache.isEmpty()) {
+                log.info("缓存命中警校");
+                List<School> filterCache = filterSchools(schoolCache, schoolPageQueryDTO, rankList);
+                return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
+            }
+        }
+
+        checkIsSpecial(schoolPageQueryDTO.getRankList());
+
         // 先从缓存中进行读取，看缓存中是否有需要的数据
         // 1.封装key
         String key = SchoolRedisKey.SCHOOL_CACHE_KEY + schoolPageQueryDTO.getProvince() + ":";
@@ -75,7 +96,7 @@ public class SchoolServiceImpl implements SchoolService {
             // 2.成功从缓存中获取数据
             log.info("缓存命中");
             // 2.1根据查询条件进行过滤
-            List<School> filterCache = filterSchools(schoolCache, schoolPageQueryDTO);
+            List<School> filterCache = filterSchools(schoolCache, schoolPageQueryDTO, rankList);
             // 2.2手动进行分页并返回
             return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
         }
@@ -93,6 +114,12 @@ public class SchoolServiceImpl implements SchoolService {
             throw new PageQueryException(SchoolErrorConstant.SCHOOL_PAGE_QUERY_ERROR);
         }
     }
+
+
+    private void checkIsSpecial(List<String> rankList) {
+
+    }
+
 
     /**
      * 人工分页
@@ -122,8 +149,7 @@ public class SchoolServiceImpl implements SchoolService {
      * @param schoolPageQueryDTO 学校分页查询DTO
      * @return List<SchoolVO>
      */
-    private List<School> filterSchools(List<School> schoolCache, SchoolPageQueryDTO schoolPageQueryDTO) {
-        String rankList = schoolPageQueryDTO.getRankList().toString().replaceAll("\\[", "").replaceAll("]", "");
+    private List<School> filterSchools(List<School> schoolCache, SchoolPageQueryDTO schoolPageQueryDTO, String rankList) {
         return schoolCache.stream()
                 .filter(s -> schoolPageQueryDTO.getSchoolName() == null || s.getSchoolName().contains(schoolPageQueryDTO.getSchoolName()))
                 .filter(s -> schoolPageQueryDTO.getRankList() == null || s.getRankList().contains(rankList))

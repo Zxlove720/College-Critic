@@ -14,6 +14,9 @@ import lombok.NoArgsConstructor;
 @Schema(description = "热门专业展示VO")
 public class HotMajorVO {
 
+    @Schema(description = "专业id")
+    private Integer majorId;
+
     @Schema(description = "专业名")
     private String majorName;
 

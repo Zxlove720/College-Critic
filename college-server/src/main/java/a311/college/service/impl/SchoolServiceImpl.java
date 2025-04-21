@@ -28,6 +28,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.math3.distribution.NormalDistribution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -544,6 +545,7 @@ public class SchoolServiceImpl implements SchoolService {
                 schoolMajorVOList.add(schoolMajorVO);
             }
         }
+        int sigma = 15;
         // 3.构建ForecastVO结果
         SchoolForecastVO schoolForecastVO = new SchoolForecastVO();
         // 3.1封装可选专业
@@ -551,8 +553,9 @@ public class SchoolServiceImpl implements SchoolService {
         // 3.2封装专业列表
         schoolForecastVO.setMajorForecastList(schoolMajorVOList);
         // 3.3计算录取概率
-        double chance = (stable + minimum + 0.2 * rush) / schoolMajorList.size();
-        int forecast = (int) Math.round(chance * 100);
+        double chance = calculateProbability(forecastDTO.getGrade(), forecastDTO.getRanking(), schoolMajorList.get(0).getMinScore(),
+                schoolMajorList.get(0).getMinRanking(), sigma);
+        int forecast = (int) Math.round(((stable + minimum + 0.2 * rush) / schoolMajorList.size()) * 100);
         schoolForecastVO.setChance(forecast == 0 ? 1 : forecast);
         // 3.4封装不同策略的专业个数
         schoolForecastVO.setMinimum(minimum);
@@ -560,6 +563,39 @@ public class SchoolServiceImpl implements SchoolService {
         schoolForecastVO.setRush(rush);
         return schoolForecastVO;
     }
+
+
+    /**
+     * 计算高考录取概率（正态分布模型）
+     * @param studentScore 学生分数
+     * @param studentRank 学生位次
+     * @param majorMinScore 专业历史最低分
+     * @param majorMinRank 专业历史最低位次
+     * @param sigma 15
+     * @return 录取概率
+     */
+    public static int calculateProbability(
+            int studentScore,
+            int studentRank,
+            int majorMinScore,
+            int majorMinRank,
+            int sigma) {
+        // 步骤1：计算正态分布均值（假设最低分为5%分位点）
+        double mu = majorMinScore + 1.645 * sigma; // Z=-1.645对应5%分位
+        // 步骤2：计算Z值
+        double z = (studentScore - mu) / sigma;
+        // 步骤3：计算正态累积概率
+        NormalDistribution normalDist = new NormalDistribution(mu, sigma);
+        double probability = normalDist.cumulativeProbability(studentScore) * 100;
+        // 步骤4：位次校准（最高提升20%）
+        if (studentRank < majorMinRank) {
+            double rankAdvantage = (double) (majorMinRank - studentRank) / majorMinRank;
+            probability += 10 + 10 * rankAdvantage; // 基础10% + 比例提升
+            probability = Math.min(probability, 100.0);
+        }
+        return (int) Math.round(probability);
+    }
+
 
     /**
      * 获取某学校的历年分数线

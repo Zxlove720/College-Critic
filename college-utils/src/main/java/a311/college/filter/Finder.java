@@ -152,11 +152,8 @@ public class Finder {
 	/**
 	 * 替换文本中的敏感词
 	 *
-	 * @param text
-	 *            含敏感词的文本
-	 * @param replacement
-	 *            替换字符
-	 * @return
+	 * @param text 含敏感词的文本
+	 * @param replacement 替换字符
 	 */
 	public static String replace(String text, Character replacement) {
 		return new TextAnalysis().replace(TREE, text, replacement);

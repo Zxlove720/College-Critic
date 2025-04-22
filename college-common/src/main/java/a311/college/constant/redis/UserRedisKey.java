@@ -22,7 +22,7 @@ public class UserRedisKey {
     public static final Long USER_CODE_TTL = 60L;
 
     // 用户过期时间
-    public static final Long USER_TTL = -1L;
+    public static final Long USER_TTL = 1800L;
 
     // 验证码有效期
     public static final String CODE_TIME_MESSAGE = "验证码30S内有效";

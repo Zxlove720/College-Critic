@@ -635,9 +635,6 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public void addSchoolComment(AddCommentDTO addCommentDTO) {
         // 进行敏感词判断
-        if (FinderUtil.replace(addCommentDTO.getComment(), '*')) {
-            throw new CommentIllegalException("评论不合法");
-        }
         addCommentDTO.setUserId(ThreadLocalUtil.getCurrentId());
         addCommentDTO.setTime(LocalDateTime.now());
         addCommentDTO.setSchoolName(schoolMapper.selectBySchoolId(addCommentDTO.getSchoolId()).getSchoolName());

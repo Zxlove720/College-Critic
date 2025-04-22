@@ -17,9 +17,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class Finder {
     // 敏感词
-	private static Set<String> WORDS = new HashSet<String>();
+	private static final Set<String> WORDS = new HashSet<String>();
 	// 由敏感词生成的字树
-	private static Map<String, Map> TREE = new ConcurrentHashMap<String, Map>();
+	private static final Map<String, Map> TREE = new ConcurrentHashMap<String, Map>();
 	// 默认敏感词分割符
 	public static final String DEFAULT_SEPARATOR = ",";
 	/* 在树当中标志一个词的结束 */
@@ -195,7 +195,7 @@ public class Finder {
 
 	private static void addWords(String... sensitiveWords) {
 		for (String word : sensitiveWords) {
-			if (word != null && !word.trim().equals("")) {
+			if (word != null && !word.trim().isEmpty()) {
 				word = word.trim();
 				int len = word.length();
 				if (len > 1024) {
@@ -207,12 +207,12 @@ public class Finder {
 				}
 			}
 		}
-		log.info("当前敏感词数量：", WORDS.size());
+		log.info("当前敏感词数量：{}", WORDS.size());
 	}
 
 	private static void removeWords(String... sensitiveWords) {
 		for (String word : sensitiveWords) {
-			if (word != null && !word.trim().equals("")) {
+			if (word != null && !word.trim().isEmpty()) {
 				word = word.trim();
 				WORDS.remove(word);
 			}
@@ -226,13 +226,11 @@ public class Finder {
 		if (wordTree == null || wordTree.isEmpty()) {
 			return;
 		}
-		Iterator<String> it = wordTree.keySet().iterator();
-		while (it.hasNext()) {
-			String next = it.next();
-			Object tmp = wordTree.get(next);
-			if (tmp instanceof Map) {
-				printTree((Map) tmp, level + 1);
-			}
-		}
+        for (String next : wordTree.keySet()) {
+            Object tmp = wordTree.get(next);
+            if (tmp != null) {
+                printTree((Map) tmp, level + 1);
+            }
+        }
 	}
 }

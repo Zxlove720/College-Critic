@@ -24,7 +24,7 @@ public class TreeGenerator {
         String next = word.substring(index, index + 1);
         Map<String, Map> subTree = tree.get(next);
         if (subTree == null) {
-            subTree = new HashMap<String, Map>();
+            subTree = new HashMap<>();
         }
         tree.put(next, addWord2Tree(subTree, word, index + 1));
         return tree;

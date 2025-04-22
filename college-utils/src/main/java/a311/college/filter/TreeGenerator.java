@@ -18,7 +18,7 @@ public class TreeGenerator {
     private static Map<String, Map> addWord2Tree(Map<String, Map> tree,
                                                  String word, int index) {
         if (index == word.length()) {
-            tree.put(Finder.TREE_END_KEY, generateWordMap(word));
+            tree.put(FinderUtil.TREE_END_KEY, generateWordMap(word));
             return tree;
         }
         String next = word.substring(index, index + 1);
@@ -30,10 +30,15 @@ public class TreeGenerator {
         return tree;
     }
 
+    /**
+     * 创建字树
+     *
+     * @param word 字词
+     */
     private static Map<String, Object> generateWordMap(String word) {
         Map<String, Object> wordMap = new HashMap<String, Object>();
-        wordMap.put(Finder.WORD_VALUE, word);
-        wordMap.put(Finder.WORD_LENGTH, word.length());
+        wordMap.put(FinderUtil.WORD_VALUE, word);
+        wordMap.put(FinderUtil.WORD_LENGTH, word.length());
         return wordMap;
     }
 

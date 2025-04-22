@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public class Finder {
+public class FinderUtil {
     // 敏感词
 	private static final Set<String> WORDS = new HashSet<String>();
 	// 由敏感词生成的字树
@@ -36,7 +36,7 @@ public class Finder {
 
 	private static TextAnalysis textAnalysis = new TextAnalysis();
 
-	public Finder(String[] words) {
+	public FinderUtil(String[] words) {
 		addSensitiveWords(words);
 	}
 
@@ -137,17 +137,6 @@ public class Finder {
 	 */
 	public static Set<String> find(String text) {
 		return new TextAnalysis().analysis(TREE, text);
-	}
-
-	/**
-	 * 替换文本中的敏感词
-	 *
-	 * @param text
-	 *            含敏感词的文本
-	 * @return
-	 */
-	public static String replace(String text) {
-		return new TextAnalysis().replace(TREE, text, DEFAULT_REPLACEMENT);
 	}
 
 	/**

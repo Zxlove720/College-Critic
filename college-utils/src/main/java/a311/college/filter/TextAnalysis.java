@@ -30,7 +30,7 @@ public class TextAnalysis {
     public String replace(Map<String, Map> tree, String text,
                           Character replacement) {
         if (replacement == null) {
-            replacement = Finder.DEFAULT_REPLACEMENT;
+            replacement = FinderUtil.DEFAULT_REPLACEMENT;
         }
         if (text != null && !text.trim().isEmpty()) {
             StringBuffer sb = new StringBuffer();
@@ -92,9 +92,9 @@ public class TextAnalysis {
                                String word) {
         Map<String, Map> subTree = tree.get(text.substring(index, index + 1));
         if (subTree != null) {
-            Map<String, Object> end = subTree.get(Finder.TREE_END_KEY);
+            Map<String, Object> end = subTree.get(FinderUtil.TREE_END_KEY);
             if (end != null) {
-                String sensitiveWord = (String) end.get(Finder.WORD_VALUE);
+                String sensitiveWord = (String) end.get(FinderUtil.WORD_VALUE);
                 if (word.length() < sensitiveWord.length()) {
                     word = sensitiveWord;
                 }
@@ -120,9 +120,9 @@ public class TextAnalysis {
                           Set<String> words) {
         Map<String, Map> subTree = tree.get(text.substring(index, index + 1));
         if (subTree != null) {
-            Map<String, Object> end = subTree.get(Finder.TREE_END_KEY);
+            Map<String, Object> end = subTree.get(FinderUtil.TREE_END_KEY);
             if (end != null) {
-                words.add((String) end.get(Finder.WORD_VALUE));
+                words.add((String) end.get(FinderUtil.WORD_VALUE));
             }
             if ((index + 1) < text.length()
                     && (end == null || subTree.size() > 1)) {

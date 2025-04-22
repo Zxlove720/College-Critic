@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService {
                         .setIgnoreNullValue(true)
                         .setFieldValueEditor((fieldName, fieldValue) -> fieldValue.toString()));
         stringRedisTemplate.opsForHash().putAll(key, userMap);
-        stringRedisTemplate.expire(key, UserRedisKey.USER_TTL, TimeUnit.SECONDS);
+        // stringRedisTemplate.expire(key, UserRedisKey.USER_TTL, TimeUnit.SECONDS);
         return token;
     }
 

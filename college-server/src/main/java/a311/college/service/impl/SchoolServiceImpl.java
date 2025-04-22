@@ -11,8 +11,10 @@ import a311.college.entity.major.Major;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.enumeration.school.*;
+import a311.college.exception.CommentIllegalException;
 import a311.college.exception.PageQueryException;
 import a311.college.exception.ReAdditionException;
+import a311.college.filter.FinderUtil;
 import a311.college.mapper.major.MajorMapper;
 import a311.college.mapper.resource.ResourceMapper;
 import a311.college.mapper.school.SchoolMapper;
@@ -632,6 +634,10 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public void addSchoolComment(AddCommentDTO addCommentDTO) {
+        // 进行敏感词判断
+        if (FinderUtil.replace(addCommentDTO.getComment(), '*')) {
+            throw new CommentIllegalException("评论不合法");
+        }
         addCommentDTO.setUserId(ThreadLocalUtil.getCurrentId());
         addCommentDTO.setTime(LocalDateTime.now());
         addCommentDTO.setSchoolName(schoolMapper.selectBySchoolId(addCommentDTO.getSchoolId()).getSchoolName());

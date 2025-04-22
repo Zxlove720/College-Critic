@@ -13,8 +13,10 @@ import a311.college.entity.major.Major;
 import a311.college.entity.major.ProfessionalClass;
 import a311.college.entity.major.SubjectCategory;
 import a311.college.entity.school.School;
+import a311.college.exception.CommentIllegalException;
 import a311.college.exception.PageQueryException;
 import a311.college.exception.ReAdditionException;
+import a311.college.filter.FinderUtil;
 import a311.college.mapper.major.MajorMapper;
 import a311.college.mapper.school.SchoolMapper;
 import a311.college.result.PageResult;
@@ -177,6 +179,10 @@ public class MajorServiceImpl implements MajorService {
      */
     @Override
     public void addMajorComment(AddCommentDTO addCommentDTO) {
+        // 进行敏感词判断
+        if (FinderUtil.replace(addCommentDTO.getComment(), '*')) {
+            throw new CommentIllegalException("评论不合法");
+        }
         addCommentDTO.setUserId(ThreadLocalUtil.getCurrentId());
         addCommentDTO.setTime(LocalDateTime.now());
         addCommentDTO.setMajorName(majorMapper.selectById(addCommentDTO.getMajorId()).getMajorName());

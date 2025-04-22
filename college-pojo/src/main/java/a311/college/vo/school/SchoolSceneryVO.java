@@ -21,6 +21,9 @@ public class SchoolSceneryVO {
     @Schema(description = "学校id")
     private Integer schoolId;
 
+    @Schema(description = "学校校徽")
+    private String schoolHead;
+
     @Schema(description = "学校名")
     private String schoolName;
 

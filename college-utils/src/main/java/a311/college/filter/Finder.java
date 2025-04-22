@@ -3,7 +3,6 @@ package a311.college.filter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,6 +33,8 @@ public class Finder {
 	public static final String DEFAULT_START_TAG = "<font color=\"red\">";
 	// 默认结束标记
 	public static final String DEFAULT_END_TAG = "</font>";
+
+	private static TextAnalysis textAnalysis = new TextAnalysis();
 
 	public Finder(String[] words) {
 		addSensitiveWords(words);
@@ -155,9 +156,9 @@ public class Finder {
 	 * @param text 含敏感词的文本
 	 * @param replacement 替换字符
 	 */
-	public static String replace(String text, Character replacement) {
-		return new TextAnalysis().replace(TREE, text, replacement);
-	}
+	public static boolean replace(String text, Character replacement) {
+        return !textAnalysis.replace(TREE, text, replacement).equals(text);
+    }
 
 	/**
 	 *
@@ -171,19 +172,19 @@ public class Finder {
 		return new TextAnalysis().mark(TREE, text, DEFAULT_START_TAG, DEFAULT_END_TAG);
 	}
 
-	/**
-	 *
-	 * 过滤文本，并标记出敏感词
-	 *
-	 * @author hymer
-	 * @param text
-	 * @param startTag
-	 * @param endTag
-	 * @return
-	 */
-	public static String filter(String text, String startTag, String endTag) {
-		return new TextAnalysis().mark(TREE, text, startTag, endTag);
-	}
+//	/**
+//	 *
+//	 * 过滤文本，并标记出敏感词
+//	 *
+//	 * @author hymer
+//	 * @param text
+//	 * @param startTag
+//	 * @param endTag
+//	 * @return
+//	 */
+//	public static String filter(String text, String startTag, String endTag) {
+//		return new TextAnalysis().mark(TREE, text, startTag, endTag);
+//	}
 
 	private static void check(String... words) {
 		for (String word : words) {

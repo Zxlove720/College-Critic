@@ -32,8 +32,8 @@ public class TextAnalysis {
         if (replacement == null) {
             replacement = Finder.DEFAULT_REPLACEMENT;
         }
-        if (text != null && text.trim().length() > 0) {
-            StringBuffer sb = new StringBuffer("");
+        if (text != null && !text.trim().isEmpty()) {
+            StringBuffer sb = new StringBuffer();
             replace(tree, text, 0, replacement, sb);
             return sb.toString();
         }
@@ -47,13 +47,11 @@ public class TextAnalysis {
      * @param text     待分析的文本
      * @param startTag 开始标记
      * @param endTag   结束标记
-     * @return
-     * @author hymer
      */
     public String mark(Map<String, Map> tree, String text, String startTag,
                        String endTag) {
-        if (text != null && text.trim().length() > 0) {
-            StringBuffer sb = new StringBuffer("");
+        if (text != null && !text.trim().isEmpty()) {
+            StringBuffer sb = new StringBuffer();
             mark(tree, text, 0, startTag, endTag, sb);
             return sb.toString();
         }
@@ -72,7 +70,7 @@ public class TextAnalysis {
             if (!"".equals(word)) {
                 int wordLen = word.length();
                 if (index >= last) {
-                    sb.append(startTag + word + endTag);
+                    sb.append(startTag).append(word).append(endTag);
                 } else {
                     if (last < index + wordLen) {
                         sb.insert(sb.length() - endTag.length(),
@@ -89,6 +87,7 @@ public class TextAnalysis {
         }
     }
 
+	@SuppressWarnings("unchecked")
     private String findMaxWord(Map<String, Map> tree, String text, int index,
                                String word) {
         Map<String, Map> subTree = tree.get(text.substring(index, index + 1));
@@ -116,6 +115,7 @@ public class TextAnalysis {
         }
     }
 
+	@SuppressWarnings("unchecked")
     private void findWord(Map<String, Map> tree, String text, int index,
                           Set<String> words) {
         Map<String, Map> subTree = tree.get(text.substring(index, index + 1));

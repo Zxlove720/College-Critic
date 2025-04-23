@@ -11,10 +11,8 @@ import a311.college.entity.major.Major;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.enumeration.school.*;
-import a311.college.exception.CommentIllegalException;
 import a311.college.exception.PageQueryException;
 import a311.college.exception.ReAdditionException;
-import a311.college.filter.FinderUtil;
 import a311.college.mapper.major.MajorMapper;
 import a311.college.mapper.resource.ResourceMapper;
 import a311.college.mapper.school.SchoolMapper;
@@ -569,11 +567,12 @@ public class SchoolServiceImpl implements SchoolService {
 
     /**
      * 计算高考录取概率（正态分布模型）
-     * @param studentScore 学生分数
-     * @param studentRank 学生位次
+     *
+     * @param studentScore  学生分数
+     * @param studentRank   学生位次
      * @param majorMinScore 专业历史最低分
-     * @param majorMinRank 专业历史最低位次
-     * @param sigma 15
+     * @param majorMinRank  专业历史最低位次
+     * @param sigma         15
      * @return 录取概率
      */
     public static int calculateProbability(

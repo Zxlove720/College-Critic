@@ -22,9 +22,9 @@ public class FinderUtil {
     public synchronized void initialize() {
         if (initialized) return;
 
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream("sensitive/SensitiveLexicon.json")) {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("sensitive/SensitiveLexicon.json")) {
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(is);
+            JsonNode jsonNode = mapper.readTree(inputStream);
 
             // 提取所有敏感词（包括所有分类）
             Set<String> words = new HashSet<>();

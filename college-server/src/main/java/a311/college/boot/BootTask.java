@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class BootTask implements ApplicationRunner {
 
-    private final SchoolService collegeService;
+    private final SchoolService schoolService;
 
     @Autowired
-    public BootTask(SchoolService collegeService) {
-        this.collegeService = collegeService;
+    public BootTask(SchoolService schoolService) {
+        this.schoolService = schoolService;
     }
 
     /**
@@ -23,8 +23,8 @@ public class BootTask implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments arguments) {
         try {
-            collegeService.cacheSchool();
-            collegeService.cacheHot();
+            schoolService.cacheSchool();
+            schoolService.cacheHot();
         } catch (Exception e) {
             System.out.println("缓存预热失败");
         }

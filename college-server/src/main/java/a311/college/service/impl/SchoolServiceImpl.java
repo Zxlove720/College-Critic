@@ -26,7 +26,6 @@ import a311.college.vo.major.MajorSimpleVO;
 import a311.college.vo.school.*;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.RandomUtil;
-import cn.hutool.dfa.SensitiveUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import jakarta.annotation.Resource;

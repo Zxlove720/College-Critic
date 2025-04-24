@@ -9,6 +9,7 @@ import a311.college.entity.major.Major;
 import a311.college.entity.school.School;
 import a311.college.entity.user.User;
 import a311.college.exception.*;
+import a311.college.filter.FinderUtil;
 import a311.college.mapper.user.UserMapper;
 import a311.college.constant.redis.UserRedisKey;
 import a311.college.regex.RegexUtils;
@@ -172,6 +173,10 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void register(UserDTO userDTO) {
+        FinderUtil finderUtil = new FinderUtil();
+        if (finderUtil.containsSensitiveWord(userDTO.getUsername())) {
+            throw new CommentIllegalException("用户名中含有敏感词");
+        }
         User user = new User();
         // 1.1进行属性拷贝
         BeanUtil.copyProperties(userDTO, user);

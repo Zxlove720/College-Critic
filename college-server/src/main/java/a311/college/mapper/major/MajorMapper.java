@@ -31,11 +31,11 @@ public interface MajorMapper {
     /**
      * 查询专业类别
      *
-     * @param professionalClassQueryDTO 专业类别查询DTO
+     * @param subjectCategoryId 学科门类id
      * @return List<ProfessionalClass>
      */
     @Select("select * from tb_professional_class where subject_category_id = #{subjectCategoryId}")
-    List<ProfessionalClass> selectProfessionalClass(ProfessionalClassQueryDTO professionalClassQueryDTO);
+    List<ProfessionalClass> selectProfessionalClass(int subjectCategoryId);
 
     /**
      * 专业信息分页查询

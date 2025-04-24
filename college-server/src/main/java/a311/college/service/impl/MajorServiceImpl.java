@@ -58,7 +58,11 @@ public class MajorServiceImpl implements MajorService {
      */
     @Override
     public List<SubjectCategory> getSubjectCategory(SubjectCategoryQueryDTO subjectCategoryQueryDTO) {
-        return majorMapper.selectSubjectCategory(subjectCategoryQueryDTO);
+        List<SubjectCategory> subjectCategories = majorMapper.selectSubjectCategory(subjectCategoryQueryDTO);
+        for (SubjectCategory subjectCategory : subjectCategories) {
+            subjectCategory.setProfessionalClassList(majorMapper.selectProfessionalClass(subjectCategory.getSubjectCategoryId()));
+        }
+        return subjectCategories;
     }
 
     /**
@@ -69,7 +73,8 @@ public class MajorServiceImpl implements MajorService {
      */
     @Override
     public List<ProfessionalClass> getProfessionalClass(ProfessionalClassQueryDTO professionalClassQueryDTO) {
-        return majorMapper.selectProfessionalClass(professionalClassQueryDTO);
+        //return majorMapper.selectProfessionalClass(professionalClassQueryDTO);
+        return null;
     }
 
     /**

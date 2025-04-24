@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 学科门类
@@ -15,10 +16,13 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class SubjectCategory implements Serializable {
 
-    @Schema(description = "专业大类id")
+    @Schema(description = "学科门类id")
     private Integer subjectCategoryId;
 
-    @Schema(description = "专业大类名")
+    @Schema(description = "学科门类名")
     private String subjectCategoryName;
+
+    @Schema(description = "专业类别")
+    private List<ProfessionalClass> professionalClassList;
 
 }

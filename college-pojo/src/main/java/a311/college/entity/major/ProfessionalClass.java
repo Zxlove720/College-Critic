@@ -19,9 +19,6 @@ public class ProfessionalClass implements Serializable {
     @Schema(description = "专业类别id")
     private Integer professionalClassId;
 
-    @Schema(description = "所属学科门类id")
-    private Integer subjectCategoryId;
-
     @Schema(description = "专业类别名称")
     private String professionalClassName;
 }

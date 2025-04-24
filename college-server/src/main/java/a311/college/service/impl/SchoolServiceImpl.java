@@ -11,8 +11,10 @@ import a311.college.entity.major.Major;
 import a311.college.entity.school.School;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.enumeration.school.*;
+import a311.college.exception.CommentIllegalException;
 import a311.college.exception.PageQueryException;
 import a311.college.exception.ReAdditionException;
+import a311.college.filter.FinderUtil;
 import a311.college.mapper.major.MajorMapper;
 import a311.college.mapper.resource.ResourceMapper;
 import a311.college.mapper.school.SchoolMapper;
@@ -24,6 +26,7 @@ import a311.college.vo.major.MajorSimpleVO;
 import a311.college.vo.school.*;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.dfa.SensitiveUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import jakarta.annotation.Resource;
@@ -637,7 +640,12 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public void addSchoolComment(AddCommentDTO addCommentDTO) {
+        FinderUtil finderUtil = new FinderUtil();
         // 进行敏感词判断
+        if (finderUtil.containsSensitiveWord(addCommentDTO.getComment())) {
+            log.error("输入内容含有敏感词");
+            throw new CommentIllegalException("输入内容含有敏感词");
+        }
         addCommentDTO.setUserId(ThreadLocalUtil.getCurrentId());
         addCommentDTO.setTime(LocalDateTime.now());
         addCommentDTO.setSchoolName(schoolMapper.selectBySchoolId(addCommentDTO.getSchoolId()).getSchoolName());

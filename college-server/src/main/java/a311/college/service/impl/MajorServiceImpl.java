@@ -1,6 +1,7 @@
 package a311.college.service.impl;
 
 import a311.college.constant.error.SchoolErrorConstant;
+import a311.college.constant.redis.MajorRedisKey;
 import a311.college.constant.user.UserErrorConstant;
 import a311.college.dto.major.MajorDTO;
 import a311.college.dto.query.major.MajorPageQueryDTO;
@@ -28,12 +29,15 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -50,6 +54,9 @@ public class MajorServiceImpl implements MajorService {
         this.schoolMapper = schoolMapper;
     }
 
+    @Resource
+    private RedisTemplate<String, Major> redisTemplate;
+
     /**
      * 查询学科门类
      *
@@ -63,6 +70,39 @@ public class MajorServiceImpl implements MajorService {
             subjectCategory.setProfessionalClassList(majorMapper.selectProfessionalClass(subjectCategory.getSubjectCategoryId()));
         }
         return subjectCategories;
+    }
+
+    /**
+     * 热门专业信息缓存预热
+     */
+    @Override
+    public void cacheMajor() {
+        // 1. 定义学科门类分类表
+        List<String> hotSubjectCategory = Arrays.asList("工学", "医学", "法学", "教育学", "理学", "电子与信息大类");
+        // 2. 缓存热门学科门类中的专业
+        for (String subjectCategory : hotSubjectCategory) {
+            // 2.1 统一的键名格式
+            String key = MajorRedisKey.MAJOR_CACHE_KEY + subjectCategory + ":";
+            try {
+                // 2.2 查询数据库
+                // 获取专业类别
+                List<ProfessionalClass> professionalClassList = majorMapper.selectAllMajorBySubject(subjectCategory);
+                // 删除旧数据
+                redisTemplate.delete(key);
+                // 获取专业
+                for (ProfessionalClass professionalClass : professionalClassList) {
+                    List<Major> majorList = majorMapper.selectAllMajor(professionalClass.getProfessionalClassId());
+                    if (!majorList.isEmpty()) {
+                        redisTemplate.opsForList().rightPushAll(key, majorList);
+                        log.info("专业分类 {} 缓存预热成功，共 {} 条数据", professionalClass.getProfessionalClassName(), majorList.size());
+                    } else {
+                        log.warn("专业分类{}无数据，跳过缓存预热", professionalClass.getProfessionalClassName());
+                    }
+                }
+            } catch (Exception e) {
+                log.error("学科门类 {} 缓存预热失败: {}", subjectCategory, e.getMessage(), e);
+            }
+        }
     }
 
     /**
@@ -184,6 +224,11 @@ public class MajorServiceImpl implements MajorService {
      */
     @Override
     public void addMajorComment(AddCommentDTO addCommentDTO) {
+        FinderUtil finderUtil = new FinderUtil();
+        if (finderUtil.containsSensitiveWord(addCommentDTO.getComment())) {
+            log.error("输入的内容含有敏感词");
+            throw new CommentIllegalException("输入内容含有敏感词");
+        }
         // 进行敏感词判断
         addCommentDTO.setUserId(ThreadLocalUtil.getCurrentId());
         addCommentDTO.setTime(LocalDateTime.now());

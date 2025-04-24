@@ -68,9 +68,6 @@ public class College2DataBase {
                                 String rankList = result.replaceAll(" ", "");
                                 school.setRankList(rankList);
                                 for (String s : rankList.split(",")) {
-                                    if (school.getSchoolName().equals("大连海事大学")) {
-                                        System.out.println("\n");
-                                    }
                                     switch (s) {
                                         case "本科", "双一流", "强基计划" -> rankScore += 15;
                                         case "公办", "军事类" -> rankScore += 10;

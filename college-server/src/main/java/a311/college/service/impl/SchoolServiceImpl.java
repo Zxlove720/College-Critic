@@ -316,6 +316,10 @@ public class SchoolServiceImpl implements SchoolService {
     public PageResult<School> search(SchoolPageQueryDTO schoolPageQueryDTO) {
         try (Page<School> page = PageHelper.startPage(schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize())) {
             schoolMapper.selectSchoolBySchoolName(schoolPageQueryDTO.getSchoolName());
+            List<School> result = page.getResult();
+            if (result.isEmpty()) {
+                throw new RuntimeException("输入错误");
+            }
             return new PageResult<>(page.getTotal(), page.getResult());
         } catch (Exception e) {
             log.error("分页查询失败");

@@ -1,7 +1,9 @@
 package a311.college.dto.school;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -10,6 +12,8 @@ import java.time.LocalDateTime;
  */
 @Data
 @Schema(description = "添加学校评论DTO")
+@NoArgsConstructor
+@AllArgsConstructor
 public class AddCommentDTO {
 
     @Schema(description = "用户id")

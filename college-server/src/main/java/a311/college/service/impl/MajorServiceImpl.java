@@ -73,39 +73,6 @@ public class MajorServiceImpl implements MajorService {
     }
 
     /**
-     * 热门专业信息缓存预热
-     */
-    @Override
-    public void cacheMajor() {
-        // 1. 定义学科门类分类表
-        List<String> hotSubjectCategory = Arrays.asList("工学", "医学", "法学", "教育学", "理学", "电子与信息大类");
-        // 2. 缓存热门学科门类中的专业
-        for (String subjectCategory : hotSubjectCategory) {
-            // 2.1 统一的键名格式
-            String key = MajorRedisKey.MAJOR_CACHE_KEY + subjectCategory + ":";
-            try {
-                // 2.2 查询数据库
-                // 获取专业类别
-                List<ProfessionalClass> professionalClassList = majorMapper.selectAllMajorBySubject(subjectCategory);
-                // 删除旧数据
-                redisTemplate.delete(key);
-                // 获取专业
-                for (ProfessionalClass professionalClass : professionalClassList) {
-                    List<Major> majorList = majorMapper.selectAllMajor(professionalClass.getProfessionalClassId());
-                    if (!majorList.isEmpty()) {
-                        redisTemplate.opsForList().rightPushAll(key, majorList);
-                        log.info("专业分类 {} 缓存预热成功，共 {} 条数据", professionalClass.getProfessionalClassName(), majorList.size());
-                    } else {
-                        log.warn("专业分类{}无数据，跳过缓存预热", professionalClass.getProfessionalClassName());
-                    }
-                }
-            } catch (Exception e) {
-                log.error("学科门类 {} 缓存预热失败: {}", subjectCategory, e.getMessage(), e);
-            }
-        }
-    }
-
-    /**
      * 获取专业类别
      *
      * @param professionalClassQueryDTO 专业类别查询DTO
@@ -135,6 +102,36 @@ public class MajorServiceImpl implements MajorService {
         } catch (Exception e) {
             log.error("专业分页查询失败，报错为：{}", e.getMessage());
             throw new PageQueryException(e.getMessage());
+        }
+    }
+
+    /**
+     * 热门专业信息缓存预热
+     */
+    @Override
+    public void cacheMajor() {
+        // 1. 定义学科门类分类表
+        List<Integer> hotProfessionalClass = Arrays.asList(1, 2, 3, 4, 6, 9, 14, 34, 37, 56);
+        // 2. 缓存热门学科门类中的专业
+        for (Integer professionalClass : hotProfessionalClass) {
+            // 2.1 统一的键名格式
+            String key = MajorRedisKey.MAJOR_CACHE_KEY + professionalClass + ":";
+            try {
+                // 2.2 查询数据库
+                // 删除旧数据
+                redisTemplate.delete(key);
+                // 获取专业专业
+                List<Major> majorList = majorMapper.selectAllMajor(professionalClass);
+                if (!majorList.isEmpty()) {
+                    redisTemplate.opsForList().rightPushAll(key, majorList);
+                    log.info("专业分类 {} 缓存预热成功，共 {} 条数据", professionalClass, majorList.size());
+                } else {
+                    log.warn("专业分类{}无数据，跳过缓存预热", professionalClass);
+                }
+
+            } catch (Exception e) {
+                log.error("学科门类 {} 缓存预热失败: {}", professionalClass, e.getMessage(), e);
+            }
         }
     }
 

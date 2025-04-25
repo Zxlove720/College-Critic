@@ -21,11 +21,11 @@ public interface MajorService {
 
     List<SubjectCategory> getSubjectCategory(SubjectCategoryQueryDTO subjectCategoryQueryDTO);
 
-    void cacheMajor();
-
     List<ProfessionalClass> getProfessionalClass(ProfessionalClassQueryDTO professionalClassQueryDTO);
 
     PageResult<Major> majorPageQuery(MajorPageQueryDTO majorDTO);
+
+    void cacheMajor();
 
     DetailMajorVO getDetailMajor(MajorDTO majorDTO);
 

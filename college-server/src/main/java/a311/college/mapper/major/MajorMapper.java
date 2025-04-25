@@ -105,10 +105,6 @@ public interface MajorMapper {
 
     List<CommentVO> selectComment(Integer majorId);
 
-    @Select("select professional_class_id, professional_class_name from tb_professional_class where subject_category_id = " +
-            "(select subject_category_id from tb_subject_category where subject_category_name = #{subjectCategory})")
-    List<ProfessionalClass> selectAllMajorBySubject(String subjectCategory);
-
     @Select("select * from tb_major where professional_class_id = #{professionalClassId}")
     List<Major> selectAllMajor(Integer professionalClassId);
 }

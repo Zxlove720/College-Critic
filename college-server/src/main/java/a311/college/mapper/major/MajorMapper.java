@@ -2,7 +2,6 @@ package a311.college.mapper.major;
 
 import a311.college.dto.major.MajorDTO;
 import a311.college.dto.query.major.MajorPageQueryDTO;
-import a311.college.dto.query.major.ProfessionalClassQueryDTO;
 import a311.college.dto.query.major.SubjectCategoryQueryDTO;
 import a311.college.dto.school.AddCommentDTO;
 import a311.college.entity.major.Major;
@@ -44,6 +43,15 @@ public interface MajorMapper {
      * @return List<Major>
      */
     List<Major> pageQueryMajors(MajorPageQueryDTO majorPageQueryDTO);
+
+    /**
+     * 获取某专业分类下的所有专业
+     *
+     * @param professionalClassId 专业分类id
+     * @return List<Major>
+     */
+    @Select("select * from tb_major where professional_class_id = #{professionalClassId}")
+    List<Major> selectAllMajor(Integer professionalClassId);
 
     /**
      * 根据专业名搜索专业
@@ -103,8 +111,12 @@ public interface MajorMapper {
             "comment = #{comment}, time = #{time}")
     void addComment(AddCommentDTO addCommentDTO);
 
+    /**
+     * 查询用户评价
+     *
+     * @param majorId 专业id
+     * @return List<CommentVO>
+     */
     List<CommentVO> selectComment(Integer majorId);
 
-    @Select("select * from tb_major where professional_class_id = #{professionalClassId}")
-    List<Major> selectAllMajor(Integer professionalClassId);
 }

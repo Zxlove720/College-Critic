@@ -261,4 +261,6 @@ public interface SchoolMapper {
     @Select("select * from tb_school")
     List<School> getAllSchool();
 
+    @Update("update tb_school set score = #{score} where school_id = #{schoolId}")
+    void updateScore(School school);
 }

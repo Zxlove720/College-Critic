@@ -832,5 +832,10 @@ public class SchoolServiceImpl implements SchoolService {
         return schoolMapper.selectBySchoolId(schoolId);
     }
 
+    @Override
+    public void updateScore(School school) {
+        schoolMapper.updateScore(school);
+    }
+
 
 }

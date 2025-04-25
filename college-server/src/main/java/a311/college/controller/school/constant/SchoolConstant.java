@@ -60,11 +60,11 @@ public class SchoolConstant {
      */
     public static List<School> getSchool() {
         List<School> schoolVOList = new ArrayList<>();
-        schoolVOList.add(new School(31, null, "北京大学", ProvinceEnum.getProvince("北京"), null, "985,211,双一流", null));
-        schoolVOList.add(new School(140, null, "清华大学", ProvinceEnum.getProvince("北京"), null, "985,211,双一流", null));
-        schoolVOList.add(new School(114, null, "浙江大学", ProvinceEnum.getProvince("浙江"), null, "985,211,双一流", null));
-        schoolVOList.add(new School(132, null, "复旦大学", ProvinceEnum.getProvince("上海"), null, "985,211,双一流", null));
-        schoolVOList.add(new School(42, null, "武汉大学", ProvinceEnum.getProvince("武汉"), null, "985,211,双一流", null));
+        schoolVOList.add(new School(31, null, "北京大学", ProvinceEnum.getProvince("北京"), null, "985,211,双一流", null, null, null));
+        schoolVOList.add(new School(140, null, "清华大学", ProvinceEnum.getProvince("北京"), null, "985,211,双一流", null, null, null));
+        schoolVOList.add(new School(114, null, "浙江大学", ProvinceEnum.getProvince("浙江"), null, "985,211,双一流", null, null, null));
+        schoolVOList.add(new School(132, null, "复旦大学", ProvinceEnum.getProvince("上海"), null, "985,211,双一流", null, null, null));
+        schoolVOList.add(new School(42, null, "武汉大学", ProvinceEnum.getProvince("武汉"), null, "985,211,双一流", null, null, null));
         return schoolVOList;
     }
 
@@ -90,16 +90,16 @@ public class SchoolConstant {
      */
     public static List<School> getHotRank() {
         List<School> schoolVOList = new ArrayList<>();
-        schoolVOList.add(new School(102, "https://static-data.gaokao.cn/upload/logo/102.jpg", "厦门大学", null, null, null, null));
-        schoolVOList.add(new School(99, "https://static-data.gaokao.cn/upload/logo/99.jpg", "四川大学", null, null, null, null));
-        schoolVOList.add(new School(42, "https://static-data.gaokao.cn/upload/logo/42.jpg", "武汉大学", null, null, null, null));
-        schoolVOList.add(new School(104, "https://static-data.gaokao.cn/upload/logo/104.jpg", "中山大学", null, null, null, null));
-        schoolVOList.add(new School(140, "https://static-data.gaokao.cn/upload/logo/140.jpg", "清华大学", null, null, null, null));
-        schoolVOList.add(new School(123, "https://static-data.gaokao.cn/upload/logo/123.jpg", "中南大学", null, null, null, null));
-        schoolVOList.add(new School(111, "https://static-data.gaokao.cn/upload/logo/111.jpg", "南京大学", null, null, null, null));
-        schoolVOList.add(new School(934, "https://static-data.gaokao.cn/upload/logo/934.jpg", "西南大学", null, null, null, null));
-        schoolVOList.add(new School(31, "https://static-data.gaokao.cn/upload/logo/31.jpg", "北京大学", null, null, null, null));
-        schoolVOList.add(new School(661, "https://static-data.gaokao.cn/upload/logo/661.jpg", "电子科技大学", null, null, null, null));
+        schoolVOList.add(new School(102, "https://static-data.gaokao.cn/upload/logo/102.jpg", "厦门大学", null, null, null, null, null, null));
+        schoolVOList.add(new School(99, "https://static-data.gaokao.cn/upload/logo/99.jpg", "四川大学", null, null, null, null, null, null));
+        schoolVOList.add(new School(42, "https://static-data.gaokao.cn/upload/logo/42.jpg", "武汉大学", null, null, null, null, null, null));
+        schoolVOList.add(new School(104, "https://static-data.gaokao.cn/upload/logo/104.jpg", "中山大学", null, null, null, null, null, null));
+        schoolVOList.add(new School(140, "https://static-data.gaokao.cn/upload/logo/140.jpg", "清华大学", null, null, null, null, null, null));
+        schoolVOList.add(new School(123, "https://static-data.gaokao.cn/upload/logo/123.jpg", "中南大学", null, null, null, null, null, null));
+        schoolVOList.add(new School(111, "https://static-data.gaokao.cn/upload/logo/111.jpg", "南京大学", null, null, null, null, null, null));
+        schoolVOList.add(new School(934, "https://static-data.gaokao.cn/upload/logo/934.jpg", "西南大学", null, null, null, null, null, null));
+        schoolVOList.add(new School(31, "https://static-data.gaokao.cn/upload/logo/31.jpg", "北京大学", null, null, null, null, null, null));
+        schoolVOList.add(new School(661, "https://static-data.gaokao.cn/upload/logo/661.jpg", "电子科技大学", null, null, null, null, null, null));
         return schoolVOList;
     }
 

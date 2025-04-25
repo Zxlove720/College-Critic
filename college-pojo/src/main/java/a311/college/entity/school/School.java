@@ -37,4 +37,10 @@ public class School implements Serializable {
 
     @Schema(description = "客观得分")
     private Integer score;
+
+    @Schema(description = "排名项目")
+    private String rankItem;
+
+    @Schema(description = "排名信息")
+    private String rankInfo;
 }

@@ -822,5 +822,15 @@ public class SchoolServiceImpl implements SchoolService {
         return schoolMapper.selectBasicSchool();
     }
 
+    @Override
+    public List<School> getAllSchool() {
+        return schoolMapper.getAllSchool();
+    }
+
+    @Override
+    public School getSchool(int schoolId) {
+        return schoolMapper.selectBySchoolId(schoolId);
+    }
+
 
 }

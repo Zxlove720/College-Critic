@@ -257,4 +257,8 @@ public interface SchoolMapper {
 
     @Select("select * from tb_school where school_name = #{schoolName}")
     School querySchoolName(String schoolName);
+
+    @Select("select * from tb_school")
+    List<School> getAllSchool();
+
 }

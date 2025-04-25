@@ -8,12 +8,12 @@ public class SchoolRedisKey {
     public static final String SCHOOL_CACHE_KEY = "college:area:";
 
     // C9缓存
-    public static final String C9_CACHE_KEY = "college:school:c9";
+    public static final String C9_CACHE_KEY = "college:school:c9:";
 
     // 中央部委直属缓存
-    public static final String CENTER_CACHE_KEY = "college:school:center";
+    public static final String CENTER_CACHE_KEY = "college:school:center:";
 
     // 国防七子缓存
-    public static final String DEFENSE_CACHE_KEY = "college:school:defense";
+    public static final String DEFENSE_CACHE_KEY = "college:school:defense:";
 
 }

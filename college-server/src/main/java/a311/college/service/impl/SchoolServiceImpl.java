@@ -125,7 +125,7 @@ public class SchoolServiceImpl implements SchoolService {
             return new PageResult<>(total, result);
         } catch (Exception e) {
             log.error("大学信息分页查询失败，报错为：{}", e.getMessage());
-            throw new PageQueryException(SchoolErrorConstant.SCHOOL_PAGE_QUERY_ERROR);
+            throw new PageQueryException(e.getMessage());
         }
     }
 
@@ -273,7 +273,7 @@ public class SchoolServiceImpl implements SchoolService {
             return new PageResult<>(total, result);
         } catch (Exception e) {
             log.error("大学专业分页查询失败，报错为：{}", e.getMessage());
-            throw new PageQueryException(SchoolErrorConstant.SCHOOL_MAJOR_PAGE_QUERY_ERROR);
+            throw new PageQueryException(e.getMessage());
         }
     }
 
@@ -664,7 +664,7 @@ public class SchoolServiceImpl implements SchoolService {
             return new PageResult<>(page.getTotal(), commentVOList);
         } catch (Exception e) {
             log.error("'{}'大学评论区查询失败，报错为：{}", commentPageQueryDTO.getSchoolId(), e.getMessage());
-            throw new PageQueryException(SchoolErrorConstant.COMMENT_PAGE_QUERY_ERROR);
+            throw new PageQueryException(e.getMessage());
         }
     }
 

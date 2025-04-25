@@ -2,7 +2,7 @@ package a311.college.controller.common;
 
 import a311.college.ailiyun.AliOssUtil;
 import a311.college.constant.API.APIConstant;
-import a311.college.constant.error.FileUploadErrorConstant;
+import a311.college.constant.error.ErrorConstant;
 import a311.college.result.Result;
 import cn.hutool.core.lang.UUID;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,7 +55,7 @@ public class CommonController {
         } catch (IOException e) {
             log.info("文件上传失败{}",file);
         }
-        return Result.error(FileUploadErrorConstant.FILE_UPLOAD_ERROR);
+        return Result.error(ErrorConstant.FILE_UPLOAD_ERROR);
     }
 
 }

@@ -1,10 +1,6 @@
 package a311.college.constant.error;
 
-
-/**
- * 学校服务错误常量
- */
-public class SchoolErrorConstant {
+public class ErrorConstant {
 
     public static final String SCHOOL_PAGE_QUERY_ERROR = "学校分页查询失败";
 
@@ -12,6 +8,5 @@ public class SchoolErrorConstant {
 
     public static final String COMMENT_PAGE_QUERY_ERROR = "学校评论区分页查询失败";
 
-    public static final String SCHOOL_GRADE_PAGE_QUERY_ERROR = "按照成绩查询失败";
-
+    public static final String FILE_UPLOAD_ERROR = "文件上传失败";
 }

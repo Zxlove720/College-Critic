@@ -1,6 +1,5 @@
 package a311.college.service.impl;
 
-import a311.college.constant.error.SchoolErrorConstant;
 import a311.college.constant.redis.MajorRedisKey;
 import a311.college.constant.user.UserErrorConstant;
 import a311.college.dto.major.MajorDTO;
@@ -253,11 +252,11 @@ public class MajorServiceImpl implements MajorService {
     @Override
     public void addMajorComment(AddCommentDTO addCommentDTO) {
         FinderUtil finderUtil = new FinderUtil();
+        // 进行敏感词判断
         if (finderUtil.containsSensitiveWord(addCommentDTO.getComment())) {
             log.error("输入的内容含有敏感词");
             throw new CommentIllegalException("输入内容含有敏感词");
         }
-        // 进行敏感词判断
         addCommentDTO.setUserId(ThreadLocalUtil.getCurrentId());
         addCommentDTO.setTime(LocalDateTime.now());
         addCommentDTO.setMajorName(majorMapper.selectById(addCommentDTO.getMajorId()).getMajorName());
@@ -277,7 +276,7 @@ public class MajorServiceImpl implements MajorService {
             return new PageResult<>(page.getTotal(), commentVOList);
         } catch (Exception e) {
             log.error("'{}'大学评论区查询失败，报错为：{}", commentPageQueryDTO.getMajorId(), e.getMessage());
-            throw new PageQueryException(SchoolErrorConstant.COMMENT_PAGE_QUERY_ERROR);
+            throw new PageQueryException(e.getMessage());
         }
     }
 

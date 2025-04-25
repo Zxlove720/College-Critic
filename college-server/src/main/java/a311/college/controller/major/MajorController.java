@@ -109,6 +109,7 @@ public class MajorController {
     @Operation(summary = "查询专业具体信息")
     public Result<DetailMajorVO> getDetailMajor(@RequestBody MajorDTO majorDTO) {
         log.info("正在查询'{}'专业的详细信息", majorDTO.getMajorId());
+        majorDTO.setUserId(ThreadLocalUtil.getCurrentId());
         DetailMajorVO detailMajorVO = majorService.getDetailMajor(majorDTO);
         return Result.success(detailMajorVO);
     }

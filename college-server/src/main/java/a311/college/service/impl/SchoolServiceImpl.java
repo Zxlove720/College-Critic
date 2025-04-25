@@ -314,19 +314,13 @@ public class SchoolServiceImpl implements SchoolService {
         return new SearchVO(schoolList, majorList);
     }
 
-    /**
-     * 搜索学校
-     *
-     * @param schoolPageQueryDTO 学校分页查询失败
-     * @return PageResult<School>
-     */
     @Override
     public PageResult<School> search(SchoolPageQueryDTO schoolPageQueryDTO) {
         try (Page<School> page = PageHelper.startPage(schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize())) {
             schoolMapper.selectSchoolBySchoolName(schoolPageQueryDTO.getSchoolName());
             List<School> result = page.getResult();
             if (result.isEmpty()) {
-                throw new RuntimeException(ErrorConstant.SCHOOL_SEARCH_ERROR);
+                throw new RuntimeException("输入错误");
             }
             return new PageResult<>(page.getTotal(), page.getResult());
         } catch (Exception e) {
@@ -669,7 +663,7 @@ public class SchoolServiceImpl implements SchoolService {
             List<CommentVO> commentVOList = schoolMapper.selectComment(commentPageQueryDTO.getSchoolId());
             return new PageResult<>(page.getTotal(), commentVOList);
         } catch (Exception e) {
-            log.error("'{}'学校评论区查询失败，报错为：{}", commentPageQueryDTO.getSchoolId(), e.getMessage());
+            log.error("'{}'大学评论区查询失败，报错为：{}", commentPageQueryDTO.getSchoolId(), e.getMessage());
             throw new PageQueryException(ErrorConstant.COMMENT_PAGE_QUERY_ERROR);
         }
     }

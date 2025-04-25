@@ -119,4 +119,6 @@ public interface MajorMapper {
      */
     List<CommentVO> selectComment(Integer majorId);
 
+    @Select("select count(major_id) from tb_fav_major where major_id = #{majorId} and user_id = #{userId}")
+    Integer checkFavorite(MajorDTO majorDTO);
 }

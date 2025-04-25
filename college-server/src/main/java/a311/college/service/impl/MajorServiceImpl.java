@@ -197,6 +197,8 @@ public class MajorServiceImpl implements MajorService {
         // 5.返回专业详情对象
         detailMajorVO.setSatisfaction(satisfaction);
         detailMajorVO.setEmploymentRate(employmentRate);
+        // 判断专业是否被收藏
+        detailMajorVO.setFavorite(majorMapper.checkFavorite(majorDTO) == 1);
         return detailMajorVO;
     }
 

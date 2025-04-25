@@ -38,6 +38,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -92,6 +93,15 @@ public class MajorServiceImpl implements MajorService {
      */
     @Override
     public PageResult<Major> majorPageQuery(MajorPageQueryDTO majorPageQueryDTO) {
+        // 判断是否命中缓存
+        // 拼装Key
+        String key = MajorRedisKey.MAJOR_CACHE_KEY + majorPageQueryDTO.getProfessionalClassId() + ":";
+        List<Major> majorCache = redisTemplate.opsForList().range(key, 0, -1);
+        if (majorCache != null && !majorCache.isEmpty()) {
+            log.info("缓存命中");
+            // 2.2手动进行分页并返回
+            return manualPage(majorCache, majorPageQueryDTO.getPage(), majorPageQueryDTO.getPageSize());
+        }
         try (Page<Major> page = PageHelper.startPage(majorPageQueryDTO.getPage(), majorPageQueryDTO.getPageSize())) {
             majorMapper.pageQueryMajors(majorPageQueryDTO);
             // 获取专业记录数
@@ -103,6 +113,27 @@ public class MajorServiceImpl implements MajorService {
             log.error("专业分页查询失败，报错为：{}", e.getMessage());
             throw new PageQueryException(e.getMessage());
         }
+    }
+
+    /**
+     * 人工分页
+     *
+     * @param filterCache 过滤后的学校缓存
+     * @param page        查询页码
+     * @param pageSize    每页大小
+     * @return PageResult<SchoolVO>
+     */
+    private PageResult<Major> manualPage(List<Major> filterCache, Integer page, Integer pageSize) {
+        // 1.获取记录总数
+        int total = filterCache.size();
+        // 2.获取起始页码
+        int start = (page - 1) * pageSize;
+        if (start >= total) return new PageResult<>((long) total, Collections.emptyList());
+        // 3.获取结束页码
+        int end = Math.min(start + pageSize, total);
+        // 4.分页并返回
+        List<Major> pageData = filterCache.subList(start, end);
+        return new PageResult<>((long) total, pageData);
     }
 
     /**

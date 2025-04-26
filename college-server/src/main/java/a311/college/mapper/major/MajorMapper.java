@@ -121,4 +121,10 @@ public interface MajorMapper {
 
     @Select("select count(major_id) from tb_fav_major where major_id = #{majorId} and user_id = #{userId}")
     Integer checkFavorite(MajorDTO majorDTO);
+
+    @Select("select * from tb_major")
+    List<Major> getAllMajor();
+
+    @Select("select major_name from tb_major where major_id = #{majorId}")
+    String getMajorName(int majorId);
 }

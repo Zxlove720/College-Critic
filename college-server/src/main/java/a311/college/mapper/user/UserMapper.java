@@ -124,4 +124,7 @@ public interface UserMapper {
     @Select("select id from tb_user where username = #{username}")
     User selectByUsername(String username);
 
+    @Select("select * from tb_user")
+    List<User> getAllUser();
+
 }

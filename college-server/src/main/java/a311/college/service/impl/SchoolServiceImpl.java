@@ -646,7 +646,6 @@ public class SchoolServiceImpl implements SchoolService {
             throw new CommentIllegalException("输入内容含有敏感词");
         }
         addCommentDTO.setUserId(ThreadLocalUtil.getCurrentId());
-        addCommentDTO.setTime(LocalDateTime.now());
         addCommentDTO.setSchoolName(schoolMapper.selectBySchoolId(addCommentDTO.getSchoolId()).getSchoolName());
         schoolMapper.addComment(addCommentDTO);
     }

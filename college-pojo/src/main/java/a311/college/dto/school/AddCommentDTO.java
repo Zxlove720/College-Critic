@@ -35,5 +35,5 @@ public class AddCommentDTO {
     private String comment;
 
     @Schema(description = "发表时间")
-    private LocalDateTime time;
+    private LocalDateTime addTime;
 }

@@ -263,4 +263,7 @@ public interface SchoolMapper {
 
     @Update("update tb_school set score = #{score} where school_id = #{schoolId}")
     void updateScore(School school);
+
+    @Select("select school_name from tb_school where school_id = #{schoolId}")
+    String getSchoolName(int schoolId);
 }

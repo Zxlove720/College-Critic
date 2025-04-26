@@ -260,7 +260,6 @@ public class MajorServiceImpl implements MajorService {
             throw new CommentIllegalException("输入内容含有敏感词");
         }
         addCommentDTO.setUserId(ThreadLocalUtil.getCurrentId());
-        addCommentDTO.setTime(LocalDateTime.now());
         addCommentDTO.setMajorName(majorMapper.selectById(addCommentDTO.getMajorId()).getMajorName());
         majorMapper.addComment(addCommentDTO);
     }

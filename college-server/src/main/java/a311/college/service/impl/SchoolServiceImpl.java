@@ -639,14 +639,14 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public void addSchoolComment(AddCommentDTO addCommentDTO) {
-        FinderUtil finderUtil = new FinderUtil();
-        // 进行敏感词判断
-        if (finderUtil.containsSensitiveWord(addCommentDTO.getComment())) {
-            log.error("输入内容含有敏感词");
-            throw new CommentIllegalException("输入内容含有敏感词");
-        }
-        addCommentDTO.setUserId(ThreadLocalUtil.getCurrentId());
-        addCommentDTO.setSchoolName(schoolMapper.selectBySchoolId(addCommentDTO.getSchoolId()).getSchoolName());
+//        FinderUtil finderUtil = new FinderUtil();
+//        // 进行敏感词判断
+//        if (finderUtil.containsSensitiveWord(addCommentDTO.getComment())) {
+//            log.error("输入内容含有敏感词");
+//            throw new CommentIllegalException("输入内容含有敏感词");
+//        }
+//        addCommentDTO.setUserId(ThreadLocalUtil.getCurrentId());
+//        addCommentDTO.setSchoolName(schoolMapper.selectBySchoolId(addCommentDTO.getSchoolId()).getSchoolName());
         schoolMapper.addComment(addCommentDTO);
     }
 

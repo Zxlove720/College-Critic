@@ -253,14 +253,14 @@ public class MajorServiceImpl implements MajorService {
      */
     @Override
     public void addMajorComment(AddCommentDTO addCommentDTO) {
-        FinderUtil finderUtil = new FinderUtil();
-        // 进行敏感词判断
-        if (finderUtil.containsSensitiveWord(addCommentDTO.getComment())) {
-            log.error("输入的内容含有敏感词");
-            throw new CommentIllegalException("输入内容含有敏感词");
-        }
-        addCommentDTO.setUserId(ThreadLocalUtil.getCurrentId());
-        addCommentDTO.setMajorName(majorMapper.selectById(addCommentDTO.getMajorId()).getMajorName());
+//        FinderUtil finderUtil = new FinderUtil();
+//        // 进行敏感词判断
+//        if (finderUtil.containsSensitiveWord(addCommentDTO.getComment())) {
+//            log.error("输入的内容含有敏感词");
+//            throw new CommentIllegalException("输入内容含有敏感词");
+//        }
+//        addCommentDTO.setUserId(ThreadLocalUtil.getCurrentId());
+//        addCommentDTO.setMajorName(majorMapper.selectById(addCommentDTO.getMajorId()).getMajorName());
         majorMapper.addComment(addCommentDTO);
     }
 

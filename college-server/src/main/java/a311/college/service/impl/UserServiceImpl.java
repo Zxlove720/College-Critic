@@ -170,7 +170,7 @@ public class UserServiceImpl implements UserService {
      * 用户注册
      *
      * @param userDTO userDTO
-     * @return
+     * @return LoginResult 登录返回结果
      */
     @Override
     public LoginResult register(UserDTO userDTO) {

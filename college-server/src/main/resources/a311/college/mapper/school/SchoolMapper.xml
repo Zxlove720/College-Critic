@@ -142,7 +142,7 @@
 
     <!-- 查询学校评价 -->
     <select id="selectComment" resultType="a311.college.vo.school.CommentVO">
-        select u.username, u.head, c.comment
+        select u.username, u.head, c.comment, c.add_time
         from tb_comment AS c,
              tb_user AS u
         where c.school_id = #{schoolId}

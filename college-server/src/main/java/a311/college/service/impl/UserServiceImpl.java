@@ -170,9 +170,10 @@ public class UserServiceImpl implements UserService {
      * 用户注册
      *
      * @param userDTO userDTO
+     * @return
      */
     @Override
-    public void register(UserDTO userDTO) {
+    public LoginResult register(UserDTO userDTO) {
         FinderUtil finderUtil = new FinderUtil();
         if (finderUtil.containsSensitiveWord(userDTO.getUsername())) {
             throw new CommentIllegalException("用户名中含有敏感词");
@@ -184,6 +185,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(DigestUtil.md5Hex(user.getPassword().getBytes()));
         user.setFirstChoice(user.getSubjects().split(",")[0]);
         userMapper.register(user);
+        return loginSuccessful(user);
     }
 
     /**

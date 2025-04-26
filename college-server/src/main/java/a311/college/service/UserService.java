@@ -21,7 +21,7 @@ public interface UserService {
 
     Integer checkPhone(UserPhoneCheckDTO userPhoneCheckDTO);
 
-    void register(UserDTO userDTO);
+    LoginResult register(UserDTO userDTO);
 
     String sendEditCode(UserCodeDTO userCodeDTO);
 

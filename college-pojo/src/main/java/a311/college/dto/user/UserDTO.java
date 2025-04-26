@@ -32,7 +32,7 @@ public class UserDTO {
     @Schema(description = "用户所在省份")
     private ProvinceEnum province;
 
-    @Schema(description = "用户选科（新高考）")
+    @Schema(description = "用户选科")
     private String subjects;
 
     @Schema(description = "用户成绩")

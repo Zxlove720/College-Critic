@@ -49,7 +49,7 @@ public class User implements Serializable {
     @Schema(description = "首选科目")
     private String firstChoice;
 
-    @Schema(description = "用户选科（新高考）")
+    @Schema(description = "用户选科")
     private String subjects;
 
     @Schema(description = "用户成绩")

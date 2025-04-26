@@ -53,6 +53,7 @@ public interface UserMapper {
             "  grade, ranking) values " +
             "(#{username}, #{password}, #{phone}, #{head}, #{year}, #{province}, #{firstChoice}, #{subjects}," +
             " #{grade}, #{ranking})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
     void register(User user);
 
     /**

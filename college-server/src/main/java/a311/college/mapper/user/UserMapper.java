@@ -95,7 +95,7 @@ public interface UserMapper {
      * @param id 用户id
      * @return List<CommentVO>
      */
-    @Select(("select comment_id, school_id, school_name, comment, time from tb_comment where user_id = #{id} and school_id is not null"))
+    @Select(("select comment_id, school_id, school_name, comment, add_time from tb_comment where user_id = #{id} and school_id is not null"))
     List<CommentVO> selectSchoolComment(Long id);
 
     /**
@@ -104,7 +104,7 @@ public interface UserMapper {
      * @param id 用户id
      * @return List<CommentVO>
      */
-    @Select(("select comment_id, major_id, major_name, comment, time from tb_comment where user_id = #{id} and major_id is not null"))
+    @Select(("select comment_id, major_id, major_name, comment, add_time from tb_comment where user_id = #{id} and major_id is not null"))
     List<CommentVO> selectMajorComment(Long id);
 
     /**

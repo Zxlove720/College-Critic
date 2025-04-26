@@ -268,14 +268,8 @@ public class MajorServiceImpl implements MajorService {
      * @return List<CommentVO>
      */
     @Override
-    public PageResult<CommentVO> showComment(CommentQueryDTO commentQueryDTO) {
-        try (Page<CommentVO> page = PageHelper.startPage(commentQueryDTO.getPage(), commentQueryDTO.getPageSize())) {
-            List<CommentVO> commentVOList = majorMapper.selectComment(commentQueryDTO.getMajorId());
-            return new PageResult<>(page.getTotal(), commentVOList);
-        } catch (Exception e) {
-            log.error("'{}'大学评论区查询失败，报错为：{}", commentQueryDTO.getMajorId(), e.getMessage());
-            throw new PageQueryException(e.getMessage());
-        }
+    public List<CommentVO> showComment(CommentQueryDTO commentQueryDTO) {
+        return majorMapper.selectComment(commentQueryDTO.getMajorId());
     }
 
 

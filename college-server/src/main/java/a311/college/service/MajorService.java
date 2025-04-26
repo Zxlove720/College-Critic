@@ -37,5 +37,5 @@ public interface MajorService {
 
     void addMajorComment(AddCommentDTO addCommentDTO);
 
-    PageResult<CommentVO> showComment(CommentQueryDTO commentQueryDTO);
+    List<CommentVO> showComment(CommentQueryDTO commentQueryDTO);
 }

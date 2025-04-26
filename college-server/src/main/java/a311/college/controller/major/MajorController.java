@@ -176,10 +176,9 @@ public class MajorController {
      */
     @PostMapping("/showComment")
     @Operation(summary = "分页展示专业评论区")
-    public Result<PageResult<CommentVO>> pageQuerySchoolComment(@RequestBody CommentQueryDTO commentQueryDTO) {
+    public Result<List<CommentVO>> pageQuerySchoolComment(@RequestBody CommentQueryDTO commentQueryDTO) {
         log.info("查看专业'{}'的评价", commentQueryDTO.getMajorId());
-        PageResult<CommentVO> commentVOList = majorService.showComment(commentQueryDTO);
-        return Result.success(commentVOList);
+        return Result.success(majorService.showComment(commentQueryDTO));
     }
 
 }

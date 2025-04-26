@@ -35,7 +35,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -639,32 +638,26 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public void addSchoolComment(AddCommentDTO addCommentDTO) {
-//        FinderUtil finderUtil = new FinderUtil();
-//        // 进行敏感词判断
-//        if (finderUtil.containsSensitiveWord(addCommentDTO.getComment())) {
-//            log.error("输入内容含有敏感词");
-//            throw new CommentIllegalException("输入内容含有敏感词");
-//        }
-//        addCommentDTO.setUserId(ThreadLocalUtil.getCurrentId());
-//        addCommentDTO.setSchoolName(schoolMapper.selectBySchoolId(addCommentDTO.getSchoolId()).getSchoolName());
+        FinderUtil finderUtil = new FinderUtil();
+        // 进行敏感词判断
+        if (finderUtil.containsSensitiveWord(addCommentDTO.getComment())) {
+            log.error("输入内容含有敏感词");
+            throw new CommentIllegalException("输入内容含有敏感词");
+        }
+        addCommentDTO.setUserId(ThreadLocalUtil.getCurrentId());
+        addCommentDTO.setSchoolName(schoolMapper.selectBySchoolId(addCommentDTO.getSchoolId()).getSchoolName());
         schoolMapper.addComment(addCommentDTO);
     }
 
     /**
      * 分页查询用户评价
      *
-     * @param commentPageQueryDTO 大学DTO
+     * @param commentQueryDTO 大学DTO
      * @return List<CommentVO>
      */
     @Override
-    public PageResult<CommentVO> showComment(CommentPageQueryDTO commentPageQueryDTO) {
-        try (Page<CommentVO> page = PageHelper.startPage(commentPageQueryDTO.getPage(), commentPageQueryDTO.getPageSize())) {
-            List<CommentVO> commentVOList = schoolMapper.selectComment(commentPageQueryDTO.getSchoolId());
-            return new PageResult<>(page.getTotal(), commentVOList);
-        } catch (Exception e) {
-            log.error("'{}'大学评论区查询失败，报错为：{}", commentPageQueryDTO.getSchoolId(), e.getMessage());
-            throw new PageQueryException(ErrorConstant.COMMENT_PAGE_QUERY_ERROR);
-        }
+    public List<CommentVO> showComment(CommentQueryDTO commentQueryDTO) {
+        return schoolMapper.selectComment(commentQueryDTO.getSchoolId());
     }
 
 

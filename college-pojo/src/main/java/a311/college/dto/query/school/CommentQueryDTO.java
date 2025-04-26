@@ -12,18 +12,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "评论区分页查询DTO")
-public class CommentPageQueryDTO {
+public class CommentQueryDTO {
 
     @Schema(description = "学校id")
     private Integer schoolId;
 
     @Schema(description = "专业id")
     private Integer majorId;
-
-    @Schema(description = "查询页码")
-    private Integer page = 1;
-
-    @Schema(description = "每页大小")
-    private Integer pageSize = 10;
 
 }

@@ -7,16 +7,14 @@ import a311.college.dto.query.major.MajorPageQueryDTO;
 import a311.college.dto.query.major.MajorSchoolPageQueryDTO;
 import a311.college.dto.query.major.ProfessionalClassQueryDTO;
 import a311.college.dto.query.major.SubjectCategoryQueryDTO;
-import a311.college.dto.query.school.CommentPageQueryDTO;
+import a311.college.dto.query.school.CommentQueryDTO;
 import a311.college.dto.school.AddCommentDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.major.ProfessionalClass;
 import a311.college.entity.major.SubjectCategory;
 import a311.college.entity.school.School;
-import a311.college.exception.CommentIllegalException;
 import a311.college.exception.PageQueryException;
 import a311.college.exception.ReAdditionException;
-import a311.college.filter.FinderUtil;
 import a311.college.mapper.major.MajorMapper;
 import a311.college.mapper.school.SchoolMapper;
 import a311.college.result.PageResult;
@@ -34,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -267,16 +264,16 @@ public class MajorServiceImpl implements MajorService {
     /**
      * 分页查询用户评价
      *
-     * @param commentPageQueryDTO 评论区分页查询DTO
+     * @param commentQueryDTO 评论区分页查询DTO
      * @return List<CommentVO>
      */
     @Override
-    public PageResult<CommentVO> showComment(CommentPageQueryDTO commentPageQueryDTO) {
-        try (Page<CommentVO> page = PageHelper.startPage(commentPageQueryDTO.getPage(), commentPageQueryDTO.getPageSize())) {
-            List<CommentVO> commentVOList = majorMapper.selectComment(commentPageQueryDTO.getMajorId());
+    public PageResult<CommentVO> showComment(CommentQueryDTO commentQueryDTO) {
+        try (Page<CommentVO> page = PageHelper.startPage(commentQueryDTO.getPage(), commentQueryDTO.getPageSize())) {
+            List<CommentVO> commentVOList = majorMapper.selectComment(commentQueryDTO.getMajorId());
             return new PageResult<>(page.getTotal(), commentVOList);
         } catch (Exception e) {
-            log.error("'{}'大学评论区查询失败，报错为：{}", commentPageQueryDTO.getMajorId(), e.getMessage());
+            log.error("'{}'大学评论区查询失败，报错为：{}", commentQueryDTO.getMajorId(), e.getMessage());
             throw new PageQueryException(e.getMessage());
         }
     }

@@ -135,7 +135,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         // 1.获取不同用户的Key
         String key = buildUserMessageKey();
         // 2.判断用户的Key是否存在（是否需要初始化）
-        if (Boolean.FALSE.equals(redisTemplate.hasKey(key))) {
+        if (!redisTemplate.hasKey(key)) {
             // 2.1Key不存在，封装初始化信息并存入Redis
             JSONObject systemMessage = new JSONObject()
                     .fluentPut("role", DeepSeekConstant.ROLE_SYSTEM)

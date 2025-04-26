@@ -23,5 +23,7 @@ public interface VolunteerService {
 
     void addVolunteer(AddVolunteerDTO addVolunteerDTO);
 
+    void deleteVolunteer(Volunteer volunteer);
+
     List<Volunteer> selectVolunteer(Integer tableId);
 }

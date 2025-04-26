@@ -168,6 +168,11 @@ public class VolunteerServiceImpl implements VolunteerService {
     }
 
     @Override
+    public void deleteVolunteer(Volunteer volunteer) {
+        volunteerMapper.deleteVolunteer(volunteer);
+    }
+
+    @Override
     public List<Volunteer> selectVolunteer(Integer tableId) {
         return volunteerMapper.selectVolunteers(tableId);
     }

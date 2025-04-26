@@ -64,4 +64,7 @@ public interface VolunteerMapper {
 
     @Select("select * from tb_volunteer where table_id = #{tableId} order by count")
     List<Volunteer> selectVolunteers(Integer tableId);
+
+    @Delete("delete from tb_volunteer where volunteer_id = #{volunteerId}")
+    void deleteVolunteer(Volunteer volunteer);
 }

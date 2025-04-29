@@ -128,10 +128,6 @@ public class VolunteerServiceImpl implements VolunteerService {
         return -1;
     }
 
-
-
-
-
     /**
      * 添加志愿
      *

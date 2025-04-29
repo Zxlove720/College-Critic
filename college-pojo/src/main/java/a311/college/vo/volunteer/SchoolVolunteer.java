@@ -28,6 +28,9 @@ public class SchoolVolunteer {
     @Schema(description = "所在省份")
     private String schoolProvince;
 
+    @Schema(description = "录取概率")
+    private Integer forecast;
+
     @Schema(description = "可报专业")
     private List<VolunteerVO> volunteerVOList;
 }

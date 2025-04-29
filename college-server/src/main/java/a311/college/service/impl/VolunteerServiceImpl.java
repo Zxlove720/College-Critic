@@ -57,6 +57,11 @@ public class VolunteerServiceImpl implements VolunteerService {
         return manualPage(schoolVolunteerList, volunteerPageDTO.getPage(), volunteerPageDTO.getPageSize());
     }
 
+    /**
+     * 创建志愿表
+     *
+     * @param volunteerTable 志愿表
+     */
     @Override
     public void createVolunteerTable(VolunteerTable volunteerTable) {
         volunteerTable.setUserId(ThreadLocalUtil.getCurrentId());
@@ -64,16 +69,31 @@ public class VolunteerServiceImpl implements VolunteerService {
         volunteerMapper.createVolunteerTable(volunteerTable);
     }
 
+    /**
+     * 删除志愿表
+     *
+     * @param tableId 志愿表id
+     */
     @Override
     public void deleteVolunteerTable(Integer tableId) {
         volunteerMapper.deleteVolunteerTable(tableId);
     }
 
+    /**
+     * 更新志愿表
+     * @param volunteerTable 志愿表
+     */
     @Override
     public void updateVolunteerTableName(VolunteerTable volunteerTable) {
         volunteerMapper.updateVolunteerTableName(volunteerTable);
     }
 
+    /**
+     * 查询用户志愿表
+     *
+     * @param userId 用户id
+     * @return List<VolunteerTable>
+     */
     @Override
     public List<VolunteerTable> selectTables(Long userId) {
         return volunteerMapper.selectTables(userId);
@@ -163,11 +183,22 @@ public class VolunteerServiceImpl implements VolunteerService {
         volunteerMapper.addVolunteer(volunteer);
     }
 
+    /**
+     * 删除志愿
+     *
+     * @param volunteer 志愿
+     */
     @Override
     public void deleteVolunteer(Volunteer volunteer) {
         volunteerMapper.deleteVolunteer(volunteer);
     }
 
+    /**
+     * 查看志愿表内容
+     *
+     * @param tableId 志愿表id
+     * @return List<Volunteer>
+     */
     @Override
     public List<Volunteer> selectVolunteer(Integer tableId) {
         return volunteerMapper.selectVolunteers(tableId);

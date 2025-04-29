@@ -8,6 +8,7 @@
         s.school_head,
         s.school_name,
         s.school_province,
+        s.rank_list,
         sc.major_name,
         sc.first_choice,
         sc.other_choice,
@@ -18,7 +19,7 @@
         sc.min_ranking
         FROM tb_school s
         JOIN tb_province p ON s.school_id = p.school_id
-        JOIN tb_year y ON p.province_id = y.province_id -- 省份与年份关联
+        JOIN tb_year y ON p.province_id = y.province_id
         JOIN tb_category c ON y.year_id = c.year_id
         JOIN tb_batch b ON c.category_id = b.category_id
         JOIN tb_score sc ON b.batch_id = sc.batch_id

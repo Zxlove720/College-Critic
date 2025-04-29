@@ -103,4 +103,50 @@ public class SchoolConstant {
         return schoolVOList;
     }
 
+
+    public static List<String> get1038() {
+        List<String> images = new ArrayList<>();
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E9%87%8D%E5%BA%86%E6%96%87%E7%90%861.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E9%87%8D%E5%BA%86%E6%96%87%E7%90%862.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E9%87%8D%E5%BA%86%E6%96%87%E7%90%863.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E9%87%8D%E5%BA%86%E6%96%87%E7%90%864.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E9%87%8D%E5%BA%86%E6%96%87%E7%90%865.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E9%87%8D%E5%BA%86%E6%96%87%E7%90%866.jpg");
+        return images;
+    }
+
+    public static List<String> get119() {
+        List<String> images = new ArrayList<>();
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E9%87%8D%E5%BA%86%E5%A4%A7%E5%AD%A61.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E9%87%8D%E5%BA%86%E5%A4%A7%E5%AD%A62.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E9%87%8D%E5%BA%86%E5%A4%A7%E5%AD%A63.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E9%87%8D%E5%BA%86%E5%A4%A7%E5%AD%A64.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E9%87%8D%E5%BA%86%E5%A4%A7%E5%AD%A65.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E9%87%8D%E5%BA%86%E5%A4%A7%E5%AD%A66.jpg");
+        return images;
+    }
+
+    public static List<String> get934() {
+        List<String> images = new ArrayList<>();
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E8%A5%BF%E5%8D%97%E5%A4%A7%E5%AD%A61.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E8%A5%BF%E5%8D%97%E5%A4%A7%E5%AD%A62.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E8%A5%BF%E5%8D%97%E5%A4%A7%E5%AD%A63.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E8%A5%BF%E5%8D%97%E5%A4%A7%E5%AD%A64.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E8%A5%BF%E5%8D%97%E5%A4%A7%E5%AD%A65.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E8%A5%BF%E5%8D%97%E5%A4%A7%E5%AD%A66.jpg");
+        return images;
+    }
+
+    public static List<String> get184() {
+        List<String> images = new ArrayList<>();
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E9%87%8D%E5%BA%86%E9%82%AE%E7%94%B51.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E9%87%8D%E5%BA%86%E9%82%AE%E7%94%B52.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E9%87%8D%E5%BA%86%E9%82%AE%E7%94%B53.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E9%87%8D%E5%BA%86%E9%82%AE%E7%94%B54.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E9%87%8D%E5%BA%86%E9%82%AE%E7%94%B55.jpg");
+        images.add("https://wzb-study.oss-cn-chengdu.aliyuncs.com/%E9%87%8D%E5%BA%86%E9%82%AE%E7%94%B56.jpg");
+        return images;
+    }
+
+
 }

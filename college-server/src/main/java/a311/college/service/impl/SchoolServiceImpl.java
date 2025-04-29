@@ -359,6 +359,13 @@ public class SchoolServiceImpl implements SchoolService {
         }
         // 3.3返回随机6张校园风光
         detailedSchoolVO.setImages(images);
+        int schoolId = schoolDTO.getSchoolId();
+        switch (schoolId) {
+            case 1038 -> detailedSchoolVO.setImages(SchoolConstant.get1038());
+            case 119 -> detailedSchoolVO.setImages(SchoolConstant.get119());
+            case 934 -> detailedSchoolVO.setImages(SchoolConstant.get934());
+            case 184 -> detailedSchoolVO.setImages(SchoolConstant.get184());
+        }
         // 4.随机校园配置
         if (detailedSchoolVO.getScore() > 60) {
             // 4.1该学校属于好学校

@@ -34,7 +34,6 @@
         </if>
     </select>
 
-
     <select id="selectSchoolMajorById" resultType="a311.college.entity.volunteer.Volunteer">
         SELECT s.school_id,
                s.school_head,

@@ -103,8 +103,9 @@ public class DouBaoServiceImpl implements DouBaoService {
             JSONObject systemMessage = new JSONObject()
                     .fluentPut("role", DeepSeekConstant.ROLE_SYSTEM)
                     .fluentPut("content", DeepSeekConstant.INIT_CONSTANT);
+            // 将该用户初始化内容加入Redis
             redisTemplate.opsForList().rightPush(key, systemMessage.toJSONString());
-            redisTemplate.expire(key, 24, TimeUnit.HOURS);
+            redisTemplate.expire(key, DouBaoRedisKey.DOUBAO_HISTORY_TTL, TimeUnit.HOURS);
         }
     }
 

@@ -141,7 +141,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
                     .fluentPut("role", DeepSeekConstant.ROLE_SYSTEM)
                     .fluentPut("content", DeepSeekConstant.INIT_CONSTANT);
             redisTemplate.opsForList().rightPush(key, systemMessage.toJSONString());
-            redisTemplate.expire(key, DouBaoRedisKey.DEEP_SEEK_HISTORY_TTL, TimeUnit.HOURS);
+            redisTemplate.expire(key, DouBaoRedisKey.DOUBAO_HISTORY_TTL, TimeUnit.HOURS);
         }
     }
 

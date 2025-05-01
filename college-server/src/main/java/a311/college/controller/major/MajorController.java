@@ -12,7 +12,7 @@ import a311.college.entity.major.SubjectCategory;
 import a311.college.entity.school.School;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
-import a311.college.service.DeepSeekService;
+import a311.college.service.DouBaoService;
 import a311.college.service.MajorService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.ai.MajorAIMessageVO;
@@ -37,12 +37,12 @@ public class MajorController {
 
     private final MajorService majorService;
 
-    private final DeepSeekService deepSeekService;
+    private final DouBaoService douBaoService;
 
     @Autowired
-    public MajorController(MajorService majorService, DeepSeekService deepSeekService) {
+    public MajorController(MajorService majorService, DouBaoService douBaoService) {
         this.majorService = majorService;
-        this.deepSeekService = deepSeekService;
+        this.douBaoService = douBaoService;
     }
 
     /**
@@ -95,7 +95,7 @@ public class MajorController {
     @Operation(summary = "请求AI获取专业信息")
     public Result<MajorAIMessageVO> majorAIRequest(@RequestBody MajorAIRequestDTO majorAIRequestDTO) {
         log.info("正在请求'{}'专业的信息", majorAIRequestDTO.getMajorId());
-        MajorAIMessageVO majorAIMessageVO = deepSeekService.majorInformation(majorAIRequestDTO);
+        MajorAIMessageVO majorAIMessageVO = douBaoService.majorInformation(majorAIRequestDTO);
         return Result.success(majorAIMessageVO);
     }
 

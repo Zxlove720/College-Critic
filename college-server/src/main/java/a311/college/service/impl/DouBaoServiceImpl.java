@@ -2,10 +2,16 @@ package a311.college.service.impl;
 
 import a311.college.constant.deepseek.DeepSeekConstant;
 import a311.college.constant.redis.DouBaoRedisKey;
+import a311.college.dto.ai.MajorAIRequestDTO;
+import a311.college.dto.ai.SchoolAIRequestDTO;
 import a311.college.dto.ai.UserAIRequestDTO;
 import a311.college.exception.DouBaoAPIErrorException;
+import a311.college.mapper.major.MajorMapper;
+import a311.college.mapper.school.SchoolMapper;
 import a311.college.service.DouBaoService;
 import a311.college.thread.ThreadLocalUtil;
+import a311.college.vo.ai.MajorAIMessageVO;
+import a311.college.vo.ai.SchoolAIMessageVO;
 import a311.college.vo.ai.UserAIMessageVO;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -27,8 +33,14 @@ public class DouBaoServiceImpl implements DouBaoService {
 
     private final RedisTemplate<String, Object> redisTemplate;
 
-    public DouBaoServiceImpl(RedisTemplate<String, Object> redisTemplate) {
+    private final SchoolMapper schoolMapper;
+
+    private final MajorMapper majorMapper;
+
+    public DouBaoServiceImpl(RedisTemplate<String, Object> redisTemplate, SchoolMapper schoolMapper, MajorMapper majorMapper) {
         this.redisTemplate = redisTemplate;
+        this.schoolMapper = schoolMapper;
+        this.majorMapper = majorMapper;
     }
 
     public UserAIMessageVO response(UserAIRequestDTO request) {
@@ -86,6 +98,107 @@ public class DouBaoServiceImpl implements DouBaoService {
         } catch (IOException e) {
             log.error("API调用异常", e);
             throw new DouBaoAPIErrorException("豆包服务调用失败");
+        }
+    }
+
+    /**
+     * 请求AI获取学校信息
+     *
+     * @param schoolAIRequestDTO 大学AI请求DTO
+     * @return SchoolAIMessageVO 大学AI请求VO
+     */
+    @Override
+    public SchoolAIMessageVO schoolInformation(SchoolAIRequestDTO schoolAIRequestDTO) {
+        // 1.获取需要请求的学校名
+        String schoolName = schoolMapper.selectBySchoolId(schoolAIRequestDTO.getSchoolId()).getSchoolName();
+        // 2.封装问题
+        String question = "你现在是" + schoolName + "的AI助手，请给我介绍你们的学校";
+        Request request = buildRequest(question);
+        // 3.发起请求并获取回答
+        String answer = executeRequest(request);
+        log.info(DeepSeekConstant.ROLE_ASSISTANT + "{}", answer);
+        return new SchoolAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, answer);
+    }
+
+    /**
+     * 请求AI获取专业信息
+     *
+     * @param majorAIRequestDTO 专业AI请求DTO
+     * @return MajorAIMessageVO 专业AI请求VO
+     */
+    @Override
+    public MajorAIMessageVO majorInformation(MajorAIRequestDTO majorAIRequestDTO) {
+        // 1.获取需要请求的专业名并封装问题
+        String majorName = majorMapper.selectById(majorAIRequestDTO.getMajorId()).getMajorName();
+        String question = "请为我介绍" + majorName + "这个专业";
+        // 2.构建请求
+        Request request = buildRequest(question);
+        // 3.发起请求并获取回答
+        String answer = executeRequest(request);
+        log.info(DeepSeekConstant.ROLE_ASSISTANT + "{}", answer);
+        return new MajorAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, answer);
+    }
+
+    /**
+     * 构建请求
+     *
+     * @param question 请求问题
+     * @return Request 请求
+     */
+    private Request buildRequest(String question) {
+        // 1.将问题封装为JSON数组
+        JSONArray message = new JSONArray();
+        JSONObject initMessage = new JSONObject();
+        initMessage.put("role", "system");
+        initMessage.put("content", question);
+        message.add(initMessage);
+        // 2.构建请求体
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("model", DeepSeekConstant.MODEL_NAME);
+        requestBody.put("messages", message);
+        requestBody.put("stream", false);
+        // 3.构建新的请求，请求DeepSeekAPI
+        return new Request.Builder()
+                .url(DeepSeekConstant.API_URL)
+                .addHeader("Authorization", "Bearer " + DeepSeekConstant.API_KEY)
+                .addHeader("Content-Type", DeepSeekConstant.PARSE_SET)
+                .post(RequestBody.create(
+                        requestBody.toJSONString(),
+                        MediaType.parse(DeepSeekConstant.PARSE_SET)))
+                .build();
+    }
+
+    /**
+     * 请求DeepSeekAPI并封装回答
+     *
+     * @param request 请求
+     * @return answer 回答
+     */
+    private String executeRequest(Request request) {
+        // 1.获取请求客户端
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .build();
+        // 2.发起请求并接收响应
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                // 2.1响应失败，记录错误日志并返回
+                log.info(DeepSeekConstant.RESPONSE_ERROR_CONSTANT);
+                throw new DouBaoAPIErrorException(DeepSeekConstant.RESPONSE_ERROR_CONSTANT);
+            }
+            // 2.2获取响应体
+            JSONObject responseJson = null;
+            if (response.body() != null) {
+                responseJson = JSON.parseObject(response.body().string());
+            }
+            // 2.3解析响应体获取回答并返回
+            return extractAnswer(responseJson);
+        } catch (IOException e) {
+            // 2.4请求失败则报错
+            log.info(DeepSeekConstant.REQUEST_ERROR_CONSTANT);
+            throw new DouBaoAPIErrorException(DeepSeekConstant.REQUEST_ERROR_CONSTANT);
         }
     }
 

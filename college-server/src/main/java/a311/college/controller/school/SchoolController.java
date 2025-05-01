@@ -7,12 +7,12 @@ import a311.college.dto.query.school.*;
 import a311.college.dto.school.*;
 import a311.college.dto.user.UserSearchDTO;
 import a311.college.entity.school.School;
+import a311.college.service.DouBaoService;
 import a311.college.vo.ai.SchoolAIMessageVO;
 import a311.college.entity.school.SchoolMajor;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.SchoolService;
-import a311.college.service.DeepSeekService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.major.HotMajorVO;
 import a311.college.vo.school.*;
@@ -36,12 +36,12 @@ public class SchoolController {
 
     private final SchoolService schoolService;
 
-    private final DeepSeekService deepSeekService;
+    private final DouBaoService douBaoService;
 
     @Autowired
-    public SchoolController(SchoolService schoolService, DeepSeekService deepSeekService) {
+    public SchoolController(SchoolService schoolService, DouBaoService douBaoService) {
         this.schoolService = schoolService;
-        this.deepSeekService = deepSeekService;
+        this.douBaoService = douBaoService;
     }
 
     /**
@@ -327,7 +327,7 @@ public class SchoolController {
     @Operation(summary = "请求AI获取学校信息")
     public Result<SchoolAIMessageVO> schoolAIRequest(@RequestBody SchoolAIRequestDTO schoolAIRequestDTO) {
         log.info("正在请求'{}'学校的信息", schoolAIRequestDTO.getSchoolId());
-        SchoolAIMessageVO schoolAIMessageVO = deepSeekService.schoolInformation(schoolAIRequestDTO);
+        SchoolAIMessageVO schoolAIMessageVO = douBaoService.schoolInformation(schoolAIRequestDTO);
         return Result.success(schoolAIMessageVO);
     }
 

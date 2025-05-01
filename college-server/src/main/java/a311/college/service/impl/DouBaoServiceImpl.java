@@ -1,6 +1,6 @@
 package a311.college.service.impl;
 
-import a311.college.constant.deepseek.DeepSeekConstant;
+import a311.college.constant.deepseek.DouBaoConstant;
 import a311.college.constant.redis.DouBaoRedisKey;
 import a311.college.dto.ai.MajorAIRequestDTO;
 import a311.college.dto.ai.SchoolAIRequestDTO;
@@ -57,7 +57,7 @@ public class DouBaoServiceImpl implements DouBaoService {
         // 4.豆包API请求体构建
         JSONObject requestBody = new JSONObject();
         // 4.1选择模型
-        requestBody.put("model", DeepSeekConstant.MODEL_NAME);
+        requestBody.put("model", DouBaoConstant.MODEL_NAME);
         // 4.2封装消息
         requestBody.put("messages", messages);
         // 4.3不开启流式输出
@@ -70,12 +70,12 @@ public class DouBaoServiceImpl implements DouBaoService {
                 .build();
         // 6.请求构建
         Request DouBaoRequest = new Request.Builder()
-                .url(DeepSeekConstant.API_URL)
-                .addHeader("Authorization", "Bearer " + DeepSeekConstant.API_KEY)
-                .addHeader("Content-Type", "application/json")
+                .url(DouBaoConstant.API_URL)
+                .addHeader("Authorization", "Bearer " + DouBaoConstant.API_KEY)
+                .addHeader("Content-Type", DouBaoConstant.PARSE_SET)
                 .post(RequestBody.create(
                         requestBody.toJSONString(),
-                        MediaType.parse("application/json")))
+                        MediaType.parse(DouBaoConstant.PARSE_SET)))
                 .build();
         // 7.发起请求并接收响应
         try (Response response = client.newCall(DouBaoRequest).execute()) {
@@ -92,113 +92,12 @@ public class DouBaoServiceImpl implements DouBaoService {
             // 7.3解析响应体
             String answer = extractAnswer(responseJson);
             // 7.4将这一次回答添加到redis，作为对话历史
-            addMessage(new UserAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, answer));
+            addMessage(new UserAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, answer));
             // 7.5封装UserAIMessageVO返回
-            return new UserAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, answer);
+            return new UserAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, answer);
         } catch (IOException e) {
             log.error("API调用异常", e);
             throw new DouBaoAPIErrorException("豆包服务调用失败");
-        }
-    }
-
-    /**
-     * 请求AI获取学校信息
-     *
-     * @param schoolAIRequestDTO 大学AI请求DTO
-     * @return SchoolAIMessageVO 大学AI请求VO
-     */
-    @Override
-    public SchoolAIMessageVO schoolInformation(SchoolAIRequestDTO schoolAIRequestDTO) {
-        // 1.获取需要请求的学校名
-        String schoolName = schoolMapper.selectBySchoolId(schoolAIRequestDTO.getSchoolId()).getSchoolName();
-        // 2.封装问题
-        String question = "你现在是" + schoolName + "的AI助手，请给我介绍你们的学校";
-        Request request = buildRequest(question);
-        // 3.发起请求并获取回答
-        String answer = executeRequest(request);
-        log.info(DeepSeekConstant.ROLE_ASSISTANT + "{}", answer);
-        return new SchoolAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, answer);
-    }
-
-    /**
-     * 请求AI获取专业信息
-     *
-     * @param majorAIRequestDTO 专业AI请求DTO
-     * @return MajorAIMessageVO 专业AI请求VO
-     */
-    @Override
-    public MajorAIMessageVO majorInformation(MajorAIRequestDTO majorAIRequestDTO) {
-        // 1.获取需要请求的专业名并封装问题
-        String majorName = majorMapper.selectById(majorAIRequestDTO.getMajorId()).getMajorName();
-        String question = "请为我介绍" + majorName + "这个专业";
-        // 2.构建请求
-        Request request = buildRequest(question);
-        // 3.发起请求并获取回答
-        String answer = executeRequest(request);
-        log.info(DeepSeekConstant.ROLE_ASSISTANT + "{}", answer);
-        return new MajorAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, answer);
-    }
-
-    /**
-     * 构建请求
-     *
-     * @param question 请求问题
-     * @return Request 请求
-     */
-    private Request buildRequest(String question) {
-        // 1.将问题封装为JSON数组
-        JSONArray message = new JSONArray();
-        JSONObject initMessage = new JSONObject();
-        initMessage.put("role", "system");
-        initMessage.put("content", question);
-        message.add(initMessage);
-        // 2.构建请求体
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("model", DeepSeekConstant.MODEL_NAME);
-        requestBody.put("messages", message);
-        requestBody.put("stream", false);
-        // 3.构建新的请求，请求DeepSeekAPI
-        return new Request.Builder()
-                .url(DeepSeekConstant.API_URL)
-                .addHeader("Authorization", "Bearer " + DeepSeekConstant.API_KEY)
-                .addHeader("Content-Type", DeepSeekConstant.PARSE_SET)
-                .post(RequestBody.create(
-                        requestBody.toJSONString(),
-                        MediaType.parse(DeepSeekConstant.PARSE_SET)))
-                .build();
-    }
-
-    /**
-     * 请求DeepSeekAPI并封装回答
-     *
-     * @param request 请求
-     * @return answer 回答
-     */
-    private String executeRequest(Request request) {
-        // 1.获取请求客户端
-        OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
-                .writeTimeout(60, TimeUnit.SECONDS)
-                .build();
-        // 2.发起请求并接收响应
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                // 2.1响应失败，记录错误日志并返回
-                log.info(DeepSeekConstant.RESPONSE_ERROR_CONSTANT);
-                throw new DouBaoAPIErrorException(DeepSeekConstant.RESPONSE_ERROR_CONSTANT);
-            }
-            // 2.2获取响应体
-            JSONObject responseJson = null;
-            if (response.body() != null) {
-                responseJson = JSON.parseObject(response.body().string());
-            }
-            // 2.3解析响应体获取回答并返回
-            return extractAnswer(responseJson);
-        } catch (IOException e) {
-            // 2.4请求失败则报错
-            log.info(DeepSeekConstant.REQUEST_ERROR_CONSTANT);
-            throw new DouBaoAPIErrorException(DeepSeekConstant.REQUEST_ERROR_CONSTANT);
         }
     }
 
@@ -219,8 +118,8 @@ public class DouBaoServiceImpl implements DouBaoService {
         if (!redisTemplate.hasKey(key)) {
             // 如果没有对话历史将进行初始化
             JSONObject systemMessage = new JSONObject()
-                    .fluentPut("role", DeepSeekConstant.ROLE_SYSTEM)
-                    .fluentPut("content", DeepSeekConstant.INIT_CONSTANT);
+                    .fluentPut("role", DouBaoConstant.ROLE_SYSTEM)
+                    .fluentPut("content", DouBaoConstant.INIT_CONSTANT);
             // 将该用户初始化内容加入Redis
             redisTemplate.opsForList().rightPush(key, systemMessage.toJSONString());
             redisTemplate.expire(key, DouBaoRedisKey.DOUBAO_HISTORY_TTL, TimeUnit.HOURS);
@@ -280,6 +179,108 @@ public class DouBaoServiceImpl implements DouBaoService {
      * @return UserAIMessageVO 错误信息
      */
     private UserAIMessageVO errorResponse() {
-        return new UserAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, "当前服务不可用，请稍后重试");
+        return new UserAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, "当前服务不可用，请稍后重试");
     }
+
+    /**
+     * 请求AI获取学校信息
+     *
+     * @param schoolAIRequestDTO 大学AI请求DTO
+     * @return SchoolAIMessageVO 大学AI请求VO
+     */
+    @Override
+    public SchoolAIMessageVO schoolInformation(SchoolAIRequestDTO schoolAIRequestDTO) {
+        // 1.获取需要请求的学校名
+        String schoolName = schoolMapper.selectBySchoolId(schoolAIRequestDTO.getSchoolId()).getSchoolName();
+        // 2.封装问题
+        String question = "你现在是" + schoolName + "的AI助手，请给我介绍你们的学校";
+        Request request = buildRequest(question);
+        // 3.发起请求并获取回答
+        String answer = executeRequest(request);
+        log.info(DouBaoConstant.ROLE_ASSISTANT + "{}", answer);
+        return new SchoolAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, answer);
+    }
+
+    /**
+     * 请求AI获取专业信息
+     *
+     * @param majorAIRequestDTO 专业AI请求DTO
+     * @return MajorAIMessageVO 专业AI请求VO
+     */
+    @Override
+    public MajorAIMessageVO majorInformation(MajorAIRequestDTO majorAIRequestDTO) {
+        // 1.获取需要请求的专业名并封装问题
+        String majorName = majorMapper.selectById(majorAIRequestDTO.getMajorId()).getMajorName();
+        String question = "请为我介绍" + majorName + "这个专业";
+        // 2.构建请求
+        Request request = buildRequest(question);
+        // 3.发起请求并获取回答
+        String answer = executeRequest(request);
+        log.info(DouBaoConstant.ROLE_ASSISTANT + "{}", answer);
+        return new MajorAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, answer);
+    }
+
+    /**
+     * 构建请求
+     *
+     * @param question 请求问题
+     * @return Request 请求
+     */
+    private Request buildRequest(String question) {
+        // 1.将问题封装为JSON数组
+        JSONArray message = new JSONArray();
+        JSONObject initMessage = new JSONObject();
+        initMessage.put("role", DouBaoConstant.ROLE_ASSISTANT);
+        initMessage.put("content", question);
+        message.add(initMessage);
+        // 2.构建请求体
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("model", DouBaoConstant.MODEL_NAME);
+        requestBody.put("messages", message);
+        requestBody.put("stream", false);
+        // 3.构建新的请求，请求DeepSeekAPI
+        return new Request.Builder()
+                .url(DouBaoConstant.API_URL)
+                .addHeader("Authorization", "Bearer " + DouBaoConstant.API_KEY)
+                .addHeader("Content-Type", DouBaoConstant.PARSE_SET)
+                .post(RequestBody.create(
+                        requestBody.toJSONString(),
+                        MediaType.parse(DouBaoConstant.PARSE_SET)))
+                .build();
+    }
+
+    /**
+     * 请求DeepSeekAPI并封装回答
+     *
+     * @param request 请求
+     * @return answer 回答
+     */
+    private String executeRequest(Request request) {
+        // 1.获取请求客户端
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .build();
+        // 2.发起请求并接收响应
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                // 2.1响应失败，记录错误日志并返回
+                log.info(DouBaoConstant.RESPONSE_ERROR_CONSTANT);
+                throw new DouBaoAPIErrorException(DouBaoConstant.RESPONSE_ERROR_CONSTANT);
+            }
+            // 2.2获取响应体
+            JSONObject responseJson = null;
+            if (response.body() != null) {
+                responseJson = JSON.parseObject(response.body().string());
+            }
+            // 2.3解析响应体获取回答并返回
+            return extractAnswer(responseJson);
+        } catch (IOException e) {
+            // 2.4请求失败则报错
+            log.info(DouBaoConstant.REQUEST_ERROR_CONSTANT);
+            throw new DouBaoAPIErrorException(DouBaoConstant.REQUEST_ERROR_CONSTANT);
+        }
+    }
+
 }

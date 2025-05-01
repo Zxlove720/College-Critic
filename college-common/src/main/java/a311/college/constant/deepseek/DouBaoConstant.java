@@ -1,6 +1,6 @@
 package a311.college.constant.deepseek;
 
-public class DeepSeekConstant {
+public class DouBaoConstant {
 
     public static final String API_URL = "https://ark.cn-beijing.volces.com/api/v3/chat/completions";
 

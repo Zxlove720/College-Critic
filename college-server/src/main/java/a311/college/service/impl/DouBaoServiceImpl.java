@@ -32,6 +32,7 @@ public class DouBaoServiceImpl implements DouBaoService {
     }
 
     public UserAIMessageVO response(UserAIRequestDTO request) {
+        // 初始化用户对话历史
         initUserMessageHistory();
         try {
             addMessage(request.getMessage());
@@ -83,19 +84,27 @@ public class DouBaoServiceImpl implements DouBaoService {
         }
     }
 
-    // Redis相关方法与原有结构保持一致
+    /**
+     * 创建用户消息Key
+     *
+     * @return Key
+     */
     private String buildUserMessageKey() {
         return DouBaoRedisKey.DOUBAO_HISTORY_KEY + ThreadLocalUtil.getCurrentId();
     }
 
+    /**
+     * 初始化用户对话历史
+     */
     private void initUserMessageHistory() {
         String key = buildUserMessageKey();
         if (!redisTemplate.hasKey(key)) {
+            // 如果没有对话历史将进行初始化
             JSONObject systemMessage = new JSONObject()
                     .fluentPut("role", DeepSeekConstant.ROLE_SYSTEM)
                     .fluentPut("content", DeepSeekConstant.INIT_CONSTANT);
             redisTemplate.opsForList().rightPush(key, systemMessage.toJSONString());
-            redisTemplate.expire(key, 24, TimeUnit.HOURS); // 对话历史保留24小时
+            redisTemplate.expire(key, 24, TimeUnit.HOURS);
         }
     }
 

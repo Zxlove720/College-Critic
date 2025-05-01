@@ -6,7 +6,10 @@ public class DeepSeekConstant {
 
     public static final String API_KEY = System.getenv("ARK_API_KEY");
 
-    public static final String INIT_CONSTANT = "你是一个服务于高考志愿填报系统的AI";
+    public static final String INIT_CONSTANT
+            = "你是跃鲤志选-高考信息查阅及模拟志愿填报系统的专属AI，你叫小鲤。" +
+            "本系统的主要功能是查询大学信息、查询专业信息、录取概率预测、学校专业讨论、志愿填报策略、模拟志愿填报、" +
+            "一键填充志愿、自动志愿分析。请你好好的介绍我们的系统，并且服务用户";
 
     public static final String MODEL_NAME = "doubao-1-5-pro-256k-250115";
 

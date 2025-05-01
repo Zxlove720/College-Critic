@@ -5,9 +5,12 @@ import a311.college.constant.redis.DouBaoRedisKey;
 import a311.college.dto.ai.MajorAIRequestDTO;
 import a311.college.dto.ai.SchoolAIRequestDTO;
 import a311.college.dto.ai.UserAIRequestDTO;
+import a311.college.dto.volunteer.AnalyseDTO;
+import a311.college.entity.volunteer.Volunteer;
 import a311.college.exception.DouBaoAPIErrorException;
 import a311.college.mapper.major.MajorMapper;
 import a311.college.mapper.school.SchoolMapper;
+import a311.college.mapper.volunteer.VolunteerMapper;
 import a311.college.service.DouBaoService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.ai.MajorAIMessageVO;
@@ -37,10 +40,14 @@ public class DouBaoServiceImpl implements DouBaoService {
 
     private final MajorMapper majorMapper;
 
-    public DouBaoServiceImpl(RedisTemplate<String, Object> redisTemplate, SchoolMapper schoolMapper, MajorMapper majorMapper) {
+    private final VolunteerMapper volunteerMapper;
+
+    public DouBaoServiceImpl(RedisTemplate<String, Object> redisTemplate, SchoolMapper schoolMapper,
+                             MajorMapper majorMapper, VolunteerMapper volunteerMapper) {
         this.redisTemplate = redisTemplate;
         this.schoolMapper = schoolMapper;
         this.majorMapper = majorMapper;
+        this.volunteerMapper = volunteerMapper;
     }
 
     public UserAIMessageVO response(UserAIRequestDTO request) {
@@ -218,6 +225,19 @@ public class DouBaoServiceImpl implements DouBaoService {
         String answer = executeRequest(request);
         log.info(DouBaoConstant.ROLE_ASSISTANT + "{}", answer);
         return new MajorAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, answer);
+    }
+
+    @Override
+    public UserAIMessageVO analyseVolunteer(AnalyseDTO analyseDTO) {
+        List<Volunteer> volunteerList = volunteerMapper.selectVolunteers(analyseDTO.getTableId());
+        String question = "我是" + analyseDTO.getYear() + "年参加高考的" + analyseDTO.getProvince() + "考生，我的高考成绩是" +
+                analyseDTO.getGrade() + "我的高考位次是" + analyseDTO.getRanking() + "这是我模拟填报的志愿表：\n" +
+                volunteerList.toString() + "\n请为我分析是否合理，并提出一些建议";
+        Request request = buildRequest(question);
+        // 3.发起请求并获取回答
+        String answer = executeRequest(request);
+        log.info(DouBaoConstant.ROLE_ASSISTANT + "{}", answer);
+        return new UserAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, answer);
     }
 
     /**

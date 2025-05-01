@@ -9,7 +9,7 @@ import a311.college.exception.ReAdditionException;
 import a311.college.exception.volunteer.VolunteerException;
 import a311.college.mapper.volunteer.VolunteerMapper;
 import a311.college.result.PageResult;
-import a311.college.service.AIService;
+import a311.college.service.DouBaoService;
 import a311.college.service.VolunteerService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.ai.UserAIMessageVO;
@@ -31,12 +31,12 @@ public class VolunteerServiceImpl implements VolunteerService {
 
     private final VolunteerMapper volunteerMapper;
 
-    private final AIService aiService;
+    private final DouBaoService douBaoService;
 
     @Autowired
-    public VolunteerServiceImpl(VolunteerMapper volunteerMapper, AIService aiService) {
+    public VolunteerServiceImpl(VolunteerMapper volunteerMapper, DouBaoService douBaoService) {
         this.volunteerMapper = volunteerMapper;
-        this.aiService = aiService;
+        this.douBaoService = douBaoService;
     }
 
     /**
@@ -212,7 +212,7 @@ public class VolunteerServiceImpl implements VolunteerService {
 
     @Override
     public UserAIMessageVO analyseVolunteer(AnalyseDTO analyseDTO) {
-        return null;
+        return douBaoService.analyseVolunteer(analyseDTO);
     }
 
 }

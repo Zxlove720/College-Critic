@@ -24,6 +24,10 @@ import okhttp3.*;
 import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.commonmark.node.Node;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
+
 
 import java.io.IOException;
 import java.util.List;
@@ -49,6 +53,13 @@ public class DouBaoServiceImpl implements DouBaoService {
         this.schoolMapper = schoolMapper;
         this.majorMapper = majorMapper;
         this.volunteerMapper = volunteerMapper;
+    }
+
+    public String markDown2HTML(String markdown) {
+        Parser parser = Parser.builder().build();
+        Node document = parser.parse(markdown);
+        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        return renderer.render(document);
     }
 
     public UserAIMessageVO response(UserAIRequestDTO request) {
@@ -102,7 +113,7 @@ public class DouBaoServiceImpl implements DouBaoService {
             // 7.4将这一次回答添加到redis，作为对话历史
             addMessage(new UserAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, answer));
             // 7.5封装UserAIMessageVO返回
-            return new UserAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, StringEscapeUtils.escapeHtml4(answer));
+            return new UserAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, markDown2HTML(StringEscapeUtils.escapeHtml4(answer)));
         } catch (IOException e) {
             log.error("API调用异常", e);
             throw new DouBaoAPIErrorException("豆包服务调用失败");
@@ -206,7 +217,7 @@ public class DouBaoServiceImpl implements DouBaoService {
         // 3.发起请求并获取回答
         String answer = executeRequest(request);
         log.info(DouBaoConstant.ROLE_ASSISTANT + "{}", answer);
-        return new SchoolAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, StringEscapeUtils.escapeHtml4(answer));
+        return new SchoolAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, markDown2HTML(StringEscapeUtils.escapeHtml4(answer)));
     }
 
     /**
@@ -225,7 +236,7 @@ public class DouBaoServiceImpl implements DouBaoService {
         // 3.发起请求并获取回答
         String answer = executeRequest(request);
         log.info(DouBaoConstant.ROLE_ASSISTANT + "{}", answer);
-        return new MajorAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, StringEscapeUtils.escapeHtml4(answer));
+        return new MajorAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, markDown2HTML(StringEscapeUtils.escapeHtml4(answer)));
     }
 
     @Override
@@ -238,7 +249,7 @@ public class DouBaoServiceImpl implements DouBaoService {
         // 3.发起请求并获取回答
         String answer = executeRequest(request);
         log.info(DouBaoConstant.ROLE_ASSISTANT + "{}", answer);
-        return new UserAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, answer);
+        return new UserAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, markDown2HTML(StringEscapeUtils.escapeHtml4(answer)));
     }
 
     /**

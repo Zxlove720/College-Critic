@@ -37,6 +37,7 @@
         <apache.commons.math3.version>3.6.1</apache.commons.math3.version>
         <volcengine.version>0.2.6</volcengine.version>
         <commons.text.version>1.10.0</commons.text.version>
+        <commonmark.version>0.22.0</commonmark.version>
     </properties>
 
     <modules>
@@ -145,6 +146,12 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-text</artifactId>
                 <version>${commons.text.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.commonmark</groupId>
+                <artifactId>commonmark</artifactId>
+                <version>${commonmark.version}</version>
             </dependency>
 
         </dependencies>

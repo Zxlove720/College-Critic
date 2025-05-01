@@ -142,7 +142,14 @@ public class VolunteerController {
         return Result.success(volunteerService.selectVolunteer(volunteerTable.getTableId()));
     }
 
-
+    /**
+     * AI分析志愿表
+     *
+     * @param analyseDTO 分析DTO
+     * @return Result<UserAIMessageVO>
+     */
+    @PostMapping("/analyse")
+    @Operation(summary = "AI分析志愿表")
     public Result<UserAIMessageVO> analyseVolunteer(@RequestBody AnalyseDTO analyseDTO) {
         log.info("志愿表分析");
         return Result.success(volunteerService.analyseVolunteer(analyseDTO));

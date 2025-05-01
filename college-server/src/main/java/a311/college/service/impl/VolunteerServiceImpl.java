@@ -210,6 +210,12 @@ public class VolunteerServiceImpl implements VolunteerService {
         return volunteerMapper.selectVolunteers(tableId);
     }
 
+    /**
+     * AI智能分析志愿表
+     *
+     * @param analyseDTO 分析DTO
+     * @return UserAIMessageVO
+     */
     @Override
     public UserAIMessageVO analyseVolunteer(AnalyseDTO analyseDTO) {
         return douBaoService.analyseVolunteer(analyseDTO);

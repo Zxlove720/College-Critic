@@ -1,4 +1,4 @@
-package a311.college.controller.ai;
+package a311.college.controller.doubao;
 
 import a311.college.dto.ai.UserAIRequestDTO;
 import a311.college.result.Result;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/ai")
-public class AIController {
+public class DouBaoController {
 
     private final DouBaoService douBaoService;
 
     @Autowired
-    public AIController(DouBaoService douBaoService) {
+    public DouBaoController(DouBaoService douBaoService) {
         this.douBaoService = douBaoService;
     }
 

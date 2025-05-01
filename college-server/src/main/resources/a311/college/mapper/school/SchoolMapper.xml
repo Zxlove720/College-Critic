@@ -36,18 +36,26 @@
 
     <!-- 学校专业分页查询 -->
     <select id="schoolMajorPageQuery" resultType="a311.college.entity.school.SchoolMajor">
-        select sc.major_name, b.batch_name, sc.first_choice, sc.other_choice, sc.special, sc.min_score, sc.min_ranking
+        SELECT
+        sc.major_name,
+        MAX(b.batch_name) AS batch_name,
+        MAX(sc.min_score) AS min_score,
+        MIN(sc.min_ranking) AS min_ranking,
+        MAX(sc.first_choice) AS first_choice,
+        MAX(sc.other_choice) AS other_choice,
+        MAX(sc.special) AS special
         FROM tb_school AS s
-        JOIN tb_province as p ON s.school_id = p.school_id
-        JOIN tb_year as y ON p.province_id = y.province_id
-        JOIN tb_category as c ON y.year_id = c.year_id
-        JOIN tb_batch as b ON c.category_id = b.category_id
-        JOIN tb_score as sc ON b.batch_id = sc.batch_id
+        JOIN tb_province p ON s.school_id = p.school_id
+        JOIN tb_year y ON p.province_id = y.province_id
+        JOIN tb_category c ON y.year_id = c.year_id
+        JOIN tb_batch b ON c.category_id = b.category_id
+        JOIN tb_score sc ON b.batch_id = sc.batch_id
         WHERE s.school_id = #{schoolId}
         <if test="firstChoice != null and firstChoice != ''">
-            and (sc.first_choice = #{firstChoice} or sc.first_choice = '不限')
+            AND (sc.first_choice = #{firstChoice} OR sc.first_choice = '不限')
         </if>
-
+        GROUP BY sc.major_name
+        ORDER BY min_ranking
     </select>
 
     <!-- 根据学校名搜索大学 -->

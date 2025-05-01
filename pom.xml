@@ -36,6 +36,7 @@
         <okhttp.version>4.12.0</okhttp.version>
         <apache.commons.math3.version>3.6.1</apache.commons.math3.version>
         <volcengine.version>0.2.6</volcengine.version>
+        <commons.text.version>1.7</commons.text.version>
     </properties>
 
     <modules>
@@ -138,6 +139,12 @@
                 <groupId>com.volcengine</groupId>
                 <artifactId>volcengine-java-sdk-ark-runtime</artifactId>
                 <version>${volcengine.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-text</artifactId>
+                <version>${commons.text.version}</version>
             </dependency>
 
         </dependencies>

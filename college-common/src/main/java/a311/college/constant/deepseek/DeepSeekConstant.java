@@ -2,13 +2,13 @@ package a311.college.constant.deepseek;
 
 public class DeepSeekConstant {
 
-    public static final String API_URL = "https://api.deepseek.com/v1/chat/completions";
+    public static final String API_URL = "https://ark.cn-beijing.volces.com/api/v3/chat/completions";
 
-    public static final String API_KEY = System.getenv("DEEPSEEK_API_KEY");
+    public static final String API_KEY = System.getenv("ARK_API_KEY");
 
     public static final String INIT_CONSTANT = "你是一个服务于高考志愿填报系统的AI";
 
-    public static final String MODEL_NAME = "deepseek-chat";
+    public static final String MODEL_NAME = "doubao-1-5-pro-256k-250115";
 
     public static final String PARSE_SET = "application/json";
 

@@ -1,5 +1,6 @@
 package a311.college.service.impl;
 
+import a311.college.constant.deepseek.DeepSeekConstant;
 import a311.college.constant.redis.DouBaoRedisKey;
 import a311.college.dto.ai.UserAIRequestDTO;
 import a311.college.exception.DouBaoAPIErrorException;
@@ -24,14 +25,6 @@ import java.util.stream.Collectors;
 @Service
 public class DouBaoServiceImpl implements DouBaoService {
 
-    // 豆包API配置常量（需在常量类中补充）
-    private static final String API_URL = "https://ark.cn-beijing.volces.com/api/v3/chat/completions";
-    private static final String API_KEY = "your-doubao-api-key";
-    private static final String MODEL_NAME = "doubao-1-5-pro-256k-250115";
-    private static final String ROLE_SYSTEM = "system";
-    private static final String ROLE_ASSISTANT = "assistant";
-    private static final String INIT_CONSTANT = "你是一个专业的AI助手";
-
     private final RedisTemplate<String, Object> redisTemplate;
 
     public DouBaoServiceImpl(RedisTemplate<String, Object> redisTemplate) {
@@ -50,25 +43,25 @@ public class DouBaoServiceImpl implements DouBaoService {
 
         // 豆包API请求体构建（参考网页3）
         JSONObject requestBody = new JSONObject();
-        requestBody.put("model", MODEL_NAME);
+        requestBody.put("model", DeepSeekConstant.MODEL_NAME);
         requestBody.put("messages", messages);
         requestBody.put("temperature", request.getTemperature());
         requestBody.put("stream", false);
 
         OkHttpClient client = new OkHttpClient.Builder()
-            .connectTimeout(60, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
-            .writeTimeout(60, TimeUnit.SECONDS)
-            .build();
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .build();
 
         Request seekRequest = new Request.Builder()
-            .url(API_URL)
-            .addHeader("Authorization", "Bearer " + API_KEY)
-            .addHeader("Content-Type", "application/json")
-            .post(RequestBody.create(
-                requestBody.toJSONString(),
-                MediaType.parse("application/json")))
-            .build();
+                .url(DeepSeekConstant.API_URL)
+                .addHeader("Authorization", "Bearer " + DeepSeekConstant.API_KEY)
+                .addHeader("Content-Type", "application/json")
+                .post(RequestBody.create(
+                        requestBody.toJSONString(),
+                        MediaType.parse("application/json")))
+                .build();
 
         try (Response response = client.newCall(seekRequest).execute()) {
             if (!response.isSuccessful()) {
@@ -83,7 +76,7 @@ public class DouBaoServiceImpl implements DouBaoService {
             String answer = extractAnswer(responseJson);
 
             addAssistantMessage(answer);
-            return new UserAIMessageVO(ROLE_ASSISTANT, answer);
+            return new UserAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, answer);
         } catch (IOException e) {
             log.error("API调用异常", e);
             throw new DouBaoAPIErrorException("豆包服务调用失败");
@@ -99,8 +92,8 @@ public class DouBaoServiceImpl implements DouBaoService {
         String key = buildUserMessageKey();
         if (!redisTemplate.hasKey(key)) {
             JSONObject systemMessage = new JSONObject()
-                .fluentPut("role", ROLE_SYSTEM)
-                .fluentPut("content", INIT_CONSTANT);
+                    .fluentPut("role", DeepSeekConstant.ROLE_SYSTEM)
+                    .fluentPut("content", DeepSeekConstant.INIT_CONSTANT);
             redisTemplate.opsForList().rightPush(key, systemMessage.toJSONString());
             redisTemplate.expire(key, 24, TimeUnit.HOURS); // 对话历史保留24小时
         }
@@ -108,31 +101,31 @@ public class DouBaoServiceImpl implements DouBaoService {
 
     private void addMessage(UserAIMessageVO message) {
         JSONObject msg = new JSONObject()
-            .fluentPut("role", message.getRole())
-            .fluentPut("content", message.getContent());
+                .fluentPut("role", message.getRole())
+                .fluentPut("content", message.getContent());
         redisTemplate.opsForList().rightPush(buildUserMessageKey(), msg.toJSONString());
     }
 
     private JSONArray buildHistoryMessageArray() {
         List<Object> messages = redisTemplate.opsForList().range(buildUserMessageKey(), 0, -1);
         return Optional.ofNullable(messages)
-            .map(list -> list.stream()
-                .map(String::valueOf)
-                .map(JSON::parseObject)
-                .collect(Collectors.toCollection(JSONArray::new)))
-            .orElseGet(JSONArray::new);
+                .map(list -> list.stream()
+                        .map(String::valueOf)
+                        .map(JSON::parseObject)
+                        .collect(Collectors.toCollection(JSONArray::new)))
+                .orElseGet(JSONArray::new);
     }
 
     private void addAssistantMessage(String content) {
-        addMessage(new UserAIMessageVO(ROLE_ASSISTANT, content));
+        addMessage(new UserAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, content));
     }
 
     private String extractAnswer(JSONObject response) {
         try {
             return response.getJSONArray("choices")
-                .getJSONObject(0)
-                .getJSONObject("message")
-                .getString("content");
+                    .getJSONObject(0)
+                    .getJSONObject("message")
+                    .getString("content");
         } catch (Exception e) {
             log.error("响应解析异常", e);
             return "服务响应解析失败";
@@ -140,6 +133,6 @@ public class DouBaoServiceImpl implements DouBaoService {
     }
 
     private UserAIMessageVO errorResponse() {
-        return new UserAIMessageVO(ROLE_ASSISTANT, "当前服务不可用，请稍后重试");
+        return new UserAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, "当前服务不可用，请稍后重试");
     }
 }

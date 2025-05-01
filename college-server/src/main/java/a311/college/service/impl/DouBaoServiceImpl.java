@@ -32,30 +32,32 @@ public class DouBaoServiceImpl implements DouBaoService {
     }
 
     public UserAIMessageVO response(UserAIRequestDTO request) {
-        // 初始化用户对话历史
+        // 1.初始化AI
         initUserMessageHistory();
+        // 2.将用户消息添加到Redis
         try {
             addMessage(request.getMessage());
         } catch (Exception e) {
             log.error("Redis连接异常", e);
         }
-
+        // 3.获取用户对话消息历史
         JSONArray messages = buildHistoryMessageArray();
-
-        // 豆包API请求体构建（参考网页3）
+        // 4.豆包API请求体构建
         JSONObject requestBody = new JSONObject();
+        // 4.1选择模型
         requestBody.put("model", DeepSeekConstant.MODEL_NAME);
+        // 4.2封装消息
         requestBody.put("messages", messages);
-        requestBody.put("temperature", request.getTemperature());
+        // 4.3不开启流式输出
         requestBody.put("stream", false);
-
+        // 5.设置请求客户端
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .build();
-
-        Request seekRequest = new Request.Builder()
+        // 6.请求构建
+        Request DouBaoRequest = new Request.Builder()
                 .url(DeepSeekConstant.API_URL)
                 .addHeader("Authorization", "Bearer " + DeepSeekConstant.API_KEY)
                 .addHeader("Content-Type", "application/json")
@@ -63,8 +65,8 @@ public class DouBaoServiceImpl implements DouBaoService {
                         requestBody.toJSONString(),
                         MediaType.parse("application/json")))
                 .build();
-
-        try (Response response = client.newCall(seekRequest).execute()) {
+        // 7.发起请求并接收响应
+        try (Response response = client.newCall(DouBaoRequest).execute()) {
             if (!response.isSuccessful()) {
                 log.error("API请求失败，状态码：{}", response.code());
                 return errorResponse();
@@ -109,6 +111,11 @@ public class DouBaoServiceImpl implements DouBaoService {
         }
     }
 
+    /**
+     * 添加用户消息到Redis
+     *
+     * @param message 用户消息
+     */
     private void addMessage(UserAIMessageVO message) {
         JSONObject msg = new JSONObject()
                 .fluentPut("role", message.getRole())
@@ -116,8 +123,15 @@ public class DouBaoServiceImpl implements DouBaoService {
         redisTemplate.opsForList().rightPush(buildUserMessageKey(), msg.toJSONString());
     }
 
+    /**
+     * 构建用户历史对话数组
+     *
+     * @return JSONArray 用户的历史对话
+     */
     private JSONArray buildHistoryMessageArray() {
+        // 1.从Redis中取出用户的历史对话
         List<Object> messages = redisTemplate.opsForList().range(buildUserMessageKey(), 0, -1);
+        // 2.将历史对话封装为JSONArray返回
         return Optional.ofNullable(messages)
                 .map(list -> list.stream()
                         .map(String::valueOf)
@@ -142,6 +156,11 @@ public class DouBaoServiceImpl implements DouBaoService {
         }
     }
 
+    /**
+     * 请求错误，封装错误信息
+     *
+     * @return UserAIMessageVO 错误信息
+     */
     private UserAIMessageVO errorResponse() {
         return new UserAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, "当前服务不可用，请稍后重试");
     }

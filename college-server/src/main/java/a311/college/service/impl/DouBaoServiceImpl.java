@@ -200,7 +200,7 @@ public class DouBaoServiceImpl implements DouBaoService {
         // 1.获取需要请求的学校名
         String schoolName = schoolMapper.selectBySchoolId(schoolAIRequestDTO.getSchoolId()).getSchoolName();
         // 2.封装问题
-        String question = "你现在是" + schoolName + "的AI助手，请给我介绍你们的学校";
+        String question = "请为我介绍" + schoolName;
         Request request = buildRequest(question);
         // 3.发起请求并获取回答
         String answer = executeRequest(request);

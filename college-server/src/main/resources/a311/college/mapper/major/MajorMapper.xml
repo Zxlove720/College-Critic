@@ -65,7 +65,7 @@
 
     <!-- 查询专业评价 -->
     <select id="selectComment" resultType="a311.college.vo.school.CommentVO">
-        select u.username, u.head, c.comment, c.time
+        select u.username, u.head, c.comment, c.add_time
         from tb_comment AS c,
              tb_user AS u
         where c.major_id = #{majorId}

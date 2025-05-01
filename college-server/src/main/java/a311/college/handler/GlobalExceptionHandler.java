@@ -17,10 +17,10 @@ public class GlobalExceptionHandler {
     /**
      * 捕获业务异常
      * @param exception 业务异常
-     * @return Result<Void>
+     * @return Result<String>
      */
     @ExceptionHandler
-    public Result<Void> exceptionHandler(BaseException exception) {
+    public Result<String> exceptionHandler(BaseException exception) {
         log.info("异常信息：{}", exception.getMessage());
         return Result.error(exception.getMessage());
     }

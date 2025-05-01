@@ -2,8 +2,13 @@ package a311.college.service.impl;
 
 import a311.college.dto.ai.UserAIRequestDTO;
 import a311.college.service.AIService;
+import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.ai.UserAIMessageVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AIServiceImpl implements AIService {

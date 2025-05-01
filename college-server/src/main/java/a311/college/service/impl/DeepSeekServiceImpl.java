@@ -1,10 +1,10 @@
 package a311.college.service.impl;
 
 import a311.college.constant.deepseek.DeepSeekConstant;
-import a311.college.constant.redis.DeepSeekRedisKey;
+import a311.college.constant.redis.DouBaoRedisKey;
 import a311.college.dto.ai.MajorAIRequestDTO;
 import a311.college.dto.ai.SchoolAIRequestDTO;
-import a311.college.exception.DeepSeekAPIErrorException;
+import a311.college.exception.DouBaoAPIErrorException;
 import a311.college.mapper.major.MajorMapper;
 import a311.college.mapper.school.SchoolMapper;
 import a311.college.vo.ai.MajorAIMessageVO;
@@ -115,7 +115,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
             return new UserAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, answer);
         } catch (IOException e) {
             log.info(e.getMessage());
-            throw new DeepSeekAPIErrorException(DeepSeekConstant.RESPONSE_ERROR_CONSTANT);
+            throw new DouBaoAPIErrorException(DeepSeekConstant.RESPONSE_ERROR_CONSTANT);
         }
     }
 
@@ -125,7 +125,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
      * @return 不同用户的消息Key
      */
     private String buildUserMessageKey() {
-        return DeepSeekRedisKey.DEEP_SEEK_HISTORY_KEY + ThreadLocalUtil.getCurrentId();
+        return DouBaoRedisKey.DOUBAO_HISTORY_KEY + ThreadLocalUtil.getCurrentId();
     }
 
     /**
@@ -141,7 +141,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
                     .fluentPut("role", DeepSeekConstant.ROLE_SYSTEM)
                     .fluentPut("content", DeepSeekConstant.INIT_CONSTANT);
             redisTemplate.opsForList().rightPush(key, systemMessage.toJSONString());
-            redisTemplate.expire(key, DeepSeekRedisKey.DEEP_SEEK_HISTORY_TTL, TimeUnit.HOURS);
+            redisTemplate.expire(key, DouBaoRedisKey.DEEP_SEEK_HISTORY_TTL, TimeUnit.HOURS);
         }
     }
 
@@ -288,7 +288,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
             if (!response.isSuccessful()) {
                 // 2.1响应失败，记录错误日志并返回
                 log.info(DeepSeekConstant.RESPONSE_ERROR_CONSTANT);
-                throw new DeepSeekAPIErrorException(DeepSeekConstant.RESPONSE_ERROR_CONSTANT);
+                throw new DouBaoAPIErrorException(DeepSeekConstant.RESPONSE_ERROR_CONSTANT);
             }
             // 2.2获取响应体
             JSONObject responseJson = null;
@@ -300,7 +300,7 @@ public class DeepSeekServiceImpl implements DeepSeekService {
         } catch (IOException e) {
             // 2.4请求失败则报错
             log.info(DeepSeekConstant.REQUEST_ERROR_CONSTANT);
-            throw new DeepSeekAPIErrorException(DeepSeekConstant.REQUEST_ERROR_CONSTANT);
+            throw new DouBaoAPIErrorException(DeepSeekConstant.REQUEST_ERROR_CONSTANT);
         }
     }
 }

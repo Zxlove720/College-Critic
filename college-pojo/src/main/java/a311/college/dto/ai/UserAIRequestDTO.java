@@ -19,7 +19,4 @@ public class UserAIRequestDTO {
     @Schema(description = "请求消息")
     private UserAIMessageVO message;
 
-    @Schema(description = "模型温度")
-    private Double temperature;
-
 }

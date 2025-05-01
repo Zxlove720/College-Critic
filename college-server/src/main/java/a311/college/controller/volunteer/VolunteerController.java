@@ -3,12 +3,14 @@ package a311.college.controller.volunteer;
 import a311.college.constant.API.APIConstant;
 import a311.college.dto.user.VolunteerPageDTO;
 import a311.college.dto.volunteer.AddVolunteerDTO;
+import a311.college.dto.volunteer.AnalyseDTO;
 import a311.college.entity.volunteer.Volunteer;
 import a311.college.entity.volunteer.VolunteerTable;
 import a311.college.result.PageResult;
 import a311.college.result.Result;
 import a311.college.service.VolunteerService;
 import a311.college.thread.ThreadLocalUtil;
+import a311.college.vo.ai.UserAIMessageVO;
 import a311.college.vo.volunteer.SchoolVolunteer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -138,5 +140,11 @@ public class VolunteerController {
     public Result<List<Volunteer>> selectVolunteer(@RequestBody VolunteerTable volunteerTable) {
         log.info("查询志愿表");
         return Result.success(volunteerService.selectVolunteer(volunteerTable.getTableId()));
+    }
+
+
+    public Result<UserAIMessageVO> analyseVolunteer(@RequestBody AnalyseDTO analyseDTO) {
+        log.info("志愿表分析");
+        return Result.success(volunteerService.analyseVolunteer(analyseDTO));
     }
 }

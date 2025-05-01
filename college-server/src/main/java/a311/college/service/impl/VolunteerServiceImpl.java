@@ -2,14 +2,17 @@ package a311.college.service.impl;
 
 import a311.college.dto.user.VolunteerPageDTO;
 import a311.college.dto.volunteer.AddVolunteerDTO;
+import a311.college.dto.volunteer.AnalyseDTO;
 import a311.college.entity.volunteer.Volunteer;
 import a311.college.entity.volunteer.VolunteerTable;
 import a311.college.exception.ReAdditionException;
 import a311.college.exception.volunteer.VolunteerException;
 import a311.college.mapper.volunteer.VolunteerMapper;
 import a311.college.result.PageResult;
+import a311.college.service.AIService;
 import a311.college.service.VolunteerService;
 import a311.college.thread.ThreadLocalUtil;
+import a311.college.vo.ai.UserAIMessageVO;
 import a311.college.vo.volunteer.SchoolVolunteer;
 import a311.college.vo.volunteer.ScoreLine;
 import a311.college.vo.volunteer.VolunteerVO;
@@ -28,9 +31,12 @@ public class VolunteerServiceImpl implements VolunteerService {
 
     private final VolunteerMapper volunteerMapper;
 
+    private final AIService aiService;
+
     @Autowired
-    public VolunteerServiceImpl(VolunteerMapper volunteerMapper) {
+    public VolunteerServiceImpl(VolunteerMapper volunteerMapper, AIService aiService) {
         this.volunteerMapper = volunteerMapper;
+        this.aiService = aiService;
     }
 
     /**
@@ -202,6 +208,11 @@ public class VolunteerServiceImpl implements VolunteerService {
     @Override
     public List<Volunteer> selectVolunteer(Integer tableId) {
         return volunteerMapper.selectVolunteers(tableId);
+    }
+
+    @Override
+    public UserAIMessageVO analyseVolunteer(AnalyseDTO analyseDTO) {
+        return null;
     }
 
 }

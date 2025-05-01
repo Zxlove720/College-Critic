@@ -21,6 +21,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -101,7 +102,7 @@ public class DouBaoServiceImpl implements DouBaoService {
             // 7.4将这一次回答添加到redis，作为对话历史
             addMessage(new UserAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, answer));
             // 7.5封装UserAIMessageVO返回
-            return new UserAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, answer);
+            return new UserAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, StringEscapeUtils.escapeHtml4(answer));
         } catch (IOException e) {
             log.error("API调用异常", e);
             throw new DouBaoAPIErrorException("豆包服务调用失败");
@@ -205,7 +206,7 @@ public class DouBaoServiceImpl implements DouBaoService {
         // 3.发起请求并获取回答
         String answer = executeRequest(request);
         log.info(DouBaoConstant.ROLE_ASSISTANT + "{}", answer);
-        return new SchoolAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, answer);
+        return new SchoolAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, StringEscapeUtils.escapeHtml4(answer));
     }
 
     /**
@@ -224,7 +225,7 @@ public class DouBaoServiceImpl implements DouBaoService {
         // 3.发起请求并获取回答
         String answer = executeRequest(request);
         log.info(DouBaoConstant.ROLE_ASSISTANT + "{}", answer);
-        return new MajorAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, answer);
+        return new MajorAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, StringEscapeUtils.escapeHtml4(answer));
     }
 
     @Override

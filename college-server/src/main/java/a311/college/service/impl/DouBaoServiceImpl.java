@@ -67,18 +67,21 @@ public class DouBaoServiceImpl implements DouBaoService {
                 .build();
         // 7.发起请求并接收响应
         try (Response response = client.newCall(DouBaoRequest).execute()) {
+            // 7.1响应失败，封装错误信息返回
             if (!response.isSuccessful()) {
                 log.error("API请求失败，状态码：{}", response.code());
                 return errorResponse();
             }
-
+            // 7.2响应成功，获取响应体
             JSONObject responseJson = null;
             if (response.body() != null) {
                 responseJson = JSON.parseObject(response.body().string());
             }
+            // 7.3解析响应体
             String answer = extractAnswer(responseJson);
-
-            addAssistantMessage(answer);
+            // 7.4将这一次回答添加到redis，作为对话历史
+            addMessage(new UserAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, answer));
+            // 7.5封装UserAIMessageVO返回
             return new UserAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, answer);
         } catch (IOException e) {
             log.error("API调用异常", e);
@@ -112,9 +115,9 @@ public class DouBaoServiceImpl implements DouBaoService {
     }
 
     /**
-     * 添加用户消息到Redis
+     * 添加消息到Redis
      *
-     * @param message 用户消息
+     * @param message 消息
      */
     private void addMessage(UserAIMessageVO message) {
         JSONObject msg = new JSONObject()
@@ -140,10 +143,12 @@ public class DouBaoServiceImpl implements DouBaoService {
                 .orElseGet(JSONArray::new);
     }
 
-    private void addAssistantMessage(String content) {
-        addMessage(new UserAIMessageVO(DeepSeekConstant.ROLE_ASSISTANT, content));
-    }
-
+    /**
+     * 解析响应体
+     *
+     * @param response 响应体
+     * @return String 回答
+     */
     private String extractAnswer(JSONObject response) {
         try {
             return response.getJSONArray("choices")

@@ -30,4 +30,6 @@ public interface VolunteerService {
     List<Volunteer> selectVolunteer(int tableId);
 
     UserAIMessageVO analyseVolunteer(AnalyseDTO analyseDTO);
+
+    void clearVolunteerTable(Integer tableId);
 }

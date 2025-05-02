@@ -74,4 +74,7 @@ public interface VolunteerMapper {
 
     @Select("select count(table_id) from tb_volunteer_table where table_name = #{tableName} and user_id = #{userId}")
     Integer checkVolunteerTable(String tableName, long userId);
+
+    @Delete("delete from tb_volunteer where table_id = #{tableId}")
+    void clearVolunteerTable(Integer tableId);
 }

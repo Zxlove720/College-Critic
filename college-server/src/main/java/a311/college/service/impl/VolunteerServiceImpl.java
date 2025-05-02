@@ -311,4 +311,9 @@ public class VolunteerServiceImpl implements VolunteerService {
         return douBaoService.analyseVolunteer(analyseDTO);
     }
 
+    @Override
+    public void clearVolunteerTable(Integer tableId) {
+        return volunteerMapper.clearVolunteerTable(tableId);
+    }
+
 }

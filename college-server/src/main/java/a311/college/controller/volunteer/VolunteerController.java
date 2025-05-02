@@ -80,6 +80,19 @@ public class VolunteerController {
     }
 
     /**
+     * 清空志愿表
+     *
+     * @param volunteerTable 志愿表
+     */
+    @PostMapping("/clear")
+    @Operation(summary = "清空志愿表")
+    public Result<Void> clearVolunteerTable(@RequestBody VolunteerTable volunteerTable) {
+        log.info("清空志愿表");
+        volunteerService.clearVolunteerTable(volunteerTable.getTableId());
+        return Result.success();
+    }
+
+    /**
      * 修改志愿表名字
      *
      * @param volunteerTable 志愿表实体对象

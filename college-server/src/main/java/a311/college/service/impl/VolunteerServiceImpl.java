@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -75,13 +76,37 @@ public class VolunteerServiceImpl implements VolunteerService {
      */
     @Override
     public void createVolunteerTable(VolunteerTable volunteerTable) {
+        String tableName = volunteerTable.getTableName();
+        long userId = ThreadLocalUtil.getCurrentId();
+        if (volunteerMapper.checkVolunteerTable(tableName, userId) != null) {
+            log.info("重名的志愿表");
+            throw new VolunteerException("重名的志愿表");
+        }
         volunteerTable.setUserId(ThreadLocalUtil.getCurrentId());
         volunteerTable.setCreateTime(LocalDateTime.now());
         volunteerMapper.createVolunteerTable(volunteerTable);
-        long userId = ThreadLocalUtil.getCurrentId();
         User user = userMapper.selectById(userId);
-        volunteerMapper.selectVolunteerSchool(new VolunteerPageDTO(user.getProvince(), user.getFirstChoice(),
+        List<SchoolVolunteer> schoolVolunteerList = volunteerMapper.selectVolunteerSchool(new VolunteerPageDTO(user.getProvince(), user.getFirstChoice(),
                 user.getGrade(), user.getRanking(), 1, 1, 200));
+        schoolVolunteerList.forEach(school ->
+                school.getVolunteerVOList().forEach(volunteerVO -> {
+                    Integer minRanking = volunteerVO.getScoreLineList().get(0).getMinRanking();
+                    volunteerVO.setCategory(calculateCategory(minRanking, user.getRanking()));
+                    List<ScoreLine> scoreLineList = volunteerVO.getScoreLineList();
+                    for (ScoreLine scoreLine : scoreLineList) {
+                        scoreLine.setScoreThanMe(user.getGrade() - scoreLine.getMinScore());
+                        scoreLine.setRankingThanMe(user.getRanking() - scoreLine.getMinRanking());
+                    }
+                })
+        );
+        List<VolunteerVO> rush = new ArrayList<>();
+        List<VolunteerVO> stable = new ArrayList<>();
+        List<VolunteerVO> minimum = new ArrayList<>();
+
+
+
+
+
     }
 
     /**
@@ -98,6 +123,7 @@ public class VolunteerServiceImpl implements VolunteerService {
 
     /**
      * 更新志愿表
+     *
      * @param volunteerTable 志愿表
      */
     @Override
@@ -148,7 +174,7 @@ public class VolunteerServiceImpl implements VolunteerService {
      * 计算专业分类逻辑
      *
      * @param minRanking 专业历年最低分
-     * @param ranking  用户分数
+     * @param ranking    用户分数
      * @return 0保底 1稳妥 2冲刺
      */
     private int calculateCategory(int minRanking, int ranking) {

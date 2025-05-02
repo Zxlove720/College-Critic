@@ -313,7 +313,7 @@ public class VolunteerServiceImpl implements VolunteerService {
 
     @Override
     public void clearVolunteerTable(Integer tableId) {
-        return volunteerMapper.clearVolunteerTable(tableId);
+        volunteerMapper.clearVolunteerTable(tableId);
     }
 
 }

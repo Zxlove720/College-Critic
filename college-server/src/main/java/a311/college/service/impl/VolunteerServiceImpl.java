@@ -78,7 +78,7 @@ public class VolunteerServiceImpl implements VolunteerService {
     public void createVolunteerTable(VolunteerTable volunteerTable) {
         String tableName = volunteerTable.getTableName();
         long userId = ThreadLocalUtil.getCurrentId();
-        if (volunteerMapper.checkVolunteerTable(tableName, userId) != null) {
+        if (volunteerMapper.checkVolunteerTable(tableName, userId) != 0) {
             log.info("重名的志愿表");
             throw new VolunteerException("重名的志愿表");
         }
@@ -87,7 +87,7 @@ public class VolunteerServiceImpl implements VolunteerService {
         volunteerMapper.createVolunteerTable(volunteerTable);
         User user = userMapper.selectById(userId);
         List<SchoolVolunteer> schoolVolunteerList = volunteerMapper.selectVolunteerSchool(new VolunteerPageDTO(user.getProvince(), user.getFirstChoice(),
-                user.getGrade(), user.getRanking(), 1, 1, 200));
+                user.getGrade(), user.getRanking(), 1, 1, 96));
         schoolVolunteerList.forEach(school ->
                 school.getVolunteerVOList().forEach(volunteerVO -> {
                     Integer minRanking = volunteerVO.getScoreLineList().get(0).getMinRanking();
@@ -102,9 +102,16 @@ public class VolunteerServiceImpl implements VolunteerService {
         List<AddVolunteerDTO> rush = new ArrayList<>();
         List<AddVolunteerDTO> stable = new ArrayList<>();
         List<AddVolunteerDTO> minimum = new ArrayList<>();
+        int rushCount = 0;
+        int stableCount = 0;
+        int minimumCount = 0;
         for (SchoolVolunteer schoolVolunteer : schoolVolunteerList) {
             for (VolunteerVO volunteerVO : schoolVolunteer.getVolunteerVOList()) {
                 if (volunteerVO.getCategory() == 2) {
+                    if (rushCount == 32) {
+                        break;
+                    }
+                    rushCount++;
                     ScoreLine scoreLine = volunteerVO.getScoreLineList().get(0);
                     rush.add(new AddVolunteerDTO(volunteerTable.getTableId(), volunteerVO.getMajorId(),
                             2, volunteerVO.getScoreLineList().get(0).getYear(),
@@ -115,6 +122,10 @@ public class VolunteerServiceImpl implements VolunteerService {
                     break;
                 }
                 if (volunteerVO.getCategory() == 1) {
+                    if (stableCount == 32) {
+                        break;
+                    }
+                    stableCount++;
                     ScoreLine scoreLine = volunteerVO.getScoreLineList().get(0);
                     stable.add(new AddVolunteerDTO(volunteerTable.getTableId(), volunteerVO.getMajorId(),
                             1, volunteerVO.getScoreLineList().get(0).getYear(),
@@ -125,6 +136,10 @@ public class VolunteerServiceImpl implements VolunteerService {
                     break;
                 }
                 if (volunteerVO.getCategory() == 0) {
+                    if (minimumCount == 32) {
+                        break;
+                    }
+                    minimumCount++;
                     ScoreLine scoreLine = volunteerVO.getScoreLineList().get(0);
                     minimum.add(new AddVolunteerDTO(volunteerTable.getTableId(), volunteerVO.getMajorId(),
                             0, volunteerVO.getScoreLineList().get(0).getYear(),

@@ -59,7 +59,7 @@ public class DouBaoServiceImpl implements DouBaoService {
         Parser parser = Parser.builder().build();
         Node document = parser.parse(markdown);
         HtmlRenderer renderer = HtmlRenderer.builder().build();
-        return renderer.render(document);
+        return renderer.render(document).replaceAll("\n", "");
     }
 
     public UserAIMessageVO response(UserAIRequestDTO request) {

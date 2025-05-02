@@ -136,8 +136,15 @@ public class VolunteerServiceImpl implements VolunteerService {
                 }
             }
         }
-
-
+        for (AddVolunteerDTO addVolunteerDTO : rush) {
+            addVolunteer(addVolunteerDTO);
+        }
+        for (AddVolunteerDTO addVolunteerDTO : stable) {
+            addVolunteer(addVolunteerDTO);
+        }
+        for (AddVolunteerDTO addVolunteerDTO : minimum) {
+            addVolunteer(addVolunteerDTO);
+        }
     }
 
     /**

@@ -171,7 +171,7 @@ public class VolunteerServiceImpl implements VolunteerService {
     public void deleteVolunteerTable(int tableId) {
         volunteerMapper.deleteVolunteerTable(tableId);
         // 删除志愿表的时候，表中的所有志愿都要一起删除
-        volunteerMapper.deleteVolunteers(tableId);
+        volunteerMapper.clearVolunteerTable(tableId);
     }
 
     /**

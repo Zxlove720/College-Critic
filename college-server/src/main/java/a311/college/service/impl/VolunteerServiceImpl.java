@@ -175,6 +175,17 @@ public class VolunteerServiceImpl implements VolunteerService {
     }
 
     /**
+     * 清空志愿表
+     *
+     * @param tableId 志愿表id
+     */
+    @Override
+    public void clearVolunteerTable(Integer tableId) {
+        volunteerMapper.clearVolunteerTable(tableId);
+    }
+
+
+    /**
      * 更新志愿表
      *
      * @param volunteerTable 志愿表
@@ -309,11 +320,6 @@ public class VolunteerServiceImpl implements VolunteerService {
     @Override
     public UserAIMessageVO analyseVolunteer(AnalyseDTO analyseDTO) {
         return douBaoService.analyseVolunteer(analyseDTO);
-    }
-
-    @Override
-    public void clearVolunteerTable(Integer tableId) {
-        volunteerMapper.clearVolunteerTable(tableId);
     }
 
 }

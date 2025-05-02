@@ -19,6 +19,8 @@ public interface VolunteerService {
 
     void deleteVolunteerTable(int tableId);
 
+    void clearVolunteerTable(Integer tableId);
+
     void updateVolunteerTableName(VolunteerTable volunteerTable);
 
     List<VolunteerTable> selectTables(long userId);
@@ -31,5 +33,4 @@ public interface VolunteerService {
 
     UserAIMessageVO analyseVolunteer(AnalyseDTO analyseDTO);
 
-    void clearVolunteerTable(Integer tableId);
 }

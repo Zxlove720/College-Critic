@@ -34,7 +34,7 @@ public class LoginResult implements Serializable {
     private String password;
 
     @Schema(description = "用户毕业年份")
-    private String year;
+    private Integer year;
 
     @Schema(description = "用户省份")
     private ProvinceEnum province;

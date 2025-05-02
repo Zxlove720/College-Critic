@@ -99,6 +99,7 @@ public class UserServiceImpl implements UserService {
         result.setHead(user.getHead());
         result.setUsername(user.getUsername());
         result.setPhone(user.getPhone());
+        result.setYear(user.getYear());
         result.setPassword(user.getPassword());
         result.setProvince(user.getProvince());
         result.setSubjects(user.getSubjects());

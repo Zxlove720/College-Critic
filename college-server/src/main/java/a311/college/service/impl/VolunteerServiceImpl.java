@@ -266,7 +266,7 @@ public class VolunteerServiceImpl implements VolunteerService {
         int majorId = addVolunteerDTO.getMajorId();
         Long userId = ThreadLocalUtil.getCurrentId();
         // 2.1判断该志愿是否已经被添加到志愿表中
-        if (volunteerMapper.checkVolunteer(majorId, userId) != null) {
+        if (volunteerMapper.checkVolunteer(majorId, addVolunteerDTO.getTableId()) != null) {
             // 2.2该志愿已经被添加过了，不允许添加
             throw new ReAdditionException("重复添加");
         }

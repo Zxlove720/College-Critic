@@ -99,12 +99,43 @@ public class VolunteerServiceImpl implements VolunteerService {
                     }
                 })
         );
-        List<VolunteerVO> rush = new ArrayList<>();
-        List<VolunteerVO> stable = new ArrayList<>();
-        List<VolunteerVO> minimum = new ArrayList<>();
-
-
-
+        List<AddVolunteerDTO> rush = new ArrayList<>();
+        List<AddVolunteerDTO> stable = new ArrayList<>();
+        List<AddVolunteerDTO> minimum = new ArrayList<>();
+        for (SchoolVolunteer schoolVolunteer : schoolVolunteerList) {
+            for (VolunteerVO volunteerVO : schoolVolunteer.getVolunteerVOList()) {
+                if (volunteerVO.getCategory() == 2) {
+                    ScoreLine scoreLine = volunteerVO.getScoreLineList().get(0);
+                    rush.add(new AddVolunteerDTO(volunteerTable.getTableId(), volunteerVO.getMajorId(),
+                            2, volunteerVO.getScoreLineList().get(0).getYear(),
+                            scoreLine.getMinScore(),
+                            scoreLine.getMinRanking(),
+                            scoreLine.getScoreThanMe(),
+                            scoreLine.getRankingThanMe()));
+                    break;
+                }
+                if (volunteerVO.getCategory() == 1) {
+                    ScoreLine scoreLine = volunteerVO.getScoreLineList().get(0);
+                    stable.add(new AddVolunteerDTO(volunteerTable.getTableId(), volunteerVO.getMajorId(),
+                            1, volunteerVO.getScoreLineList().get(0).getYear(),
+                            scoreLine.getMinScore(),
+                            scoreLine.getMinRanking(),
+                            scoreLine.getScoreThanMe(),
+                            scoreLine.getRankingThanMe()));
+                    break;
+                }
+                if (volunteerVO.getCategory() == 0) {
+                    ScoreLine scoreLine = volunteerVO.getScoreLineList().get(0);
+                    minimum.add(new AddVolunteerDTO(volunteerTable.getTableId(), volunteerVO.getMajorId(),
+                            0, volunteerVO.getScoreLineList().get(0).getYear(),
+                            scoreLine.getMinScore(),
+                            scoreLine.getMinRanking(),
+                            scoreLine.getScoreThanMe(),
+                            scoreLine.getRankingThanMe()));
+                    break;
+                }
+            }
+        }
 
 
     }

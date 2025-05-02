@@ -51,6 +51,7 @@ public interface VolunteerMapper {
     Integer checkVolunteer(int majorId, long userId);
 
     @Insert("insert into tb_volunteer_table (user_id, table_name, create_time) VALUES (#{userId}, #{tableName}, #{createTime})")
+    @Options(useGeneratedKeys = true, keyProperty = "tableId", keyColumn = "table_id")
     void createVolunteerTable(VolunteerTable volunteerTable);
 
     @Delete("delete from tb_volunteer_table where table_id = #{tableId}")

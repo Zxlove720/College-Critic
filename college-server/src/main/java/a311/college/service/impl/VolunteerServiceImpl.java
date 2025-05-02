@@ -3,10 +3,12 @@ package a311.college.service.impl;
 import a311.college.dto.user.VolunteerPageDTO;
 import a311.college.dto.volunteer.AddVolunteerDTO;
 import a311.college.dto.volunteer.AnalyseDTO;
+import a311.college.entity.user.User;
 import a311.college.entity.volunteer.Volunteer;
 import a311.college.entity.volunteer.VolunteerTable;
 import a311.college.exception.ReAdditionException;
 import a311.college.exception.volunteer.VolunteerException;
+import a311.college.mapper.user.UserMapper;
 import a311.college.mapper.volunteer.VolunteerMapper;
 import a311.college.result.PageResult;
 import a311.college.service.DouBaoService;
@@ -33,10 +35,13 @@ public class VolunteerServiceImpl implements VolunteerService {
 
     private final DouBaoService douBaoService;
 
+    private final UserMapper userMapper;
+
     @Autowired
-    public VolunteerServiceImpl(VolunteerMapper volunteerMapper, DouBaoService douBaoService) {
+    public VolunteerServiceImpl(VolunteerMapper volunteerMapper, DouBaoService douBaoService, UserMapper userMapper) {
         this.volunteerMapper = volunteerMapper;
         this.douBaoService = douBaoService;
+        this.userMapper = userMapper;
     }
 
     /**
@@ -73,6 +78,10 @@ public class VolunteerServiceImpl implements VolunteerService {
         volunteerTable.setUserId(ThreadLocalUtil.getCurrentId());
         volunteerTable.setCreateTime(LocalDateTime.now());
         volunteerMapper.createVolunteerTable(volunteerTable);
+        long userId = ThreadLocalUtil.getCurrentId();
+        User user = userMapper.selectById(userId);
+        volunteerMapper.selectVolunteerSchool(new VolunteerPageDTO(user.getProvince(), user.getFirstChoice(),
+                user.getGrade(), user.getRanking(), 1, 1, 200));
     }
 
     /**
@@ -81,8 +90,10 @@ public class VolunteerServiceImpl implements VolunteerService {
      * @param tableId 志愿表id
      */
     @Override
-    public void deleteVolunteerTable(Integer tableId) {
+    public void deleteVolunteerTable(int tableId) {
         volunteerMapper.deleteVolunteerTable(tableId);
+        // 删除志愿表的时候，表中的所有志愿都要一起删除
+        volunteerMapper.deleteVolunteers(tableId);
     }
 
     /**
@@ -101,7 +112,7 @@ public class VolunteerServiceImpl implements VolunteerService {
      * @return List<VolunteerTable>
      */
     @Override
-    public List<VolunteerTable> selectTables(Long userId) {
+    public List<VolunteerTable> selectTables(long userId) {
         return volunteerMapper.selectTables(userId);
     }
 
@@ -114,7 +125,7 @@ public class VolunteerServiceImpl implements VolunteerService {
      * @param pageSize    每页大小
      * @return PageResult<SchoolVO>
      */
-    private PageResult<SchoolVolunteer> manualPage(List<SchoolVolunteer> filterCache, Integer page, Integer pageSize) {
+    private PageResult<SchoolVolunteer> manualPage(List<SchoolVolunteer> filterCache, int page, int pageSize) {
         // 1.获取记录总数
         int total = filterCache.size();
         // 2.获取起始页码
@@ -173,7 +184,7 @@ public class VolunteerServiceImpl implements VolunteerService {
             throw new VolunteerException("该志愿表已满，请选择其他志愿表");
         }
         // 2.准备添加志愿到志愿表中
-        Integer majorId = addVolunteerDTO.getMajorId();
+        int majorId = addVolunteerDTO.getMajorId();
         Long userId = ThreadLocalUtil.getCurrentId();
         // 2.1判断该志愿是否已经被添加到志愿表中
         if (volunteerMapper.checkVolunteer(majorId, userId) != null) {
@@ -206,7 +217,7 @@ public class VolunteerServiceImpl implements VolunteerService {
      * @return List<Volunteer>
      */
     @Override
-    public List<Volunteer> selectVolunteer(Integer tableId) {
+    public List<Volunteer> selectVolunteer(int tableId) {
         return volunteerMapper.selectVolunteers(tableId);
     }
 

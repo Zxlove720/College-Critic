@@ -67,4 +67,7 @@ public interface VolunteerMapper {
 
     @Delete("delete from tb_volunteer where volunteer_id = #{volunteerId}")
     void deleteVolunteer(Volunteer volunteer);
+
+    @Delete("delete from tb_volunteer where table_id = #{tableId}")
+    void deleteVolunteers(int tableId);
 }

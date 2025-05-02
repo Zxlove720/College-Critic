@@ -17,17 +17,17 @@ public interface VolunteerService {
 
     void createVolunteerTable(VolunteerTable volunteerTable);
 
-    void deleteVolunteerTable(Integer tableId);
+    void deleteVolunteerTable(int tableId);
 
     void updateVolunteerTableName(VolunteerTable volunteerTable);
 
-    List<VolunteerTable> selectTables(Long userId);
+    List<VolunteerTable> selectTables(long userId);
 
     void addVolunteer(AddVolunteerDTO addVolunteerDTO);
 
     void deleteVolunteer(Volunteer volunteer);
 
-    List<Volunteer> selectVolunteer(Integer tableId);
+    List<Volunteer> selectVolunteer(int tableId);
 
     UserAIMessageVO analyseVolunteer(AnalyseDTO analyseDTO);
 }

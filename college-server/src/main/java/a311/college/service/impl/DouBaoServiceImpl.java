@@ -55,6 +55,12 @@ public class DouBaoServiceImpl implements DouBaoService {
         this.volunteerMapper = volunteerMapper;
     }
 
+    /**
+     * 将回答的markdown转换为html
+     *
+     * @param markdown markdown格式
+     * @return HTML格式
+     */
     public String markDown2HTML(String markdown) {
         Parser parser = Parser.builder().build();
         Node document = parser.parse(markdown);

@@ -68,6 +68,12 @@ public class DouBaoServiceImpl implements DouBaoService {
         return renderer.render(document).replaceAll("\n", "");
     }
 
+    /**
+     * AI回答用户问题
+     *
+     * @param request 用户AI请求
+     * @return UserAIMessageVO
+     */
     public UserAIMessageVO response(UserAIRequestDTO request) {
         // 1.初始化AI
         initUserMessageHistory();

@@ -251,6 +251,12 @@ public class DouBaoServiceImpl implements DouBaoService {
         return new MajorAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, markDown2HTML(StringEscapeUtils.escapeHtml4(answer)));
     }
 
+    /**
+     * 分析用户志愿表
+     *
+     * @param analyseDTO 分析志愿表DTO
+     * @return UserAIMessageVO
+     */
     @Override
     public UserAIMessageVO analyseVolunteer(AnalyseDTO analyseDTO) {
         List<Volunteer> volunteerList = volunteerMapper.selectVolunteers(analyseDTO.getTableId());

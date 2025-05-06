@@ -661,8 +661,8 @@ public class SchoolServiceImpl implements SchoolService {
         FinderUtil finderUtil = new FinderUtil();
         // 进行敏感词判断
         if (finderUtil.containsSensitiveWord(addCommentDTO.getComment())) {
-            log.error("输入内容含有敏感词");
-            throw new CommentIllegalException("输入内容含有敏感词");
+            log.error(ErrorConstant.SENSITIVE_WORD_ERROR);
+            throw new CommentIllegalException(ErrorConstant.SENSITIVE_WORD_ERROR);
         }
         addCommentDTO.setUserId(ThreadLocalUtil.getCurrentId());
         addCommentDTO.setSchoolName(schoolMapper.selectBySchoolId(addCommentDTO.getSchoolId()).getSchoolName());
@@ -680,7 +680,11 @@ public class SchoolServiceImpl implements SchoolService {
         return schoolMapper.selectComment(commentQueryDTO.getSchoolId());
     }
 
-
+    /**
+     * 处理学校数据
+     *
+     * @param schoolSceneryVOList 学校风光VOList
+     */
     private void trimData(List<SchoolSceneryVO> schoolSceneryVOList) {
         for (SchoolSceneryVO schoolSceneryVO : schoolSceneryVOList) {
             String rankString = schoolSceneryVO.getRankList();
@@ -833,21 +837,5 @@ public class SchoolServiceImpl implements SchoolService {
     public List<School> getBasicSchool() {
         return schoolMapper.selectBasicSchool();
     }
-
-    @Override
-    public List<School> getAllSchool() {
-        return schoolMapper.getAllSchool();
-    }
-
-    @Override
-    public School getSchool(int schoolId) {
-        return schoolMapper.selectBySchoolId(schoolId);
-    }
-
-    @Override
-    public void updateScore(School school) {
-        schoolMapper.updateScore(school);
-    }
-
 
 }

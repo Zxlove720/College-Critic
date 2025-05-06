@@ -62,9 +62,4 @@ public interface SchoolService {
 
     List<School> getBasicSchool();
 
-    List<School> getAllSchool();
-
-    School getSchool(int schoolId);
-
-    void updateScore(School school);
 }

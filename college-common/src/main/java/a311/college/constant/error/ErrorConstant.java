@@ -8,6 +8,8 @@ public class ErrorConstant {
 
     public static final String SCHOOL_MAJOR_PAGE_QUERY_ERROR = "学校专业分页查询失败";
 
+    public static final String SENSITIVE_WORD_ERROR = "内容含有敏感词";
+
     public static final String COMMENT_PAGE_QUERY_ERROR = "学校评论区分页查询失败";
 
     public static final String FILE_UPLOAD_ERROR = "文件上传失败";

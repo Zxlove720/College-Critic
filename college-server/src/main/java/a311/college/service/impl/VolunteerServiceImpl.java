@@ -26,7 +26,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -54,19 +57,32 @@ public class VolunteerServiceImpl implements VolunteerService {
     @Override
     public PageResult<SchoolVolunteer> showVolunteer(VolunteerPageDTO volunteerPageDTO) {
         List<SchoolVolunteer> schoolVolunteerList = volunteerMapper.selectVolunteerSchool(volunteerPageDTO);
+        int total = schoolVolunteerList.size();
+        manualPage(schoolVolunteerList, volunteerPageDTO.getPage(), volunteerPageDTO.getPageSize());
         // 在内存中处理分类逻辑
-        schoolVolunteerList.forEach(school ->
-                school.getVolunteerVOList().forEach(volunteerVO -> {
-                    Integer minRanking = volunteerVO.getScoreLineList().get(0).getMinRanking();
-                    volunteerVO.setCategory(calculateCategory(minRanking, volunteerPageDTO.getRanking()));
-                    List<ScoreLine> scoreLineList = volunteerVO.getScoreLineList();
-                    for (ScoreLine scoreLine : scoreLineList) {
-                        scoreLine.setScoreThanMe(volunteerPageDTO.getGrade() - scoreLine.getMinScore());
-                        scoreLine.setRankingThanMe(volunteerPageDTO.getRanking() - scoreLine.getMinRanking());
-                    }
-                })
-        );
-        return manualPage(schoolVolunteerList, volunteerPageDTO.getPage(), volunteerPageDTO.getPageSize());
+        schoolVolunteerList.forEach(school -> {
+            // 使用LinkedHashMap保持插入顺序，合并时保留最后出现的元素
+            List<VolunteerVO> distinctList = school.getVolunteerVOList().stream()
+                    .collect(Collectors.toMap(
+                            VolunteerVO::getMajorName,
+                            Function.identity(),
+                            (existing, replacement) -> replacement, // 保留后出现的重复项
+                            LinkedHashMap::new
+                    ))
+                    .values().stream().toList();
+            // 替换原列表为去重后的列表
+            school.setVolunteerVOList(distinctList);
+            // 继续原有处理逻辑
+            distinctList.forEach(volunteerVO -> {
+                Integer minRanking = volunteerVO.getScoreLineList().get(0).getMinRanking();
+                volunteerVO.setCategory(calculateCategory(minRanking, volunteerPageDTO.getRanking()));
+                volunteerVO.getScoreLineList().forEach(scoreLine -> {
+                    scoreLine.setScoreThanMe(volunteerPageDTO.getGrade() - scoreLine.getMinScore());
+                    scoreLine.setRankingThanMe(volunteerPageDTO.getRanking() - scoreLine.getMinRanking());
+                });
+            });
+        });
+        return new PageResult<>((long) total, schoolVolunteerList);
     }
 
     /**
@@ -215,12 +231,12 @@ public class VolunteerServiceImpl implements VolunteerService {
      * @param pageSize    每页大小
      * @return PageResult<SchoolVO>
      */
-    private PageResult<SchoolVolunteer> manualPage(List<SchoolVolunteer> filterCache, int page, int pageSize) {
+    private List<SchoolVolunteer> manualPage(List<SchoolVolunteer> filterCache, int page, int pageSize) {
         // 1.获取记录总数
         int total = filterCache.size();
         // 2.获取起始页码
         int start = (page - 1) * pageSize;
-        if (start >= total) return new PageResult<>((long) total, Collections.emptyList());
+        if (start >= total) return Collections.emptyList();
         // 3.获取结束页码
         int end = Math.min(start + pageSize, total);
         // 4.分页并返回
@@ -229,9 +245,8 @@ public class VolunteerServiceImpl implements VolunteerService {
             for (VolunteerVO volunteerVO : schoolVolunteer.getVolunteerVOList()) {
                 volunteerVO.setIsAdd(volunteerMapper.checkVolunteer(volunteerVO.getMajorId(), ThreadLocalUtil.getCurrentId()) != null);
             }
-
         }
-        return new PageResult<>((long) total, pageData);
+        return pageData;
     }
 
     /**

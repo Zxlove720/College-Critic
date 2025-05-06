@@ -58,7 +58,7 @@ public class VolunteerServiceImpl implements VolunteerService {
     public PageResult<SchoolVolunteer> showVolunteer(VolunteerPageDTO volunteerPageDTO) {
         List<SchoolVolunteer> schoolVolunteerList = volunteerMapper.selectVolunteerSchool(volunteerPageDTO);
         int total = schoolVolunteerList.size();
-        manualPage(schoolVolunteerList, volunteerPageDTO.getPage(), volunteerPageDTO.getPageSize());
+        schoolVolunteerList = manualPage(schoolVolunteerList, volunteerPageDTO.getPage(), volunteerPageDTO.getPageSize());
         // 在内存中处理分类逻辑
         schoolVolunteerList.forEach(school -> {
             // 使用LinkedHashMap保持插入顺序，合并时保留最后出现的元素

@@ -7,6 +7,7 @@ import java.time.ZoneOffset;
  * 用户缓存键常量
  */
 public class UserRedisKey {
+
     // 用户验证码
     // 用户修改密码验证码
     public static final String USER_EDIT_CODE_KEY = "college:user:code:edit:";
@@ -26,4 +27,5 @@ public class UserRedisKey {
 
     // 验证码有效期
     public static final String CODE_TIME_MESSAGE = "验证码30S内有效";
+
 }

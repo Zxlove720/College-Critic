@@ -1,6 +1,7 @@
 package a311.college.service.impl;
 
 import a311.college.constant.deepseek.DouBaoConstant;
+import a311.college.constant.error.ErrorConstant;
 import a311.college.constant.redis.DouBaoRedisKey;
 import a311.college.dto.ai.MajorAIRequestDTO;
 import a311.college.dto.ai.SchoolAIRequestDTO;
@@ -56,7 +57,7 @@ public class DouBaoServiceImpl implements DouBaoService {
     }
 
     /**
-     * 将回答的markdown转换为html
+     * 将回答的markdown格式转换为HTML格式
      *
      * @param markdown markdown格式
      * @return HTML格式
@@ -81,7 +82,7 @@ public class DouBaoServiceImpl implements DouBaoService {
         try {
             addMessage(request.getMessage());
         } catch (Exception e) {
-            log.error("Redis连接异常", e);
+            log.error(ErrorConstant.REDIS_CONNECTION_ERROR, e);
         }
         // 3.获取用户对话消息历史
         JSONArray messages = buildHistoryMessageArray();
@@ -128,7 +129,7 @@ public class DouBaoServiceImpl implements DouBaoService {
             return new UserAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, markDown2HTML(StringEscapeUtils.escapeHtml4(answer)));
         } catch (IOException e) {
             log.error("API调用异常", e);
-            throw new DouBaoAPIErrorException("豆包服务调用失败");
+            throw new DouBaoAPIErrorException(ErrorConstant.DOUBAO_SERVICE_ERROR);
         }
     }
 
@@ -147,11 +148,11 @@ public class DouBaoServiceImpl implements DouBaoService {
     private void initUserMessageHistory() {
         String key = buildUserMessageKey();
         if (!redisTemplate.hasKey(key)) {
-            // 如果没有对话历史将进行初始化
+            // 1.如果没有对话历史将进行初始化
             JSONObject systemMessage = new JSONObject()
                     .fluentPut("role", DouBaoConstant.ROLE_SYSTEM)
                     .fluentPut("content", DouBaoConstant.INIT_CONSTANT);
-            // 将该用户初始化内容加入Redis
+            // 2.将该用户初始化内容加入Redis
             redisTemplate.opsForList().rightPush(key, systemMessage.toJSONString());
             redisTemplate.expire(key, DouBaoRedisKey.DOUBAO_HISTORY_TTL, TimeUnit.HOURS);
         }
@@ -199,8 +200,8 @@ public class DouBaoServiceImpl implements DouBaoService {
                     .getJSONObject("message")
                     .getString("content");
         } catch (Exception e) {
-            log.error("响应解析异常", e);
-            return "服务响应解析失败";
+            log.error(ErrorConstant.RESPONSE_PRASE_ERROR, e);
+            return ErrorConstant.RESPONSE_PRASE_ERROR;
         }
     }
 
@@ -210,7 +211,7 @@ public class DouBaoServiceImpl implements DouBaoService {
      * @return UserAIMessageVO 错误信息
      */
     private UserAIMessageVO errorResponse() {
-        return new UserAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, "当前服务不可用，请稍后重试");
+        return new UserAIMessageVO(DouBaoConstant.ROLE_ASSISTANT, ErrorConstant.DOUBAO_SERVICE_ERROR);
     }
 
     /**
@@ -259,7 +260,9 @@ public class DouBaoServiceImpl implements DouBaoService {
      */
     @Override
     public UserAIMessageVO analyseVolunteer(AnalyseDTO analyseDTO) {
+        // 1.获取用户志愿表
         List<Volunteer> volunteerList = volunteerMapper.selectVolunteers(analyseDTO.getTableId());
+        // 2.封装请求问题
         String question = "我是" + analyseDTO.getYear() + "年参加高考的" + analyseDTO.getProvince() + "考生，我的高考成绩是" +
                 analyseDTO.getGrade() + "我的高考位次是" + analyseDTO.getRanking() + "这是我模拟填报的志愿表：\n" +
                 volunteerList.toString() + "\n请为我分析是否合理，并提出一些建议";
@@ -271,7 +274,7 @@ public class DouBaoServiceImpl implements DouBaoService {
     }
 
     /**
-     * 构建请求
+     * 构建API请求
      *
      * @param question 请求问题
      * @return Request 请求

@@ -336,8 +336,8 @@ public class SchoolServiceImpl implements SchoolService {
             }
             return new PageResult<>(page.getTotal(), page.getResult());
         } catch (Exception e) {
-            log.error("分页查询失败");
-            throw new PageQueryException("分页查询失败");
+            log.error(ErrorConstant.SCHOOL_SEARCH_ERROR);
+            throw new PageQueryException(ErrorConstant.SCHOOL_SEARCH_ERROR);
         }
     }
 

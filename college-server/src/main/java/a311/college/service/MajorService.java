@@ -5,7 +5,7 @@ import a311.college.dto.query.major.MajorPageQueryDTO;
 import a311.college.dto.query.major.MajorSchoolPageQueryDTO;
 import a311.college.dto.query.major.ProfessionalClassQueryDTO;
 import a311.college.dto.query.major.SubjectCategoryQueryDTO;
-import a311.college.dto.query.school.CommentQueryDTO;
+import a311.college.dto.query.school.CommentDTO;
 import a311.college.dto.school.AddCommentDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.major.ProfessionalClass;
@@ -37,5 +37,5 @@ public interface MajorService {
 
     void addMajorComment(AddCommentDTO addCommentDTO);
 
-    List<CommentVO> showComment(CommentQueryDTO commentQueryDTO);
+    List<CommentVO> showComment(CommentDTO commentDTO);
 }

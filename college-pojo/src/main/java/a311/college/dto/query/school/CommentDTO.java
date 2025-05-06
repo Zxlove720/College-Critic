@@ -6,13 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 评论区分页查询DTO
+ * 评论区查询DTO
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "评论区分页查询DTO")
-public class CommentQueryDTO {
+@Schema(description = "评论区查询DTO")
+public class CommentDTO {
 
     @Schema(description = "学校id")
     private Integer schoolId;

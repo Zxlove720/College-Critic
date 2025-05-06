@@ -7,7 +7,7 @@ import a311.college.dto.query.major.MajorPageQueryDTO;
 import a311.college.dto.query.major.MajorSchoolPageQueryDTO;
 import a311.college.dto.query.major.ProfessionalClassQueryDTO;
 import a311.college.dto.query.major.SubjectCategoryQueryDTO;
-import a311.college.dto.query.school.CommentQueryDTO;
+import a311.college.dto.query.school.CommentDTO;
 import a311.college.dto.school.AddCommentDTO;
 import a311.college.entity.major.Major;
 import a311.college.entity.major.ProfessionalClass;
@@ -266,12 +266,12 @@ public class MajorServiceImpl implements MajorService {
     /**
      * 分页查询用户评价
      *
-     * @param commentQueryDTO 评论区分页查询DTO
+     * @param commentDTO 评论区分页查询DTO
      * @return List<CommentVO>
      */
     @Override
-    public List<CommentVO> showComment(CommentQueryDTO commentQueryDTO) {
-        return majorMapper.selectComment(commentQueryDTO.getMajorId());
+    public List<CommentVO> showComment(CommentDTO commentDTO) {
+        return majorMapper.selectComment(commentDTO.getMajorId());
     }
 
 

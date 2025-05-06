@@ -202,16 +202,16 @@ public class SchoolController {
     }
 
     /**
-     * 分页展示大学评论区
+     * 展示大学评论区
      *
-     * @param commentQueryDTO 大学评论区分页查询DTO
+     * @param commentDTO 大学评论区查询DTO
      * @return Result<PageResult < CommentVO>>
      */
     @PostMapping("/showComment")
-    @Operation(summary = "分页展示大学评论区")
-    public Result<List<CommentVO>> pageQuerySchoolComment(@RequestBody CommentQueryDTO commentQueryDTO) {
-        log.info("查看大学'{}'的评价", commentQueryDTO.getSchoolId());
-        return Result.success(schoolService.showComment(commentQueryDTO));
+    @Operation(summary = "展示大学评论区")
+    public Result<List<CommentVO>> pageQuerySchoolComment(@RequestBody CommentDTO commentDTO) {
+        log.info("查看大学'{}'的评价", commentDTO.getSchoolId());
+        return Result.success(schoolService.showComment(commentDTO));
     }
 
     /**

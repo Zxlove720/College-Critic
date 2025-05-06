@@ -3,7 +3,7 @@ package a311.college.controller.major;
 import a311.college.constant.API.APIConstant;
 import a311.college.dto.major.MajorDTO;
 import a311.college.dto.query.major.*;
-import a311.college.dto.query.school.CommentQueryDTO;
+import a311.college.dto.query.school.CommentDTO;
 import a311.college.dto.school.AddCommentDTO;
 import a311.college.entity.major.ProfessionalClass;
 import a311.college.dto.ai.MajorAIRequestDTO;
@@ -171,14 +171,14 @@ public class MajorController {
     /**
      * 分页展示专业评论区
      *
-     * @param commentQueryDTO 评论区分页查询DTO
+     * @param commentDTO 评论区分页查询DTO
      * @return Result<PageResult<CommentVO>>
      */
     @PostMapping("/showComment")
     @Operation(summary = "分页展示专业评论区")
-    public Result<List<CommentVO>> pageQuerySchoolComment(@RequestBody CommentQueryDTO commentQueryDTO) {
-        log.info("查看专业'{}'的评价", commentQueryDTO.getMajorId());
-        return Result.success(majorService.showComment(commentQueryDTO));
+    public Result<List<CommentVO>> pageQuerySchoolComment(@RequestBody CommentDTO commentDTO) {
+        log.info("查看专业'{}'的评价", commentDTO.getMajorId());
+        return Result.success(majorService.showComment(commentDTO));
     }
 
 }

@@ -670,14 +670,14 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 分页查询用户评价
+     * 查询用户评价
      *
-     * @param commentQueryDTO 大学DTO
+     * @param commentDTO 大学DTO
      * @return List<CommentVO>
      */
     @Override
-    public List<CommentVO> showComment(CommentQueryDTO commentQueryDTO) {
-        return schoolMapper.selectComment(commentQueryDTO.getSchoolId());
+    public List<CommentVO> showComment(CommentDTO commentDTO) {
+        return schoolMapper.selectComment(commentDTO.getSchoolId());
     }
 
     /**

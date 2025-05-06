@@ -300,7 +300,7 @@ public class SchoolServiceImpl implements SchoolService {
         List<School> schoolList = schoolMapper.searchSchool(message);
         // 2.根据用户搜索内容搜索专业
         List<Major> majorList = majorMapper.searchMajor(message);
-        // 3.没有匹配搜索内容的学校
+        // 3.判断是否有匹配搜索内容的学校
         if (schoolList != null) {
             log.info("用户搜索到学校信息");
             // 3.2成功匹配到学校数据，对其进行处理
@@ -320,6 +320,12 @@ public class SchoolServiceImpl implements SchoolService {
         return new SearchVO(schoolList, majorList);
     }
 
+    /**
+     * 用户搜索学校
+     *
+     * @param schoolPageQueryDTO 学校分页查询DTO
+     * @return PageResult<School>
+     */
     @Override
     public PageResult<School> search(SchoolPageQueryDTO schoolPageQueryDTO) {
         try (Page<School> page = PageHelper.startPage(schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize())) {

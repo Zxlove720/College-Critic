@@ -819,7 +819,7 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 获取热门院校
+     * 获取热门院校排行榜
      *
      * @return List<SchoolVO>
      */

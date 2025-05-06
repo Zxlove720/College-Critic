@@ -69,6 +69,7 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     public PageResult<School> pageSelect(SchoolPageQueryDTO schoolPageQueryDTO) {
+        // 1.根据查询条件，判断是否命中热点学校缓存
         List<String> rank = schoolPageQueryDTO.getRankList();
         String rankList = "";
         if (rank != null) {
@@ -100,17 +101,16 @@ public class SchoolServiceImpl implements SchoolService {
             }
             log.info("缓存没有命中特殊学校，查看缓存是否命中热点地区");
         }
-
-        // 先从缓存中进行读取，看缓存中是否有需要的数据
-        // 1.封装key
+        // 2.根据查询条件，判断是否命中热点地区学校缓存
+        // 2.1封装key
         String key = SchoolRedisKey.SCHOOL_CACHE_KEY + schoolPageQueryDTO.getProvince() + ":";
         List<School> schoolCache = redisTemplate.opsForList().range(key, 0, -1);
         if (schoolCache != null && !schoolCache.isEmpty()) {
-            // 2.成功从缓存中获取数据
+            // 2.2成功从缓存中获取数据
             log.info("缓存命中");
-            // 2.1根据查询条件进行过滤
+            // 2.3根据查询条件进行过滤
             List<School> filterCache = filterSchools(schoolCache, schoolPageQueryDTO, rankList);
-            // 2.2手动进行分页并返回
+            // 2.4手动进行分页并返回
             return manualPage(filterCache, schoolPageQueryDTO.getPage(), schoolPageQueryDTO.getPageSize());
         }
         // 3.缓存未命中，进行分页查询查询数据
@@ -150,11 +150,11 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     /**
-     * 从缓存中过滤学校数据
+     * 从缓存中过滤热门地区学校数据
      *
      * @param schoolCache        学校缓存
      * @param schoolPageQueryDTO 学校分页查询DTO
-     * @return List<SchoolVO>
+     * @return List<SchoolVO>    过滤后学校列表
      */
     private List<School> filterSchools(List<School> schoolCache, SchoolPageQueryDTO schoolPageQueryDTO, String rankList) {
         return schoolCache.stream()
@@ -163,6 +163,13 @@ public class SchoolServiceImpl implements SchoolService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 从缓存中过滤热门学校数据
+     *
+     * @param schoolCache        学校缓存
+     * @param schoolPageQueryDTO 学校分页查询DTO
+     * @return List<School>      过滤后学校列表
+     */
     private List<School> filterHot(List<School> schoolCache, SchoolPageQueryDTO schoolPageQueryDTO) {
         return schoolCache.stream()
                 .filter(s -> schoolPageQueryDTO.getProvince() == null || s.getSchoolProvince().getName().contains(schoolPageQueryDTO.getProvince()))
@@ -188,18 +195,18 @@ public class SchoolServiceImpl implements SchoolService {
                 // 3. 批量插入新数据（使用rightPushAll）
                 if (!school.isEmpty()) {
                     redisTemplate.opsForList().rightPushAll(key, school);
-                    log.info("地区 {} 缓存预热成功，共 {} 条数据", area, school.size());
+                    log.info("热点地区 {} 缓存预热成功，共 {} 条数据", area, school.size());
                 } else {
-                    log.warn("地区 {} 无数据，跳过缓存预热", area);
+                    log.warn("热点地区 {} 无数据，跳过缓存预热", area);
                 }
             } catch (Exception e) {
-                log.error("地区 {} 缓存预热失败: {}", area, e.getMessage(), e);
+                log.error("热点地区 {} 缓存预热失败: {}", area, e.getMessage(), e);
             }
         }
     }
 
     /**
-     * 缓存特殊学校
+     * 缓存热门学校
      */
     public void cacheHot() {
         try {
@@ -235,27 +242,27 @@ public class SchoolServiceImpl implements SchoolService {
             schoolList.clear();
 
         } catch (Exception e) {
-            log.error("特殊学校缓存预热失败: {}", e.getMessage());
+            log.error("热门学校缓存预热失败: {}", e.getMessage());
         }
     }
 
     /**
-     * 缓存特殊学校
+     * 缓存热门学校
      *
      * @param schoolList 学校列表
      * @param key        键
      */
     private void addCache(List<School> schoolList, String key) {
+        // 1.删除缓存的旧数据
         redisTemplate.delete(key);
-        // 3. 批量插入新数据（使用rightPushAll）
+        // 2.缓存新的热门学校数据
         if (!schoolList.isEmpty()) {
             redisTemplate.opsForList().rightPushAll(key, schoolList);
             log.info("{}缓存成功", key);
         } else {
-            log.warn("没有该类型的特殊学校，缓存失败");
+            log.warn("没有该类型的热门学校，缓存失败");
         }
     }
-
 
     /**
      * 学校专业分页查询

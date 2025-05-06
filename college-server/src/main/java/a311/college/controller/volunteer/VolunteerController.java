@@ -115,7 +115,7 @@ public class VolunteerController {
     @Operation(summary = "查询用户创建的志愿表")
     public Result<List<VolunteerTable>> showVolunteerTable() {
         log.info("查询用户创建的志愿表");
-        return Result.success(volunteerService.selectTables(ThreadLocalUtil.getCurrentId()));
+        return Result.success(volunteerService.showVolunteerTable(ThreadLocalUtil.getCurrentId()));
     }
 
     /**
@@ -163,8 +163,8 @@ public class VolunteerController {
      */
     @PostMapping("/analyse")
     @Operation(summary = "AI分析志愿表")
-    public Result<UserAIMessageVO> analyseVolunteer(@RequestBody AnalyseDTO analyseDTO) {
+    public Result<UserAIMessageVO> analyseVolunteerTable(@RequestBody AnalyseDTO analyseDTO) {
         log.info("志愿表分析");
-        return Result.success(volunteerService.analyseVolunteer(analyseDTO));
+        return Result.success(volunteerService.analyseVolunteerTable(analyseDTO));
     }
 }

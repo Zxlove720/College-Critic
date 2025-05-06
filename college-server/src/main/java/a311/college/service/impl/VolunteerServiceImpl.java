@@ -216,7 +216,7 @@ public class VolunteerServiceImpl implements VolunteerService {
      * @return List<VolunteerTable>
      */
     @Override
-    public List<VolunteerTable> selectTables(long userId) {
+    public List<VolunteerTable> showVolunteerTable(long userId) {
         return volunteerMapper.selectTables(userId);
     }
 
@@ -234,7 +234,7 @@ public class VolunteerServiceImpl implements VolunteerService {
         int total = filterCache.size();
         // 2.获取起始页码
         int start = (page - 1) * pageSize;
-        if (start >= total) return new PageResult<>((long)total, Collections.emptyList());
+        if (start >= total) return new PageResult<>((long) total, Collections.emptyList());
         // 3.获取结束页码
         int end = Math.min(start + pageSize, total);
         // 4.分页并返回
@@ -244,7 +244,7 @@ public class VolunteerServiceImpl implements VolunteerService {
                 volunteerVO.setIsAdd(volunteerMapper.checkVolunteer(volunteerVO.getMajorId(), ThreadLocalUtil.getCurrentId()) != null);
             }
         }
-        return new PageResult<>((long)total, pageData);
+        return new PageResult<>((long) total, pageData);
     }
 
     /**
@@ -331,8 +331,8 @@ public class VolunteerServiceImpl implements VolunteerService {
      * @return UserAIMessageVO
      */
     @Override
-    public UserAIMessageVO analyseVolunteer(AnalyseDTO analyseDTO) {
-        return douBaoService.analyseVolunteer(analyseDTO);
+    public UserAIMessageVO analyseVolunteerTable(AnalyseDTO analyseDTO) {
+        return douBaoService.analyseVolunteerTable(analyseDTO);
     }
 
 }

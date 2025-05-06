@@ -259,7 +259,7 @@ public class DouBaoServiceImpl implements DouBaoService {
      * @return UserAIMessageVO
      */
     @Override
-    public UserAIMessageVO analyseVolunteer(AnalyseDTO analyseDTO) {
+    public UserAIMessageVO analyseVolunteerTable(AnalyseDTO analyseDTO) {
         // 1.获取用户志愿表
         List<Volunteer> volunteerList = volunteerMapper.selectVolunteers(analyseDTO.getTableId());
         // 2.封装请求问题

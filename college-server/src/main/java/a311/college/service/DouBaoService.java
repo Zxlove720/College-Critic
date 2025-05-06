@@ -16,5 +16,5 @@ public interface DouBaoService {
 
     MajorAIMessageVO majorInformation(MajorAIRequestDTO majorAIRequestDTO);
 
-    UserAIMessageVO analyseVolunteer(AnalyseDTO analyseDTO);
+    UserAIMessageVO analyseVolunteerTable(AnalyseDTO analyseDTO);
 }

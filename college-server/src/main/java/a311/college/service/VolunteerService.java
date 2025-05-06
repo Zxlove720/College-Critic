@@ -23,7 +23,7 @@ public interface VolunteerService {
 
     void updateVolunteerTableName(VolunteerTable volunteerTable);
 
-    List<VolunteerTable> selectTables(long userId);
+    List<VolunteerTable> showVolunteerTable(long userId);
 
     void addVolunteer(AddVolunteerDTO addVolunteerDTO);
 
@@ -31,6 +31,6 @@ public interface VolunteerService {
 
     List<Volunteer> selectVolunteer(int tableId);
 
-    UserAIMessageVO analyseVolunteer(AnalyseDTO analyseDTO);
+    UserAIMessageVO analyseVolunteerTable(AnalyseDTO analyseDTO);
 
 }

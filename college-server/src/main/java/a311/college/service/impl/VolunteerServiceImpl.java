@@ -57,8 +57,6 @@ public class VolunteerServiceImpl implements VolunteerService {
     @Override
     public PageResult<SchoolVolunteer> showVolunteer(VolunteerPageDTO volunteerPageDTO) {
         List<SchoolVolunteer> schoolVolunteerList = volunteerMapper.selectVolunteerSchool(volunteerPageDTO);
-        int total = schoolVolunteerList.size();
-        schoolVolunteerList = manualPage(schoolVolunteerList, volunteerPageDTO.getPage(), volunteerPageDTO.getPageSize());
         // 在内存中处理分类逻辑
         schoolVolunteerList.forEach(school -> {
             // 使用LinkedHashMap保持插入顺序，合并时保留最后出现的元素
@@ -82,7 +80,7 @@ public class VolunteerServiceImpl implements VolunteerService {
                 });
             });
         });
-        return new PageResult<>((long) total, schoolVolunteerList);
+        return manualPage(schoolVolunteerList, volunteerPageDTO.getPage(), volunteerPageDTO.getPageSize());
     }
 
     /**
@@ -231,12 +229,12 @@ public class VolunteerServiceImpl implements VolunteerService {
      * @param pageSize    每页大小
      * @return PageResult<SchoolVO>
      */
-    private List<SchoolVolunteer> manualPage(List<SchoolVolunteer> filterCache, int page, int pageSize) {
+    private PageResult<SchoolVolunteer> manualPage(List<SchoolVolunteer> filterCache, int page, int pageSize) {
         // 1.获取记录总数
         int total = filterCache.size();
         // 2.获取起始页码
         int start = (page - 1) * pageSize;
-        if (start >= total) return Collections.emptyList();
+        if (start >= total) return new PageResult<>((long)total, Collections.emptyList());
         // 3.获取结束页码
         int end = Math.min(start + pageSize, total);
         // 4.分页并返回
@@ -246,7 +244,7 @@ public class VolunteerServiceImpl implements VolunteerService {
                 volunteerVO.setIsAdd(volunteerMapper.checkVolunteer(volunteerVO.getMajorId(), ThreadLocalUtil.getCurrentId()) != null);
             }
         }
-        return pageData;
+        return new PageResult<>((long)total, pageData);
     }
 
     /**

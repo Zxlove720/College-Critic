@@ -24,10 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -102,7 +99,7 @@ public class VolunteerServiceImpl implements VolunteerService {
         User user = userMapper.selectById(userId);
         List<SchoolVolunteer> schoolVolunteerList = volunteerMapper.selectVolunteerSchool(
                 new VolunteerPageDTO(volunteerTable.getTableId(), user.getProvince(), user.getFirstChoice(),
-                user.getGrade(), user.getRanking(), 1, 1, 96));
+                        user.getGrade(), user.getRanking(), 1, 1, 96));
         schoolVolunteerList.forEach(school ->
                 school.getVolunteerVOList().forEach(volunteerVO -> {
                     Integer minRanking = volunteerVO.getScoreLineList().get(0).getMinRanking();
@@ -245,9 +242,10 @@ public class VolunteerServiceImpl implements VolunteerService {
         List<SchoolVolunteer> pageData = filterCache.subList(start, end);
         for (SchoolVolunteer schoolVolunteer : pageData) {
             for (VolunteerVO volunteerVO : schoolVolunteer.getVolunteerVOList()) {
-                Integer count = volunteerMapper.getShowVolunteerCount(volunteerVO.getMajorId(), tableId);
-                volunteerVO.setCount(count == null ? 0 : count);
-                volunteerVO.setIsAdd(count != null);
+                List<Integer> showVolunteerCount = volunteerMapper.getShowVolunteerCount(tableId);
+                for (Integer count : showVolunteerCount) {
+                    volunteerVO.setIsAdd(volunteerMapper.checkExist(count, tableId) != 0);
+                }
             }
         }
         return new PageResult<>((long) total, pageData);
@@ -282,7 +280,7 @@ public class VolunteerServiceImpl implements VolunteerService {
     @Override
     public void addVolunteer(AddVolunteerDTO addVolunteerDTO) {
         // 1.判断当前志愿表是否已被填满
-        Integer count = volunteerMapper.getCount(addVolunteerDTO.getTableId());
+        Integer count = volunteerMapper.getSum(addVolunteerDTO.getTableId());
         if (count == null) {
             count = 0;
         }
@@ -328,7 +326,7 @@ public class VolunteerServiceImpl implements VolunteerService {
      */
     @Override
     public void deleteShowVolunteer(Volunteer volunteer) {
-        Integer count = volunteerMapper.getShowVolunteerCount(volunteer.getMajorId(), volunteer.getTableId());
+        Integer count = volunteerMapper.getCount(volunteer.getMajorId(), volunteer.getTableId());
         volunteerMapper.updateCount(volunteer.getTableId(), count);
         volunteerMapper.deleteShowVolunteer(volunteer.getMajorId(), volunteer.getTableId());
     }

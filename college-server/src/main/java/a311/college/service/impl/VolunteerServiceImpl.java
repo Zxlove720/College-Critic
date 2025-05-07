@@ -218,9 +218,12 @@ public class VolunteerServiceImpl implements VolunteerService {
      */
     @Override
     public List<VolunteerTable> showVolunteerTable(long userId) {
-        return volunteerMapper.selectTables(userId);
+        List<VolunteerTable> volunteerTables = volunteerMapper.selectTables(userId);
+        for (VolunteerTable volunteerTable : volunteerTables) {
+            volunteerTable.setCount(volunteerMapper.getTableCount(volunteerTable.getTableId()));
+        }
+        return volunteerTables;
     }
-
 
     /**
      * 人工分页

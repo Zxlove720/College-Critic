@@ -96,6 +96,15 @@ public interface VolunteerMapper {
     List<VolunteerTable> selectTables(Long userId);
 
     /**
+     * 查询志愿表已有志愿个数
+     *
+     * @param tableId 志愿表id
+     * @return 志愿个数
+     */
+    @Select("select max(count) from tb_volunteer where table_id = #{tableId}")
+    Integer getTableCount(int tableId);
+
+    /**
      * 添加志愿
      *
      * @param volunteer 志愿实体

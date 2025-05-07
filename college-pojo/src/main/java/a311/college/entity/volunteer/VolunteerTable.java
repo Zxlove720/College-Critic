@@ -25,6 +25,9 @@ public class VolunteerTable {
     @Schema(description = "志愿表名称")
     private String tableName;
 
+    @Schema(description = "志愿个数")
+    private Integer count;
+
     @Schema(description = "创建时间")
     private LocalDateTime createTime;
 }

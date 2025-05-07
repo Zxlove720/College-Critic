@@ -48,10 +48,10 @@ public interface VolunteerMapper {
      * 判断志愿是否被用户收藏
      *
      * @param majorId 专业id
-     * @param tableId 用户id
+     * @param tableId 志愿表id
      */
-    @Select("select count from tb_volunteer where major_id = #{majorId} and table_id = #{tableId}")
-    Integer checkVolunteer(int majorId, long tableId);
+    @Select("select count(major_id) from tb_volunteer where major_id = #{majorId} and table_id = #{tableId}")
+    int checkVolunteer(int majorId, int tableId);
 
     /**
      * 创建志愿表
@@ -125,4 +125,13 @@ public interface VolunteerMapper {
     @Select("select * from tb_volunteer where table_id = #{tableId} order by count")
     List<Volunteer> selectVolunteers(Integer tableId);
 
+    /**
+     * 返回志愿表顺序
+     *
+     * @param majorId 专业id
+     * @param tableId 志愿表id
+     * @return count
+     */
+    @Select("select count from tb_volunteer where major_id = #{majorId} and table_id = #{tableId}")
+    Integer getVolunteerCount(int majorId, int tableId);
 }

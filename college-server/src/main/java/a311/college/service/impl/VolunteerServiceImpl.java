@@ -64,7 +64,7 @@ public class VolunteerServiceImpl implements VolunteerService {
                     .collect(Collectors.toMap(
                             VolunteerVO::getMajorName,
                             Function.identity(),
-                            (existing, replacement) -> replacement, // 保留后出现的重复项
+                            (existing, replacement) -> replacement,
                             LinkedHashMap::new
                     ))
                     .values().stream().toList();
@@ -80,7 +80,7 @@ public class VolunteerServiceImpl implements VolunteerService {
                 });
             });
         });
-        return manualPage(schoolVolunteerList, volunteerPageDTO.getPage(), volunteerPageDTO.getPageSize());
+        return manualPage(schoolVolunteerList, volunteerPageDTO.getTableId(), volunteerPageDTO.getPage(), volunteerPageDTO.getPageSize());
     }
 
     /**
@@ -100,7 +100,8 @@ public class VolunteerServiceImpl implements VolunteerService {
         volunteerTable.setCreateTime(LocalDateTime.now());
         volunteerMapper.createVolunteerTable(volunteerTable);
         User user = userMapper.selectById(userId);
-        List<SchoolVolunteer> schoolVolunteerList = volunteerMapper.selectVolunteerSchool(new VolunteerPageDTO(user.getProvince(), user.getFirstChoice(),
+        List<SchoolVolunteer> schoolVolunteerList = volunteerMapper.selectVolunteerSchool(
+                new VolunteerPageDTO(volunteerTable.getTableId(), user.getProvince(), user.getFirstChoice(),
                 user.getGrade(), user.getRanking(), 1, 1, 96));
         schoolVolunteerList.forEach(school ->
                 school.getVolunteerVOList().forEach(volunteerVO -> {
@@ -229,7 +230,7 @@ public class VolunteerServiceImpl implements VolunteerService {
      * @param pageSize    每页大小
      * @return PageResult<SchoolVO>
      */
-    private PageResult<SchoolVolunteer> manualPage(List<SchoolVolunteer> filterCache, int page, int pageSize) {
+    private PageResult<SchoolVolunteer> manualPage(List<SchoolVolunteer> filterCache, int tableId, int page, int pageSize) {
         // 1.获取记录总数
         int total = filterCache.size();
         // 2.获取起始页码
@@ -241,7 +242,9 @@ public class VolunteerServiceImpl implements VolunteerService {
         List<SchoolVolunteer> pageData = filterCache.subList(start, end);
         for (SchoolVolunteer schoolVolunteer : pageData) {
             for (VolunteerVO volunteerVO : schoolVolunteer.getVolunteerVOList()) {
-                volunteerVO.setIsAdd(volunteerMapper.checkVolunteer(volunteerVO.getMajorId(), ThreadLocalUtil.getCurrentId()) != null);
+                Integer count = volunteerMapper.getVolunteerCount(volunteerVO.getMajorId(), tableId);
+                volunteerVO.setCount(count == null ? 0 : count);
+                volunteerVO.setIsAdd(count != null);
             }
         }
         return new PageResult<>((long) total, pageData);
@@ -277,11 +280,10 @@ public class VolunteerServiceImpl implements VolunteerService {
     public void addVolunteer(AddVolunteerDTO addVolunteerDTO) {
         // 1.判断当前志愿表是否已被填满
         Integer count = volunteerMapper.getCount(addVolunteerDTO.getTableId());
-        // 1.1此时说明该志愿表为空，将其设置为0
         if (count == null) {
             count = 0;
         }
-        if (count > 96) {
+        if (count >= 96) {
             // 1.2此时该志愿表已经填满，直接返回
             log.error("该志愿表已满");
             throw new VolunteerException("该志愿表已满，请选择其他志愿表");
@@ -290,7 +292,7 @@ public class VolunteerServiceImpl implements VolunteerService {
         int majorId = addVolunteerDTO.getMajorId();
         Long userId = ThreadLocalUtil.getCurrentId();
         // 2.1判断该志愿是否已经被添加到志愿表中
-        if (volunteerMapper.checkVolunteer(majorId, addVolunteerDTO.getTableId()) != null) {
+        if (volunteerMapper.checkVolunteer(majorId, addVolunteerDTO.getTableId()) != 0) {
             // 2.2该志愿已经被添加过了，不允许添加
             throw new ReAdditionException("重复添加");
         }

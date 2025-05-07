@@ -15,6 +15,9 @@ import lombok.NoArgsConstructor;
 @Schema(description = "用户志愿查询DTO")
 public class VolunteerPageDTO {
 
+    @Schema(description = "志愿表id")
+    private Integer tableId;
+
     @Schema(description = "用户所在省份")
     private ProvinceEnum province;
 

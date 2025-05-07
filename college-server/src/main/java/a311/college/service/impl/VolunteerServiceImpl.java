@@ -319,6 +319,16 @@ public class VolunteerServiceImpl implements VolunteerService {
     }
 
     /**
+     * 删除展示志愿
+     *
+     * @param volunteer 志愿
+     */
+    @Override
+    public void deleteShowVolunteer(Volunteer volunteer) {
+        volunteerMapper.deleteShowVolunteer(volunteer.getMajorId(), volunteer.getTableId());
+    }
+
+    /**
      * 查看志愿表内容
      *
      * @param tableId 志愿表id

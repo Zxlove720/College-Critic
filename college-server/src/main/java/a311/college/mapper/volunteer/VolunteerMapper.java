@@ -126,6 +126,15 @@ public interface VolunteerMapper {
     void deleteVolunteer(Volunteer volunteer);
 
     /**
+     * 删除展示志愿
+     *
+     * @param majorId 专业id
+     * @param tableId 志愿表id
+     */
+    @Delete("delete from tb_volunteer where major_id = #{majorId} and table_id = #{tableId}")
+    void deleteShowVolunteer(Integer majorId, int tableId);
+
+    /**
      * 查询志愿表内容
      *
      * @param tableId 志愿表id
@@ -143,4 +152,5 @@ public interface VolunteerMapper {
      */
     @Select("select count from tb_volunteer where major_id = #{majorId} and table_id = #{tableId}")
     Integer getVolunteerCount(int majorId, int tableId);
+
 }

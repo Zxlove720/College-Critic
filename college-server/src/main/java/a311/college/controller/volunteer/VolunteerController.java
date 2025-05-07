@@ -143,6 +143,18 @@ public class VolunteerController {
     }
 
     /**
+     * 删除展示志愿
+     *
+     * @param volunteer 志愿
+     */
+    @PostMapping("/deleteShowVolunteer")
+    @Operation(summary = "删除展示志愿")
+    public Result<Void> deleteShowVolunteer(@RequestBody Volunteer volunteer) {
+        volunteerService.deleteShowVolunteer(volunteer);
+        return Result.success();
+    }
+
+    /**
      * 查询志愿表
      *
      * @param volunteerTable 志愿表

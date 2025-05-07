@@ -29,6 +29,8 @@ public interface VolunteerService {
 
     void deleteVolunteer(Volunteer volunteer);
 
+    void deleteShowVolunteer(Volunteer volunteer);
+
     List<Volunteer> selectVolunteer(int tableId);
 
     UserAIMessageVO analyseVolunteerTable(AnalyseDTO analyseDTO);

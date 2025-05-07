@@ -41,7 +41,7 @@ public interface VolunteerMapper {
      * @param tableId 志愿表id
      * @return count 顺序
      */
-    @Select("select count from tb_volunteer where table_id = #{tableId} order by count desc limit 1")
+    @Select("select max(count) from tb_volunteer where table_id = #{tableId}")
     Integer getCount(int tableId);
 
     /**
@@ -152,5 +152,8 @@ public interface VolunteerMapper {
      */
     @Select("select count from tb_volunteer where major_id = #{majorId} and table_id = #{tableId}")
     Integer getVolunteerCount(int majorId, int tableId);
+
+    @Update("update tb_volunteer set count = (count - 1) where table_id = #{tableId} and count < #{count}")
+    void updateCount(Volunteer volunteer, int count);
 
 }

@@ -315,6 +315,8 @@ public class VolunteerServiceImpl implements VolunteerService {
      */
     @Override
     public void deleteVolunteer(Volunteer volunteer) {
+        Integer count = volunteerMapper.getVolunteerCount(volunteer.getMajorId(), volunteer.getTableId());
+        volunteerMapper.updateCount(volunteer, count);
         volunteerMapper.deleteVolunteer(volunteer);
     }
 

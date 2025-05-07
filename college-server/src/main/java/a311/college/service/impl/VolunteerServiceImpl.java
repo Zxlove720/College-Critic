@@ -245,7 +245,7 @@ public class VolunteerServiceImpl implements VolunteerService {
         List<SchoolVolunteer> pageData = filterCache.subList(start, end);
         for (SchoolVolunteer schoolVolunteer : pageData) {
             for (VolunteerVO volunteerVO : schoolVolunteer.getVolunteerVOList()) {
-                Integer count = volunteerMapper.getVolunteerCount(volunteerVO.getMajorId(), tableId);
+                Integer count = volunteerMapper.getShowVolunteerCount(volunteerVO.getMajorId(), tableId);
                 volunteerVO.setCount(count == null ? 0 : count);
                 volunteerVO.setIsAdd(count != null);
             }
@@ -315,8 +315,9 @@ public class VolunteerServiceImpl implements VolunteerService {
      */
     @Override
     public void deleteVolunteer(Volunteer volunteer) {
-        Integer count = volunteerMapper.getVolunteerCount(volunteer.getMajorId(), volunteer.getTableId());
-        volunteerMapper.updateCount(volunteer, count);
+        Integer count = volunteerMapper.getVolunteerCount(volunteer.getVolunteerId());
+        Integer tableId = volunteerMapper.getTableId(volunteer.getVolunteerId());
+        volunteerMapper.updateCount(tableId, count);
         volunteerMapper.deleteVolunteer(volunteer);
     }
 
@@ -327,6 +328,8 @@ public class VolunteerServiceImpl implements VolunteerService {
      */
     @Override
     public void deleteShowVolunteer(Volunteer volunteer) {
+        Integer count = volunteerMapper.getShowVolunteerCount(volunteer.getMajorId(), volunteer.getTableId());
+        volunteerMapper.updateCount(volunteer.getTableId(), count);
         volunteerMapper.deleteShowVolunteer(volunteer.getMajorId(), volunteer.getTableId());
     }
 

@@ -151,9 +151,20 @@ public interface VolunteerMapper {
      * @return count
      */
     @Select("select count from tb_volunteer where major_id = #{majorId} and table_id = #{tableId}")
-    Integer getVolunteerCount(int majorId, int tableId);
+    Integer getShowVolunteerCount(int majorId, int tableId);
 
-    @Update("update tb_volunteer set count = (count - 1) where table_id = #{tableId} and count < #{count}")
-    void updateCount(Volunteer volunteer, int count);
+    /**
+     * 返回志愿表顺序
+     *
+     * @param volunteerId 志愿id
+     * @return count
+     */
+    @Select("select count from tb_volunteer where volunteer_id = #{volunteerId}")
+    Integer getVolunteerCount(int volunteerId);
 
+    @Update("update tb_volunteer set count = (count - 1) where table_id = #{tableId} and count > #{count}")
+    void updateCount(int tableId, int count);
+
+    @Select("select table_id from tb_volunteer where volunteer_id = #{volunteerId}")
+    Integer getTableId(Integer volunteerId);
 }

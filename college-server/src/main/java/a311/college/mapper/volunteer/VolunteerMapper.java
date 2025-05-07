@@ -143,15 +143,6 @@ public interface VolunteerMapper {
     @Select("select * from tb_volunteer where table_id = #{tableId} order by count")
     List<Volunteer> selectVolunteers(Integer tableId);
 
-    /**
-     * 返回志愿表顺序
-     *
-     * @param tableId 志愿表id
-     * @return count
-     */
-    @Select("select count from tb_volunteer where table_id = #{tableId}")
-    List<Integer> getShowVolunteerCount(int tableId);
-
     @Select("select count from tb_volunteer where major_id = #{majorId} and table_id = #{tableId}")
     Integer getCount(int majorId, int tableId);
 
@@ -169,8 +160,5 @@ public interface VolunteerMapper {
 
     @Select("select table_id from tb_volunteer where volunteer_id = #{volunteerId}")
     Integer getTableId(Integer volunteerId);
-
-    @Select("select count(major_id) from tb_volunteer where count = #{count} and table_id = #{tableId}")
-    Integer checkExist(Integer count, int tableId);
 
 }

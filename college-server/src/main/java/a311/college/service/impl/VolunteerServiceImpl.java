@@ -3,12 +3,10 @@ package a311.college.service.impl;
 import a311.college.dto.user.VolunteerPageDTO;
 import a311.college.dto.volunteer.AddVolunteerDTO;
 import a311.college.dto.volunteer.AnalyseDTO;
-import a311.college.entity.user.User;
 import a311.college.entity.volunteer.Volunteer;
 import a311.college.entity.volunteer.VolunteerTable;
 import a311.college.exception.ReAdditionException;
 import a311.college.exception.volunteer.VolunteerException;
-import a311.college.mapper.user.UserMapper;
 import a311.college.mapper.volunteer.VolunteerMapper;
 import a311.college.result.PageResult;
 import a311.college.service.DouBaoService;
@@ -16,7 +14,6 @@ import a311.college.service.VolunteerService;
 import a311.college.thread.ThreadLocalUtil;
 import a311.college.vo.ai.UserAIMessageVO;
 import a311.college.vo.volunteer.SchoolVolunteer;
-import a311.college.vo.volunteer.ScoreLine;
 import a311.college.vo.volunteer.VolunteerVO;
 import cn.hutool.core.bean.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -36,13 +33,11 @@ public class VolunteerServiceImpl implements VolunteerService {
 
     private final DouBaoService douBaoService;
 
-    private final UserMapper userMapper;
 
     @Autowired
-    public VolunteerServiceImpl(VolunteerMapper volunteerMapper, DouBaoService douBaoService, UserMapper userMapper) {
+    public VolunteerServiceImpl(VolunteerMapper volunteerMapper, DouBaoService douBaoService) {
         this.volunteerMapper = volunteerMapper;
         this.douBaoService = douBaoService;
-        this.userMapper = userMapper;
     }
 
     /**
@@ -96,82 +91,6 @@ public class VolunteerServiceImpl implements VolunteerService {
         volunteerTable.setUserId(ThreadLocalUtil.getCurrentId());
         volunteerTable.setCreateTime(LocalDateTime.now());
         volunteerMapper.createVolunteerTable(volunteerTable);
-        User user = userMapper.selectById(userId);
-        List<SchoolVolunteer> schoolVolunteerList = volunteerMapper.selectVolunteerSchool(
-                new VolunteerPageDTO(volunteerTable.getTableId(), user.getProvince(), user.getFirstChoice(),
-                        user.getGrade(), user.getRanking(), 1, 1, 96));
-        schoolVolunteerList.forEach(school ->
-                school.getVolunteerVOList().forEach(volunteerVO -> {
-                    Integer minRanking = volunteerVO.getScoreLineList().get(0).getMinRanking();
-                    volunteerVO.setCategory(calculateCategory(minRanking, user.getRanking()));
-                    List<ScoreLine> scoreLineList = volunteerVO.getScoreLineList();
-                    for (ScoreLine scoreLine : scoreLineList) {
-                        scoreLine.setScoreThanMe(user.getGrade() - scoreLine.getMinScore());
-                        scoreLine.setRankingThanMe(user.getRanking() - scoreLine.getMinRanking());
-                    }
-                })
-        );
-        List<AddVolunteerDTO> rush = new ArrayList<>();
-        List<AddVolunteerDTO> stable = new ArrayList<>();
-        List<AddVolunteerDTO> minimum = new ArrayList<>();
-        int rushCount = 0;
-        int stableCount = 0;
-        int minimumCount = 0;
-        for (SchoolVolunteer schoolVolunteer : schoolVolunteerList) {
-            for (VolunteerVO volunteerVO : schoolVolunteer.getVolunteerVOList()) {
-                if (volunteerVO.getCategory() == 2) {
-                    if (rushCount == 32) {
-                        break;
-                    }
-                    rushCount++;
-                    ScoreLine scoreLine = volunteerVO.getScoreLineList().get(0);
-                    rush.add(new AddVolunteerDTO(volunteerTable.getTableId(), volunteerVO.getMajorId(),
-                            2, volunteerVO.getScoreLineList().get(0).getYear(),
-                            scoreLine.getMinScore(),
-                            scoreLine.getMinRanking(),
-                            scoreLine.getScoreThanMe(),
-                            scoreLine.getRankingThanMe()));
-                    break;
-                }
-                if (volunteerVO.getCategory() == 1) {
-                    if (stableCount == 32) {
-                        break;
-                    }
-                    stableCount++;
-                    ScoreLine scoreLine = volunteerVO.getScoreLineList().get(0);
-                    stable.add(new AddVolunteerDTO(volunteerTable.getTableId(), volunteerVO.getMajorId(),
-                            1, volunteerVO.getScoreLineList().get(0).getYear(),
-                            scoreLine.getMinScore(),
-                            scoreLine.getMinRanking(),
-                            scoreLine.getScoreThanMe(),
-                            scoreLine.getRankingThanMe()));
-                    break;
-                }
-                if (volunteerVO.getCategory() == 0) {
-                    if (minimumCount == 32) {
-                        break;
-                    }
-                    minimumCount++;
-                    ScoreLine scoreLine = volunteerVO.getScoreLineList().get(0);
-                    minimum.add(new AddVolunteerDTO(volunteerTable.getTableId(), volunteerVO.getMajorId(),
-                            0, volunteerVO.getScoreLineList().get(0).getYear(),
-                            scoreLine.getMinScore(),
-                            scoreLine.getMinRanking(),
-                            scoreLine.getScoreThanMe(),
-                            scoreLine.getRankingThanMe()));
-                    break;
-                }
-            }
-        }
-        for (AddVolunteerDTO addVolunteerDTO : rush) {
-            addVolunteer(addVolunteerDTO);
-        }
-        for (AddVolunteerDTO addVolunteerDTO : stable) {
-            addVolunteer(addVolunteerDTO);
-        }
-        for (AddVolunteerDTO addVolunteerDTO : minimum) {
-            addVolunteer(addVolunteerDTO);
-        }
     }
 
     /**
@@ -242,10 +161,7 @@ public class VolunteerServiceImpl implements VolunteerService {
         List<SchoolVolunteer> pageData = filterCache.subList(start, end);
         for (SchoolVolunteer schoolVolunteer : pageData) {
             for (VolunteerVO volunteerVO : schoolVolunteer.getVolunteerVOList()) {
-                List<Integer> showVolunteerCount = volunteerMapper.getShowVolunteerCount(tableId);
-                for (Integer count : showVolunteerCount) {
-                    volunteerVO.setIsAdd(volunteerMapper.checkExist(count, tableId) != 0);
-                }
+                volunteerVO.setIsAdd(volunteerMapper.checkVolunteer(volunteerVO.getMajorId(), tableId) != 0);
             }
         }
         return new PageResult<>((long) total, pageData);

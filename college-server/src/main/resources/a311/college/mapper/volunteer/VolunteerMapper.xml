@@ -4,7 +4,8 @@
 <mapper namespace="a311.college.mapper.volunteer.VolunteerMapper">
     <!-- 优化后的主查询SQL -->
     <select id="selectVolunteerSchool" resultMap="schoolVolunteerMap">
-        SELECT s.school_id,
+        SELECT
+        s.school_id,
         s.school_head,
         s.school_name,
         s.school_province,

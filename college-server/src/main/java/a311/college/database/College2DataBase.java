@@ -108,6 +108,9 @@ public class College2DataBase {
     }
 
 
+    /**
+     * 保存学校信息
+     */
     private static void saveSchoolInfo() {
         ObjectMapper mapper = new ObjectMapper();
         File dir = new File(SchoolDataFilePath.COLLEGE_INFO_PATH);

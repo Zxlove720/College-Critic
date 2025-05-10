@@ -143,7 +143,12 @@ public class College2DataBase {
         System.out.println();
     }
 
-
+    /**
+     * 逐条把学校信息保存至数据库
+     *
+     * @param school School实体类
+     * @param conn 数据库连接
+     */
     private static void saveToDatabase(School school, Connection conn) throws SQLException {
         // 插入学校
         String schoolId = school.getSchoolId();

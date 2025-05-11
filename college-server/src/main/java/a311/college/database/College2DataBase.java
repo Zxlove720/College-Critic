@@ -294,6 +294,11 @@ public class College2DataBase {
         }
     }
 
+    /**
+     * 将学校信息分割为分数和位次
+     *
+     * @param input 信息内容
+     */
     private static int[] getScoreAndRanking(String input) {
         // 使用正则表达式匹配数字或可能表示缺失值的特殊字符
         Pattern pattern = Pattern.compile("\\d+|-");

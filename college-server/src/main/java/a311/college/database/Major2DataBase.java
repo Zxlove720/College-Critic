@@ -32,7 +32,11 @@ public class Major2DataBase {
         }
     }
 
-    // 从文件序列化数据
+    /**
+     * 从文件序列化数据
+     *
+     * @return 教育层次
+     */
     private static EducationHierarchy loadDataFromFile() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         // 处理中文key必须配置的编码

@@ -76,6 +76,12 @@ public class Major2DataBase {
         }
     }
 
+    /**
+     * 插入培养层次
+     *
+     * @param conn 数据库连接
+     * @param name 专业名
+     */
     private static int insertAcademicLevel(Connection conn, String name) throws SQLException {
         String sql = "INSERT INTO tb_academic_level (academic_level_name) VALUES (?)";
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {

@@ -112,6 +112,13 @@ public class Major2DataBase {
         }
     }
 
+    /**
+     * 插入专业类别
+     *
+     * @param conn 数据库连接
+     * @param name 专业名
+     * @param subjectId 学科门类id
+     */
     private static int insertProfessionalClass(Connection conn, String name, int subjectId) throws SQLException {
         String sql = "INSERT INTO tb_professional_class (subject_category_id, professional_class_name) VALUES (?, ?)";
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {

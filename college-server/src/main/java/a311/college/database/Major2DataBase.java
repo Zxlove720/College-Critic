@@ -93,6 +93,13 @@ public class Major2DataBase {
         }
     }
 
+    /**
+     * 插入学科门类
+     *
+     * @param conn 数据库连接
+     * @param name 专业名
+     * @param levelId 培养层次id
+     */
     private static int insertSubjectCategory(Connection conn, String name, int levelId) throws SQLException {
         String sql = "INSERT INTO tb_subject_category (academic_level_id, subject_category_name) VALUES (?, ?)";
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {

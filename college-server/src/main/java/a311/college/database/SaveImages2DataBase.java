@@ -46,6 +46,12 @@ public class SaveImages2DataBase {
         }
     }
 
+    /**
+     * 将文件转化为字节
+     *
+     * @param file 文件
+     * @return byte[] 文件转化后的字节数组
+     */
     private static byte[] getFileBytes(File file) throws IOException {
         try (FileInputStream fis = new FileInputStream(file)) {
             byte[] buffer = new byte[(int) file.length()];

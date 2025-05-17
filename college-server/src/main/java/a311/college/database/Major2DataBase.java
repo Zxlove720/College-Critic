@@ -131,6 +131,13 @@ public class Major2DataBase {
         }
     }
 
+    /**
+     * 插入专业
+     *
+     * @param conn 数据库连接
+     * @param major 专业
+     * @param classId 所属类别id
+     */
     private static void insertMajor(Connection conn, Major major, int classId) throws SQLException {
         String sql = "INSERT INTO tb_major (professional_class_id, major_name, major_code, major_year, degrees, gender, avg_salary) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";

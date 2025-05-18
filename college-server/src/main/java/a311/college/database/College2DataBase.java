@@ -331,6 +331,9 @@ public class College2DataBase {
         }
     }
 
+    /**
+     * 创建省份列表
+     */
     private static final List<String> PROVINCES = Arrays.asList(
             "内蒙古", "黑龙江",
             "北京", "天津", "上海", "重庆",

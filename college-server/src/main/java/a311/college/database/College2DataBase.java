@@ -346,6 +346,12 @@ public class College2DataBase {
             "青海", "台湾"
     );
 
+    /**
+     * 修正省份字符串
+     *
+     * @param input 省份字符串
+     * @return  修正后的串
+     */
     public static String extractProvince(String input) {
         for (String province : PROVINCES) {
             if (input.startsWith(province)) {

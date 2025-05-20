@@ -361,6 +361,12 @@ public class College2DataBase {
         return "";
     }
 
+    /**
+     * 更新学校等级列表
+     *
+     * @param rankList 等级列表
+     * @return 等级列表
+     */
     private static String updateRankList(String rankList) {
         String tempResult = rankList.replace("[", "");
         String tempResult2 = tempResult.replace("]", "");

@@ -31,6 +31,9 @@ public class College2DataBase {
         saveSchoolInfo();
     }
 
+    /**
+     * 将学校数据保存到数据库
+     */
     private static void saveSchoolData2DB() {
         try {
             ObjectMapper mapper = new ObjectMapper();

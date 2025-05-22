@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 public class College2DataBase {
 
     public static void main(String[] args) {
-//        saveSchoolData2DB();
+        saveSchoolData2DB();
         saveSchoolInfo();
     }
 
